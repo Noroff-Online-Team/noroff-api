@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  id          Int    @id @default(autoincrement())
+  title       String
+  author      String
+  genre       String
+  description String
+  isbn        String @unique
+  image       String
+  published   String
+  publisher   String
+}
+
+model OldGame {
+  id          Int      @id @default(autoincrement())
+  slug        String
+  name        String
+  description String
+  released    String
+  image       String
+  genre       String[]
+}
+
+model NbaTeam {
+  id           Int    @id @default(autoincrement())
+  abbreviation String
+  city         String
+  conference   String
+  division     String
+  full_name    String
+  name         String
+}
+
+model Joke {
+  id        Int    @id @default(autoincrement())
+  type      String
+  setup     String
+  punchline String
+}
+
+model CatFact {
+  id   Int    @id @default(autoincrement())
+  text String
+}
