@@ -17,5 +17,5 @@ export type BookSchema = z.infer<typeof bookSchema>
 
 export const { schemas: bookSchemas, $ref } = buildJsonSchemas(
   { bookSchema },
-  { $id: "bookSchemas" }
+  { $id: "Books" }
 )

@@ -8,7 +8,7 @@ async function bookRoutes(server: FastifyInstance) {
     "/",
     {
       schema: {
-        tags: ["Books"],
+        tags: ["books"],
         response: {
           200: {
             type: "array",
@@ -24,7 +24,7 @@ async function bookRoutes(server: FastifyInstance) {
     "/:id",
     {
       schema: {
-        tags: ["Books"],
+        tags: ["books"],
         params: {
           type: "object",
           properties: {

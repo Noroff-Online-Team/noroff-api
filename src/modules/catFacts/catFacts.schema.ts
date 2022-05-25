@@ -10,5 +10,5 @@ export type CatFactSchema = z.infer<typeof catFactSchema>
 
 export const { schemas: catFactSchemas, $ref } = buildJsonSchemas(
   { catFactSchema },
-  { $id: "catFactSchemas" }
+  { $id: "CatFacts" }
 )

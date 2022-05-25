@@ -8,7 +8,7 @@ async function catFactsRoutes(server: FastifyInstance) {
     "/",
     {
       schema: {
-        tags: ["Cat Facts"],
+        tags: ["cat-facts"],
         response: {
           200: {
             type: "array",
@@ -24,7 +24,7 @@ async function catFactsRoutes(server: FastifyInstance) {
     "/:id",
     {
       schema: {
-        tags: ["Cat Facts"],
+        tags: ["cat-facts"],
         params: {
           type: "object",
           properties: {

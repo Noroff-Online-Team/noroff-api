@@ -5,13 +5,13 @@ import swagger from "@fastify/swagger"
 import fStatic from "@fastify/static"
 import { version } from "../package.json"
 
-// Schema imports
-import { bookSchemas } from "@modules/books/books.schema"
-import { catFactSchemas } from "@modules/catFacts/catFacts.schema"
-
 // Route imports
-import bookRoutes from "@modules/books/books.routes"
-import catFactRoutes from "@modules/catFacts/catFacts.routes"
+import bookRoutes from "./modules/books/books.routes"
+import catFactRoutes from "./modules/catFacts/catFacts.routes"
+
+// Schema imports
+import { bookSchemas } from "./modules/books/books.schema"
+import { catFactSchemas } from "./modules/catFacts/catFacts.schema"
 
 const allSchemas = [...bookSchemas, ...catFactSchemas]
 
@@ -45,8 +45,8 @@ function buildServer() {
       consumes: ["application/json"],
       produces: ["application/json"],
       tags: [
-        { name: "Books", description: "Books related endpoints" },
-        { name: "Cat Facts", description: "Cat Facts related endpoints" }
+        { name: "books", description: "Books related endpoints" },
+        { name: "cat-facts", description: "Cat Facts related endpoints" }
       ]
     },
     routePrefix: "/docs",

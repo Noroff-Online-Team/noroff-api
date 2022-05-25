@@ -10,11 +10,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": "src",
-    "strict": true,
-    "paths": {
-      "@utils/*": ["./utils/*"],
-      "@modules/*": ["./modules/*"]
-    }
+    "strict": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
