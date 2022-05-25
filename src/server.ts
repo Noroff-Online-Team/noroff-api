@@ -8,12 +8,14 @@ import { version } from "../package.json"
 // Route imports
 import bookRoutes from "./modules/books/books.routes"
 import catFactRoutes from "./modules/catFacts/catFacts.routes"
+import jokeRoutes from "./modules/jokes/jokes.routes"
 
 // Schema imports
 import { bookSchemas } from "./modules/books/books.schema"
 import { catFactSchemas } from "./modules/catFacts/catFacts.schema"
+import { jokeSchemas } from "./modules/jokes/jokes.schema"
 
-const allSchemas = [...bookSchemas, ...catFactSchemas]
+const allSchemas = [...bookSchemas, ...catFactSchemas, ...jokeSchemas]
 
 // Main startup
 function buildServer() {
@@ -46,7 +48,8 @@ function buildServer() {
       produces: ["application/json"],
       tags: [
         { name: "books", description: "Books related endpoints" },
-        { name: "cat-facts", description: "Cat Facts related endpoints" }
+        { name: "cat-facts", description: "Cat Facts related endpoints" },
+        { name: "jokes", description: "Jokes related endpoints" }
       ]
     },
     routePrefix: "/docs",
@@ -62,6 +65,7 @@ function buildServer() {
   // Register all routes along with their given prefix
   server.register(bookRoutes, { prefix: "api/v1/books" })
   server.register(catFactRoutes, { prefix: "api/v1/cat-facts" })
+  server.register(jokeRoutes, { prefix: "api/v1/jokes" })
 
   return server
 }
