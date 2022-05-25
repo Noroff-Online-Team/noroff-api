@@ -8,7 +8,8 @@
     "dev": "tsnd --respawn --transpile-only -r tsconfig-paths/register src/app.ts",
     "start": "node dist/src/app.js",
     "prestart": "npm run build",
-    "build": "rimraf dist && tsc -p tsconfig.json"
+    "build": "rimraf dist && tsc -p tsconfig.json",
+    "prebuild": "prisma generate"
   },
   "dependencies": {
     "@fastify/cors": "^7.0.0",
