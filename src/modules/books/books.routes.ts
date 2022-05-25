@@ -1,7 +1,11 @@
 import { FastifyInstance } from "fastify"
 
 import { $ref } from "./books.schema"
-import { getBooksHandler, getBookHandler } from "./books.controller"
+import {
+  getBooksHandler,
+  getBookHandler,
+  getRandomBookHandler
+} from "./books.controller"
 
 async function bookRoutes(server: FastifyInstance) {
   server.get(
@@ -18,6 +22,19 @@ async function bookRoutes(server: FastifyInstance) {
       }
     },
     getBooksHandler
+  )
+
+  server.get(
+    "/random",
+    {
+      schema: {
+        tags: ["books"],
+        response: {
+          200: $ref("bookSchema")
+        }
+      }
+    },
+    getRandomBookHandler
   )
 
   server.get(

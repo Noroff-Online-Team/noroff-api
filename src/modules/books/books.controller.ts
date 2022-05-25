@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 
-import { getBooks, getBook } from "./books.service"
+import { getBooks, getBook, getRandomBook } from "./books.service"
 
 export async function getBooksHandler() {
   const books = await getBooks()
@@ -21,5 +21,10 @@ export async function getBookHandler(
     return reply.code(404).send(error)
   }
 
+  return book
+}
+
+export async function getRandomBookHandler() {
+  const book = await getRandomBook()
   return book
 }

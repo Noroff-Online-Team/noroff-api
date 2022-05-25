@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 
-import { getCatFacts, getCatFact } from "./catFacts.service"
+import { getCatFacts, getCatFact, getRandomCatFact } from "./catFacts.service"
 
 export async function getCatFactsHandler() {
   const catFacts = await getCatFacts()
@@ -21,5 +21,10 @@ export async function getCatFactHandler(
     return reply.code(404).send(error)
   }
 
+  return catFact
+}
+
+export async function getRandomCatFactHandler() {
+  const catFact = await getRandomCatFact()
   return catFact
 }
