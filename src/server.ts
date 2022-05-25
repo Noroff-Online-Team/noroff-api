@@ -11,6 +11,7 @@ import bookRoutes from "./modules/books/books.routes"
 import catFactRoutes from "./modules/catFacts/catFacts.routes"
 import jokeRoutes from "./modules/jokes/jokes.routes"
 import nbaTeamRoutes from "./modules/nbaTeams/nbaTeams.routes"
+import oldGameRoutes from "./modules/oldGames/oldGames.routes"
 
 // Schema imports
 import { statusSchemas } from "./modules/status/status.schema"
@@ -18,13 +19,15 @@ import { bookSchemas } from "./modules/books/books.schema"
 import { catFactSchemas } from "./modules/catFacts/catFacts.schema"
 import { jokeSchemas } from "./modules/jokes/jokes.schema"
 import { nbaTeamSchemas } from "./modules/nbaTeams/nbaTeams.schema"
+import { oldGameSchemas } from "./modules/oldGames/oldGames.schema"
 
 const allSchemas = [
   ...statusSchemas,
   ...bookSchemas,
   ...catFactSchemas,
   ...jokeSchemas,
-  ...nbaTeamSchemas
+  ...nbaTeamSchemas,
+  ...oldGameSchemas
 ]
 
 // Main startup
@@ -56,7 +59,8 @@ function buildServer() {
         { name: "books", description: "Books related endpoints" },
         { name: "cat-facts", description: "Cat Facts related endpoints" },
         { name: "jokes", description: "Jokes related endpoints" },
-        { name: "nba-teams", description: "NBA teams related endpoints" }
+        { name: "nba-teams", description: "NBA teams related endpoints" },
+        { name: "old-games", description: "Old games related endpoints" }
       ]
     },
     routePrefix: "/docs",
@@ -75,6 +79,7 @@ function buildServer() {
   server.register(catFactRoutes, { prefix: "api/v1/cat-facts" })
   server.register(jokeRoutes, { prefix: "api/v1/jokes" })
   server.register(nbaTeamRoutes, { prefix: "api/v1/nba-teams" })
+  server.register(oldGameRoutes, { prefix: "api/v1/old-games" })
 
   return server
 }
