@@ -10,4 +10,7 @@ const jokeSchema = z.object({
 
 export type JokeSchema = z.infer<typeof jokeSchema>
 
-export const { schemas: jokeSchemas, $ref } = buildJsonSchemas({ jokeSchema })
+export const { schemas: jokeSchemas, $ref } = buildJsonSchemas(
+  { jokeSchema },
+  { $id: "Jokes" }
+)

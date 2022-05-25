@@ -3,7 +3,6 @@ import Fastify from "fastify"
 import cors from "@fastify/cors"
 import swagger from "@fastify/swagger"
 import fStatic from "@fastify/static"
-import { withRefResolver } from "fastify-zod"
 import { version } from "../package.json"
 
 // Route imports
@@ -40,29 +39,26 @@ function buildServer() {
   }
 
   // Register and generate swagger docs
-  server.register(
-    swagger,
-    withRefResolver({
-      swagger: {
-        info: {
-          title: "Noroff API",
-          description: "Noroff API to be used in assignments",
-          version
-        },
-        consumes: ["application/json"],
-        produces: ["application/json"],
-        tags: [
-          { name: "status", description: "Health check endpoint" },
-          { name: "books", description: "Books related endpoints" },
-          { name: "cat-facts", description: "Cat Facts related endpoints" },
-          { name: "jokes", description: "Jokes related endpoints" }
-        ]
+  server.register(swagger, {
+    swagger: {
+      info: {
+        title: "Noroff API",
+        description: "Noroff API to be used in assignments",
+        version
       },
-      routePrefix: "/docs",
-      exposeRoute: true,
-      staticCSP: true
-    })
-  )
+      consumes: ["application/json"],
+      produces: ["application/json"],
+      tags: [
+        { name: "status", description: "Health check endpoint" },
+        { name: "books", description: "Books related endpoints" },
+        { name: "cat-facts", description: "Cat Facts related endpoints" },
+        { name: "jokes", description: "Jokes related endpoints" }
+      ]
+    },
+    routePrefix: "/docs",
+    exposeRoute: true,
+    staticCSP: true
+  })
 
   // Register static serving of files
   server.register(fStatic, {

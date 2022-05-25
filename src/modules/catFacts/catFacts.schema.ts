@@ -8,6 +8,7 @@ const catFactSchema = z.object({
 
 export type CatFactSchema = z.infer<typeof catFactSchema>
 
-export const { schemas: catFactSchemas, $ref } = buildJsonSchemas({
-  catFactSchema
-})
+export const { schemas: catFactSchemas, $ref } = buildJsonSchemas(
+  { catFactSchema },
+  { $id: "CatFacts" }
+)
