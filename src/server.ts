@@ -12,11 +12,17 @@ import catFactRoutes from "./modules/catFacts/catFacts.routes"
 import jokeRoutes from "./modules/jokes/jokes.routes"
 
 // Schema imports
+import { statusSchemas } from "./modules/status/status.schema"
 import { bookSchemas } from "./modules/books/books.schema"
 import { catFactSchemas } from "./modules/catFacts/catFacts.schema"
 import { jokeSchemas } from "./modules/jokes/jokes.schema"
 
-const allSchemas = [...bookSchemas, ...catFactSchemas, ...jokeSchemas]
+const allSchemas = [
+  ...statusSchemas,
+  ...bookSchemas,
+  ...catFactSchemas,
+  ...jokeSchemas
+]
 
 // Main startup
 function buildServer() {
