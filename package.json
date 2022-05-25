@@ -17,7 +17,7 @@
     "@fastify/swagger": "^6.0.1",
     "@prisma/client": "^3.14.0",
     "fastify": "^3.29.0",
-    "fastify-zod": "^1.0.0-rc10",
+    "fastify-zod": "0.0.2",
     "zod": "^3.17.3",
     "zod-to-json-schema": "^3.17.0"
   },

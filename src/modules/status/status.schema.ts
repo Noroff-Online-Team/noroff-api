@@ -7,7 +7,6 @@ const statusSchema = z.object({
 
 export type StatusSchema = z.infer<typeof statusSchema>
 
-export const { schemas: statusSchemas, $ref } = buildJsonSchemas(
-  { statusSchema },
-  { $id: "Status" }
-)
+export const { schemas: statusSchemas, $ref } = buildJsonSchemas({
+  statusSchema
+})
