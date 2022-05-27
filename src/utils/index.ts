@@ -1,3 +1,2 @@
-export function getRandomNumber(minimum: number, maximum: number): number {
-  return Math.floor(Math.random() * (maximum - minimum + 1) + minimum)
-}
+export { default as getRandomNumber } from "./getRandomNumber"
+export { default as prisma } from "./prisma"

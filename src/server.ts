@@ -1,8 +1,9 @@
 import path from "path"
-import Fastify from "fastify"
+import Fastify, { FastifyRequest, FastifyReply } from "fastify"
 import cors from "@fastify/cors"
 import swagger from "@fastify/swagger"
 import fStatic from "@fastify/static"
+import fJwt from '@fastify/jwt'
 import { version } from "../package.json"
 
 // Route imports
@@ -34,9 +35,23 @@ const allSchemas = [
 function buildServer() {
   const server = Fastify()
 
-  // Enable cors
+  // Register CORS
   server.register(cors, {
     origin: "*"
+  })
+
+  // Register JWT
+  server.register(fJwt, {
+    secret: process.env.JWT_SECRET as string
+  })
+
+  // By default, JWT plugin adds We add an "authenticate" decorator so we can add jwt to routes manually
+  server.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      await request.jwtVerify()
+    } catch (err) {
+      return reply.send(err)
+    }
   })
 
   // Register schemas so they can be referenced in our routes

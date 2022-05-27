@@ -1,5 +1,4 @@
-import prisma from "../../utils/prisma"
-import { getRandomNumber } from "../../utils"
+import { prisma, getRandomNumber } from "../../utils"
 
 export async function getBooks() {
   return prisma.book.findMany()
