@@ -3,7 +3,7 @@ import Fastify, { FastifyRequest, FastifyReply } from "fastify"
 import cors from "@fastify/cors"
 import swagger from "@fastify/swagger"
 import fStatic from "@fastify/static"
-import fJwt from '@fastify/jwt'
+import fJwt, { JWT } from '@fastify/jwt'
 import { version } from "../package.json"
 
 // Route imports
@@ -13,6 +13,7 @@ import catFactRoutes from "./modules/catFacts/catFacts.routes"
 import jokeRoutes from "./modules/jokes/jokes.routes"
 import nbaTeamRoutes from "./modules/nbaTeams/nbaTeams.routes"
 import oldGameRoutes from "./modules/oldGames/oldGames.routes"
+import authRoutes from './modules/auth/auth.routes'
 
 // Schema imports
 import { statusSchemas } from "./modules/status/status.schema"
@@ -21,15 +22,33 @@ import { catFactSchemas } from "./modules/catFacts/catFacts.schema"
 import { jokeSchemas } from "./modules/jokes/jokes.schema"
 import { nbaTeamSchemas } from "./modules/nbaTeams/nbaTeams.schema"
 import { oldGameSchemas } from "./modules/oldGames/oldGames.schema"
+import { authSchemas } from './modules/auth/auth.schema'
 
 const allSchemas = [
   ...statusSchemas,
+  ...authSchemas,
   ...bookSchemas,
   ...catFactSchemas,
   ...jokeSchemas,
   ...nbaTeamSchemas,
   ...oldGameSchemas
 ]
+
+declare module "fastify" {
+  interface FastifyRequest {
+    jwt: JWT;
+  }
+  export interface FastifyInstance {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    authenticate: any;
+  }
+}
+
+declare module "@fastify/jwt" {
+  interface FastifyJWT {
+    name: string
+  }
+}
 
 // Main startup
 function buildServer() {
@@ -54,6 +73,12 @@ function buildServer() {
     }
   })
 
+  // Add JWT to the request object so we can access it in our controllers.
+  server.addHook("preHandler", (req, reply, next) => {
+    req.jwt = server.jwt;
+    return next();
+  });
+
   // Register schemas so they can be referenced in our routes
   for (const schema of allSchemas) {
     server.addSchema(schema)
@@ -71,6 +96,7 @@ function buildServer() {
       produces: ["application/json"],
       tags: [
         { name: "status", description: "Health check endpoint" },
+        { name: "auth", description: "Auth related endpoints" },
         { name: "books", description: "Books related endpoints" },
         { name: "cat-facts", description: "Cat Facts related endpoints" },
         { name: "jokes", description: "Jokes related endpoints" },
@@ -90,6 +116,7 @@ function buildServer() {
 
   // Register all routes along with their given prefix
   server.register(statusRoutes, { prefix: "status" })
+  server.register(authRoutes, { prefix: "api/v1/auth" })
   server.register(bookRoutes, { prefix: "api/v1/books" })
   server.register(catFactRoutes, { prefix: "api/v1/cat-facts" })
   server.register(jokeRoutes, { prefix: "api/v1/jokes" })
