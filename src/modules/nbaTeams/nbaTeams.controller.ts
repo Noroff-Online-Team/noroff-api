@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 
-import { getNbaTeams, getNbaTeam, getRandomNbaTeam } from "./nbaTeams.services"
+import { getNbaTeams, getNbaTeam, getRandomNbaTeam } from "./nbaTeams.service"
 
 export async function getNbaTeamsHandler() {
   const nbaTeams = await getNbaTeams()

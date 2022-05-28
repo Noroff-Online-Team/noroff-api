@@ -7,13 +7,13 @@ import fJwt, { JWT } from '@fastify/jwt'
 import { version } from "../package.json"
 
 // Route imports
-import statusRoutes from "./modules/status/status.routes"
-import bookRoutes from "./modules/books/books.routes"
-import catFactRoutes from "./modules/catFacts/catFacts.routes"
-import jokeRoutes from "./modules/jokes/jokes.routes"
-import nbaTeamRoutes from "./modules/nbaTeams/nbaTeams.routes"
-import oldGameRoutes from "./modules/oldGames/oldGames.routes"
-import authRoutes from './modules/auth/auth.routes'
+import statusRoutes from "./modules/status/status.route"
+import bookRoutes from "./modules/books/books.route"
+import catFactRoutes from "./modules/catFacts/catFacts.route"
+import jokeRoutes from "./modules/jokes/jokes.route"
+import nbaTeamRoutes from "./modules/nbaTeams/nbaTeams.route"
+import oldGameRoutes from "./modules/oldGames/oldGames.route"
+import authRoutes from './modules/auth/auth.route'
 
 // Schema imports
 import { statusSchemas } from "./modules/status/status.schema"

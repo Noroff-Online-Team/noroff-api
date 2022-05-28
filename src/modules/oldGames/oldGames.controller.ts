@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 
-import { getOldGames, getOldGame, getRandomOldGame } from "./oldGames.services"
+import { getOldGames, getOldGame, getRandomOldGame } from "./oldGames.service"
 
 export async function getOldGamesHandler() {
   const oldGames = await getOldGames()
