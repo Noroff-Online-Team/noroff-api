@@ -53,3 +53,13 @@ model CatFact {
   id   Int    @id @default(autoincrement())
   text String
 }
+
+model Quote {
+  id         Int      @id @default(autoincrement())
+  content    String
+  author     String
+  tags       String[]
+  authorId   String
+  authorSlug String
+  length     Int
+}

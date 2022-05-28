@@ -13,6 +13,7 @@ import catFactRoutes from "./modules/catFacts/catFacts.route"
 import jokeRoutes from "./modules/jokes/jokes.route"
 import nbaTeamRoutes from "./modules/nbaTeams/nbaTeams.route"
 import oldGameRoutes from "./modules/oldGames/oldGames.route"
+import quotesRoutes from './modules/quotes/quotes.route'
 import authRoutes from './modules/auth/auth.route'
 
 // Schema imports
@@ -22,6 +23,7 @@ import { catFactSchemas } from "./modules/catFacts/catFacts.schema"
 import { jokeSchemas } from "./modules/jokes/jokes.schema"
 import { nbaTeamSchemas } from "./modules/nbaTeams/nbaTeams.schema"
 import { oldGameSchemas } from "./modules/oldGames/oldGames.schema"
+import { quoteSchemas } from './modules/quotes/quotes.schema'
 import { authSchemas } from './modules/auth/auth.schema'
 
 const allSchemas = [
@@ -31,6 +33,7 @@ const allSchemas = [
   ...catFactSchemas,
   ...jokeSchemas,
   ...nbaTeamSchemas,
+  ...quoteSchemas,
   ...oldGameSchemas
 ]
 
@@ -101,8 +104,17 @@ function buildServer() {
         { name: "cat-facts", description: "Cat Facts related endpoints" },
         { name: "jokes", description: "Jokes related endpoints" },
         { name: "nba-teams", description: "NBA teams related endpoints" },
-        { name: "old-games", description: "Old games related endpoints" }
-      ]
+        { name: "old-games", description: "Old games related endpoints" },
+        { name: "quotes", description: "Quotes related endpoints" }
+      ],
+      securityDefinitions: {
+        bearerAuth: {
+          type: 'apiKey',
+          name: 'Authorization',
+          in: 'header',
+          description: "Format \"Bearer [token]\""
+        }
+      }
     },
     routePrefix: "/docs",
     exposeRoute: true,
@@ -122,6 +134,7 @@ function buildServer() {
   server.register(jokeRoutes, { prefix: "api/v1/jokes" })
   server.register(nbaTeamRoutes, { prefix: "api/v1/nba-teams" })
   server.register(oldGameRoutes, { prefix: "api/v1/old-games" })
+  server.register(quotesRoutes, { prefix: "api/v1/quotes" })
 
   return server
 }
