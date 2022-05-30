@@ -10,8 +10,9 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": "src",
-    "strict": true
+    "strict": true,
+    "typeRoots": ["types"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "types"],
   "exclude": ["node_modules"]
 }

@@ -3,28 +3,28 @@ import Fastify, { FastifyRequest, FastifyReply } from "fastify"
 import cors from "@fastify/cors"
 import swagger from "@fastify/swagger"
 import fStatic from "@fastify/static"
-import fJwt, { JWT } from '@fastify/jwt'
+import fJwt from '@fastify/jwt'
 import { version } from "../package.json"
 
 // Route imports
 import statusRoutes from "./modules/status/status.route"
+import authRoutes from './modules/auth/auth.route'
 import bookRoutes from "./modules/books/books.route"
 import catFactRoutes from "./modules/catFacts/catFacts.route"
 import jokeRoutes from "./modules/jokes/jokes.route"
 import nbaTeamRoutes from "./modules/nbaTeams/nbaTeams.route"
 import oldGameRoutes from "./modules/oldGames/oldGames.route"
 import quotesRoutes from './modules/quotes/quotes.route'
-import authRoutes from './modules/auth/auth.route'
 
 // Schema imports
 import { statusSchemas } from "./modules/status/status.schema"
+import { authSchemas } from './modules/auth/auth.schema'
 import { bookSchemas } from "./modules/books/books.schema"
 import { catFactSchemas } from "./modules/catFacts/catFacts.schema"
 import { jokeSchemas } from "./modules/jokes/jokes.schema"
 import { nbaTeamSchemas } from "./modules/nbaTeams/nbaTeams.schema"
 import { oldGameSchemas } from "./modules/oldGames/oldGames.schema"
 import { quoteSchemas } from './modules/quotes/quotes.schema'
-import { authSchemas } from './modules/auth/auth.schema'
 
 const allSchemas = [
   ...statusSchemas,
@@ -33,25 +33,9 @@ const allSchemas = [
   ...catFactSchemas,
   ...jokeSchemas,
   ...nbaTeamSchemas,
-  ...quoteSchemas,
-  ...oldGameSchemas
+  ...oldGameSchemas,
+  ...quoteSchemas
 ]
-
-declare module "fastify" {
-  interface FastifyRequest {
-    jwt: JWT;
-  }
-  export interface FastifyInstance {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    authenticate: any;
-  }
-}
-
-declare module "@fastify/jwt" {
-  interface FastifyJWT {
-    name: string
-  }
-}
 
 // Main startup
 function buildServer() {
