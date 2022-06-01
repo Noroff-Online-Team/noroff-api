@@ -4,7 +4,8 @@ import cors from "@fastify/cors"
 import swagger from "@fastify/swagger"
 import fStatic from "@fastify/static"
 import fJwt from '@fastify/jwt'
-import { version } from "../package.json"
+
+import swaggerOptions from './config/swagger'
 
 // Route imports
 import statusRoutes from "./modules/status/status.route"
@@ -77,38 +78,7 @@ function buildServer() {
   }
 
   // Register and generate swagger docs
-  server.register(swagger, {
-    swagger: {
-      info: {
-        title: "Noroff API",
-        description: "Noroff API to be used in assignments",
-        version
-      },
-      consumes: ["application/json"],
-      produces: ["application/json"],
-      tags: [
-        { name: "status", description: "Health check endpoint" },
-        { name: "auth", description: "Auth related endpoints" },
-        { name: "books", description: "Books related endpoints" },
-        { name: "cat-facts", description: "Cat Facts related endpoints" },
-        { name: "jokes", description: "Jokes related endpoints" },
-        { name: "nba-teams", description: "NBA teams related endpoints" },
-        { name: "old-games", description: "Old games related endpoints" },
-        { name: "quotes", description: "Quotes related endpoints" }
-      ],
-      securityDefinitions: {
-        bearerAuth: {
-          type: 'apiKey',
-          name: 'Authorization',
-          in: 'header',
-          description: "Format \"Bearer [token]\""
-        }
-      }
-    },
-    routePrefix: "/docs",
-    exposeRoute: true,
-    staticCSP: true
-  })
+  server.register(swagger, swaggerOptions)
 
   // Register all routes along with their given prefix
   server.register(statusRoutes, { prefix: "status" })
