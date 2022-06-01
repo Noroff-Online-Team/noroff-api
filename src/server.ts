@@ -46,12 +46,17 @@ function buildServer() {
     origin: "*"
   })
 
+  // Register static serving of files
+  server.register(fStatic, {
+    root: path.join(__dirname, "public")
+  })
+
   // Register JWT
   server.register(fJwt, {
     secret: process.env.JWT_SECRET as string
   })
 
-  // By default, JWT plugin adds We add an "authenticate" decorator so we can add jwt to routes manually
+  // We add an "authenticate" decorator so we can add JWT to routes manually instead of adding it globally.
   server.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       await request.jwtVerify()
@@ -103,11 +108,6 @@ function buildServer() {
     routePrefix: "/docs",
     exposeRoute: true,
     staticCSP: true
-  })
-
-  // Register static serving of files
-  server.register(fStatic, {
-    root: path.join(__dirname, "public")
   })
 
   // Register all routes along with their given prefix
