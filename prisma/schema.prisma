@@ -65,17 +65,20 @@ model Quote {
 }
 
 model Profile {
-  id   Int    @id @default(autoincrement())
-  name String
-  posts Post[]
+  id       Int    @id @default(autoincrement())
+  name     String @unique
+  email    String @unique
+  password String
+  salt     String
+  posts    Post[]
 }
 
 model Post {
-  id      Int      @id @default(autoincrement())
-  title   String
-  body    String
-  author  Profile  @relation(fields: [userId], references: [id])
-  tags    String[]
-  media   String
-  userId  Int
+  id     Int      @id @default(autoincrement())
+  title  String
+  body   String
+  author Profile  @relation(fields: [userId], references: [id])
+  tags   String[]
+  media  String?
+  userId Int
 }

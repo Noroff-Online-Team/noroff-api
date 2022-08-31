@@ -18,12 +18,12 @@ export async function getPost(id: number) {
   })
 }
 
-export const createPost = (data: Prisma.PostCreateInput) => {
+export const createPost = (data: Prisma.PostUncheckedCreateInput) => {
   return prisma.post.create({ data })
 }
 
 export const updatePost = (id: number, data: Prisma.PostUpdateInput) => {
-  prisma.post.update({
+  return prisma.post.update({
     data,
     where: {
       id

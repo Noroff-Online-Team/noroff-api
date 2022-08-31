@@ -4,7 +4,8 @@ import { $ref } from "./profiles.schema"
 import {
   getProfilesHandler,
   getProfileHandler,
-  createProfileHandler
+  createProfileHandler,
+  updateProfileHandler
 } from "./profiles.controller"
 
 async function profilesRoutes(server: FastifyInstance) {
@@ -29,20 +30,17 @@ async function profilesRoutes(server: FastifyInstance) {
   server.post(
     "/",
     {
-      preHandler: [server.authenticate],
       schema: {
         body: {
           type: "object",
-          required: ["title", "body"],
+          required: ["name", "email", "password"],
           properties: {
-            title: { type: "string" },
-            body: { type: "string" },
-            media: { type: "string" },
-            tags: { type: "array" }
+            name: { type: "string" },
+            email: { type: "string" },
+            password: { type: "string" }
           }
         },
         tags: ["profiles"],
-        security: [{ bearerAuth: [] }],
         response: {
           200: $ref("profileSchema")
         }
@@ -58,12 +56,11 @@ async function profilesRoutes(server: FastifyInstance) {
       schema: {
         body: {
           type: "object",
-          required: ["title", "body"],
+          required: ["name", "email", "password"],
           properties: {
-            title: { type: "string" },
-            body: { type: "string" },
-            media: { type: "string" },
-            tags: { type: "array" }
+            name: { type: "string" },
+            email: { type: "string" },
+            password: { type: "string" }
           }
         },
         tags: ["profiles"],
@@ -73,7 +70,7 @@ async function profilesRoutes(server: FastifyInstance) {
         }
       }
     },
-    createProfileHandler
+    updateProfileHandler
   )
 
   server.get(

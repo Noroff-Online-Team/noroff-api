@@ -3,8 +3,10 @@ import { prisma } from "../../../utils"
 
 export async function getProfiles() {
   return prisma.profile.findMany({
-    include: {
-      posts: true
+    select: {
+      email: true,
+      name: true,
+      id: true
     }
   })
 }

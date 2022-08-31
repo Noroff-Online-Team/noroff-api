@@ -16,6 +16,7 @@ export async function getPostHandler(
   }>,
   reply: FastifyReply
 ) {
+  
   const { id } = request.params
   const post = await getPost(id)
 
@@ -48,11 +49,29 @@ export async function createPostHandler(
 
 export async function updatePostHandler(
   request: FastifyRequest<{
-    Params: { id: number }
+    Params: { id: string }
   }>,
   reply: FastifyReply
 ) {
   const { id } = request.params
-  const post = await updatePost(id, request.body as Prisma.PostUpdateInput)
-  reply.send(post);
+  const { id: userId } = request.user as Profile
+  const post = await getPost(Number(id));
+
+  if (!post) {
+    reply.code(404).send("Post not found")
+    return
+  }
+
+  if (userId !== post.userId) {
+    reply.code(403).send("You do not have permission to edit this post")
+    return
+  }
+
+  try {
+    const updatedPost = await updatePost(Number(id), request.body as Prisma.PostUpdateInput)
+    reply.send(updatedPost);
+    return updatedPost
+  } catch(error) {
+    reply.code(500).send(error)
+  }
 }

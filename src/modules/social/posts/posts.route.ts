@@ -4,7 +4,8 @@ import { $ref } from "./posts.schema"
 import {
   getPostsHandler,
   getPostHandler,
-  createPostHandler
+  createPostHandler,
+  updatePostHandler
 } from "./posts.controller"
 
 async function postsRoutes(server: FastifyInstance) {
@@ -33,7 +34,7 @@ async function postsRoutes(server: FastifyInstance) {
       schema: {
         body: {
           type: "object",
-          required: ["title", "body", "userId"],
+          required: ["title", "body"],
           properties: {
             title: { type: "string" },
             body: { type: "string" },
@@ -74,7 +75,7 @@ async function postsRoutes(server: FastifyInstance) {
         }
       }
     },
-    createPostHandler
+    updatePostHandler
   )
 
   server.get(

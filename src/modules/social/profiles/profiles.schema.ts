@@ -5,6 +5,7 @@ import { postSchema } from "../posts/posts.schema"
 export const profileSchema = z.object({
   id: z.number().int(),
   name: z.string(),
+  email: z.string(),
   posts: postSchema.array().optional()
 })
 
