@@ -19,6 +19,7 @@ import oldGameRoutes from "./modules/oldGames/oldGames.route"
 import quotesRoutes from './modules/quotes/quotes.route'
 import postsRoutes from "./modules/social/posts/posts.route"
 import profilesRoutes from "./modules/social/profiles/profiles.route"
+import socialAuthRoutes from "./modules/social/auth/auth.route"
 
 // Schema imports
 import { statusSchemas } from "./modules/status/status.schema"
@@ -31,6 +32,7 @@ import { oldGameSchemas } from "./modules/oldGames/oldGames.schema"
 import { quoteSchemas } from './modules/quotes/quotes.schema'
 import { postSchemas } from "./modules/social/posts/posts.schema"
 import { profileSchemas } from "./modules/social/profiles/profiles.schema"
+import { socialAuthSchemas } from "./modules/social/auth/auth.schema"
 
 const allSchemas = [
   ...statusSchemas,
@@ -42,7 +44,8 @@ const allSchemas = [
   ...oldGameSchemas,
   ...quoteSchemas,
   ...postSchemas,
-  ...profileSchemas
+  ...profileSchemas,
+  ...socialAuthSchemas
 ]
 
 // Main startup
@@ -109,6 +112,7 @@ function buildServer() {
   server.register(quotesRoutes, { prefix: "api/v1/quotes" })
   server.register(postsRoutes, { prefix: "api/v1/social/posts" })
   server.register(profilesRoutes, { prefix: "api/v1/social/profiles" })
+  server.register(socialAuthRoutes, { prefix: "api/v1/social/auth" })
 
   return server
 }
