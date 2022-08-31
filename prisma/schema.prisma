@@ -63,3 +63,19 @@ model Quote {
   authorSlug String
   length     Int
 }
+
+model Profile {
+  id   Int    @id @default(autoincrement())
+  name String
+  // Post Post[]
+}
+
+model Post {
+  id      Int      @id @default(autoincrement())
+  title   String
+  body    String
+  // author  Profile  @relation(fields: [userId], references: [id])
+  tags    String[]
+  media   String
+  // userId  Int
+}
