@@ -48,8 +48,6 @@ const allSchemas = [
 function buildServer() {
   const server = Fastify()
 
-  console.log("test");
-
   // Register CORS
   server.register(cors, {
     origin: "*"
