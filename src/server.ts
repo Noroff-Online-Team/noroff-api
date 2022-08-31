@@ -17,6 +17,7 @@ import nbaTeamRoutes from "./modules/nbaTeams/nbaTeams.route"
 import oldGameRoutes from "./modules/oldGames/oldGames.route"
 import quotesRoutes from './modules/quotes/quotes.route'
 import postsRoutes from "./modules/social/posts/posts.route"
+import profilesRoutes from "./modules/social/profiles/profiles.route"
 
 // Schema imports
 import { statusSchemas } from "./modules/status/status.schema"
@@ -28,6 +29,7 @@ import { nbaTeamSchemas } from "./modules/nbaTeams/nbaTeams.schema"
 import { oldGameSchemas } from "./modules/oldGames/oldGames.schema"
 import { quoteSchemas } from './modules/quotes/quotes.schema'
 import { postSchemas } from "./modules/social/posts/posts.schema"
+import { profileSchemas } from "./modules/social/profiles/profiles.schema"
 
 const allSchemas = [
   ...statusSchemas,
@@ -38,7 +40,8 @@ const allSchemas = [
   ...nbaTeamSchemas,
   ...oldGameSchemas,
   ...quoteSchemas,
-  ...postSchemas
+  ...postSchemas,
+  ...profileSchemas
 ]
 
 // Main startup
@@ -102,7 +105,8 @@ function buildServer() {
   server.register(nbaTeamRoutes, { prefix: "api/v1/nba-teams" })
   server.register(oldGameRoutes, { prefix: "api/v1/old-games" })
   server.register(quotesRoutes, { prefix: "api/v1/quotes" })
-  server.register(postsRoutes, { prefix: "api/v1/posts" })
+  server.register(postsRoutes, { prefix: "api/v1/social/posts" })
+  server.register(profilesRoutes, { prefix: "api/v1/social/profiles" })
 
   return server
 }
