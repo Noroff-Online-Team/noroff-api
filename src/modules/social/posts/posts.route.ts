@@ -33,12 +33,13 @@ async function postsRoutes(server: FastifyInstance) {
       schema: {
         body: {
           type: "object",
-          required: ["title", "body"],
+          required: ["title", "body", "userId"],
           properties: {
             title: { type: "string" },
             body: { type: "string" },
             media: { type: "string" },
-            tags: { type: "array" }
+            tags: { type: "array" },
+            userId: { type: "number" }
           }
         },
         tags: ["posts"],
@@ -79,10 +80,10 @@ async function postsRoutes(server: FastifyInstance) {
   server.get(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      // preHandler: [server.authenticate],
       schema: {
         tags: ["posts"],
-        security: [{ bearerAuth: [] }],
+        // security: [{ bearerAuth: [] }],
         params: {
           type: "object",
           properties: {
