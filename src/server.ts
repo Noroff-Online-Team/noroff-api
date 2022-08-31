@@ -4,6 +4,7 @@ import cors from "@fastify/cors"
 import swagger from "@fastify/swagger"
 import fStatic from "@fastify/static"
 import fJwt from '@fastify/jwt'
+import fAuth from '@fastify/auth'
 
 import swaggerOptions from './config/swagger'
 
@@ -62,6 +63,9 @@ function buildServer() {
   server.register(fJwt, {
     secret: process.env.JWT_SECRET as string
   })
+
+  // Register Auth
+  server.register(fAuth)
 
   server.addContentTypeParser('application/json', {parseAs: 'string'}, (_request, body, done) => {
     try {
