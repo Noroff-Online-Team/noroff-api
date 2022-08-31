@@ -11,10 +11,10 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      // preHandler: [server.authenticate],
+      preHandler: [server.authenticate],
       schema: {
         tags: ["profiles"],
-        // security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [] }],
         response: {
           200: {
             type: "array",
@@ -29,7 +29,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.post(
     "/",
     {
-      // preHandler: [server.authenticate],
+      preHandler: [server.authenticate],
       schema: {
         body: {
           type: "object",
@@ -42,7 +42,7 @@ async function profilesRoutes(server: FastifyInstance) {
           }
         },
         tags: ["profiles"],
-        // security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [] }],
         response: {
           200: $ref("profileSchema")
         }
@@ -54,7 +54,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.put(
     "/:id",
     {
-      // preHandler: [server.authenticate],
+      preHandler: [server.authenticate],
       schema: {
         body: {
           type: "object",
@@ -67,7 +67,7 @@ async function profilesRoutes(server: FastifyInstance) {
           }
         },
         tags: ["profiles"],
-        // security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [] }],
         response: {
           200: $ref("profileSchema")
         }
@@ -79,10 +79,10 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/:id",
     {
-      // preHandler: [server.authenticate],
+      preHandler: [server.authenticate],
       schema: {
         tags: ["profiles"],
-        // security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [] }],
         params: {
           type: "object",
           properties: {
