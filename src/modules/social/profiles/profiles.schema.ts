@@ -1,9 +1,11 @@
 import { z } from "zod"
 import { buildJsonSchemas } from "fastify-zod"
+import { postSchema } from "../posts/posts.schema"
 
-const profileSchema = z.object({
+export const profileSchema = z.object({
   id: z.number().int(),
-  name: z.string()
+  name: z.string(),
+  posts: postSchema.array().optional()
 })
 
 export type ProfileSchema = z.infer<typeof profileSchema>

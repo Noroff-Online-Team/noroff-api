@@ -1,11 +1,10 @@
 import { z } from "zod"
 import { buildJsonSchemas } from "fastify-zod"
 
-const postSchema = z.object({
+export const postSchema = z.object({
   id: z.number().int(),
   title: z.string(),
   body: z.string(),
-  author: z.number().int().optional(),
   tags: z.string().array().optional(),
   media: z.string().optional(),
   userId: z.number().int().optional(),
