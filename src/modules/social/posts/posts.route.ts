@@ -11,10 +11,10 @@ async function postsRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      // preHandler: [server.authenticate],
+      preHandler: [server.authenticate],
       schema: {
         tags: ["posts"],
-        // security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [] }],
         response: {
           200: {
             type: "array",
@@ -29,7 +29,7 @@ async function postsRoutes(server: FastifyInstance) {
   server.post(
     "/",
     {
-      // preHandler: [server.authenticate],
+      preHandler: [server.authenticate],
       schema: {
         body: {
           type: "object",
@@ -43,7 +43,7 @@ async function postsRoutes(server: FastifyInstance) {
           }
         },
         tags: ["posts"],
-        // security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [] }],
         response: {
           200: $ref("postSchema")
         }
@@ -55,7 +55,7 @@ async function postsRoutes(server: FastifyInstance) {
   server.put(
     "/:id",
     {
-      // preHandler: [server.authenticate],
+      preHandler: [server.authenticate],
       schema: {
         body: {
           type: "object",
@@ -68,7 +68,7 @@ async function postsRoutes(server: FastifyInstance) {
           }
         },
         tags: ["posts"],
-        // security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [] }],
         response: {
           200: $ref("postSchema")
         }
