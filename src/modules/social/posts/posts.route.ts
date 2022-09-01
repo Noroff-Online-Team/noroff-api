@@ -33,17 +33,7 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        body: {
-          type: "object",
-          required: ["title", "body"],
-          properties: {
-            title: { type: "string" },
-            body: { type: "string" },
-            media: { type: "string" },
-            tags: { type: "array" },
-            userId: { type: "number" }
-          }
-        },
+        body: $ref("createPostBaseSchema"),
         tags: ["posts"],
         security: [{ bearerAuth: [] }],
         response: {
@@ -59,16 +49,7 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        body: {
-          type: "object",
-          required: ["title", "body"],
-          properties: {
-            title: { type: "string" },
-            body: { type: "string" },
-            media: { type: "string" },
-            tags: { type: "array" }
-          }
-        },
+        body: $ref("createPostSchema"),
         tags: ["posts"],
         security: [{ bearerAuth: [] }],
         response: {

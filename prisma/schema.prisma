@@ -82,6 +82,8 @@ model Post {
   tags      String[]
   media     String?
   userId    Int
+  created   DateTime
+  updated   DateTime
   reactions Reaction[]
 }
 

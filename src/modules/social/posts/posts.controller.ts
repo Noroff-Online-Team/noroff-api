@@ -1,6 +1,6 @@
-import { Prisma, Profile } from "@prisma/client"
+import { Profile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { PostSchema } from "./posts.schema"
+import { CreatePostBaseSchema, CreatePostSchema } from "./posts.schema"
 
 import { getPosts, getPost, createPost, updatePost, reaction } from "./posts.service"
 
@@ -30,7 +30,7 @@ export async function getPostHandler(
 
 export async function createPostHandler(
   request: FastifyRequest<{
-    Body: PostSchema;
+    Body: CreatePostBaseSchema;
   }>,
   reply: FastifyReply
 ) {
@@ -38,7 +38,7 @@ export async function createPostHandler(
   try {
     const post = await createPost({
       ...request.body,
-      userId
+      userId,
     })
     reply.send(post);
     return post
@@ -49,7 +49,8 @@ export async function createPostHandler(
 
 export async function updatePostHandler(
   request: FastifyRequest<{
-    Params: { id: string }
+    Params: { id: string },
+    Body: CreatePostSchema
   }>,
   reply: FastifyReply
 ) {
@@ -68,7 +69,7 @@ export async function updatePostHandler(
   }
 
   try {
-    const updatedPost = await updatePost(Number(id), request.body as Prisma.PostUpdateInput)
+    const updatedPost = await updatePost(Number(id), request.body)
     reply.send(updatedPost);
     return updatedPost
   } catch(error) {
