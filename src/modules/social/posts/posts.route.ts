@@ -5,7 +5,8 @@ import {
   getPostsHandler,
   getPostHandler,
   createPostHandler,
-  updatePostHandler
+  updatePostHandler,
+  reactionHandler
 } from "./posts.controller"
 
 async function postsRoutes(server: FastifyInstance) {
@@ -19,7 +20,7 @@ async function postsRoutes(server: FastifyInstance) {
         response: {
           200: {
             type: "array",
-            items: $ref("postSchema")
+            items: $ref("displayPostSchema")
           }
         }
       }
@@ -81,10 +82,10 @@ async function postsRoutes(server: FastifyInstance) {
   server.get(
     "/:id",
     {
-      // preHandler: [server.authenticate],
+      preHandler: [server.authenticate],
       schema: {
         tags: ["posts"],
-        // security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [] }],
         params: {
           type: "object",
           properties: {
@@ -92,11 +93,33 @@ async function postsRoutes(server: FastifyInstance) {
           }
         },
         response: {
-          200: $ref("postSchema")
+          200: $ref("displayPostSchema")
         }
       }
     },
     getPostHandler
+  )
+
+  server.get(
+    "/:id/react/:symbol",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        params: {
+          type: "object",
+          properties: {
+            id: { type: "integer" },
+            symbol: { type: "string" }
+          }
+        },
+        tags: ["posts"],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: $ref("reactionSchema")
+        }
+      }
+    },
+    reactionHandler
   )
 }
 

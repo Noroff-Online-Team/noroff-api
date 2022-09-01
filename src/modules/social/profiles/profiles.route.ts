@@ -4,7 +4,6 @@ import { $ref } from "./profiles.schema"
 import {
   getProfilesHandler,
   getProfileHandler,
-  createProfileHandler,
   updateProfileHandler
 } from "./profiles.controller"
 
@@ -19,7 +18,7 @@ async function profilesRoutes(server: FastifyInstance) {
         response: {
           200: {
             type: "array",
-            items: $ref("profileSchema")
+            items: $ref("displayProfileSchema")
           }
         }
       }
@@ -27,46 +26,16 @@ async function profilesRoutes(server: FastifyInstance) {
     getProfilesHandler
   )
 
-  server.post(
-    "/",
-    {
-      schema: {
-        body: {
-          type: "object",
-          required: ["name", "email", "password"],
-          properties: {
-            name: { type: "string" },
-            email: { type: "string" },
-            password: { type: "string" }
-          }
-        },
-        tags: ["profiles"],
-        response: {
-          200: $ref("profileSchema")
-        }
-      }
-    },
-    createProfileHandler
-  )
-
   server.put(
     "/:id",
     {
       preHandler: [server.authenticate],
       schema: {
-        body: {
-          type: "object",
-          required: ["name", "email", "password"],
-          properties: {
-            name: { type: "string" },
-            email: { type: "string" },
-            password: { type: "string" }
-          }
-        },
+        body: $ref("createProfileSchema"),
         tags: ["profiles"],
         security: [{ bearerAuth: [] }],
         response: {
-          200: $ref("profileSchema")
+          200: $ref("displayProfileSchema")
         }
       }
     },
@@ -87,7 +56,7 @@ async function profilesRoutes(server: FastifyInstance) {
           }
         },
         response: {
-          200: $ref("profileSchema")
+          200: $ref("displayProfileSchema")
         }
       }
     },

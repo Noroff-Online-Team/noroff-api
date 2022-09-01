@@ -2,7 +2,7 @@ import { Prisma, Profile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { PostSchema } from "./posts.schema"
 
-import { getPosts, getPost, createPost, updatePost } from "./posts.service"
+import { getPosts, getPost, createPost, updatePost, reaction } from "./posts.service"
 
 export async function getPostsHandler() {
   // Get all posts in chron order
@@ -74,4 +74,19 @@ export async function updatePostHandler(
   } catch(error) {
     reply.code(500).send(error)
   }
+}
+
+export async function reactionHandler(request: FastifyRequest<{
+  Params: { id: string, symbol: string }
+}>,
+reply: FastifyReply
+) {
+const { id, symbol } = request.params
+try {
+  const result = await reaction(Number(id), symbol)
+  reply.send(result);
+  return result
+} catch(error) {
+  reply.code(500).send(error)
+}
 }

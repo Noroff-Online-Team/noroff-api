@@ -4,15 +4,16 @@ import {
   registerProfileHandler,
 } from "./auth.controller";
 import { $ref } from "./auth.schema";
+import { $ref as $profile } from "../profiles/profiles.schema";
 
 async function socialAuthRoutes(server: FastifyInstance) {
   server.post(
     "/register",
     {
       schema: {
-        body: $ref("createProfileSchema"),
+        body: $profile("createProfileSchema"),
         response: {
-          201: $ref("createProfileResponseSchema"),
+          201: $profile("createProfileResponseSchema"),
         },
       },
     },

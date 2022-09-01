@@ -1,5 +1,6 @@
 import { prisma, hashPassword } from "../../../utils"
-import { CreateProfileInput } from "./auth.schema"
+import { CreateProfileInput } from "../profiles/profiles.schema"
+
 
 export async function createProfile(input: CreateProfileInput) {
   const { password, ...rest } = input
