@@ -21,22 +21,32 @@ export async function getPost(id: number) {
 }
 
 export const createPost = (data: CreatePostSchema) => {
-  return prisma.post.create({ data: {
-    ...data,
-    created: new Date(),
-    updated: new Date()
-  } })
+  return prisma.post.create({
+    data: {
+      ...data,
+      created: new Date(),
+      updated: new Date()
+    }
+  })
 }
 
-export const updatePost = (id: number, data: CreatePostBaseSchema) => prisma.post.update({
-  data: {
-    ...data,
-    updated: new Date()
-  },
-  where: {
-    id
-  }
-})
+export const updatePost = (id: number, data: CreatePostBaseSchema) =>
+  prisma.post.update({
+    data: {
+      ...data,
+      updated: new Date()
+    },
+    where: {
+      id
+    }
+  })
+
+export const deletePost = (id: number) =>
+  prisma.post.delete({
+    where: {
+      id
+    }
+  })
 
 export const reaction = async (postId: number, symbol: string) => {
   const match = symbol.match(/\p{Extended_Pictographic}/u)

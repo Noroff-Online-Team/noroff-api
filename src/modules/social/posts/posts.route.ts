@@ -60,6 +60,29 @@ async function postsRoutes(server: FastifyInstance) {
     updatePostHandler
   )
 
+  server.delete(
+    "/:id",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        params: {
+          type: "object",
+          properties: {
+            id: { type: "integer" }
+          }
+        },
+        tags: ["posts"],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: {
+            type: "object"
+          }
+        }
+      }
+    },
+    updatePostHandler
+  )
+
   server.get(
     "/:id",
     {

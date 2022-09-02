@@ -78,10 +78,10 @@ model Post {
   id        Int        @id @default(autoincrement())
   title     String
   body      String?
-  author    Profile    @relation(fields: [userId], references: [id])
+  author    Profile    @relation(fields: [owner], references: [name])
   tags      String[]
   media     String?
-  userId    Int
+  owner     String
   created   DateTime
   updated   DateTime
   reactions Reaction[]

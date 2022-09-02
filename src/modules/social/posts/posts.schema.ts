@@ -5,12 +5,20 @@ export const postCore = {
   title: z.string(),
   body: z.string(),
   tags: z.string().array().optional(),
-  media: z.string().optional(),
+  media: z.string().optional()
+}
+
+const postOwner = {
+  owner: z.string()
+}
+
+const postId = {
+  id: z.number().int()
 }
 
 const postMeta = {
   created: z.date(),
-  updated: z.date(),
+  updated: z.date()
 }
 
 const reactionSchema = z.object({
@@ -25,27 +33,31 @@ const reactions = {
 }
 
 export const postSchema = z.object({
-  id: z.number().int(),
-  userId: z.number().int(),
+  ...postId,
+  ...postOwner,
   ...postMeta,
   ...postCore
 })
 
 export const createPostBaseSchema = z.object({
-  ...postCore,
+  ...postCore
 })
 
 export const createPostSchema = z.object({
-  userId: z.number().int(),
-  ...postCore,
+  ...postOwner,
+  ...postCore
 })
 
 export const displayPostSchema = z.object({
   ...postCore,
   ...reactions,
   ...postMeta,
-  id: z.number().int(),
-  userId: z.number().int(),
+  ...postId,
+  author: z.object({
+    name: z.string(),
+    email: z.string().email(),
+    avatar: z.string().optional()
+  })
 })
 
 export type PostSchema = z.infer<typeof postSchema>
@@ -57,6 +69,12 @@ export type CreatePostBaseSchema = z.infer<typeof createPostBaseSchema>
 export type DisplayPostSchema = z.infer<typeof displayPostSchema>
 
 export const { schemas: postSchemas, $ref } = buildJsonSchemas(
-  { postSchema, createPostSchema, displayPostSchema, reactionSchema, createPostBaseSchema },
+  {
+    postSchema,
+    createPostSchema,
+    displayPostSchema,
+    reactionSchema,
+    createPostBaseSchema
+  },
   { $id: "Posts" }
 )

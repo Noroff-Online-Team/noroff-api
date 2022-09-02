@@ -1,8 +1,8 @@
 import { Profile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { CreatePostBaseSchema, CreatePostSchema } from "./posts.schema"
+import { CreatePostBaseSchema } from "./posts.schema"
 
-import { getPosts, getPost, createPost, updatePost, reaction } from "./posts.service"
+import { getPosts, getPost, createPost, updatePost, reaction, deletePost } from "./posts.service"
 
 export async function getPostsHandler() {
   // Get all posts in chron order
@@ -34,11 +34,11 @@ export async function createPostHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { id: userId } = request.user as Profile
+  const { name } = request.user as Profile
   try {
     const post = await createPost({
       ...request.body,
-      userId,
+      owner: name,
     })
     reply.send(post);
     return post
@@ -47,15 +47,9 @@ export async function createPostHandler(
   }
 }
 
-export async function updatePostHandler(
-  request: FastifyRequest<{
-    Params: { id: string },
-    Body: CreatePostSchema
-  }>,
-  reply: FastifyReply
-) {
+export async function deletePostHandler(request: FastifyRequest<{Params: { id: string }}>, reply: FastifyReply) {
   const { id } = request.params
-  const { id: userId } = request.user as Profile
+  const { name } = request.user as Profile
   const post = await getPost(Number(id));
 
   if (!post) {
@@ -63,7 +57,36 @@ export async function updatePostHandler(
     return
   }
 
-  if (userId !== post.userId) {
+  if (name !== post.author.name) {
+    reply.code(403).send("You do not have permission to delete this post")
+    return
+  }
+
+  try {
+    await deletePost(Number(id))
+    reply.send(`Post ${id} deleted.`);
+  } catch(error) {
+    reply.code(500).send(error)
+  }
+}
+
+export async function updatePostHandler(
+  request: FastifyRequest<{
+    Params: { id: string },
+    Body: CreatePostBaseSchema
+  }>,
+  reply: FastifyReply
+) {
+  const { id } = request.params
+  const { name } = request.user as Profile
+  const post = await getPost(Number(id));
+
+  if (!post) {
+    reply.code(404).send("Post not found")
+    return
+  }
+
+  if (name !== post.owner) {
     reply.code(403).send("You do not have permission to edit this post")
     return
   }
