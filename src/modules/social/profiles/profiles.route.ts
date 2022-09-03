@@ -27,14 +27,14 @@ async function profilesRoutes(server: FastifyInstance) {
   )
 
   server.put(
-    "/:id",
+    "/:name",
     {
       preHandler: [server.authenticate],
       schema: {
         params: {
           type: "object",
           properties: {
-            id: { type: "integer" }
+            name: { type: "string" }
           }
         },
         body: $ref("createProfileSchema"),
@@ -49,7 +49,7 @@ async function profilesRoutes(server: FastifyInstance) {
   )
 
   server.get(
-    "/:id",
+    "/:name",
     {
       preHandler: [server.authenticate],
       schema: {
@@ -58,7 +58,7 @@ async function profilesRoutes(server: FastifyInstance) {
         params: {
           type: "object",
           properties: {
-            id: { type: "integer" }
+            name: { type: "string" }
           }
         },
         response: {

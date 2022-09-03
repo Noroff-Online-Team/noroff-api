@@ -10,15 +10,16 @@ export async function getProfilesHandler() {
 
 export async function getProfileHandler(
   request: FastifyRequest<{
-    Params: { id: number }
+    Params: { name: string }
   }>,
   reply: FastifyReply
 ) {
-  const { id } = request.params
-  const profile = await getProfile(id)
+  
+  const { name } = request.params
+  const profile = await getProfile(name)
 
   if (!profile) {
-    const error = new Error("No profile with such ID")
+    const error = new Error("No profile with this name")
     return reply.code(404).send(error)
   }
 
@@ -35,11 +36,11 @@ export async function createProfileHandler(
 
 export async function updateProfileHandler(
   request: FastifyRequest<{
-    Params: { id: number }
+    Params: { name: string }
   }>,
   reply: FastifyReply
 ) {
-  const { id } = request.params
-  const profile = await updateProfile(id, request.body as Prisma.ProfileUpdateInput)
+  const { name } = request.params
+  const profile = await updateProfile(name, request.body as Prisma.ProfileUpdateInput)
   reply.send(profile);
 }
