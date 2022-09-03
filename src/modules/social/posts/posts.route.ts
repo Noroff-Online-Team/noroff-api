@@ -6,7 +6,9 @@ import {
   getPostHandler,
   createPostHandler,
   updatePostHandler,
-  reactionHandler
+  createReactionHandler,
+  deletePostHandler,
+  createCommentHandler
 } from "./posts.controller"
 
 async function postsRoutes(server: FastifyInstance) {
@@ -80,7 +82,7 @@ async function postsRoutes(server: FastifyInstance) {
         }
       }
     },
-    updatePostHandler
+    deletePostHandler
   )
 
   server.get(
@@ -123,7 +125,29 @@ async function postsRoutes(server: FastifyInstance) {
         }
       }
     },
-    reactionHandler
+    createReactionHandler
+  )
+
+  server.post(
+    "/:id/comment/",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        params: {
+          type: "object",
+          properties: {
+            id: { type: "integer" }
+          }
+        },
+        body: $ref("createCommentSchema"),
+        tags: ["posts"],
+        security: [{ bearerAuth: [] }],
+        response: {
+          200: $ref("displayCommentSchema")
+        }
+      }
+    },
+    createCommentHandler
   )
 }
 

@@ -1,5 +1,9 @@
 import { prisma } from "../../../utils"
-import { CreatePostBaseSchema, CreatePostSchema } from "./posts.schema"
+import {
+  CreateCommentSchema,
+  CreatePostBaseSchema,
+  CreatePostSchema
+} from "./posts.schema"
 
 export async function getPosts() {
   return prisma.post.findMany({
@@ -15,7 +19,8 @@ export async function getPost(id: number) {
     where: { id },
     include: {
       author: true,
-      reactions: true
+      reactions: true,
+      comments: true
     }
   })
 }
@@ -48,7 +53,7 @@ export const deletePost = (id: number) =>
     }
   })
 
-export const reaction = async (postId: number, symbol: string) => {
+export const createReaction = async (postId: number, symbol: string) => {
   const match = symbol.match(/\p{Extended_Pictographic}/u)
 
   if (!match) {
@@ -89,3 +94,32 @@ export const reaction = async (postId: number, symbol: string) => {
 
   return item
 }
+
+export const createComment = async (
+  postId: number,
+  owner: string,
+  comment: CreateCommentSchema
+) => {
+  return prisma.comment.create({
+    data: {
+      body: comment.body,
+      postId,
+      created: new Date(),
+      owner
+    }
+  })
+}
+
+export const deleteComment = (id: number) =>
+  prisma.comment.delete({
+    where: {
+      id
+    }
+  })
+
+export const getComment = (id: number) =>
+  prisma.comment.findUnique({
+    where: {
+      id
+    }
+  })

@@ -32,6 +32,26 @@ const reactions = {
   reactions: reactionSchema.array().optional()
 }
 
+const commentCore = {
+  body: z.string(),
+}
+
+const createCommentSchema = z.object({
+  ...commentCore,
+})
+
+const displayCommentSchema = z.object({
+  ...commentCore,
+  id: z.number().int(),
+  postId: z.number().int(),
+  owner: z.string(),
+  created: z.date()
+})
+
+const comments = {
+  comments: displayCommentSchema.array().optional()
+}
+
 export const postSchema = z.object({
   ...postId,
   ...postOwner,
@@ -51,6 +71,7 @@ export const createPostSchema = z.object({
 export const displayPostSchema = z.object({
   ...postCore,
   ...reactions,
+  ...comments,
   ...postMeta,
   ...postId,
   author: z.object({
@@ -68,13 +89,19 @@ export type CreatePostBaseSchema = z.infer<typeof createPostBaseSchema>
 
 export type DisplayPostSchema = z.infer<typeof displayPostSchema>
 
+export type CreateCommentSchema = z.infer<typeof createCommentSchema>
+
+export type DisplayCommentSchema = z.infer<typeof displayCommentSchema>
+
 export const { schemas: postSchemas, $ref } = buildJsonSchemas(
   {
     postSchema,
     createPostSchema,
     displayPostSchema,
     reactionSchema,
-    createPostBaseSchema
+    createPostBaseSchema,
+    createCommentSchema,
+    displayCommentSchema
   },
   { $id: "Posts" }
 )
