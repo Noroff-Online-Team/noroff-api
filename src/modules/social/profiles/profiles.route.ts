@@ -31,6 +31,12 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
+        params: {
+          type: "object",
+          properties: {
+            id: { type: "integer" }
+          }
+        },
         body: $ref("createProfileSchema"),
         tags: ["profiles"],
         security: [{ bearerAuth: [] }],

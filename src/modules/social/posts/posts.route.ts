@@ -51,6 +51,12 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
+        params: {
+          type: "object",
+          properties: {
+            id: { type: "integer" }
+          }
+        },
         body: $ref("createPostSchema"),
         tags: ["posts"],
         security: [{ bearerAuth: [] }],
