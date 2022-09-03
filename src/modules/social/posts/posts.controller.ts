@@ -16,7 +16,7 @@ export async function getPostHandler(
   }>,
   reply: FastifyReply
 ) {
-  
+
   const { id } = request.params
   const post = await getPost(id)
 
@@ -47,7 +47,7 @@ export async function createPostHandler(
   }
 }
 
-export async function deletePostHandler(request: FastifyRequest<{Params: { id: string }}>, reply: FastifyReply) {
+export async function deletePostHandler(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
   const { id } = request.params
   const { name } = request.user as Profile
   const post = await getPost(Number(id));
@@ -65,7 +65,7 @@ export async function deletePostHandler(request: FastifyRequest<{Params: { id: s
   try {
     await deletePost(Number(id))
     reply.send(204);
-  } catch(error) {
+  } catch (error) {
     reply.code(500).send(error)
   }
 }
@@ -95,7 +95,7 @@ export async function updatePostHandler(
     const updatedPost = await updatePost(Number(id), request.body)
     reply.send(updatedPost);
     return updatedPost
-  } catch(error) {
+  } catch (error) {
     reply.code(500).send(error)
   }
 }
@@ -103,61 +103,61 @@ export async function updatePostHandler(
 export async function createReactionHandler(request: FastifyRequest<{
   Params: { id: string, symbol: string }
 }>,
-reply: FastifyReply
+  reply: FastifyReply
 ) {
-const { id, symbol } = request.params
-try {
-  const result = await createReaction(Number(id), symbol)
-  reply.send(result);
-  return result
-} catch(error) {
-  reply.code(500).send(error)
-}
+  const { id, symbol } = request.params
+  try {
+    const result = await createReaction(Number(id), symbol)
+    reply.send(result);
+    return result
+  } catch (error) {
+    reply.code(500).send(error)
+  }
 }
 
 export async function createCommentHandler(request: FastifyRequest<{
   Params: { id: string },
   Body: CreateCommentSchema
 }>,
-reply: FastifyReply
+  reply: FastifyReply
 ) {
-const { id } = request.params
-const { name } = request.user as Profile
-try {
-  const result = await createComment(Number(id), name, request.body)
-  reply.send(result);
-  return result
-} catch(error) {
-  reply.code(500).send(error)
-}
+  const { id } = request.params
+  const { name } = request.user as Profile
+  try {
+    const result = await createComment(Number(id), name, request.body)
+    reply.send(result);
+    return result
+  } catch (error) {
+    reply.code(500).send(error)
+  }
 }
 
 export async function deleteCommentHandler(request: FastifyRequest<{
   Params: { id: string },
   Body: CreateCommentSchema
 }>,
-reply: FastifyReply
+  reply: FastifyReply
 ) {
-const { id } = request.params
-const { name } = request.user as Profile
+  const { id } = request.params
+  const { name } = request.user as Profile
 
-const comment = await getComment(Number(id));
+  const comment = await getComment(Number(id));
 
-if (!comment) {
-  reply.code(404).send("Comment not found")
-  return
-}
+  if (!comment) {
+    reply.code(404).send("Comment not found")
+    return
+  }
 
-if (name !== comment.owner) {
-  reply.code(403).send("You do not have permission to delete this comment")
-  return
-}
+  if (name !== comment.owner) {
+    reply.code(403).send("You do not have permission to delete this comment")
+    return
+  }
 
-try {
-  await deletePost(Number(id))
-  reply.send(204);
-} catch(error) {
-  reply.code(500).send(error)
-}
+  try {
+    await deletePost(Number(id))
+    reply.send(204);
+  } catch (error) {
+    reply.code(500).send(error)
+  }
 }
 
