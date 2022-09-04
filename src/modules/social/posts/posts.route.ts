@@ -174,7 +174,7 @@ async function postsRoutes(server: FastifyInstance) {
   )
 
   server.post(
-    "/:id/comment/",
+    "/:id/comment",
     {
       preHandler: [server.authenticate],
       schema: {
