@@ -71,6 +71,10 @@ function buildServer() {
   server.register(fAuth)
 
   server.addContentTypeParser('application/json', {parseAs: 'string'}, (_request, body, done) => {
+    if (!body) {
+      done(null)
+    }
+
     try {
       done(null, JSON.parse(body as string))
     } catch (error) {
