@@ -13,7 +13,7 @@ export const profileCore = {
   name: z.string().regex(/^[\w]+$/, "Name can only use a-Z, 0-9, and _"),
   email: z.string({
     invalid_type_error: "Email must be a string",
-  }).email().regex(/^[\w\-.]+@noroff.no$/, "Only noroff.no emails are allowed to register"),
+  }).email().regex(/^[\w\-.]+@(stud.)?noroff.no$/, "Only noroff.no emails are allowed to register"),
   ...profileMedia
 }
 
