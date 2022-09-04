@@ -9,7 +9,12 @@ export async function getPosts() {
   return prisma.post.findMany({
     include: {
       author: true,
-      reactions: true
+      reactions: true,
+      _count: {
+        select: {
+          comments: true,
+        }
+      }
     }
   })
 }

@@ -47,7 +47,10 @@ export async function createPostHandler(
   }
 }
 
-export async function deletePostHandler(request: FastifyRequest<{ Params: { id: string } }>, reply: FastifyReply) {
+export async function deletePostHandler(
+  request: FastifyRequest<{ Params: { id: string } }>, 
+  reply: FastifyReply
+  ) {
   const { id } = request.params
   const { name } = request.user as Profile
   const post = await getPost(Number(id));
@@ -105,8 +108,8 @@ export async function createReactionHandler(request: FastifyRequest<{
 }>,
   reply: FastifyReply
 ) {
-  const { id, symbol } = request.params
   try {
+    const { id, symbol } = request.params
     const result = await createReaction(Number(id), symbol)
     reply.send(result);
     return result
@@ -133,8 +136,7 @@ export async function createCommentHandler(request: FastifyRequest<{
 }
 
 export async function deleteCommentHandler(request: FastifyRequest<{
-  Params: { id: string },
-  Body: CreateCommentSchema
+  Params: { id: string }
 }>,
   reply: FastifyReply
 ) {

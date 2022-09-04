@@ -112,7 +112,7 @@ async function postsRoutes(server: FastifyInstance) {
     getPostHandler
   )
 
-  server.get(
+  server.put(
     "/:id/react/:symbol",
     {
       preHandler: [server.authenticate],
