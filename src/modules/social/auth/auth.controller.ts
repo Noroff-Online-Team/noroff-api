@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { verifyPassword } from "../../../utils/hash"
 import { CreateProfileInput } from "../profiles/profiles.schema"
+import { getProfile } from "../profiles/profiles.service"
 import { LoginInput } from "./auth.schema"
 import { createProfile, findProfileByEmail } from "./auth.service"
 
@@ -12,14 +13,13 @@ export async function registerProfileHandler(
 ) {
   const body = request.body
 
-  try {
-    const profile = await createProfile(body)
-
-    return reply.code(201).send(profile)
-  } catch (e) {
-    console.log(e)
-    return reply.code(500).send(e)
+  if (await getProfile(body.name)) {
+    const error = new Error("Profile already exists")
+    return reply.code(400).send(error)
   }
+
+  const profile = await createProfile(body)
+  return reply.code(201).send(profile)
 }
 
 export async function loginHandler(
@@ -30,7 +30,6 @@ export async function loginHandler(
 ) {
   const body = request.body
 
-  // find a profile by email
   const profile = await findProfileByEmail(body.email)
 
   if (!profile) {

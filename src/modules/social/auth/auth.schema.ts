@@ -9,7 +9,7 @@ const loginSchema = z.object({
       invalid_type_error: "Email must be a string",
     })
     .email(),
-  password: z.string(),
+  password: z.string()
 });
 
 const loginResponseSchema = z.object({
