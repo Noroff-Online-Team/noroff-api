@@ -15,6 +15,18 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
+        querystring: {
+          type: "object",
+          properties: {
+            sort: { type: "string" },
+            sortOrder: { type: "string" },
+            limit: { type: "number" },
+            offset: { type: "number" },
+            _followers: { type: "boolean" },
+            _following: { type: "boolean" },
+            _posts: { type: "boolean" }
+          }
+        },
         tags: ["profiles"],
         security: [{ bearerAuth: [] }],
         response: {
@@ -55,6 +67,14 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
+        querystring: {
+          type: "object",
+          properties: {
+            _followers: { type: "boolean" },
+            _following: { type: "boolean" },
+            _posts: { type: "boolean" }
+          }
+        },
         tags: ["profiles"],
         security: [{ bearerAuth: [] }],
         params: {

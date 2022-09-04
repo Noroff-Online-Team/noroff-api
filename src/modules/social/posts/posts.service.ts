@@ -1,46 +1,66 @@
+import { Post } from "@prisma/client"
 import { prisma } from "../../../utils"
+import { PostIncludes } from "./posts.controller"
 import {
   CreateCommentSchema,
   CreatePostBaseSchema,
   CreatePostSchema
 } from "./posts.schema"
 
-export async function getPosts() {
+export async function getPosts(sort: keyof Post = "created", sortOrder: "asc" | "desc" = "desc", limit = 100, offset = 0, includes: PostIncludes = {}) {
   return prisma.post.findMany({
+    orderBy: {
+      [sort]: sortOrder
+    },
+    take: limit,
+    skip: offset,
     include: {
-      author: true,
-      reactions: true,
+      ...includes,
       _count: {
         select: {
           comments: true,
+          reactions: true,
         }
       }
     }
   })
 }
 
-export async function getPost(id: number) {
+export async function getPost(id: number, includes: PostIncludes = {}) {
   return prisma.post.findUnique({
     where: { id },
     include: {
-      author: true,
-      reactions: true,
-      comments: true
+      ...includes,
+      _count: {
+        select: {
+          comments: true,
+          reactions: true,
+        }
+      }
     }
   })
 }
 
-export const createPost = (data: CreatePostSchema) => {
+export const createPost = (data: CreatePostSchema, includes: PostIncludes = {}) => {
   return prisma.post.create({
     data: {
       ...data,
       created: new Date(),
       updated: new Date()
+    },
+    include: {
+      ...includes,
+      _count: {
+        select: {
+          comments: true,
+          reactions: true,
+        }
+      }
     }
   })
 }
 
-export const updatePost = (id: number, data: CreatePostBaseSchema) =>
+export const updatePost = (id: number, data: CreatePostBaseSchema, includes: PostIncludes = {}) =>
   prisma.post.update({
     data: {
       ...data,
@@ -48,6 +68,15 @@ export const updatePost = (id: number, data: CreatePostBaseSchema) =>
     },
     where: {
       id
+    },
+    include: {
+      ...includes,
+      _count: {
+        select: {
+          comments: true,
+          reactions: true,
+        }
+      }
     }
   })
 

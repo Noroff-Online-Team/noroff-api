@@ -17,6 +17,18 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
+        querystring: {
+          type: "object",
+          properties: {
+            sort: { type: "string" },
+            sortOrder: { type: "string" },
+            limit: { type: "number" },
+            offset: { type: "number" },
+            _author: { type: "boolean" },
+            _reactions: { type: "boolean" },
+            _comments: { type: "boolean" }
+          }
+        },
         tags: ["posts"],
         security: [{ bearerAuth: [] }],
         response: {
@@ -35,6 +47,14 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
+        querystring: {
+          type: "object",
+          properties: {
+            _author: { type: "boolean" },
+            _reactions: { type: "boolean" },
+            _comments: { type: "boolean" }
+          }
+        },
         body: $ref("createPostBaseSchema"),
         tags: ["posts"],
         security: [{ bearerAuth: [] }],
@@ -51,6 +71,14 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
+        querystring: {
+          type: "object",
+          properties: {
+            _author: { type: "boolean" },
+            _reactions: { type: "boolean" },
+            _comments: { type: "boolean" }
+          }
+        },
         params: {
           type: "object",
           properties: {
@@ -96,6 +124,14 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
+        querystring: {
+          type: "object",
+          properties: {
+            _author: { type: "boolean" },
+            _reactions: { type: "boolean" },
+            _comments: { type: "boolean" }
+          }
+        },
         tags: ["posts"],
         security: [{ bearerAuth: [] }],
         params: {
@@ -117,6 +153,14 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
+        querystring: {
+          type: "object",
+          properties: {
+            _author: { type: "boolean" },
+            _reactions: { type: "boolean" },
+            _comments: { type: "boolean" }
+          }
+        },
         params: {
           type: "object",
           properties: {
@@ -139,6 +183,12 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
+        querystring: {
+          type: "object",
+          properties: {
+            _author: { type: "boolean" },
+          }
+        },
         params: {
           type: "object",
           properties: {

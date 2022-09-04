@@ -1,12 +1,12 @@
-import { Prisma } from "@prisma/client"
+import { Prisma, Profile } from "@prisma/client"
 import { prisma } from "../../../utils"
+import { ProfileIncludes } from "./profiles.controller"
 import { ProfileMediaSchema } from "./profiles.schema"
 
-export async function getProfiles() {
+export async function getProfiles(sort: keyof Profile = "name", sortOrder: "asc" | "desc" = "desc", limit = 100, offset = 0, includes: ProfileIncludes = {}) {
   return prisma.profile.findMany({
-    select: {
-      email: true,
-      name: true,
+    include: {
+      ...includes,
       _count: {
         select: {
           posts: true,
@@ -14,20 +14,28 @@ export async function getProfiles() {
           following: true
         }
       }
-    }
+    },
+    orderBy: {
+      [sort]: sortOrder
+    },
+    take: limit,
+    skip: offset,
   })
 }
 
-export async function getProfile(name: string) {
-  return prisma.profile.findUnique({
-    where: { name },
-    include: {
-      posts: true,
-      followers: true,
-      following: true
+export const getProfile = (name: string, includes: ProfileIncludes = {}) => prisma.profile.findUnique({
+  where: { name },
+  include: {
+    ...includes,
+    _count: {
+      select: {
+        posts: true,
+        followers: true,
+        following: true
+      }
     }
-  })
-}
+  }
+})
 
 export const createProfile = (data: Prisma.ProfileCreateInput) => {
   return prisma.profile.create({ data })
@@ -46,8 +54,6 @@ export const updateProfileMedia = async (name: string, { avatar, banner }: Profi
 }
 
 export const followProfile = async (target: string, follower: string) => {
-  console.log("follow", target, follower);
-
   return prisma.profile.update({
     where: {
       name: follower
@@ -62,7 +68,6 @@ export const followProfile = async (target: string, follower: string) => {
     select: {
       name: true,
       avatar: true,
-      email: true,
       followers: {
         select: {
           name: true,
@@ -80,8 +85,6 @@ export const followProfile = async (target: string, follower: string) => {
 }
 
 export const unfollowProfile = async (target: string, follower: string) => {
-  console.log("unfollow", target, follower);
-  
   return prisma.profile.update({
     where: {
       name: follower
@@ -96,7 +99,6 @@ export const unfollowProfile = async (target: string, follower: string) => {
     select: {
       name: true,
       avatar: true,
-      email: true,
       followers: {
         select: {
           name: true,

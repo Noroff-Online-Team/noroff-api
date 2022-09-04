@@ -78,7 +78,11 @@ export const displayPostSchema = z.object({
     name: z.string(),
     email: z.string().email(),
     avatar: z.string().optional()
-  })
+  }).optional(),
+  _count: z.object({
+    comments: z.number().int().optional(),
+    reactions: z.number().int().optional()
+  }).optional()
 })
 
 export type PostSchema = z.infer<typeof postSchema>

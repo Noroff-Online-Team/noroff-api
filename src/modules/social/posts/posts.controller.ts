@@ -1,24 +1,63 @@
-import { Profile } from "@prisma/client"
+import { Post, Profile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
 
 import { getPosts, getPost, createPost, updatePost, createReaction, deletePost, createComment, getComment } from "./posts.service"
 
-export async function getPostsHandler() {
-  // Get all posts in chron order
-  const posts = await getPosts()
-  return posts
+export interface PostIncludes {
+  author?: boolean;
+  reactions?: boolean;
+  comments?: boolean;
+}
+
+export async function getPostsHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      limit?: number
+      offset?: number
+      _author?: boolean
+      _reactions?: boolean
+      _comments?: boolean,
+      sort?: keyof Post
+      sortOrder?: "asc" | "desc"
+    }
+  }>,
+  reply: FastifyReply
+) {
+  const { sort, sortOrder, limit, offset, _author, _reactions, _comments } = request.query
+
+  const includes: PostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
+  }
+
+  const posts = await getPosts(sort, sortOrder, limit, offset, includes)
+  reply.code(200).send(posts)
 }
 
 export async function getPostHandler(
   request: FastifyRequest<{
-    Params: { id: number }
+    Params: { id: number },
+    Querystring: {
+      _author?: boolean
+      _reactions?: boolean
+      _comments?: boolean,
+    }
   }>,
   reply: FastifyReply
 ) {
 
   const { id } = request.params
-  const post = await getPost(id)
+  const { _author, _reactions, _comments } = request.query
+
+  const includes: PostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
+  }
+
+  const post = await getPost(id, includes)
 
   if (!post) {
     const error = new Error("No post with such ID")
@@ -31,15 +70,28 @@ export async function getPostHandler(
 export async function createPostHandler(
   request: FastifyRequest<{
     Body: CreatePostBaseSchema;
+    Querystring: {
+      _author?: boolean
+      _reactions?: boolean
+      _comments?: boolean,
+    }
   }>,
   reply: FastifyReply
 ) {
   const { name } = request.user as Profile
+  const { _author, _reactions, _comments } = request.query
+
+  const includes: PostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
+  }
+
   try {
     const post = await createPost({
       ...request.body,
       owner: name,
-    })
+    }, includes)
     reply.send(post);
     return post
   } catch (error) {
@@ -48,25 +100,25 @@ export async function createPostHandler(
 }
 
 export async function deletePostHandler(
-  request: FastifyRequest<{ Params: { id: string } }>, 
+  request: FastifyRequest<{ Params: { id: number } }>,
   reply: FastifyReply
-  ) {
+) {
   const { id } = request.params
   const { name } = request.user as Profile
-  const post = await getPost(Number(id));
+  const post = await getPost(id);
 
   if (!post) {
     reply.code(404).send("Post not found")
     return
   }
 
-  if (name !== post.author.name) {
+  if (name !== post.owner) {
     reply.code(403).send("You do not have permission to delete this post")
     return
   }
 
   try {
-    await deletePost(Number(id))
+    await deletePost(id)
     reply.send(204);
   } catch (error) {
     reply.code(500).send(error)
@@ -75,14 +127,27 @@ export async function deletePostHandler(
 
 export async function updatePostHandler(
   request: FastifyRequest<{
-    Params: { id: string },
+    Params: { id: number },
     Body: CreatePostBaseSchema
+    Querystring: {
+      _author?: boolean
+      _reactions?: boolean
+      _comments?: boolean,
+    }
   }>,
   reply: FastifyReply
 ) {
   const { id } = request.params
   const { name } = request.user as Profile
-  const post = await getPost(Number(id));
+  const { _author, _reactions, _comments } = request.query
+
+  const includes: PostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
+  }
+
+  const post = await getPost(id);
 
   if (!post) {
     reply.code(404).send("Post not found")
@@ -95,7 +160,7 @@ export async function updatePostHandler(
   }
 
   try {
-    const updatedPost = await updatePost(Number(id), request.body)
+    const updatedPost = await updatePost(id, request.body, includes)
     reply.send(updatedPost);
     return updatedPost
   } catch (error) {
@@ -104,13 +169,13 @@ export async function updatePostHandler(
 }
 
 export async function createReactionHandler(request: FastifyRequest<{
-  Params: { id: string, symbol: string }
+  Params: { id: number, symbol: string }
 }>,
   reply: FastifyReply
 ) {
   try {
     const { id, symbol } = request.params
-    const result = await createReaction(Number(id), symbol)
+    const result = await createReaction(id, symbol)
     reply.send(result);
     return result
   } catch (error) {
@@ -119,7 +184,7 @@ export async function createReactionHandler(request: FastifyRequest<{
 }
 
 export async function createCommentHandler(request: FastifyRequest<{
-  Params: { id: string },
+  Params: { id: number },
   Body: CreateCommentSchema
 }>,
   reply: FastifyReply
@@ -127,7 +192,7 @@ export async function createCommentHandler(request: FastifyRequest<{
   const { id } = request.params
   const { name } = request.user as Profile
   try {
-    const result = await createComment(Number(id), name, request.body)
+    const result = await createComment(id, name, request.body)
     reply.send(result);
     return result
   } catch (error) {
@@ -136,14 +201,14 @@ export async function createCommentHandler(request: FastifyRequest<{
 }
 
 export async function deleteCommentHandler(request: FastifyRequest<{
-  Params: { id: string }
+  Params: { id: number }
 }>,
   reply: FastifyReply
 ) {
   const { id } = request.params
   const { name } = request.user as Profile
 
-  const comment = await getComment(Number(id));
+  const comment = await getComment(id);
 
   if (!comment) {
     reply.code(404).send("Comment not found")
@@ -156,7 +221,7 @@ export async function deleteCommentHandler(request: FastifyRequest<{
   }
 
   try {
-    await deletePost(Number(id))
+    await deletePost(id)
     reply.send(204);
   } catch (error) {
     reply.code(500).send(error)

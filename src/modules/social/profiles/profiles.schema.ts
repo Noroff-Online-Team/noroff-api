@@ -34,15 +34,25 @@ export const profileSchema = z.object({
   ...profileCore,
 })
 
+const followSchema = z.object({
+  name: z.string(),
+  avatar: z.string().optional()
+})
+
 const profileFollows = {
-  followers: profileSchema.array(),
-  following: profileSchema.array(),
+  followers: followSchema.array().optional(),
+  following: followSchema.array().optional(),
 }
 
 export const displayProfileSchema = z.object({
   ...profileCore,
   ...profileFollows,
   posts: postSchema.array().optional(),
+  _count: z.object({
+    posts: z.number().int().optional(),
+    followers: z.number().int().optional(),
+    following: z.number().int().optional(),
+  }).optional()
 })
 
 export type ProfileSchema = z.infer<typeof profileSchema>

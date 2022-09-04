@@ -4,20 +4,58 @@ import { ProfileMediaSchema } from "./profiles.schema"
 
 import { getProfiles, getProfile, createProfile, updateProfileMedia, followProfile, unfollowProfile } from "./profiles.service"
 
-export async function getProfilesHandler() {
-  const profiles = await getProfiles()
+export interface ProfileIncludes {
+  followers?: boolean;
+  following?: boolean;
+  posts?: boolean;
+}
+
+export async function getProfilesHandler(request: FastifyRequest<{
+  Querystring: {
+    limit?: number
+    offset?: number
+    _followers?: boolean
+    _following?: boolean
+    _posts?: boolean,
+    sort?: keyof Profile
+    sortOrder?: "asc" | "desc"
+  }
+}>,
+reply: FastifyReply) {
+  const { sort, sortOrder, limit, offset, _followers, _following, _posts } = request.query
+
+  const includes: ProfileIncludes = {
+    posts: Boolean(_posts),
+    followers: Boolean(_followers),
+    following: Boolean(_following)
+  }
+
+  const profiles = await getProfiles(sort, sortOrder, limit, offset, includes)
   return profiles
 }
 
 export async function getProfileHandler(
   request: FastifyRequest<{
     Params: { name: string }
+    Querystring: {
+      _followers?: boolean
+      _following?: boolean
+      _posts?: boolean,
+    }
   }>,
   reply: FastifyReply
 ) {
   
   const { name } = request.params
-  const profile = await getProfile(name)
+  const { _followers, _following, _posts } = request.query
+
+  const includes: ProfileIncludes = {
+    posts: Boolean(_posts),
+    followers: Boolean(_followers),
+    following: Boolean(_following)
+  }
+  
+  const profile = await getProfile(name, includes)
 
   if (!profile) {
     const error = new Error("No profile with this name")
