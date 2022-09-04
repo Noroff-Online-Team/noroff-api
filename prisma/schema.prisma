@@ -65,14 +65,17 @@ model Quote {
 }
 
 model Profile {
-  id       Int       @id @default(autoincrement())
-  name     String    @unique
-  email    String    @unique
-  avatar   String?
-  password String
-  salt     String
-  posts    Post[]
-  comments Comment[]
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  email     String    @unique
+  avatar    String?
+  banner    String?
+  password  String
+  salt      String
+  posts     Post[]
+  comments  Comment[]
+  followers Profile[] @relation("Follows")
+  following Profile[] @relation("Follows")
 }
 
 model Post {

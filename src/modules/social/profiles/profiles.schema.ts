@@ -30,15 +30,19 @@ export const createProfileResponseSchema = z.object({
   ...profileCore,
 });
 
-export const displayProfileSchema = z.object({
-  ...profileCore,
-  id: z.number().int(),
-  posts: postSchema.array().optional(),
-})
-
 export const profileSchema = z.object({
   ...profileCore,
-  id: z.number().int()
+})
+
+const profileFollows = {
+  followers: profileSchema.array(),
+  following: profileSchema.array(),
+}
+
+export const displayProfileSchema = z.object({
+  ...profileCore,
+  ...profileFollows,
+  posts: postSchema.array().optional(),
 })
 
 export type ProfileSchema = z.infer<typeof profileSchema>

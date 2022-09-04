@@ -5,6 +5,8 @@ import {
   getProfilesHandler,
   getProfileHandler,
   updateProfileMediaHandler,
+  followProfileHandler,
+  unfollowProfileHandler
 } from "./profiles.controller"
 
 async function profilesRoutes(server: FastifyInstance) {
@@ -67,6 +69,42 @@ async function profilesRoutes(server: FastifyInstance) {
       }
     },
     getProfileHandler
+  )
+
+  server.put(
+    "/:name/follow",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        params: {
+          type: "object",
+          properties: {
+            name: { type: "string" }
+          }
+        },
+        tags: ["profiles"],
+        security: [{ bearerAuth: [] }]
+      }
+    },
+    followProfileHandler
+  )
+
+  server.put(
+    "/:name/unfollow",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        params: {
+          type: "object",
+          properties: {
+            name: { type: "string" }
+          }
+        },
+        tags: ["profiles"],
+        security: [{ bearerAuth: [] }]
+      }
+    },
+    unfollowProfileHandler
   )
 }
 

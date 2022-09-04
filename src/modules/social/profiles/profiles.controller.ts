@@ -1,8 +1,8 @@
-import { Prisma } from "@prisma/client"
+import { Prisma, Profile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { ProfileMediaSchema } from "./profiles.schema"
 
-import { getProfiles, getProfile, createProfile, updateProfile } from "./profiles.service"
+import { getProfiles, getProfile, createProfile, updateProfileMedia, followProfile, unfollowProfile } from "./profiles.service"
 
 export async function getProfilesHandler() {
   const profiles = await getProfiles()
@@ -48,19 +48,37 @@ export async function updateProfileMediaHandler(
   const profile = await updateProfileMedia(name, request.body)
   reply.code(200).send(profile);
 }
+
+export async function followProfileHandler(
+  request: FastifyRequest<{
+    Params: { name: string },
+  }>,
   reply: FastifyReply
-) {
-  const profile = await createProfile(request.body as Prisma.ProfileCreateInput)
-  reply.send(profile);
+) { 
+  const { name: follower } = request.user as Profile
+  const { name: target } = request.params
+
+  if (target === follower) {
+    return reply.code(400).send("You can't follow yourself")
+  }
+
+  const profile = await followProfile(target, follower)    
+  reply.code(200).send(profile);  
 }
 
-export async function updateProfileHandler(
+export async function unfollowProfileHandler(
   request: FastifyRequest<{
     Params: { name: string }
   }>,
   reply: FastifyReply
 ) {
-  const { name } = request.params
-  const profile = await updateProfile(name, request.body as Prisma.ProfileUpdateInput)
-  reply.send(profile);
+  const { name: follower } = request.user as Profile
+  const { name: target } = request.params
+
+  if (target === follower) {
+    return reply.code(400).send("You can't unfollow yourself")
+  }
+
+  const profile = await unfollowProfile(target, follower)
+  reply.code(200).send(profile);
 }
