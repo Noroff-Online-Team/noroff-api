@@ -11,6 +11,7 @@ async function socialAuthRoutes(server: FastifyInstance) {
     "/register",
     {
       schema: {
+        tags: ["social-auth"],
         body: $profile("createProfileSchema"),
         response: {
           201: $profile("createProfileResponseSchema"),
@@ -24,6 +25,7 @@ async function socialAuthRoutes(server: FastifyInstance) {
     "/login",
     {
       schema: {
+        tags: ["social-auth"],
         body: $ref("loginSchema"),
         response: {
           200: $ref("loginResponseSchema"),
