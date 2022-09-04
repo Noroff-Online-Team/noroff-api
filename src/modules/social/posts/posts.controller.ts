@@ -175,6 +175,12 @@ export async function createReactionHandler(request: FastifyRequest<{
 ) {
   try {
     const { id, symbol } = request.params
+    const match = symbol.match(/\p{Extended_Pictographic}/u)
+
+    if (!match) {
+      return reply.code(400).send("Only emoji codes are valid reactions")
+    }
+
     const result = await createReaction(id, symbol)
     reply.send(result);
     return result

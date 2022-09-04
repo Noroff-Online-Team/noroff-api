@@ -85,7 +85,7 @@ async function postsRoutes(server: FastifyInstance) {
             id: { type: "integer" }
           }
         },
-        body: $ref("createPostSchema"),
+        body: $ref("createPostBaseSchema"),
         tags: ["posts"],
         security: [{ bearerAuth: [] }],
         response: {
@@ -108,12 +108,7 @@ async function postsRoutes(server: FastifyInstance) {
           }
         },
         tags: ["posts"],
-        security: [{ bearerAuth: [] }],
-        response: {
-          200: {
-            type: "object"
-          }
-        }
+        security: [{ bearerAuth: [] }]
       }
     },
     deletePostHandler

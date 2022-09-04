@@ -88,17 +88,6 @@ export const deletePost = (id: number) =>
   })
 
 export const createReaction = async (postId: number, symbol: string) => {
-  const match = symbol.match(/\p{Extended_Pictographic}/u)
-
-  if (!match) {
-    return {
-      postId,
-      symbol,
-      count: 0,
-      message: "Only Emoji symbols are valid reactions"
-    }
-  }
-
   const query = {
     postId_symbol: {
       postId,
@@ -133,17 +122,22 @@ export const createComment = async (
   postId: number,
   owner: string,
   comment: CreateCommentSchema
-) => {
-  return prisma.comment.create({
-    data: {
-      body: comment.body,
-      replyToId: comment.replyToId,
-      postId,
-      created: new Date(),
-      owner
-    }
-  })
-}
+) => prisma.comment.create({
+  data: {
+    body: comment.body,
+    replyToId: comment.replyToId,
+    postId,
+    created: new Date(),
+    owner
+  },
+  select: {
+    id: true,
+    body: true,
+    created: true,
+    owner: true,
+    replyToId: true,
+  }
+})
 
 export const deleteComment = (id: number) =>
   prisma.comment.delete({
@@ -156,5 +150,13 @@ export const getComment = (id: number) =>
   prisma.comment.findUnique({
     where: {
       id
+    },
+    select: {
+      id: true,
+      body: true,
+      created: true,
+      owner: true,
+      replyToId: true,
+      replies: true
     }
   })

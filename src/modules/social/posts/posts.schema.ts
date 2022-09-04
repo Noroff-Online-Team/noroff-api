@@ -24,8 +24,7 @@ const postMeta = {
 const reactionSchema = z.object({
   symbol: z.string(),
   count: z.number().int(),
-  postId: z.number().int(),
-  message: z.string().optional()
+  postId: z.number().int()
 })
 
 const reactions = {
@@ -34,7 +33,7 @@ const reactions = {
 
 const commentCore = {
   body: z.string(),
-  replyToId: z.number().optional(),
+  replyToId: z.number().optional()
 }
 
 const createCommentSchema = z.object({
@@ -44,7 +43,7 @@ const createCommentSchema = z.object({
 const displayCommentSchema = z.object({
   ...commentCore,
   id: z.number().int(),
-  postId: z.number().int(),
+  postId: z.number().int().optional(),
   owner: z.string(),
   created: z.date()
 })
