@@ -137,6 +137,7 @@ export const createComment = async (
   return prisma.comment.create({
     data: {
       body: comment.body,
+      replyToId: comment.replyToId,
       postId,
       created: new Date(),
       owner

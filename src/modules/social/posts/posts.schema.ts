@@ -34,6 +34,17 @@ const reactions = {
 
 const commentCore = {
   body: z.string(),
+  replyToId: z.number().optional(),
+}
+
+const replySchema = z.object({
+  ...commentCore,
+  owner: z.string(),
+  created: z.date()
+})
+
+const replies = {
+  replies: replySchema.array().optional()
 }
 
 const createCommentSchema = z.object({
@@ -42,6 +53,7 @@ const createCommentSchema = z.object({
 
 const displayCommentSchema = z.object({
   ...commentCore,
+  ...replies,
   id: z.number().int(),
   postId: z.number().int(),
   owner: z.string(),
