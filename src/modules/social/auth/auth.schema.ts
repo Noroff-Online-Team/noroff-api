@@ -19,7 +19,10 @@ const loginResponseSchema = z.object({
 
 export type LoginInput = z.infer<typeof loginSchema>;
 
-export const { schemas: socialAuthSchemas, $ref } = buildJsonSchemas({
-  loginSchema,
-  loginResponseSchema,
-});
+export const { schemas: socialAuthSchemas, $ref } = buildJsonSchemas(
+  {
+    loginSchema,
+    loginResponseSchema,
+  },
+  { $id: "SocialAuth" }
+);

@@ -64,10 +64,12 @@ export type CreateProfileInput = z.infer<typeof createProfileSchema>;
 export type ProfileMediaSchema = z.infer<typeof profileMediaSchema>;
 
 export const { schemas: profileSchemas, $ref } = buildJsonSchemas(
-  { profileSchema,
+  { 
+    profileSchema,
     createProfileSchema,
     createProfileResponseSchema,
     displayProfileSchema,
-    profileMediaSchema },
+    profileMediaSchema
+  },
   { $id: "Profiles" }
 )

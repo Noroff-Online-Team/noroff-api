@@ -21,7 +21,10 @@ const swaggerOptions: SwaggerOptions = {
       { name: "jokes", description: "Jokes related endpoints" },
       { name: "nba-teams", description: "NBA teams related endpoints" },
       { name: "old-games", description: "Old games related endpoints" },
-      { name: "quotes", description: "Quotes related endpoints" }
+      { name: "quotes", description: "Quotes related endpoints" },
+      { name: "social-auth", description: "Social auth related endpoints" },
+      { name: "profiles", description: "Social profiles related endpoints" },
+      { name: "posts", description: "Social posts related endpoints" }
     ],
     securityDefinitions: {
       bearerAuth: {
