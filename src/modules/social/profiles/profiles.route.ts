@@ -4,7 +4,7 @@ import { $ref } from "./profiles.schema"
 import {
   getProfilesHandler,
   getProfileHandler,
-  updateProfileHandler
+  updateProfileMediaHandler,
 } from "./profiles.controller"
 
 async function profilesRoutes(server: FastifyInstance) {
@@ -27,7 +27,7 @@ async function profilesRoutes(server: FastifyInstance) {
   )
 
   server.put(
-    "/:name",
+    "/:name/media",
     {
       preHandler: [server.authenticate],
       schema: {
@@ -37,7 +37,7 @@ async function profilesRoutes(server: FastifyInstance) {
             name: { type: "string" }
           }
         },
-        body: $ref("createProfileSchema"),
+        body: $ref("profileMediaSchema"),
         tags: ["profiles"],
         security: [{ bearerAuth: [] }],
         response: {
@@ -45,7 +45,7 @@ async function profilesRoutes(server: FastifyInstance) {
         }
       }
     },
-    updateProfileHandler
+    updateProfileMediaHandler
   )
 
   server.get(
