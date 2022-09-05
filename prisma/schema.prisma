@@ -63,3 +63,53 @@ model Quote {
   authorSlug String
   length     Int
 }
+
+model Profile {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  email     String    @unique
+  avatar    String?
+  banner    String?
+  password  String
+  salt      String
+  posts     Post[]
+  comments  Comment[]
+  followers Profile[] @relation("Follows")
+  following Profile[] @relation("Follows")
+}
+
+model Post {
+  id        Int        @id @default(autoincrement())
+  title     String
+  body      String?
+  author    Profile    @relation(fields: [owner], references: [name])
+  tags      String[]
+  media     String?
+  owner     String
+  created   DateTime
+  updated   DateTime
+  reactions Reaction[]
+  comments  Comment[]
+}
+
+model Reaction {
+  symbol String
+  post   Post   @relation(fields: [postId], references: [id])
+  postId Int
+  count  Int
+
+  @@id([postId, symbol])
+}
+
+model Comment {
+  id        Int       @id @default(autoincrement())
+  post      Post      @relation(fields: [postId], references: [id])
+  postId    Int
+  body      String
+  author    Profile   @relation(fields: [owner], references: [name])
+  owner     String
+  created   DateTime
+  replyTo   Comment?  @relation("Replies", fields: [replyToId], references: [id])
+  replies   Comment[] @relation("Replies")
+  replyToId Int?
+}

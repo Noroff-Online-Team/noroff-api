@@ -24,6 +24,14 @@
   dependencies:
     ajv "^6.12.6"
 
+"@fastify/auth@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@fastify/auth/-/auth-2.0.0.tgz#45f4e905b836b556dd98d3cd825f1bfec1535739"
+  integrity sha512-86+vCuiAbbtOLf3d3n4p/+o425JPh2lpEigc6y3pYIIZgedZuWawYzGaN/R8J0br1jSmTURQbHfOzE0iQSbLWA==
+  dependencies:
+    fastify-plugin "^3.0.0"
+    reusify "^1.0.4"
+
 "@fastify/cors@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@fastify/cors/-/cors-7.0.0.tgz#c67c5a5909498b696bb19578e903f36037ac6f32"
