@@ -31,7 +31,7 @@ reply: FastifyReply) {
   }
 
   const profiles = await getProfiles(sort, sortOrder, limit, offset, includes)
-  return profiles
+  return reply.code(200).send(profiles)
 }
 
 export async function getProfileHandler(
