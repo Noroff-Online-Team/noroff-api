@@ -6,7 +6,7 @@ const PORT = parseInt(process.env.PORT as string, 10) || 3000
 // Main startup
 async function main() {
   try {
-    server.listen(PORT, "0.0.0.0", () =>
+    server.listen({ port: PORT, host: "0.0.0.0" }, () =>
       console.log(`> Server listening on http://localhost:${PORT}`)
     )
   } catch (err) {
