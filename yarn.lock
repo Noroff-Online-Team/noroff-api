@@ -2640,12 +2640,22 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zod-to-json-schema@^3.11.3, zod-to-json-schema@^3.17.0:
+zod-to-json-schema@^3.11.3:
   version "3.17.0"
   resolved "https://registry.yarnpkg.com/zod-to-json-schema/-/zod-to-json-schema-3.17.0.tgz#dbfb61b10342c4d02fb2cacfa60d54d564e03458"
   integrity sha512-Ioxmh41HTo4xAip7DPy79ysvGibPnDxzGoPNcNT+1dxwLjeXf/BruRnj7sRJAe2p4z8vTx6d62CXigEPTz6DqQ==
 
-zod@^3.13.4, zod@^3.17.3:
+zod-to-json-schema@^3.17.1:
+  version "3.17.1"
+  resolved "https://registry.yarnpkg.com/zod-to-json-schema/-/zod-to-json-schema-3.17.1.tgz#681cb645837e0af71852f9b3e1033b419c145cdf"
+  integrity sha512-h1WLfvkdwM6lcRt5q09ytNh2OKcU13vY9D0FetN/7Erdd7lVraIiMkEnObg3KELm5EQlMqvi0r5nzMa0EA+8qw==
+
+zod@^3.13.4:
   version "3.17.3"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.17.3.tgz#86abbc670ff0063a4588d85a4dcc917d6e4af2ba"
   integrity sha512-4oKP5zvG6GGbMlqBkI5FESOAweldEhSOZ6LI6cG+JzUT7ofj1ZOC0PJudpQOpT1iqOFpYYtX5Pw0+o403y4bcg==
+
+zod@^3.19.0:
+  version "3.19.0"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.19.0.tgz#a9303fcaed0950a3dc57bf35cc11f6282d4f52f2"
+  integrity sha512-Yw0qvUsCNGBe5YacikdMt5gVYeUuaEFVDIHKMfElrGSaBhwR3CQK6vOzgfAJOjTdGIhEeoaj8GtT+NDZrepZbw==
