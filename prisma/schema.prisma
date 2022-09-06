@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -82,7 +79,7 @@ model Post {
   id        Int        @id @default(autoincrement())
   title     String
   body      String?
-  author    Profile    @relation(fields: [owner], references: [name])
+  author    Profile    @relation(fields: [owner], references: [name], onDelete: Cascade)
   tags      String[]
   media     String?
   owner     String
@@ -94,7 +91,7 @@ model Post {
 
 model Reaction {
   symbol String
-  post   Post   @relation(fields: [postId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId Int
   count  Int
 
@@ -103,10 +100,10 @@ model Reaction {
 
 model Comment {
   id        Int       @id @default(autoincrement())
-  post      Post      @relation(fields: [postId], references: [id])
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
   body      String
-  author    Profile   @relation(fields: [owner], references: [name])
+  author    Profile   @relation(fields: [owner], references: [name], onDelete: Cascade)
   owner     String
   created   DateTime
   replyTo   Comment?  @relation("Replies", fields: [replyToId], references: [id])
