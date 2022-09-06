@@ -56,6 +56,15 @@
     http-errors "^2.0.0"
     steed "^1.1.3"
 
+"@fastify/rate-limit@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@fastify/rate-limit/-/rate-limit-6.0.1.tgz#348d505d45aac9af808813c55798a47732958240"
+  integrity sha512-LSd6gIhvTMbt+xRG4vhfFKgbxy8x/namtIo9EcdUneE7LnsS6GSQ1NL2eo0Bg8Q61mNk812guS1xCLvO5kSTPQ==
+  dependencies:
+    fastify-plugin "^3.0.1"
+    ms "^2.1.3"
+    tiny-lru "^8.0.1"
+
 "@fastify/static@^5.0.0", "@fastify/static@^5.0.2":
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@fastify/static/-/static-5.0.2.tgz#46cee887393b422f4b10a46a14e970a64dd086d4"
@@ -1620,7 +1629,7 @@ ms@2.1.2:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
-ms@2.1.3:
+ms@2.1.3, ms@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==

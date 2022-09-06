@@ -5,6 +5,7 @@ import swagger from "@fastify/swagger"
 import fStatic from "@fastify/static"
 import fJwt from '@fastify/jwt'
 import fAuth from '@fastify/auth'
+import fRateLimit from '@fastify/rate-limit'
 
 import swaggerOptions from './config/swagger'
 
@@ -51,6 +52,12 @@ const allSchemas = [
 // Main startup
 function buildServer() {
   const server = Fastify()
+
+  // Register rate-limit
+  server.register(fRateLimit, {
+    max: 30,
+    timeWindow: '1 minute',
+  })
 
   // Register CORS
   server.register(cors, {
