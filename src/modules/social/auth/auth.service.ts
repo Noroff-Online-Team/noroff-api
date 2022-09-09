@@ -14,7 +14,7 @@ export async function createProfile(input: CreateProfileInput) {
 }
 
 export async function findProfileByEmail(email: string) {
-  return prisma.profile.findUnique({
+  return await prisma.profile.findUnique({
     where: {
       email
     }
