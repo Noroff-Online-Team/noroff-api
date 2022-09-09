@@ -8,7 +8,7 @@ import {
 } from "./posts.schema"
 
 export async function getPosts(sort: keyof Post = "created", sortOrder: "asc" | "desc" = "desc", limit = 100, offset = 0, includes: PostIncludes = {}) {
-  return prisma.post.findMany({
+  return await prisma.post.findMany({
     orderBy: {
       [sort]: sortOrder
     },
@@ -27,7 +27,7 @@ export async function getPosts(sort: keyof Post = "created", sortOrder: "asc" | 
 }
 
 export async function getPost(id: number, includes: PostIncludes = {}) {
-  return prisma.post.findUnique({
+  return await prisma.post.findUnique({
     where: { id },
     include: {
       ...includes,
@@ -41,8 +41,8 @@ export async function getPost(id: number, includes: PostIncludes = {}) {
   })
 }
 
-export const createPost = (data: CreatePostSchema, includes: PostIncludes = {}) => {
-  return prisma.post.create({
+export const createPost = async (data: CreatePostSchema, includes: PostIncludes = {}) => {
+  return await prisma.post.create({
     data: {
       ...data,
       created: new Date(),
@@ -60,8 +60,8 @@ export const createPost = (data: CreatePostSchema, includes: PostIncludes = {}) 
   })
 }
 
-export const updatePost = (id: number, data: CreatePostBaseSchema, includes: PostIncludes = {}) =>
-  prisma.post.update({
+export const updatePost = async (id: number, data: CreatePostBaseSchema, includes: PostIncludes = {}) =>
+  await prisma.post.update({
     data: {
       ...data,
       updated: new Date()
@@ -80,8 +80,8 @@ export const updatePost = (id: number, data: CreatePostBaseSchema, includes: Pos
     }
   })
 
-export const deletePost = (id: number) =>
-  prisma.post.delete({
+export const deletePost = async (id: number) =>
+  await prisma.post.delete({
     where: {
       id
     }
@@ -122,7 +122,7 @@ export const createComment = async (
   postId: number,
   owner: string,
   comment: CreateCommentSchema
-) => prisma.comment.create({
+) => await prisma.comment.create({
   data: {
     body: comment.body,
     replyToId: comment.replyToId,
@@ -139,15 +139,15 @@ export const createComment = async (
   }
 })
 
-export const deleteComment = (id: number) =>
-  prisma.comment.delete({
+export const deleteComment = async (id: number) =>
+  await prisma.comment.delete({
     where: {
       id
     }
   })
 
-export const getComment = (id: number) =>
-  prisma.comment.findUnique({
+export const getComment = async (id: number) =>
+  await prisma.comment.findUnique({
     where: {
       id
     },
