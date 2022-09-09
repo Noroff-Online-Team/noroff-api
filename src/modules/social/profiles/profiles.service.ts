@@ -4,7 +4,7 @@ import { ProfileIncludes } from "./profiles.controller"
 import { ProfileMediaSchema } from "./profiles.schema"
 
 export async function getProfiles(sort: keyof Profile = "name", sortOrder: "asc" | "desc" = "desc", limit = 100, offset = 0, includes: ProfileIncludes = {}) {
-  return prisma.profile.findMany({
+  return await prisma.profile.findMany({
     include: {
       ...includes,
       _count: {
@@ -23,7 +23,7 @@ export async function getProfiles(sort: keyof Profile = "name", sortOrder: "asc"
   })
 }
 
-export const getProfile = (name: string, includes: ProfileIncludes = {}) => prisma.profile.findUnique({
+export const getProfile = async (name: string, includes: ProfileIncludes = {}) => await prisma.profile.findUnique({
   where: { name },
   include: {
     ...includes,
@@ -37,24 +37,22 @@ export const getProfile = (name: string, includes: ProfileIncludes = {}) => pris
   }
 })
 
-export const createProfile = (data: Prisma.ProfileCreateInput) => {
-  return prisma.profile.create({ data })
+export const createProfile = async (data: Prisma.ProfileCreateInput) => {
+  return await prisma.profile.create({ data })
 }
 
 export const updateProfileMedia = async (name: string, { avatar, banner }: ProfileMediaSchema) => {
-  prisma.profile.update({
+  return await prisma.profile.update({
+    where: { name },
     data: {
       avatar,
       banner
     },
-    where: {
-      name
-    }
   })
 }
 
 export const followProfile = async (target: string, follower: string) => {
-  return prisma.profile.update({
+  return await prisma.profile.update({
     where: {
       name: follower
     },
@@ -85,7 +83,7 @@ export const followProfile = async (target: string, follower: string) => {
 }
 
 export const unfollowProfile = async (target: string, follower: string) => {
-  return prisma.profile.update({
+  return await prisma.profile.update({
     where: {
       name: follower
     },
@@ -113,4 +111,4 @@ export const unfollowProfile = async (target: string, follower: string) => {
       }
     }
   })
-} 
+}
