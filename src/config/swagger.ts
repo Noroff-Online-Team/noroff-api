@@ -1,7 +1,8 @@
 import { SwaggerOptions } from "@fastify/swagger"
+import { withRefResolver } from "fastify-zod"
 import { version } from "../../package.json"
 
-const swaggerOptions: SwaggerOptions = {
+const swaggerOptions: SwaggerOptions = withRefResolver({
   routePrefix: "/docs",
   exposeRoute: true,
   staticCSP: true,
@@ -35,6 +36,6 @@ const swaggerOptions: SwaggerOptions = {
       }
     }
   }
-}
+})
 
 export default swaggerOptions
