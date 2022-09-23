@@ -134,8 +134,14 @@ export async function deleteProfileHandler(
     return reply.code(403).send("You can't delete other profiles")
   }
 
+  const profile = await getProfile(jwtName)
+
+  if (!profile) {
+    return reply.code(404).send("No profile with this name")
+  }
+
   try {
-    await deleteProfile(reqName)
+    await deleteProfile(jwtName)
     reply.send(204);
   } catch (error) {
     reply.code(500).send(error)
