@@ -6,7 +6,8 @@ import {
   getProfileHandler,
   updateProfileMediaHandler,
   followProfileHandler,
-  unfollowProfileHandler
+  unfollowProfileHandler,
+  deleteProfileHandler
 } from "./profiles.controller"
 
 async function profilesRoutes(server: FastifyInstance) {
@@ -125,6 +126,24 @@ async function profilesRoutes(server: FastifyInstance) {
       }
     },
     unfollowProfileHandler
+  )
+
+  server.delete(
+    "/:name",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        params: {
+          type: "object",
+          properties: {
+            name: { type: "string" }
+          }
+        },
+        tags: ["profiles"],
+        security: [{ bearerAuth: [] }]
+      }
+    },
+    deleteProfileHandler
   )
 }
 

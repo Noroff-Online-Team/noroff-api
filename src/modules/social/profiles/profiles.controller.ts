@@ -2,7 +2,7 @@ import { Prisma, Profile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { ProfileMediaSchema } from "./profiles.schema"
 
-import { getProfiles, getProfile, createProfile, updateProfileMedia, followProfile, unfollowProfile } from "./profiles.service"
+import { getProfiles, getProfile, createProfile, updateProfileMedia, followProfile, unfollowProfile, deleteProfile } from "./profiles.service"
 
 export interface ProfileIncludes {
   followers?: boolean;
@@ -21,7 +21,7 @@ export async function getProfilesHandler(request: FastifyRequest<{
     sortOrder?: "asc" | "desc"
   }
 }>,
-reply: FastifyReply) {
+  reply: FastifyReply) {
   const { sort, sortOrder, limit, offset, _followers, _following, _posts } = request.query
 
   const includes: ProfileIncludes = {
@@ -45,7 +45,7 @@ export async function getProfileHandler(
   }>,
   reply: FastifyReply
 ) {
-  
+
   const { name } = request.params
   const { _followers, _following, _posts } = request.query
 
@@ -54,7 +54,7 @@ export async function getProfileHandler(
     followers: Boolean(_followers),
     following: Boolean(_following)
   }
-  
+
   const profile = await getProfile(name, includes)
 
   if (!profile) {
@@ -92,7 +92,7 @@ export async function followProfileHandler(
     Params: { name: string },
   }>,
   reply: FastifyReply
-) { 
+) {
   const { name: follower } = request.user as Profile
   const { name: target } = request.params
 
@@ -100,8 +100,8 @@ export async function followProfileHandler(
     return reply.code(400).send("You can't follow yourself")
   }
 
-  const profile = await followProfile(target, follower)    
-  reply.code(200).send(profile);  
+  const profile = await followProfile(target, follower)
+  reply.code(200).send(profile);
 }
 
 export async function unfollowProfileHandler(
@@ -119,4 +119,25 @@ export async function unfollowProfileHandler(
 
   const profile = await unfollowProfile(target, follower)
   reply.code(200).send(profile);
+}
+
+export async function deleteProfileHandler(
+  request: FastifyRequest<{
+    Params: { name: string }
+  }>,
+  reply: FastifyReply
+) {
+  const { name: jwtName } = request.user as Profile
+  const { name: reqName } = request.params
+
+  if (reqName !== jwtName) {
+    return reply.code(403).send("You can't delete other profiles")
+  }
+
+  try {
+    await deleteProfile(reqName)
+    reply.send(204);
+  } catch (error) {
+    reply.code(500).send(error)
+  }
 }

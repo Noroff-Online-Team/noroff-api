@@ -112,3 +112,9 @@ export const unfollowProfile = async (target: string, follower: string) => {
     }
   })
 }
+
+export const deleteProfile = async (name: string) => {
+  return await prisma.profile.delete({
+    where: { name }
+  })
+}
