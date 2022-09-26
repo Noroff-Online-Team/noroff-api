@@ -59,7 +59,7 @@ async function postsRoutes(server: FastifyInstance) {
         tags: ["posts"],
         security: [{ bearerAuth: [] }],
         response: {
-          200: $ref("postSchema")
+          200: $ref("displayPostSchema")
         }
       }
     },
@@ -89,7 +89,7 @@ async function postsRoutes(server: FastifyInstance) {
         tags: ["posts"],
         security: [{ bearerAuth: [] }],
         response: {
-          200: $ref("postSchema")
+          200: $ref("displayPostSchema")
         }
       }
     },
