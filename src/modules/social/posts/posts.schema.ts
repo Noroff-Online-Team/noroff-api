@@ -5,7 +5,7 @@ export const postCore = {
   title: z.string(),
   body: z.string(),
   tags: z.string().array().optional(),
-  media: z.string().optional()
+  media: z.string().url().optional()
 }
 
 const postOwner = {
@@ -77,7 +77,7 @@ export const displayPostSchema = z.object({
   author: z.object({
     name: z.string(),
     email: z.string().email(),
-    avatar: z.string().optional()
+    avatar: z.string().url().optional()
   }).optional(),
   _count: z.object({
     comments: z.number().int().optional(),
