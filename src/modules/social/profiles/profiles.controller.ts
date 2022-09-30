@@ -1,5 +1,6 @@
 import { Prisma, Profile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
+import { mediaGuard } from "./../../../utils/mediaGuard";
 import { ProfileMediaSchema } from "./profiles.schema"
 
 import { getProfiles, getProfile, createProfile, updateProfileMedia, followProfile, unfollowProfile } from "./profiles.service"
@@ -72,6 +73,10 @@ export async function createProfileHandler(
   reply: FastifyReply
 ) {
   const profile = await createProfile(request.body)
+
+  await mediaGuard(profile.banner)
+  await mediaGuard(profile.avatar)
+
   reply.code(200).send(profile);
 }
 
@@ -83,6 +88,9 @@ export async function updateProfileMediaHandler(
   reply: FastifyReply
 ) {
   const { name } = request.params
+  const { avatar, banner } = request.body;
+  await mediaGuard(banner)
+  await mediaGuard(avatar)
   const profile = await updateProfileMedia(name, request.body)
   reply.code(200).send(profile);
 }
