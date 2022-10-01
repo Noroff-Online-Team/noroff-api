@@ -1,5 +1,6 @@
 import { Post, Profile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
+import { mediaGuard } from "./../../../utils/mediaGuard";
 import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
 
 import { getPosts, getPost, createPost, updatePost, createReaction, deletePost, createComment, getComment } from "./posts.service"
@@ -79,6 +80,7 @@ export async function createPostHandler(
   reply: FastifyReply
 ) {
   const { name } = request.user as Profile
+  const { media } = request.body as Post
   const { _author, _reactions, _comments } = request.query
 
   const includes: PostIncludes = {
@@ -88,6 +90,7 @@ export async function createPostHandler(
   }
 
   try {
+    await mediaGuard(media)
     const post = await createPost({
       ...request.body,
       owner: name,
@@ -139,7 +142,10 @@ export async function updatePostHandler(
 ) {
   const { id } = request.params
   const { name } = request.user as Profile
+  const { media } = request.body;
   const { _author, _reactions, _comments } = request.query
+
+  await mediaGuard(media)
 
   const includes: PostIncludes = {
     author: Boolean(_author),
