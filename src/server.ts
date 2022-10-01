@@ -6,6 +6,7 @@ import fStatic from "@fastify/static"
 import fJwt from "@fastify/jwt"
 import fAuth from "@fastify/auth"
 import fRateLimit from "@fastify/rate-limit"
+import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
 
 import swaggerOptions from "./config/swagger"
 
@@ -22,36 +23,13 @@ import postsRoutes from "./modules/social/posts/posts.route"
 import profilesRoutes from "./modules/social/profiles/profiles.route"
 import socialAuthRoutes from "./modules/social/auth/auth.route"
 
-// Schema imports
-import { statusSchemas } from "./modules/status/status.schema"
-import { authSchemas } from "./modules/auth/auth.schema"
-import { bookSchemas } from "./modules/books/books.schema"
-import { catFactSchemas } from "./modules/catFacts/catFacts.schema"
-import { jokeSchemas } from "./modules/jokes/jokes.schema"
-import { nbaTeamSchemas } from "./modules/nbaTeams/nbaTeams.schema"
-import { oldGameSchemas } from "./modules/oldGames/oldGames.schema"
-import { quoteSchemas } from "./modules/quotes/quotes.schema"
-import { postSchemas } from "./modules/social/posts/posts.schema"
-import { profileSchemas } from "./modules/social/profiles/profiles.schema"
-import { socialAuthSchemas } from "./modules/social/auth/auth.schema"
-
-const allSchemas = [
-  ...statusSchemas,
-  ...authSchemas,
-  ...bookSchemas,
-  ...catFactSchemas,
-  ...jokeSchemas,
-  ...nbaTeamSchemas,
-  ...oldGameSchemas,
-  ...quoteSchemas,
-  ...postSchemas,
-  ...profileSchemas,
-  ...socialAuthSchemas
-]
-
 // Main startup
 function buildServer() {
-  const server = Fastify()
+  const server = Fastify().withTypeProvider<ZodTypeProvider>()
+
+  // Set custom validator and serializer compilers for Zod
+  server.setValidatorCompiler(validatorCompiler)
+  server.setSerializerCompiler(serializerCompiler)
 
   // Register rate-limit
   server.register(fRateLimit, {
@@ -103,11 +81,6 @@ function buildServer() {
     req.jwt = server.jwt
     return next()
   })
-
-  // Register schemas so they can be referenced in our routes
-  for (const schema of allSchemas) {
-    server.addSchema(schema)
-  }
 
   // Register and generate swagger docs
   server.register(swagger, swaggerOptions)
