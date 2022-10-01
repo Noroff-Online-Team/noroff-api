@@ -1,7 +1,6 @@
 import { z } from "zod"
-import { buildJsonSchemas } from "fastify-zod"
 
-const oldGameSchema = z.object({
+export const oldGameResponseSchema = z.object({
   id: z.number().int(),
   slug: z.string(),
   name: z.string(),
@@ -11,9 +10,8 @@ const oldGameSchema = z.object({
   genre: z.string().array()
 })
 
-export type OldGameSchema = z.infer<typeof oldGameSchema>
+export const oldGameParamsSchema = z.object({
+  id: z.number().int()
+})
 
-export const { schemas: oldGameSchemas, $ref } = buildJsonSchemas(
-  { oldGameSchema },
-  { $id: "OldGames" }
-)
+export type OldGameSchema = z.infer<typeof oldGameResponseSchema>
