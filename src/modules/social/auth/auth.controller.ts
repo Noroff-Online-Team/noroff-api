@@ -53,6 +53,7 @@ export async function loginHandler(
       accessToken: request.jwt.sign(rest),
       name: profile.name,
       avatar: profile.avatar,
+      banner: profile.banner,
       email: profile.email
     }
   }

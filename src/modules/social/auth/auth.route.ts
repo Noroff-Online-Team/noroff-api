@@ -1,10 +1,7 @@
-import { FastifyInstance } from "fastify";
-import {
-  loginHandler,
-  registerProfileHandler,
-} from "./auth.controller";
-import { $ref } from "./auth.schema";
-import { $ref as $profile } from "../profiles/profiles.schema";
+import { FastifyInstance } from "fastify"
+import { loginHandler, registerProfileHandler } from "./auth.controller"
+import { loginSchema, loginResponseSchema } from "./auth.schema"
+import { createProfileSchema, createProfileResponseSchema } from "../profiles/profiles.schema"
 
 async function socialAuthRoutes(server: FastifyInstance) {
   server.post(
@@ -12,28 +9,28 @@ async function socialAuthRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["social-auth"],
-        body: $profile("createProfileSchema"),
+        body: createProfileSchema,
         response: {
-          201: $profile("createProfileResponseSchema"),
-        },
-      },
+          201: createProfileResponseSchema
+        }
+      }
     },
     registerProfileHandler
-  );
+  )
 
   server.post(
     "/login",
     {
       schema: {
         tags: ["social-auth"],
-        body: $ref("loginSchema"),
+        body: loginSchema,
         response: {
-          200: $ref("loginResponseSchema"),
-        },
-      },
+          200: loginResponseSchema
+        }
+      }
     },
     loginHandler
-  );
+  )
 }
 
-export default socialAuthRoutes;
+export default socialAuthRoutes
