@@ -1,7 +1,6 @@
 import { z } from "zod"
-import { buildJsonSchemas } from "fastify-zod"
 
-const nbaTeamSchema = z.object({
+export const nbaTeamResponseSchema = z.object({
   id: z.number().int(),
   city: z.string(),
   conference: z.string(),
@@ -10,9 +9,8 @@ const nbaTeamSchema = z.object({
   name: z.string()
 })
 
-export type NbaTeamSchema = z.infer<typeof nbaTeamSchema>
+export const nbaTeamParamsSchema = z.object({
+  id: z.number().int()
+})
 
-export const { schemas: nbaTeamSchemas, $ref } = buildJsonSchemas(
-  { nbaTeamSchema },
-  { $id: "NbaTeams" }
-)
+export type NbaTeamSchema = z.infer<typeof nbaTeamResponseSchema>
