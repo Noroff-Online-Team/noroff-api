@@ -1,5 +1,6 @@
 import { SwaggerOptions } from "@fastify/swagger"
 import { withRefResolver } from "fastify-zod"
+import { jsonSchemaTransform } from "fastify-type-provider-zod"
 import { version } from "../../package.json"
 
 const swaggerOptions: SwaggerOptions = withRefResolver({
@@ -35,7 +36,8 @@ const swaggerOptions: SwaggerOptions = withRefResolver({
         description: 'Format "Bearer [token]"'
       }
     }
-  }
+  },
+  transform: jsonSchemaTransform
 })
 
 export default swaggerOptions
