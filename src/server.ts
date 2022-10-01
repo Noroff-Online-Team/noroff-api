@@ -7,6 +7,7 @@ import fJwt from "@fastify/jwt"
 import fAuth from "@fastify/auth"
 import fRateLimit from "@fastify/rate-limit"
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
+import statuses from "statuses"
 
 import swaggerOptions from "./config/swagger"
 
@@ -84,6 +85,28 @@ function buildServer() {
 
   // Register and generate swagger docs
   server.register(swagger, swaggerOptions)
+
+  // Set custom error handler
+  server.setErrorHandler((error, _request, reply) => {
+    interface ParsedError {
+      code: number
+      message: string
+      path: Array<string>
+    }
+
+    const statusCode = error?.statusCode || 500
+    const parsedErrors = JSON.parse(error?.message).map((err: ParsedError) => ({
+      code: err.code,
+      message: err.message,
+      path: err.path
+    }))
+
+    reply.code(statusCode).send({
+      message: parsedErrors || "Something went wrong",
+      error: statuses(statusCode) || "Unkown error",
+      statusCode
+    })
+  })
 
   // Register all routes along with their given prefix
   server.register(statusRoutes, { prefix: "status" })
