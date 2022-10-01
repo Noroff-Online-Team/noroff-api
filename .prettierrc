@@ -9,6 +9,5 @@
   "semi": false,
   "tabWidth": 2,
   "trailingComma": "none",
-  "useTabs": false,
-  "parser": "babel"
+  "useTabs": false
 }
