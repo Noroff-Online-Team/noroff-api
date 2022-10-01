@@ -1,7 +1,6 @@
 import { z } from "zod"
-import { buildJsonSchemas } from "fastify-zod"
 
-const quoteSchema = z.object({
+export const quoteResponseSchema = z.object({
   id: z.number().int(),
   content: z.string(),
   author: z.string(),
@@ -11,9 +10,8 @@ const quoteSchema = z.object({
   length: z.number().int()
 })
 
-export type QuoteSchema = z.infer<typeof quoteSchema>
+export const quoteParamsSchema = z.object({
+  id: z.number().int()
+})
 
-export const { schemas: quoteSchemas, $ref } = buildJsonSchemas(
-  { quoteSchema },
-  { $id: "Quotes" }
-)
+export type QuoteSchema = z.infer<typeof quoteResponseSchema>
