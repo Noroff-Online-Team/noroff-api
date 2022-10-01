@@ -10,7 +10,7 @@ async function bookRoutes(server: FastifyInstance) {
       schema: {
         tags: ["books"],
         response: {
-          200: bookResponseSchema
+          200: bookResponseSchema.array()
         }
       }
     },
