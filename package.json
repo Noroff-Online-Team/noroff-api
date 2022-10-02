@@ -23,7 +23,6 @@
     "axios": "^0.27.2",
     "fastify": "^4.5.3",
     "fastify-type-provider-zod": "^1.1.7",
-    "fastify-zod": "^1.1.0",
     "statuses": "^2.0.1",
     "zod": "^3.19.0",
     "zod-to-json-schema": "^3.18.1"
