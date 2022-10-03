@@ -3,8 +3,8 @@ import { buildJsonSchemas } from "fastify-zod"
 import { postSchema } from "../posts/posts.schema"
 
 const profileMedia = {
-  banner: z.string().url().optional(),
-  avatar: z.string().url().optional()
+  banner: z.string().url().nullable(),
+  avatar: z.string().url().nullable()
 }
 
 const profileMediaSchema = z.object(profileMedia)
@@ -36,7 +36,7 @@ export const profileSchema = z.object({
 
 const followSchema = z.object({
   name: z.string(),
-  avatar: z.string().url().optional()
+  avatar: z.string().url().nullable()
 })
 
 const profileFollows = {
