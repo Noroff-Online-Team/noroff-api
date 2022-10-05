@@ -8,6 +8,7 @@ import fAuth from "@fastify/auth"
 import fRateLimit from "@fastify/rate-limit"
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
 import statuses from "statuses"
+import { ZodError, ZodIssueCode } from "zod"
 
 import swaggerOptions from "./config/swagger"
 
@@ -89,23 +90,28 @@ function buildServer() {
   // Set custom error handler
   server.setErrorHandler((error, _request, reply) => {
     interface ParsedError {
-      code: number
+      code: ZodIssueCode
       message: string
-      path: Array<string>
+      path: Array<string | number>
     }
 
     const statusCode = error?.statusCode || 500
-    const parsedErrors = JSON.parse(error?.message).map((err: ParsedError) => ({
-      code: err.code,
-      message: err.message,
-      path: err.path
-    }))
 
-    reply.code(statusCode).send({
-      message: parsedErrors || "Something went wrong",
-      error: statuses(statusCode) || "Unkown error",
-      statusCode
-    })
+    if (error instanceof ZodError) {
+      const parsedErrors = JSON.parse(error?.message).map((err: ParsedError) => ({
+        code: err.code,
+        message: err.message,
+        path: err.path
+      }))
+
+      return reply.code(statusCode).send({
+        message: parsedErrors || "Something went wrong",
+        error: statuses(statusCode) || "Unkown error",
+        statusCode
+      })
+    }
+
+    reply.code(statusCode).send(error)
   })
 
   // Register all routes along with their given prefix

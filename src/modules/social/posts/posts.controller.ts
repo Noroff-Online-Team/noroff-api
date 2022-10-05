@@ -61,8 +61,8 @@ export async function getPostHandler(
   const post = await getPost(id, includes)
 
   if (!post) {
-    const error = new Error("No post with such ID")
-    return reply.code(404).send(error)
+    reply.code(404).send("No post with such ID")
+    return
   }
 
   return post
