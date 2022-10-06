@@ -104,8 +104,14 @@ export async function followProfileHandler(
   const { name: follower } = request.user as Profile
   const { name: target } = request.params
 
-  if (target === follower) {
+  if (target.toLowerCase() === follower.toLowerCase()) {
     return reply.code(400).send("You can't follow yourself")
+  }
+
+  const profileExists = await getProfile(target)
+
+  if (!profileExists) {
+    return reply.code(400).send("No profile with this name")
   }
 
   const profile = await followProfile(target, follower)    
@@ -121,8 +127,14 @@ export async function unfollowProfileHandler(
   const { name: follower } = request.user as Profile
   const { name: target } = request.params
 
-  if (target === follower) {
+  if (target.toLowerCase() === follower.toLowerCase()) {
     return reply.code(400).send("You can't unfollow yourself")
+  }
+
+  const profileExists = await getProfile(target)
+
+  if (!profileExists) {
+    return reply.code(400).send("No profile with this name")
   }
 
   const profile = await unfollowProfile(target, follower)
