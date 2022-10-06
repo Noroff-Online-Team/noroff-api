@@ -6,7 +6,7 @@ export const catFactResponseSchema = z.object({
 })
 
 export const catFactParamsSchema = z.object({
-  id: z.number().int()
+  id: z.preprocess(val => parseInt(val as string, 10), z.number().int())
 })
 
 export type CatFactSchema = z.infer<typeof catFactResponseSchema>

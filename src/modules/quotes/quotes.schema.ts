@@ -11,7 +11,7 @@ export const quoteResponseSchema = z.object({
 })
 
 export const quoteParamsSchema = z.object({
-  id: z.number().int()
+  id: z.preprocess(val => parseInt(val as string, 10), z.number().int())
 })
 
 export type QuoteSchema = z.infer<typeof quoteResponseSchema>

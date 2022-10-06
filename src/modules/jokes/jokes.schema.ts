@@ -8,7 +8,7 @@ export const jokeResponseSchema = z.object({
 })
 
 export const jokeParamsSchema = z.object({
-  id: z.number().int()
+  id: z.preprocess(val => parseInt(val as string, 10), z.number().int())
 })
 
 export type JokeSchema = z.infer<typeof jokeResponseSchema>
