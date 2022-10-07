@@ -2,6 +2,7 @@ import { Prisma, Profile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "./../../../utils/mediaGuard";
 import { ProfileMediaSchema } from "./profiles.schema"
+import { NotFound, BadRequest } from "http-errors"
 
 import { getProfiles, getProfile, createProfile, updateProfileMedia, followProfile, unfollowProfile } from "./profiles.service"
 
@@ -59,8 +60,7 @@ export async function getProfileHandler(
   const profile = await getProfile(name, includes)
 
   if (!profile) {
-    const error = new Error("No profile with this name")
-    return reply.code(404).send(error)
+    throw new NotFound("No profile with this name")
   }
 
   reply.code(200).send(profile)
@@ -105,13 +105,13 @@ export async function followProfileHandler(
   const { name: target } = request.params
 
   if (target.toLowerCase() === follower.toLowerCase()) {
-    return reply.code(400).send("You can't follow yourself")
+    throw new BadRequest("You can't follow yourself")
   }
 
   const profileExists = await getProfile(target)
 
   if (!profileExists) {
-    return reply.code(400).send("No profile with this name")
+    throw new BadRequest("No profile with this name")
   }
 
   const profile = await followProfile(target, follower)    
@@ -128,13 +128,13 @@ export async function unfollowProfileHandler(
   const { name: target } = request.params
 
   if (target.toLowerCase() === follower.toLowerCase()) {
-    return reply.code(400).send("You can't unfollow yourself")
+    throw new BadRequest("You can't unfollow yourself")
   }
 
   const profileExists = await getProfile(target)
 
   if (!profileExists) {
-    return reply.code(400).send("No profile with this name")
+    throw new BadRequest("No profile with this name")
   }
 
   const profile = await unfollowProfile(target, follower)

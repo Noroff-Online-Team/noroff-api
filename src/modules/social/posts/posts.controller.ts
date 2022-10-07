@@ -2,6 +2,7 @@ import { Post, Profile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "./../../../utils/mediaGuard";
 import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
+import { NotFound, Forbidden, BadRequest } from 'http-errors'
 
 import { getPosts, getPost, createPost, updatePost, createReaction, deletePost, createComment, getComment } from "./posts.service"
 
@@ -45,8 +46,7 @@ export async function getPostHandler(
       _reactions?: boolean
       _comments?: boolean,
     }
-  }>,
-  reply: FastifyReply
+  }>
 ) {
 
   const { id } = request.params
@@ -61,8 +61,7 @@ export async function getPostHandler(
   const post = await getPost(id, includes)
 
   if (!post) {
-    reply.code(404).send("No post with such ID")
-    return
+    throw new NotFound("No post with such ID")
   }
 
   return post
@@ -98,7 +97,7 @@ export async function createPostHandler(
     reply.send(post);
     return post
   } catch (error) {
-    reply.code(400).send(error);
+    reply.code(500).send(error);
   }
 }
 
@@ -111,13 +110,11 @@ export async function deletePostHandler(
   const post = await getPost(id);
 
   if (!post) {
-    reply.code(404).send("Post not found")
-    return
+    throw new NotFound("Post not found")
   }
 
   if (name !== post.owner) {
-    reply.code(403).send("You do not have permission to delete this post")
-    return
+    throw new Forbidden("You do not have permission to delete this post")
   }
 
   try {
@@ -156,13 +153,11 @@ export async function updatePostHandler(
   const post = await getPost(id);
 
   if (!post) {
-    reply.code(404).send("Post not found")
-    return
+    throw new NotFound("Post not found")
   }
 
   if (name !== post.owner) {
-    reply.code(403).send("You do not have permission to edit this post")
-    return
+    throw new Forbidden("You do not have permission to edit this post")
   }
 
   try {
@@ -184,7 +179,7 @@ export async function createReactionHandler(request: FastifyRequest<{
     const match = symbol.match(/\p{Extended_Pictographic}/u)
 
     if (!match) {
-      return reply.code(400).send("Only emoji codes are valid reactions")
+      throw new BadRequest("Only emoji codes are valid reactions")
     }
 
     const result = await createReaction(id, symbol)
@@ -223,13 +218,11 @@ export async function deleteCommentHandler(request: FastifyRequest<{
   const comment = await getComment(id);
 
   if (!comment) {
-    reply.code(404).send("Comment not found")
-    return
+    throw new NotFound("Comment not found")
   }
 
   if (name !== comment.owner) {
-    reply.code(403).send("You do not have permission to delete this comment")
-    return
+    throw new Forbidden("You do not have permission to delete this comment")
   }
 
   try {
