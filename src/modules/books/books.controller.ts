@@ -1,4 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify"
+import { FastifyRequest } from "fastify"
+import { NotFound } from "http-errors"
 
 import { getBooks, getBook, getRandomBook } from "./books.service"
 
@@ -10,15 +11,13 @@ export async function getBooksHandler() {
 export async function getBookHandler(
   request: FastifyRequest<{
     Params: { id: number }
-  }>,
-  reply: FastifyReply
+  }>
 ) {
   const { id } = request.params
   const book = await getBook(id)
 
   if (!book) {
-    const error = new Error("No book with such ID")
-    return reply.code(404).send(error)
+    throw new NotFound("No book with such ID")
   }
 
   return book

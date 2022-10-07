@@ -1,4 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify"
+import { FastifyRequest } from "fastify"
+import { NotFound } from "http-errors"
 
 import { getOldGames, getOldGame, getRandomOldGame } from "./oldGames.service"
 
@@ -10,15 +11,13 @@ export async function getOldGamesHandler() {
 export async function getOldGameHandler(
   request: FastifyRequest<{
     Params: { id: number }
-  }>,
-  reply: FastifyReply
+  }>
 ) {
   const { id } = request.params
   const oldGame = await getOldGame(id)
 
   if (!oldGame) {
-    const error = new Error("No old game with such ID")
-    return reply.code(404).send(error)
+    throw new NotFound("No old game with such ID")
   }
 
   return oldGame
