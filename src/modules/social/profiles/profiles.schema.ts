@@ -6,7 +6,7 @@ const profileMedia = {
     .string({
       invalid_type_error: "Banner must be a string"
     })
-    .url("Avatar must be valid URL")
+    .url("Banner must be valid URL")
     .nullish(),
   avatar: z
     .string({
