@@ -96,6 +96,7 @@ function buildServer() {
     }
 
     const statusCode = error?.statusCode || 500
+    let errors = [error] || "Something went wrong"
 
     if (error instanceof ZodError) {
       const parsedErrors = JSON.parse(error?.message).map((err: ParsedError) => ({
@@ -104,14 +105,14 @@ function buildServer() {
         path: err.path
       }))
 
-      return reply.code(statusCode).send({
-        message: parsedErrors || "Something went wrong",
-        error: statuses(statusCode) || "Unkown error",
-        statusCode
-      })
+      errors = parsedErrors
     }
 
-    reply.code(statusCode).send(error)
+    reply.code(statusCode).send({
+      errors,
+      status: statuses(statusCode) || "Unkown error",
+      statusCode
+    })
   })
 
   // Register all routes along with their given prefix
