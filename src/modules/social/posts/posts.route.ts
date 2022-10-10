@@ -4,6 +4,7 @@ import {
   displayPostSchema,
   postsQuerySchema,
   createPostBaseSchema,
+  updatePostBodySchema,
   queryFlagsSchema,
   postIdParamsSchema,
   reactionSchema,
@@ -65,7 +66,7 @@ async function postsRoutes(server: FastifyInstance) {
         security: [{ bearerAuth: [] }],
         querystring: queryFlagsSchema,
         params: postIdParamsSchema,
-        body: createPostBaseSchema,
+        body: updatePostBodySchema,
         response: {
           200: displayPostSchema
         }

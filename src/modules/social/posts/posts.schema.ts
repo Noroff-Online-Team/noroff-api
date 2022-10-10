@@ -1,16 +1,33 @@
 import { z } from "zod"
 
+const tagsAndMedia = {
+  tags: z.string().array().nullish(),
+  media: z.string().url("Must be valid URL").nullish()
+}
+
 export const postCore = {
   title: z.string({
     invalid_type_error: "Title must be a string",
     required_error: "Title is required"
   }),
   body: z.string({
-    invalid_type_error: "Body must be a string",
-    required_error: "Body is required"
+    invalid_type_error: "Body must be a string"
   }),
-  tags: z.string().array().nullish(),
-  media: z.string().url("Must be valid URL").nullish()
+  ...tagsAndMedia
+}
+
+const updatePostCore = {
+  title: z
+    .string({
+      invalid_type_error: "Title must be a string"
+    })
+    .nullish(),
+  body: z
+    .string({
+      invalid_type_error: "Body must be a string"
+    })
+    .nullish(),
+  ...tagsAndMedia
 }
 
 const postOwner = {
@@ -91,6 +108,10 @@ export const postSchema = z.object({
 export const createPostBaseSchema = z.object({
   ...postCore
 })
+
+export const updatePostBodySchema = z
+  .object(updatePostCore)
+  .refine(({ title, body }) => !!title || !!body, "You must provide either title or body")
 
 export const createPostSchema = z.object({
   ...postOwner,
