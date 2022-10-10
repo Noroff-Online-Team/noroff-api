@@ -46,9 +46,7 @@ export const createProfileResponseSchema = z.object({
   ...profileCore
 })
 
-export const profileSchema = z.object({
-  ...profileCore
-})
+export const profileSchema = z.object(profileCore)
 
 const followSchema = z.object({
   name: z.string(),

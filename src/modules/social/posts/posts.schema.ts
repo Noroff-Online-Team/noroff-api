@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 const tagsAndMedia = {
-  tags: z.string().array().nullish(),
+  tags: z.union([z.string().array(), z.undefined()]),
   media: z.string().url("Must be valid URL").nullish()
 }
 
@@ -82,9 +82,7 @@ const commentCore = {
     .nullish()
 }
 
-export const createCommentSchema = z.object({
-  ...commentCore
-})
+export const createCommentSchema = z.object(commentCore)
 
 export const displayCommentSchema = z.object({
   ...commentCore,
@@ -105,9 +103,7 @@ export const postSchema = z.object({
   ...postCore
 })
 
-export const createPostBaseSchema = z.object({
-  ...postCore
-})
+export const createPostBaseSchema = z.object(postCore)
 
 export const updatePostBodySchema = z
   .object(updatePostCore)
