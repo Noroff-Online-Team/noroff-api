@@ -110,7 +110,7 @@ function buildServer() {
 
     reply.code(statusCode).send({
       errors,
-      status: statuses(statusCode) || "Unkown error",
+      status: statuses(statusCode) || "Unknown error",
       statusCode
     })
   })
