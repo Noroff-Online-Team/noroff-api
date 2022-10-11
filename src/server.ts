@@ -115,6 +115,18 @@ function buildServer() {
     })
   })
 
+  // Set custom not found handler to match our error format
+  server.setNotFoundHandler((request, reply) => {
+    const { url, method } = request.raw
+    const statusCode = 404
+
+    reply.code(statusCode).send({
+      errors: [{ message: `Route ${method}:${url} not found` }],
+      status: statuses(statusCode),
+      statusCode
+    })
+  })
+
   // Register all routes along with their given prefix
   server.register(statusRoutes, { prefix: "status" })
   server.register(authRoutes, { prefix: "api/v1/auth" })
