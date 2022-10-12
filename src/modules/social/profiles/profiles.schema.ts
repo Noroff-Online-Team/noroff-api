@@ -79,9 +79,9 @@ export const displayProfileSchema = z.object({
 })
 
 const queryFlagsCore = {
-  _followers: z.preprocess(val => Boolean(val), z.boolean()).optional(),
-  _following: z.preprocess(val => Boolean(val), z.boolean()).optional(),
-  _posts: z.preprocess(val => Boolean(val), z.boolean()).optional()
+  _followers: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
+  _following: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
+  _posts: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)

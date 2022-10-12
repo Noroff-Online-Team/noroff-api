@@ -138,14 +138,14 @@ export const displayPostSchema = z.object({
 
 export const authorQuerySchema = z
   .object({
-    _author: z.preprocess(val => Boolean(val), z.boolean())
+    _author: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean())
   })
   .optional()
 
 const queryFlagsCore = {
-  _author: z.preprocess(val => Boolean(val), z.boolean()).optional(),
-  _reactions: z.preprocess(val => Boolean(val), z.boolean()).optional(),
-  _comments: z.preprocess(val => Boolean(val), z.boolean()).optional()
+  _author: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
+  _reactions: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
+  _comments: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
