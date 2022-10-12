@@ -27,6 +27,10 @@ export async function getProfilesHandler(request: FastifyRequest<{
 reply: FastifyReply) {
   const { sort, sortOrder, limit, offset, _followers, _following, _posts } = request.query
 
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
+  }
+
   const includes: ProfileIncludes = {
     posts: Boolean(_posts),
     followers: Boolean(_followers),

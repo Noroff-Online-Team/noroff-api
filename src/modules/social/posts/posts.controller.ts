@@ -30,6 +30,10 @@ export async function getPostsHandler(
 ) {
   const { sort, sortOrder, limit, offset, _author, _reactions, _comments } = request.query
 
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
+  }
+
   const includes: PostIncludes = {
     author: Boolean(_author),
     reactions: Boolean(_reactions),
