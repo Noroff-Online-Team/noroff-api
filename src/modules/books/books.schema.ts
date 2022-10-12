@@ -13,7 +13,9 @@ export const bookResponseSchema = z.object({
 })
 
 export const bookParamsSchema = z.object({
-  id: z.preprocess(val => parseInt(val as string, 10), z.number().int())
+  id: z.preprocess(val => parseInt(val as string, 10), z.number({
+    invalid_type_error: "ID parameter must be a number"
+  }).int())
 })
 
 export type BookSchema = z.infer<typeof bookResponseSchema>

@@ -11,7 +11,9 @@ export const oldGameResponseSchema = z.object({
 })
 
 export const oldGameParamsSchema = z.object({
-  id: z.preprocess(val => parseInt(val as string, 10), z.number().int())
+  id: z.preprocess(val => parseInt(val as string, 10), z.number({
+    invalid_type_error: "ID parameter must be a number"
+  }).int())
 })
 
 export type OldGameSchema = z.infer<typeof oldGameResponseSchema>
