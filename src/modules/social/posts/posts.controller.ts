@@ -188,6 +188,12 @@ export async function createReactionHandler(request: FastifyRequest<{
       throw new BadRequest("Only emoji codes are valid reactions")
     }
 
+    const post = await getPost(id)
+
+    if (!post) {
+      throw new NotFound("Post not found")
+    }
+
     const result = await createReaction(id, symbol)
     reply.send(result);
     return result

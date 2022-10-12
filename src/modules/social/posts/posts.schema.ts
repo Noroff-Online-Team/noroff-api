@@ -6,13 +6,17 @@ const tagsAndMedia = {
 }
 
 export const postCore = {
-  title: z.string({
-    invalid_type_error: "Title must be a string",
-    required_error: "Title is required"
-  }),
-  body: z.string({
-    invalid_type_error: "Body must be a string"
-  }),
+  title: z
+    .string({
+      invalid_type_error: "Title must be a string",
+      required_error: "Title is required"
+    })
+    .trim(),
+  body: z
+    .string({
+      invalid_type_error: "Body must be a string"
+    })
+    .trim(),
   ...tagsAndMedia
 }
 
@@ -21,11 +25,13 @@ const updatePostCore = {
     .string({
       invalid_type_error: "Title must be a string"
     })
+    .trim()
     .nullish(),
   body: z
     .string({
       invalid_type_error: "Body must be a string"
     })
+    .trim()
     .nullish(),
   ...tagsAndMedia
 }
@@ -54,7 +60,7 @@ export const reactionSchema = z.object({
 })
 
 export const reactionParamsSchema = z.object({
-  symbol: z.string().regex(/\p{Extended_Pictographic}/u, "Must be a valid emoji"),
+  symbol: z.string().regex(/\p{Extended_Pictographic}/u, "Must be a valid emoji").trim(),
   id: z.preprocess(
     val => parseInt(val as string, 10),
     z
@@ -74,12 +80,10 @@ const commentCore = {
   body: z.string({
     invalid_type_error: "Body must be a string",
     required_error: "Body is required"
-  }),
-  replyToId: z
-    .number({
-      invalid_type_error: "ReplyToId must be a number"
-    })
-    .nullish()
+  }).trim(),
+  replyToId: z.number({
+    invalid_type_error: "ReplyToId must be a number"
+  }).int().nullish()
 }
 
 export const createCommentSchema = z.object(commentCore)
@@ -154,8 +158,12 @@ export const postsQuerySchema = z
   .object({
     sort: z.string().optional(),
     sortOrder: z.string().optional(),
-    limit: z.preprocess(val => parseInt(val as string, 10), z.number().int()).optional(),
-    offset: z.preprocess(val => parseInt(val as string, 10), z.number().int()).optional(),
+    limit: z.preprocess(val => parseInt(val as string, 10), z.number({
+      invalid_type_error: "Limit must be a number"
+    }).int().max(100, "Limit cannot be greater than 100")).optional(),
+    offset: z.preprocess(val => parseInt(val as string, 10), z.number({
+      invalid_type_error: "Offset must be a number"
+    }).int()).optional(),
     ...queryFlagsCore
   })
   .optional()

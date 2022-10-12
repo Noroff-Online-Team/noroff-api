@@ -57,7 +57,7 @@ export const profileNameSchema = z.object({
   name: z.string({
     required_error: "Name is required",
     invalid_type_error: "Name must be a string"
-  })
+  }).trim()
 })
 
 const profileFollows = {
@@ -90,8 +90,12 @@ export const profilesQuerySchema = z
   .object({
     sort: z.string().optional(),
     sortOrder: z.string().optional(),
-    limit: z.preprocess(val => parseInt(val as string, 10), z.number().int()).optional(),
-    offset: z.preprocess(val => parseInt(val as string, 10), z.number().int()).optional(),
+    limit: z.preprocess(val => parseInt(val as string, 10), z.number({
+      invalid_type_error: "Limit must be a number"
+    }).int().max(100, "Limit cannot be greater than 100")).optional(),
+    offset: z.preprocess(val => parseInt(val as string, 10), z.number({
+      invalid_type_error: "Offset must be a number"
+    }).int()).optional(),
     ...queryFlagsCore
   })
   .optional()
