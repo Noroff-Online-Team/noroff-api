@@ -103,3 +103,5 @@ export type DisplayProfileSchema = z.infer<typeof displayProfileSchema>
 export type CreateProfileInput = z.infer<typeof createProfileSchema>
 
 export type ProfileMediaSchema = z.infer<typeof profileMediaSchema>
+
+export type FollowSchema = z.infer<typeof followSchema>

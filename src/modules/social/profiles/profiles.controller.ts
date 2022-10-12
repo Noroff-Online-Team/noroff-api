@@ -5,6 +5,7 @@ import { ProfileMediaSchema } from "./profiles.schema"
 import { NotFound, BadRequest } from "http-errors"
 
 import { getProfiles, getProfile, createProfile, updateProfileMedia, followProfile, unfollowProfile } from "./profiles.service"
+import { checkIsUserFollowing } from "./profiles.utils"
 
 export interface ProfileIncludes {
   followers?: boolean;
@@ -114,6 +115,12 @@ export async function followProfileHandler(
     throw new BadRequest("No profile with this name")
   }
 
+  const isFollowing = await checkIsUserFollowing(follower, target)
+
+  if (isFollowing) {
+    throw new BadRequest("You are already following this profile")
+  }
+
   const profile = await followProfile(target, follower)    
   reply.code(200).send(profile);  
 }
@@ -135,6 +142,12 @@ export async function unfollowProfileHandler(
 
   if (!profileExists) {
     throw new BadRequest("No profile with this name")
+  }
+
+  const isFollowing = await checkIsUserFollowing(follower, target)
+
+  if (!isFollowing) {
+    throw new BadRequest("You are not following this profile")
   }
 
   const profile = await unfollowProfile(target, follower)
