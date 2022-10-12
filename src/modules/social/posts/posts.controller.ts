@@ -1,4 +1,4 @@
-import { Post, Profile } from "@prisma/client"
+import { Prisma, Post, Profile, Comment } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "./../../../utils/mediaGuard";
 import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
@@ -11,6 +11,8 @@ export interface PostIncludes {
   reactions?: boolean;
   comments?: boolean;
 }
+
+type PostWithComments = Prisma.PromiseReturnType<typeof getPost> & { comments: Array<Comment> | [] }
 
 export async function getPostsHandler(
   request: FastifyRequest<{
@@ -198,6 +200,28 @@ export async function createCommentHandler(request: FastifyRequest<{
 ) {
   const { id } = request.params
   const { name } = request.user as Profile
+  const { replyToId } = request.body
+
+  const post = await getPost(id, { comments: true }) as PostWithComments | null
+
+  if (!post) {
+    throw new NotFound("Post not found")
+  }
+
+  if (replyToId) {
+    const replyComment = await getComment(replyToId);
+
+    if (!replyComment) {
+      throw new NotFound("You can't reply to a comment that does not exist")
+    }
+
+    const isRelatedToPost = post.comments?.find((comment) => comment.id === replyToId)
+    
+    if (isRelatedToPost) {
+      throw new BadRequest("Comment is not related to this post")
+    }
+  }
+
   try {
     const result = await createComment(id, name, request.body)
     reply.send(result);
