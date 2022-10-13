@@ -154,10 +154,17 @@ const queryFlagsCore = {
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
+const postSortKeys = Object.keys({ ...postId, ...postOwner, ...postMeta, ...postCore })
+const postSortOrder = ["asc", "desc"]
+
 export const postsQuerySchema = z
   .object({
-    sort: z.string().optional(),
-    sortOrder: z.string().optional(),
+    sort: z.string({
+      invalid_type_error: "Sort must be a string"
+    }).optional().refine(val => postSortKeys.includes(val as string), `Sort must be one of ${postSortKeys.join(', ')}`),
+    sortOrder: z.string({
+      invalid_type_error: "Sort order must be a string"
+    }).optional().refine(val => postSortOrder.includes(val as string), "Sort order must be either asc or desc"),
     limit: z.preprocess(val => parseInt(val as string, 10), z.number({
       invalid_type_error: "Limit must be a number"
     }).int().max(100, "Limit cannot be greater than 100")).optional(),
