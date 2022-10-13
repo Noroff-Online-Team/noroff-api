@@ -1,8 +1,12 @@
 import { z } from "zod"
 
 const tagsAndMedia = {
-  tags: z.union([z.string().array(), z.undefined()]),
-  media: z.string().url("Must be valid URL").nullish()
+  tags: z.union([z.string({
+    invalid_type_error: "Tags must be an array of strings"
+  }).array(), z.undefined()]),
+  media: z.string({
+    invalid_type_error: "Media must be a string",
+  }).url("Must be valid URL").nullish()
 }
 
 export const postCore = {
@@ -45,7 +49,9 @@ const postId = {
 }
 
 export const postIdParamsSchema = z.object({
-  id: z.preprocess(val => parseInt(val as string, 10), z.number().int())
+  id: z.preprocess(val => parseInt(val as string, 10), z.number({
+    invalid_type_error: "Post ID must be a number"
+  }).int())
 })
 
 const postMeta = {
