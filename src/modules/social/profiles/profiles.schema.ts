@@ -7,18 +7,16 @@ const profileMedia = {
       invalid_type_error: "Banner must be a string"
     })
     .url("Banner must be valid URL")
-    .nullish(),
+    .nullish().or(z.literal("")),
   avatar: z
     .string({
       invalid_type_error: "Avatar must be a string"
     })
     .url("Avatar must be valid URL")
-    .nullish()
+    .nullish().or(z.literal(""))
 }
 
-export const profileMediaSchema = z
-  .object(profileMedia)
-  .refine(({ banner, avatar }) => !!banner || !!avatar, "You must provide either a banner or avatar")
+export const profileMediaSchema = z.object(profileMedia)
 
 export const profileCore = {
   name: z.string().regex(/^[\w]+$/, "Name can only use a-Z, 0-9, and _"),
@@ -86,18 +84,14 @@ const queryFlagsCore = {
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
-const profilesKeys = { id: z.number(), ...profileCore }
-const profilesSortKeys = Object.keys(profilesKeys)
-const profilesSortOrder = ["asc", "desc"]
-
 export const profilesQuerySchema = z
   .object({
     sort: z.string({
       invalid_type_error: "Sort must be a string"
-    }).optional().refine(val => profilesSortKeys.includes(val as string), `Sort must be one of ${profilesSortKeys.join(', ')}`),
+    }).optional(),
     sortOrder: z.string({
       invalid_type_error: "Sort order must be a string"
-    }).optional().refine(val => profilesSortOrder.includes(val as string), "Sort order must be either asc or desc"),
+    }).optional(),
     limit: z.preprocess(val => parseInt(val as string, 10), z.number({
       invalid_type_error: "Limit must be a number"
     }).int().max(100, "Limit cannot be greater than 100")).optional(),
@@ -106,7 +100,6 @@ export const profilesQuerySchema = z
     }).int()).optional(),
     ...queryFlagsCore
   })
-  .optional()
 
 export type ProfileSchema = z.infer<typeof profileSchema>
 
