@@ -6,7 +6,7 @@ const tagsAndMedia = {
   }).array(), z.undefined()]),
   media: z.string({
     invalid_type_error: "Media must be a string",
-  }).url("Must be valid URL").nullish()
+  }).url("Must be valid URL").nullish().or(z.literal(""))
 }
 
 export const postCore = {
@@ -160,17 +160,14 @@ const queryFlagsCore = {
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
-const postSortKeys = Object.keys({ ...postId, ...postOwner, ...postMeta, ...postCore })
-const postSortOrder = ["asc", "desc"]
-
 export const postsQuerySchema = z
   .object({
     sort: z.string({
       invalid_type_error: "Sort must be a string"
-    }).optional().refine(val => postSortKeys.includes(val as string), `Sort must be one of ${postSortKeys.join(', ')}`),
+    }).optional(),
     sortOrder: z.string({
       invalid_type_error: "Sort order must be a string"
-    }).optional().refine(val => postSortOrder.includes(val as string), "Sort order must be either asc or desc"),
+    }).optional(),
     limit: z.preprocess(val => parseInt(val as string, 10), z.number({
       invalid_type_error: "Limit must be a number"
     }).int().max(100, "Limit cannot be greater than 100")).optional(),
@@ -179,7 +176,6 @@ export const postsQuerySchema = z
     }).int()).optional(),
     ...queryFlagsCore
   })
-  .optional()
 
 export type PostSchema = z.infer<typeof postSchema>
 
