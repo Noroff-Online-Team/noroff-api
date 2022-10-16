@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { verifyPassword } from "../../../utils/hash"
+import { mediaGuard } from "./../../../utils/mediaGuard"
 import { CreateProfileInput } from "../profiles/profiles.schema"
-import { getProfile } from "../profiles/profiles.service"
 import { LoginInput } from "./auth.schema"
-import { createProfile, findProfileByEmail } from "./auth.service"
+import { createProfile, findProfileByEmail, findProfileByEmailOrName } from "./auth.service"
 import { BadRequest, Unauthorized } from "http-errors"
 
 export async function registerProfileHandler(
@@ -14,9 +14,14 @@ export async function registerProfileHandler(
 ) {
   const body = request.body
 
-  if (await getProfile(body.name)) {
+  const checkProfile = await findProfileByEmailOrName(body.email, body.name)
+  
+  if (checkProfile) {
     throw new BadRequest("Profile already exists")
   }
+  
+  await mediaGuard(body.banner)
+  await mediaGuard(body.avatar)
 
   const profile = await createProfile(body)
   return reply.code(201).send(profile)

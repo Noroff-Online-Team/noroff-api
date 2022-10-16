@@ -20,3 +20,11 @@ export async function findProfileByEmail(email: string) {
     }
   })
 }
+
+export const findProfileByEmailOrName = async (email: string, name: string) => {
+  return await prisma.profile.findFirst({
+    where: {
+      OR: [{ name }, { email }]
+    }
+  })
+}
