@@ -7,25 +7,32 @@ const profileMedia = {
       invalid_type_error: "Banner must be a string"
     })
     .url("Banner must be valid URL")
-    .nullish().or(z.literal("")),
+    .nullish()
+    .or(z.literal("")),
   avatar: z
     .string({
       invalid_type_error: "Avatar must be a string"
     })
     .url("Avatar must be valid URL")
-    .nullish().or(z.literal(""))
+    .nullish()
+    .or(z.literal(""))
 }
 
 export const profileMediaSchema = z.object(profileMedia)
 
 export const profileCore = {
-  name: z.string().regex(/^[\w]+$/, "Name can only use a-Z, 0-9, and _"),
+  name: z
+    .string()
+    .regex(/^[\w]+$/, "Name can only use a-Z, 0-9, and _")
+    .max(20, "Name cannot be greater than 20 characters")
+    .trim(),
   email: z
     .string({
       invalid_type_error: "Email must be a string"
     })
     .email()
-    .regex(/^[\w\-.]+@(stud.)?noroff.no$/, "Only noroff.no emails are allowed to register"),
+    .regex(/^[\w\-.]+@(stud.)?noroff.no$/, "Only noroff.no emails are allowed to register")
+    .trim(),
   ...profileMedia
 }
 
@@ -84,22 +91,40 @@ const queryFlagsCore = {
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
-export const profilesQuerySchema = z
-  .object({
-    sort: z.string({
+export const profilesQuerySchema = z.object({
+  sort: z
+    .string({
       invalid_type_error: "Sort must be a string"
-    }).optional(),
-    sortOrder: z.string({
+    })
+    .optional(),
+  sortOrder: z
+    .string({
       invalid_type_error: "Sort order must be a string"
-    }).optional(),
-    limit: z.preprocess(val => parseInt(val as string, 10), z.number({
-      invalid_type_error: "Limit must be a number"
-    }).int().max(100, "Limit cannot be greater than 100")).optional(),
-    offset: z.preprocess(val => parseInt(val as string, 10), z.number({
-      invalid_type_error: "Offset must be a number"
-    }).int()).optional(),
-    ...queryFlagsCore
-  })
+    })
+    .optional(),
+  limit: z
+    .preprocess(
+      val => parseInt(val as string, 10),
+      z
+        .number({
+          invalid_type_error: "Limit must be a number"
+        })
+        .int()
+        .max(100, "Limit cannot be greater than 100")
+    )
+    .optional(),
+  offset: z
+    .preprocess(
+      val => parseInt(val as string, 10),
+      z
+        .number({
+          invalid_type_error: "Offset must be a number"
+        })
+        .int()
+    )
+    .optional(),
+  ...queryFlagsCore
+})
 
 export type ProfileSchema = z.infer<typeof profileSchema>
 

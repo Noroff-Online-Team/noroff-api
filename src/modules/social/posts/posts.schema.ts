@@ -15,11 +15,13 @@ export const postCore = {
       invalid_type_error: "Title must be a string",
       required_error: "Title is required"
     })
+    .max(280, "Title cannot be greater than 280 characters")
     .trim(),
   body: z
     .string({
       invalid_type_error: "Body must be a string"
     })
+    .max(280, "Body cannot be greater than 280 characters")
     .trim(),
   ...tagsAndMedia
 }
@@ -29,12 +31,14 @@ const updatePostCore = {
     .string({
       invalid_type_error: "Title must be a string"
     })
+    .max(280, "Title cannot be greater than 280 characters")
     .trim()
     .nullish(),
   body: z
     .string({
       invalid_type_error: "Body must be a string"
     })
+    .max(280, "Body cannot be greater than 280 characters")
     .trim()
     .nullish(),
   ...tagsAndMedia
@@ -83,10 +87,13 @@ const reactions = {
 }
 
 const commentCore = {
-  body: z.string({
-    invalid_type_error: "Body must be a string",
-    required_error: "Body is required"
-  }).trim(),
+  body: z
+    .string({
+      invalid_type_error: "Body must be a string",
+      required_error: "Body is required"
+    })
+    .max(280, "Body cannot be greater than 280 characters")
+    .trim(),
   replyToId: z.number({
     invalid_type_error: "ReplyToId must be a number"
   }).int().nullish()
