@@ -55,7 +55,7 @@ export const profileSchema = z.object(profileCore)
 
 const followSchema = z.object({
   name: z.string(),
-  avatar: z.string().url().nullable()
+  avatar: z.string().url().nullable().or(z.literal(""))
 })
 
 export const profileNameSchema = z.object({
@@ -68,8 +68,20 @@ export const profileNameSchema = z.object({
 })
 
 const profileFollows = {
-  followers: followSchema.array().optional(),
-  following: followSchema.array().optional()
+  followers: z
+    .object({
+      name: z.string(),
+      avatar: z.string().url().nullable().or(z.literal(""))
+    })
+    .array()
+    .optional(),
+  following: z
+    .object({
+      name: z.string(),
+      avatar: z.string().url().nullable().or(z.literal(""))
+    })
+    .array()
+    .optional()
 }
 
 export const displayProfileSchema = z.object({
