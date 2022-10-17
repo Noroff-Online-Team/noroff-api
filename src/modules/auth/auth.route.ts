@@ -1,6 +1,6 @@
 import { FastifyInstance } from "fastify"
 
-import { $ref } from "./auth.schema"
+import { loginSchema, authResponseSchema } from "./auth.schema"
 import { getTokenHandler } from "./auth.controller"
 
 async function authRoutes(server: FastifyInstance) {
@@ -9,9 +9,9 @@ async function authRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["auth"],
-        body: $ref("loginSchema"),
+        body: loginSchema,
         response: {
-          200: $ref("authResponseSchema")
+          200: authResponseSchema
         }
       }
     },

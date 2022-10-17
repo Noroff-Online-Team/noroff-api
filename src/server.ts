@@ -3,60 +3,40 @@ import Fastify, { FastifyRequest, FastifyReply } from "fastify"
 import cors from "@fastify/cors"
 import swagger from "@fastify/swagger"
 import fStatic from "@fastify/static"
-import fJwt from '@fastify/jwt'
-import fAuth from '@fastify/auth'
-import fRateLimit from '@fastify/rate-limit'
+import fJwt from "@fastify/jwt"
+import fAuth from "@fastify/auth"
+import fRateLimit from "@fastify/rate-limit"
+import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
+import statuses from "statuses"
+import { ZodError, ZodIssueCode } from "zod"
 
-import swaggerOptions from './config/swagger'
+import swaggerOptions from "./config/swagger"
 
 // Route imports
 import statusRoutes from "./modules/status/status.route"
-import authRoutes from './modules/auth/auth.route'
+import authRoutes from "./modules/auth/auth.route"
 import bookRoutes from "./modules/books/books.route"
 import catFactRoutes from "./modules/catFacts/catFacts.route"
 import jokeRoutes from "./modules/jokes/jokes.route"
 import nbaTeamRoutes from "./modules/nbaTeams/nbaTeams.route"
 import oldGameRoutes from "./modules/oldGames/oldGames.route"
-import quotesRoutes from './modules/quotes/quotes.route'
+import quotesRoutes from "./modules/quotes/quotes.route"
 import postsRoutes from "./modules/social/posts/posts.route"
 import profilesRoutes from "./modules/social/profiles/profiles.route"
 import socialAuthRoutes from "./modules/social/auth/auth.route"
 
-// Schema imports
-import { statusSchemas } from "./modules/status/status.schema"
-import { authSchemas } from './modules/auth/auth.schema'
-import { bookSchemas } from "./modules/books/books.schema"
-import { catFactSchemas } from "./modules/catFacts/catFacts.schema"
-import { jokeSchemas } from "./modules/jokes/jokes.schema"
-import { nbaTeamSchemas } from "./modules/nbaTeams/nbaTeams.schema"
-import { oldGameSchemas } from "./modules/oldGames/oldGames.schema"
-import { quoteSchemas } from './modules/quotes/quotes.schema'
-import { postSchemas } from "./modules/social/posts/posts.schema"
-import { profileSchemas } from "./modules/social/profiles/profiles.schema"
-import { socialAuthSchemas } from "./modules/social/auth/auth.schema"
-
-const allSchemas = [
-  ...statusSchemas,
-  ...authSchemas,
-  ...bookSchemas,
-  ...catFactSchemas,
-  ...jokeSchemas,
-  ...nbaTeamSchemas,
-  ...oldGameSchemas,
-  ...quoteSchemas,
-  ...postSchemas,
-  ...profileSchemas,
-  ...socialAuthSchemas
-]
-
 // Main startup
 function buildServer() {
-  const server = Fastify()
+  const server = Fastify().withTypeProvider<ZodTypeProvider>()
+
+  // Set custom validator and serializer compilers for Zod
+  server.setValidatorCompiler(validatorCompiler)
+  server.setSerializerCompiler(serializerCompiler)
 
   // Register rate-limit
   server.register(fRateLimit, {
     max: 30,
-    timeWindow: '1 minute',
+    timeWindow: "1 minute"
   })
 
   // Register CORS
@@ -77,7 +57,7 @@ function buildServer() {
   // Register Auth
   server.register(fAuth)
 
-  server.addContentTypeParser('application/json', {parseAs: 'string'}, (_request, body, done) => {
+  server.addContentTypeParser("application/json", { parseAs: "string" }, (_request, body, done) => {
     if (!body) {
       done(null)
     }
@@ -100,17 +80,52 @@ function buildServer() {
 
   // Add JWT to the request object so we can access it in our controllers.
   server.addHook("preHandler", (req, reply, next) => {
-    req.jwt = server.jwt;
-    return next();
-  });
-
-  // Register schemas so they can be referenced in our routes
-  for (const schema of allSchemas) {
-    server.addSchema(schema)
-  }
+    req.jwt = server.jwt
+    return next()
+  })
 
   // Register and generate swagger docs
   server.register(swagger, swaggerOptions)
+
+  // Set custom error handler
+  server.setErrorHandler((error, _request, reply) => {
+    interface ParsedError {
+      code: ZodIssueCode
+      message: string
+      path: Array<string | number>
+    }
+
+    const statusCode = error?.statusCode || 500
+    let errors = [error] || "Something went wrong"
+
+    if (error instanceof ZodError) {
+      const parsedErrors = JSON.parse(error?.message).map((err: ParsedError) => ({
+        code: err.code,
+        message: err.message,
+        path: err.path
+      }))
+
+      errors = parsedErrors
+    }
+
+    reply.code(statusCode).send({
+      errors,
+      status: statuses(statusCode) || "Unknown error",
+      statusCode
+    })
+  })
+
+  // Set custom not found handler to match our error format
+  server.setNotFoundHandler((request, reply) => {
+    const { url, method } = request.raw
+    const statusCode = 404
+
+    reply.code(statusCode).send({
+      errors: [{ message: `Route ${method}:${url} not found` }],
+      status: statuses(statusCode),
+      statusCode
+    })
+  })
 
   // Register all routes along with their given prefix
   server.register(statusRoutes, { prefix: "status" })

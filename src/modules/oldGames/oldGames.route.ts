@@ -1,11 +1,7 @@
 import { FastifyInstance } from "fastify"
 
-import { $ref } from "./oldGames.schema"
-import {
-  getOldGamesHandler,
-  getOldGameHandler,
-  getRandomOldGameHandler
-} from "./oldGames.controller"
+import { oldGameResponseSchema, oldGameParamsSchema } from "./oldGames.schema"
+import { getOldGamesHandler, getOldGameHandler, getRandomOldGameHandler } from "./oldGames.controller"
 
 async function oldGameRoutes(server: FastifyInstance) {
   server.get(
@@ -14,10 +10,7 @@ async function oldGameRoutes(server: FastifyInstance) {
       schema: {
         tags: ["old-games"],
         response: {
-          200: {
-            type: "array",
-            items: $ref("oldGameSchema")
-          }
+          200: oldGameResponseSchema.array()
         }
       }
     },
@@ -30,7 +23,7 @@ async function oldGameRoutes(server: FastifyInstance) {
       schema: {
         tags: ["old-games"],
         response: {
-          200: $ref("oldGameSchema")
+          200: oldGameResponseSchema
         }
       }
     },
@@ -42,14 +35,9 @@ async function oldGameRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["old-games"],
-        params: {
-          type: "object",
-          properties: {
-            id: { type: "integer" }
-          }
-        },
+        params: oldGameParamsSchema,
         response: {
-          200: $ref("oldGameSchema")
+          200: oldGameResponseSchema
         }
       }
     },

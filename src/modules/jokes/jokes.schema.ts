@@ -1,16 +1,16 @@
 import { z } from "zod"
-import { buildJsonSchemas } from "fastify-zod"
 
-const jokeSchema = z.object({
+export const jokeResponseSchema = z.object({
   id: z.number().int(),
   type: z.string(),
   setup: z.string(),
   punchline: z.string()
 })
 
-export type JokeSchema = z.infer<typeof jokeSchema>
+export const jokeParamsSchema = z.object({
+  id: z.preprocess(val => parseInt(val as string, 10), z.number({
+    invalid_type_error: "ID parameter must be a number"
+  }).int())
+})
 
-export const { schemas: jokeSchemas, $ref } = buildJsonSchemas(
-  { jokeSchema },
-  { $id: "Jokes" }
-)
+export type JokeSchema = z.infer<typeof jokeResponseSchema>

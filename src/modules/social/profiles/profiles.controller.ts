@@ -1,29 +1,37 @@
-import { Prisma, Profile } from "@prisma/client"
+import { Profile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { mediaGuard } from "./../../../utils/mediaGuard";
+import { mediaGuard } from "./../../../utils/mediaGuard"
 import { ProfileMediaSchema } from "./profiles.schema"
+import { NotFound, BadRequest } from "http-errors"
 
-import { getProfiles, getProfile, createProfile, updateProfileMedia, followProfile, unfollowProfile } from "./profiles.service"
+import { getProfiles, getProfile, updateProfileMedia, followProfile, unfollowProfile } from "./profiles.service"
+import { checkIsUserFollowing } from "./profiles.utils"
 
 export interface ProfileIncludes {
-  followers?: boolean;
-  following?: boolean;
-  posts?: boolean;
+  followers?: boolean
+  following?: boolean
+  posts?: boolean
 }
 
-export async function getProfilesHandler(request: FastifyRequest<{
-  Querystring: {
-    limit?: number
-    offset?: number
-    _followers?: boolean
-    _following?: boolean
-    _posts?: boolean,
-    sort?: keyof Profile
-    sortOrder?: "asc" | "desc"
-  }
-}>,
-reply: FastifyReply) {
+export async function getProfilesHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      limit?: number
+      offset?: number
+      _followers?: boolean
+      _following?: boolean
+      _posts?: boolean
+      sort?: keyof Profile
+      sortOrder?: "asc" | "desc"
+    }
+  }>,
+  reply: FastifyReply
+) {
   const { sort, sortOrder, limit, offset, _followers, _following, _posts } = request.query
+
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
+  }
 
   const includes: ProfileIncludes = {
     posts: Boolean(_posts),
@@ -41,12 +49,11 @@ export async function getProfileHandler(
     Querystring: {
       _followers?: boolean
       _following?: boolean
-      _posts?: boolean,
+      _posts?: boolean
     }
   }>,
   reply: FastifyReply
 ) {
-  
   const { name } = request.params
   const { _followers, _following, _posts } = request.query
 
@@ -55,61 +62,58 @@ export async function getProfileHandler(
     followers: Boolean(_followers),
     following: Boolean(_following)
   }
-  
+
   const profile = await getProfile(name, includes)
 
   if (!profile) {
-    const error = new Error("No profile with this name")
-    return reply.code(404).send(error)
+    throw new NotFound("No profile with this name")
   }
 
   reply.code(200).send(profile)
 }
 
-export async function createProfileHandler(
-  request: FastifyRequest<{
-    Body: Prisma.ProfileCreateInput
-  }>,
-  reply: FastifyReply
-) {
-  const profile = await createProfile(request.body)
-
-  await mediaGuard(profile.banner)
-  await mediaGuard(profile.avatar)
-
-  reply.code(200).send(profile);
-}
-
 export async function updateProfileMediaHandler(
   request: FastifyRequest<{
-    Params: { name: string },
+    Params: { name: string }
     Body: ProfileMediaSchema
   }>,
   reply: FastifyReply
 ) {
   const { name } = request.params
-  const { avatar, banner } = request.body;
+  const { avatar, banner } = request.body
   await mediaGuard(banner)
   await mediaGuard(avatar)
   const profile = await updateProfileMedia(name, request.body)
-  reply.code(200).send(profile);
+  reply.code(200).send(profile)
 }
 
 export async function followProfileHandler(
   request: FastifyRequest<{
-    Params: { name: string },
+    Params: { name: string }
   }>,
   reply: FastifyReply
-) { 
+) {
   const { name: follower } = request.user as Profile
   const { name: target } = request.params
 
-  if (target === follower) {
-    return reply.code(400).send("You can't follow yourself")
+  if (target.toLowerCase() === follower.toLowerCase()) {
+    throw new BadRequest("You can't follow yourself")
   }
 
-  const profile = await followProfile(target, follower)    
-  reply.code(200).send(profile);  
+  const profileExists = await getProfile(target)
+
+  if (!profileExists) {
+    throw new BadRequest("No profile with this name")
+  }
+
+  const isFollowing = await checkIsUserFollowing(follower, target)
+
+  if (isFollowing) {
+    throw new BadRequest("You are already following this profile")
+  }
+
+  const profile = await followProfile(target, follower)
+  reply.code(200).send(profile)
 }
 
 export async function unfollowProfileHandler(
@@ -121,10 +125,22 @@ export async function unfollowProfileHandler(
   const { name: follower } = request.user as Profile
   const { name: target } = request.params
 
-  if (target === follower) {
-    return reply.code(400).send("You can't unfollow yourself")
+  if (target.toLowerCase() === follower.toLowerCase()) {
+    throw new BadRequest("You can't unfollow yourself")
+  }
+
+  const profileExists = await getProfile(target)
+
+  if (!profileExists) {
+    throw new BadRequest("No profile with this name")
+  }
+
+  const isFollowing = await checkIsUserFollowing(follower, target)
+
+  if (!isFollowing) {
+    throw new BadRequest("You are not following this profile")
   }
 
   const profile = await unfollowProfile(target, follower)
-  reply.code(200).send(profile);
+  reply.code(200).send(profile)
 }

@@ -1,4 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify"
+import { FastifyRequest } from "fastify"
+import { NotFound } from "http-errors"
 
 import { getQuotes, getQuote, getRandomQuote } from "./quotes.service"
 
@@ -10,15 +11,13 @@ export async function getQuotesHandler() {
 export async function getQuoteHandler(
   request: FastifyRequest<{
     Params: { id: number }
-  }>,
-  reply: FastifyReply
+  }>
 ) {
   const { id } = request.params
   const quote = await getQuote(id)
 
   if (!quote) {
-    const error = new Error("No quote with such ID")
-    return reply.code(404).send(error)
+    throw new NotFound("No quote with such ID")
   }
 
   return quote

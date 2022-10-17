@@ -1,11 +1,7 @@
 import { FastifyInstance } from "fastify"
 
-import { $ref } from "./books.schema"
-import {
-  getBooksHandler,
-  getBookHandler,
-  getRandomBookHandler
-} from "./books.controller"
+import { bookResponseSchema, bookParamsSchema } from "./books.schema"
+import { getBooksHandler, getBookHandler, getRandomBookHandler } from "./books.controller"
 
 async function bookRoutes(server: FastifyInstance) {
   server.get(
@@ -14,10 +10,7 @@ async function bookRoutes(server: FastifyInstance) {
       schema: {
         tags: ["books"],
         response: {
-          200: {
-            type: "array",
-            items: $ref("bookSchema")
-          }
+          200: bookResponseSchema.array()
         }
       }
     },
@@ -30,7 +23,7 @@ async function bookRoutes(server: FastifyInstance) {
       schema: {
         tags: ["books"],
         response: {
-          200: $ref("bookSchema")
+          200: bookResponseSchema
         }
       }
     },
@@ -42,14 +35,9 @@ async function bookRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["books"],
-        params: {
-          type: "object",
-          properties: {
-            id: { type: "integer" }
-          }
-        },
+        params: bookParamsSchema,
         response: {
-          200: $ref("bookSchema")
+          200: bookResponseSchema
         }
       }
     },

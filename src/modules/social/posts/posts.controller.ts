@@ -1,7 +1,8 @@
-import { Post, Profile } from "@prisma/client"
+import { Prisma, Post, Profile, Comment } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "./../../../utils/mediaGuard";
 import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
+import { NotFound, Forbidden, BadRequest } from 'http-errors'
 
 import { getPosts, getPost, createPost, updatePost, createReaction, deletePost, createComment, getComment } from "./posts.service"
 
@@ -10,6 +11,8 @@ export interface PostIncludes {
   reactions?: boolean;
   comments?: boolean;
 }
+
+type PostWithComments = Prisma.PromiseReturnType<typeof getPost> & { comments: Array<Comment> | [] }
 
 export async function getPostsHandler(
   request: FastifyRequest<{
@@ -26,6 +29,10 @@ export async function getPostsHandler(
   reply: FastifyReply
 ) {
   const { sort, sortOrder, limit, offset, _author, _reactions, _comments } = request.query
+
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
+  }
 
   const includes: PostIncludes = {
     author: Boolean(_author),
@@ -45,8 +52,7 @@ export async function getPostHandler(
       _reactions?: boolean
       _comments?: boolean,
     }
-  }>,
-  reply: FastifyReply
+  }>
 ) {
 
   const { id } = request.params
@@ -61,8 +67,7 @@ export async function getPostHandler(
   const post = await getPost(id, includes)
 
   if (!post) {
-    const error = new Error("No post with such ID")
-    return reply.code(404).send(error)
+    throw new NotFound("No post with such ID")
   }
 
   return post
@@ -98,7 +103,7 @@ export async function createPostHandler(
     reply.send(post);
     return post
   } catch (error) {
-    reply.code(400).send(error);
+    reply.code(500).send(error);
   }
 }
 
@@ -111,13 +116,11 @@ export async function deletePostHandler(
   const post = await getPost(id);
 
   if (!post) {
-    reply.code(404).send("Post not found")
-    return
+    throw new NotFound("Post not found")
   }
 
   if (name !== post.owner) {
-    reply.code(403).send("You do not have permission to delete this post")
-    return
+    throw new Forbidden("You do not have permission to delete this post")
   }
 
   try {
@@ -156,13 +159,11 @@ export async function updatePostHandler(
   const post = await getPost(id);
 
   if (!post) {
-    reply.code(404).send("Post not found")
-    return
+    throw new NotFound("Post not found")
   }
 
   if (name !== post.owner) {
-    reply.code(403).send("You do not have permission to edit this post")
-    return
+    throw new Forbidden("You do not have permission to edit this post")
   }
 
   try {
@@ -184,7 +185,13 @@ export async function createReactionHandler(request: FastifyRequest<{
     const match = symbol.match(/\p{Extended_Pictographic}/u)
 
     if (!match) {
-      return reply.code(400).send("Only emoji codes are valid reactions")
+      throw new BadRequest("Only emoji codes are valid reactions")
+    }
+
+    const post = await getPost(id)
+
+    if (!post) {
+      throw new NotFound("Post not found")
     }
 
     const result = await createReaction(id, symbol)
@@ -203,6 +210,28 @@ export async function createCommentHandler(request: FastifyRequest<{
 ) {
   const { id } = request.params
   const { name } = request.user as Profile
+  const { replyToId } = request.body
+
+  const post = await getPost(id, { comments: true }) as PostWithComments | null
+
+  if (!post) {
+    throw new NotFound("Post not found")
+  }
+
+  if (replyToId) {
+    const replyComment = await getComment(replyToId);
+
+    if (!replyComment) {
+      throw new NotFound("You can't reply to a comment that does not exist")
+    }
+
+    const isRelatedToPost = post.comments?.find((comment) => comment.id === replyToId)
+    
+    if (isRelatedToPost) {
+      throw new BadRequest("Comment is not related to this post")
+    }
+  }
+
   try {
     const result = await createComment(id, name, request.body)
     reply.send(result);
@@ -223,13 +252,11 @@ export async function deleteCommentHandler(request: FastifyRequest<{
   const comment = await getComment(id);
 
   if (!comment) {
-    reply.code(404).send("Comment not found")
-    return
+    throw new NotFound("Comment not found")
   }
 
   if (name !== comment.owner) {
-    reply.code(403).send("You do not have permission to delete this comment")
-    return
+    throw new Forbidden("You do not have permission to delete this comment")
   }
 
   try {

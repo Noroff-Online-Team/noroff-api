@@ -1,9 +1,10 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { verifyPassword } from "../../../utils/hash"
+import { mediaGuard } from "./../../../utils/mediaGuard"
 import { CreateProfileInput } from "../profiles/profiles.schema"
-import { getProfile } from "../profiles/profiles.service"
 import { LoginInput } from "./auth.schema"
-import { createProfile, findProfileByEmail } from "./auth.service"
+import { createProfile, findProfileByEmail, findProfileByEmailOrName } from "./auth.service"
+import { BadRequest, Unauthorized } from "http-errors"
 
 export async function registerProfileHandler(
   request: FastifyRequest<{
@@ -13,10 +14,14 @@ export async function registerProfileHandler(
 ) {
   const body = request.body
 
-  if (await getProfile(body.name)) {
-    const error = new Error("Profile already exists")
-    return reply.code(400).send(error)
+  const checkProfile = await findProfileByEmailOrName(body.email, body.name)
+  
+  if (checkProfile) {
+    throw new BadRequest("Profile already exists")
   }
+  
+  await mediaGuard(body.banner)
+  await mediaGuard(body.avatar)
 
   const profile = await createProfile(body)
   return reply.code(201).send(profile)
@@ -25,17 +30,14 @@ export async function registerProfileHandler(
 export async function loginHandler(
   request: FastifyRequest<{
     Body: LoginInput
-  }>,
-  reply: FastifyReply
+  }>
 ) {
   const body = request.body
 
   const profile = await findProfileByEmail(body.email)
 
   if (!profile) {
-    return reply.code(401).send({
-      message: "Invalid email or password"
-    })
+    throw new Unauthorized("Invalid email or password")
   }
 
   // verify password
@@ -53,11 +55,10 @@ export async function loginHandler(
       accessToken: request.jwt.sign(rest),
       name: profile.name,
       avatar: profile.avatar,
+      banner: profile.banner,
       email: profile.email
     }
   }
 
-  return reply.code(401).send({
-    message: "Invalid email or password"
-  })
+  throw new Unauthorized("Invalid email or password")
 }

@@ -1,11 +1,7 @@
 import { FastifyInstance } from "fastify"
 
-import { $ref } from "./quotes.schema"
-import {
-  getQuotesHandler,
-  getQuoteHandler,
-  getRandomQuoteHandler
-} from "./quotes.controller"
+import { quoteResponseSchema, quoteParamsSchema } from "./quotes.schema"
+import { getQuotesHandler, getQuoteHandler, getRandomQuoteHandler } from "./quotes.controller"
 
 async function quotesRoutes(server: FastifyInstance) {
   server.get(
@@ -16,10 +12,7 @@ async function quotesRoutes(server: FastifyInstance) {
         tags: ["quotes"],
         security: [{ bearerAuth: [] }],
         response: {
-          200: {
-            type: "array",
-            items: $ref("quoteSchema")
-          }
+          200: quoteResponseSchema.array()
         }
       }
     },
@@ -34,7 +27,7 @@ async function quotesRoutes(server: FastifyInstance) {
         tags: ["quotes"],
         security: [{ bearerAuth: [] }],
         response: {
-          200: $ref("quoteSchema")
+          200: quoteResponseSchema
         }
       }
     },
@@ -48,14 +41,9 @@ async function quotesRoutes(server: FastifyInstance) {
       schema: {
         tags: ["quotes"],
         security: [{ bearerAuth: [] }],
-        params: {
-          type: "object",
-          properties: {
-            id: { type: "integer" }
-          }
-        },
+        params: quoteParamsSchema,
         response: {
-          200: $ref("quoteSchema")
+          200: quoteResponseSchema
         }
       }
     },

@@ -1,6 +1,12 @@
 import { FastifyInstance } from "fastify"
 
-import { $ref } from "./profiles.schema"
+import {
+  displayProfileSchema,
+  profilesQuerySchema,
+  profileMediaSchema,
+  profileNameSchema,
+  queryFlagsSchema
+} from "./profiles.schema"
 import {
   getProfilesHandler,
   getProfileHandler,
@@ -15,25 +21,11 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        querystring: {
-          type: "object",
-          properties: {
-            sort: { type: "string" },
-            sortOrder: { type: "string" },
-            limit: { type: "number" },
-            offset: { type: "number" },
-            _followers: { type: "boolean" },
-            _following: { type: "boolean" },
-            _posts: { type: "boolean" }
-          }
-        },
         tags: ["profiles"],
         security: [{ bearerAuth: [] }],
+        querystring: profilesQuerySchema,
         response: {
-          200: {
-            type: "array",
-            items: $ref("displayProfileSchema")
-          }
+          200: displayProfileSchema.array()
         }
       }
     },
@@ -45,17 +37,12 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        params: {
-          type: "object",
-          properties: {
-            name: { type: "string" }
-          }
-        },
-        body: $ref("profileMediaSchema"),
         tags: ["profiles"],
         security: [{ bearerAuth: [] }],
+        params: profileNameSchema,
+        body: profileMediaSchema,
         response: {
-          200: $ref("displayProfileSchema")
+          200: displayProfileSchema
         }
       }
     },
@@ -67,24 +54,12 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        querystring: {
-          type: "object",
-          properties: {
-            _followers: { type: "boolean" },
-            _following: { type: "boolean" },
-            _posts: { type: "boolean" }
-          }
-        },
         tags: ["profiles"],
         security: [{ bearerAuth: [] }],
-        params: {
-          type: "object",
-          properties: {
-            name: { type: "string" }
-          }
-        },
+        querystring: queryFlagsSchema,
+        params: profileNameSchema,
         response: {
-          200: $ref("displayProfileSchema")
+          200: displayProfileSchema
         }
       }
     },
@@ -96,14 +71,9 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        params: {
-          type: "object",
-          properties: {
-            name: { type: "string" }
-          }
-        },
         tags: ["profiles"],
-        security: [{ bearerAuth: [] }]
+        security: [{ bearerAuth: [] }],
+        params: profileNameSchema
       }
     },
     followProfileHandler
@@ -114,14 +84,9 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        params: {
-          type: "object",
-          properties: {
-            name: { type: "string" }
-          }
-        },
         tags: ["profiles"],
-        security: [{ bearerAuth: [] }]
+        security: [{ bearerAuth: [] }],
+        params: profileNameSchema
       }
     },
     unfollowProfileHandler

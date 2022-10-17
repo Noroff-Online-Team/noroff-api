@@ -1,11 +1,7 @@
 import { FastifyInstance } from "fastify"
 
-import { $ref } from "./nbaTeams.schema"
-import {
-  getNbaTeamsHandler,
-  getNbaTeamHandler,
-  getRandomNbaTeamHandler
-} from "./nbaTeams.controller"
+import { nbaTeamResponseSchema, nbaTeamParamsSchema } from "./nbaTeams.schema"
+import { getNbaTeamsHandler, getNbaTeamHandler, getRandomNbaTeamHandler } from "./nbaTeams.controller"
 
 async function nbaTeamRoutes(server: FastifyInstance) {
   server.get(
@@ -14,10 +10,7 @@ async function nbaTeamRoutes(server: FastifyInstance) {
       schema: {
         tags: ["nba-teams"],
         response: {
-          200: {
-            type: "array",
-            items: $ref("nbaTeamSchema")
-          }
+          200: nbaTeamResponseSchema.array()
         }
       }
     },
@@ -30,7 +23,7 @@ async function nbaTeamRoutes(server: FastifyInstance) {
       schema: {
         tags: ["nba-teams"],
         response: {
-          200: $ref("nbaTeamSchema")
+          200: nbaTeamResponseSchema
         }
       }
     },
@@ -42,14 +35,9 @@ async function nbaTeamRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["nba-teams"],
-        params: {
-          type: "object",
-          properties: {
-            id: { type: "integer" }
-          }
-        },
+        params: nbaTeamParamsSchema,
         response: {
-          200: $ref("nbaTeamSchema")
+          200: nbaTeamResponseSchema
         }
       }
     },

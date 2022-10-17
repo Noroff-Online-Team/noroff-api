@@ -1,11 +1,7 @@
 import { FastifyInstance } from "fastify"
 
-import { $ref } from "./catFacts.schema"
-import {
-  getCatFactsHandler,
-  getCatFactHandler,
-  getRandomCatFactHandler
-} from "./catFacts.controller"
+import { catFactResponseSchema, catFactParamsSchema } from "./catFacts.schema"
+import { getCatFactsHandler, getCatFactHandler, getRandomCatFactHandler } from "./catFacts.controller"
 
 async function catFactsRoutes(server: FastifyInstance) {
   server.get(
@@ -14,10 +10,7 @@ async function catFactsRoutes(server: FastifyInstance) {
       schema: {
         tags: ["cat-facts"],
         response: {
-          200: {
-            type: "array",
-            items: $ref("catFactSchema")
-          }
+          200: catFactResponseSchema.array()
         }
       }
     },
@@ -30,7 +23,7 @@ async function catFactsRoutes(server: FastifyInstance) {
       schema: {
         tags: ["cat-facts"],
         response: {
-          200: $ref("catFactSchema")
+          200: catFactResponseSchema
         }
       }
     },
@@ -42,14 +35,9 @@ async function catFactsRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["cat-facts"],
-        params: {
-          type: "object",
-          properties: {
-            id: { type: "integer" }
-          }
-        },
+        params: catFactParamsSchema,
         response: {
-          200: $ref("catFactSchema")
+          200: catFactResponseSchema
         }
       }
     },

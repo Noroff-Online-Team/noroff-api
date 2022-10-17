@@ -1,7 +1,6 @@
 import { z } from "zod"
-import { buildJsonSchemas } from "fastify-zod"
 
-const bookSchema = z.object({
+export const bookResponseSchema = z.object({
   id: z.number().int(),
   title: z.string(),
   author: z.string(),
@@ -13,9 +12,10 @@ const bookSchema = z.object({
   publisher: z.string()
 })
 
-export type BookSchema = z.infer<typeof bookSchema>
+export const bookParamsSchema = z.object({
+  id: z.preprocess(val => parseInt(val as string, 10), z.number({
+    invalid_type_error: "ID parameter must be a number"
+  }).int())
+})
 
-export const { schemas: bookSchemas, $ref } = buildJsonSchemas(
-  { bookSchema },
-  { $id: "Books" }
-)
+export type BookSchema = z.infer<typeof bookResponseSchema>

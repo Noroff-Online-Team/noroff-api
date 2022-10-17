@@ -1,11 +1,7 @@
 import { FastifyInstance } from "fastify"
 
-import { $ref } from "./jokes.schema"
-import {
-  getJokesHandler,
-  getJokeHandler,
-  getRandomJokeHandler
-} from "./jokes.controller"
+import { jokeResponseSchema, jokeParamsSchema } from "./jokes.schema"
+import { getJokesHandler, getJokeHandler, getRandomJokeHandler } from "./jokes.controller"
 
 async function jokeRoutes(server: FastifyInstance) {
   server.get(
@@ -14,10 +10,7 @@ async function jokeRoutes(server: FastifyInstance) {
       schema: {
         tags: ["jokes"],
         response: {
-          200: {
-            type: "array",
-            items: $ref("jokeSchema")
-          }
+          200: jokeResponseSchema.array()
         }
       }
     },
@@ -30,7 +23,7 @@ async function jokeRoutes(server: FastifyInstance) {
       schema: {
         tags: ["jokes"],
         response: {
-          200: $ref("jokeSchema")
+          200: jokeResponseSchema
         }
       }
     },
@@ -42,14 +35,9 @@ async function jokeRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["jokes"],
-        params: {
-          type: "object",
-          properties: {
-            id: { type: "integer" }
-          }
-        },
+        params: jokeParamsSchema,
         response: {
-          200: $ref("jokeSchema")
+          200: jokeResponseSchema
         }
       }
     },

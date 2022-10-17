@@ -1,4 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify"
+import { FastifyRequest } from "fastify"
+import { NotFound } from "http-errors"
 
 import { getJokes, getJoke, getRandomJoke } from "./jokes.service"
 
@@ -10,15 +11,13 @@ export async function getJokesHandler() {
 export async function getJokeHandler(
   request: FastifyRequest<{
     Params: { id: number }
-  }>,
-  reply: FastifyReply
+  }>
 ) {
   const { id } = request.params
   const joke = await getJoke(id)
 
   if (!joke) {
-    const error = new Error("No joke with such ID")
-    return reply.code(404).send(error)
+    throw new NotFound("No joke with such ID")
   }
 
   return joke

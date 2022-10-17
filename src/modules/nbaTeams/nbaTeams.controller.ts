@@ -1,4 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify"
+import { FastifyRequest } from "fastify"
+import { NotFound } from "http-errors"
 
 import { getNbaTeams, getNbaTeam, getRandomNbaTeam } from "./nbaTeams.service"
 
@@ -10,15 +11,13 @@ export async function getNbaTeamsHandler() {
 export async function getNbaTeamHandler(
   request: FastifyRequest<{
     Params: { id: number }
-  }>,
-  reply: FastifyReply
+  }>
 ) {
   const { id } = request.params
   const nbaTeam = await getNbaTeam(id)
 
   if (!nbaTeam) {
-    const error = new Error("No NBA team with such ID")
-    return reply.code(404).send(error)
+    throw new NotFound("No NBA team with such ID")
   }
 
   return nbaTeam

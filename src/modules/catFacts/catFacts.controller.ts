@@ -1,4 +1,5 @@
-import { FastifyReply, FastifyRequest } from "fastify"
+import { FastifyRequest } from "fastify"
+import { NotFound } from "http-errors"
 
 import { getCatFacts, getCatFact, getRandomCatFact } from "./catFacts.service"
 
@@ -10,15 +11,13 @@ export async function getCatFactsHandler() {
 export async function getCatFactHandler(
   request: FastifyRequest<{
     Params: { id: number }
-  }>,
-  reply: FastifyReply
+  }>
 ) {
   const { id } = request.params
   const catFact = await getCatFact(id)
 
   if (!catFact) {
-    const error = new Error("No cat fact with such ID")
-    return reply.code(404).send(error)
+    throw new NotFound("No cat fact with such ID")
   }
 
   return catFact
