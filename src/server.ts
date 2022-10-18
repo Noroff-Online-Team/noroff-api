@@ -27,7 +27,10 @@ import socialAuthRoutes from "./modules/social/auth/auth.route"
 
 // Main startup
 function buildServer() {
-  const server = Fastify().withTypeProvider<ZodTypeProvider>()
+  const server = Fastify({
+    // Allows routes to end with a slash instead of throwing a 404
+    ignoreTrailingSlash: true
+  }).withTypeProvider<ZodTypeProvider>()
 
   // Set custom validator and serializer compilers for Zod
   server.setValidatorCompiler(validatorCompiler)
