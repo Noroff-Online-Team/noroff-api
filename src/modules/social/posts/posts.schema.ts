@@ -22,7 +22,8 @@ export const postCore = {
       invalid_type_error: "Body must be a string"
     })
     .max(280, "Body cannot be greater than 280 characters")
-    .trim(),
+    .trim()
+    .nullish(),
   ...tagsAndMedia
 }
 
@@ -124,7 +125,10 @@ export const createPostBaseSchema = z.object(postCore)
 
 export const updatePostBodySchema = z
   .object(updatePostCore)
-  .refine(({ title, body }) => !!title || !!body, "You must provide either title or body")
+  .refine(
+    ({ title, body, tags, media }) => !!title || !!body || !!tags || !!media,
+    "You must provide either title, body, tags, or media"
+  )
 
 export const createPostSchema = z.object({
   ...postOwner,
@@ -141,8 +145,8 @@ export const displayPostSchema = z.object({
     .object({
       name: z.string(),
       email: z.string().email(),
-      avatar: z.string().url().nullable(),
-      banner: z.string().url().nullable()
+      avatar: z.string().nullable(),
+      banner: z.string().nullable()
     })
     .optional(),
   _count: z
