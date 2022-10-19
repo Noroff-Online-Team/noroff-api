@@ -227,7 +227,7 @@ export async function createCommentHandler(request: FastifyRequest<{
 
     const isRelatedToPost = post.comments?.find((comment) => comment.id === replyToId)
     
-    if (isRelatedToPost) {
+    if (!isRelatedToPost) {
       throw new BadRequest("Comment is not related to this post")
     }
   }
