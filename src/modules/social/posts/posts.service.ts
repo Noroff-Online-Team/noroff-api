@@ -136,6 +136,7 @@ export const createComment = async (
     created: true,
     owner: true,
     replyToId: true,
+    postId: true
   }
 })
 
