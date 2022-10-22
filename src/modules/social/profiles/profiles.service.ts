@@ -1,7 +1,8 @@
-import { Prisma, Profile } from "@prisma/client"
+import { Prisma, Profile, Post } from "@prisma/client"
 import { prisma } from "../../../utils"
 import { ProfileIncludes } from "./profiles.controller"
 import { ProfileMediaSchema } from "./profiles.schema"
+import { PostIncludes } from "../posts/posts.controller"
 
 export async function getProfiles(sort: keyof Profile = "name", sortOrder: "asc" | "desc" = "desc", limit = 100, offset = 0, includes: ProfileIncludes = {}) {
   return await prisma.profile.findMany({
@@ -107,6 +108,26 @@ export const unfollowProfile = async (target: string, follower: string) => {
         select: {
           name: true,
           avatar: true,
+        }
+      }
+    }
+  })
+}
+
+export const getProfilePosts = async (name: string, sort: keyof Post = "created", sortOrder: "asc" | "desc" = "desc", limit = 100, offset = 0, includes: PostIncludes = {}) => {
+  return await prisma.post.findMany({
+    where: { owner: name },
+    orderBy: {
+      [sort]: sortOrder
+    },
+    take: limit,
+    skip: offset,
+    include: {
+      ...includes,
+      _count: {
+        select: {
+          comments: true,
+          reactions: true,
         }
       }
     }

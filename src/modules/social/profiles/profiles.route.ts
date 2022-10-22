@@ -12,8 +12,10 @@ import {
   getProfileHandler,
   updateProfileMediaHandler,
   followProfileHandler,
-  unfollowProfileHandler
+  unfollowProfileHandler,
+  getProfilePostsHandler
 } from "./profiles.controller"
+import { displayPostSchema, postsQuerySchema } from "../posts/posts.schema"
 
 async function profilesRoutes(server: FastifyInstance) {
   server.get(
@@ -90,6 +92,23 @@ async function profilesRoutes(server: FastifyInstance) {
       }
     },
     unfollowProfileHandler
+  )
+
+  server.get(
+    "/:name/posts",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["profiles"],
+        security: [{ bearerAuth: [] }],
+        params: profileNameSchema,
+        querystring: postsQuerySchema,
+        response: {
+          200: displayPostSchema.array()
+        }
+      }
+    },
+    getProfilePostsHandler
   )
 }
 
