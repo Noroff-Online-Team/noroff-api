@@ -16,8 +16,8 @@ export const loginSchema = z.object({
 export const loginResponseSchema = z.object({
   name: z.string(),
   email: z.string().email(),
-  banner: z.string().url().nullable(),
-  avatar: z.string().url().nullable(),
+  banner: z.string().url().nullable().or(z.literal("")),
+  avatar: z.string().url().nullable().or(z.literal("")),
   accessToken: z.string()
 })
 
