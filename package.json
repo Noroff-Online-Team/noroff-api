@@ -5,9 +5,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "tsnd --respawn --transpile-only src/app.ts",
+    "dev": "tsnd --respawn --transpile-only --exit-child src/app.ts",
     "start": "node dist/src/app.js",
-    "prestart": "npm run build",
     "build": "rimraf dist && tsc -p tsconfig.json && npm run copy-images",
     "prebuild": "prisma generate",
     "copy-images": "copyfiles -u 1 \"src/public/**/*\" dist/src"
