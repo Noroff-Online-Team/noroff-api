@@ -24,6 +24,7 @@ import quotesRoutes from "./modules/quotes/quotes.route"
 import postsRoutes from "./modules/social/posts/posts.route"
 import profilesRoutes from "./modules/social/profiles/profiles.route"
 import socialAuthRoutes from "./modules/social/auth/auth.route"
+import auctionAuthRoutes from "./modules/auction/auth/auth.route"
 
 // Main startup
 function buildServer() {
@@ -142,6 +143,7 @@ function buildServer() {
   server.register(postsRoutes, { prefix: "api/v1/social/posts" })
   server.register(profilesRoutes, { prefix: "api/v1/social/profiles" })
   server.register(socialAuthRoutes, { prefix: "api/v1/social/auth" })
+  server.register(auctionAuthRoutes, { prefix: "api/v1/auction/auth" })
 
   return server
 }
