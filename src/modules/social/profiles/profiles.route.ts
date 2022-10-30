@@ -23,7 +23,7 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["profiles"],
+        tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
         querystring: profilesQuerySchema,
         response: {
@@ -39,7 +39,7 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["profiles"],
+        tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
         params: profileNameSchema,
         body: profileMediaSchema,
@@ -56,7 +56,7 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["profiles"],
+        tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
         querystring: queryFlagsSchema,
         params: profileNameSchema,
@@ -73,7 +73,7 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["profiles"],
+        tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
         params: profileNameSchema
       }
@@ -86,7 +86,7 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["profiles"],
+        tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
         params: profileNameSchema
       }
@@ -99,7 +99,7 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["profiles"],
+        tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
         params: profileNameSchema,
         querystring: postsQuerySchema,

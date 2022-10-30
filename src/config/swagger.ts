@@ -24,8 +24,11 @@ const swaggerOptions: SwaggerOptions = {
       { name: "old-games", description: "Old games related endpoints" },
       { name: "quotes", description: "Quotes related endpoints" },
       { name: "social-auth", description: "Social auth related endpoints" },
-      { name: "profiles", description: "Social profiles related endpoints" },
-      { name: "posts", description: "Social posts related endpoints" }
+      { name: "social-profiles", description: "Social profiles related endpoints" },
+      { name: "social-posts", description: "Social posts related endpoints" },
+      { name: "auction-auth", description: "Auction auth related endpoints" },
+      { name: "auction-profiles", description: "Auction profiles related endpoints" },
+      { name: "auction-listings", description: "Auction listings related endpoints" }
     ],
     securityDefinitions: {
       bearerAuth: {

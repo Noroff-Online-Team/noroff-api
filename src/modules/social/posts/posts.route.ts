@@ -29,7 +29,7 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["posts"],
+        tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
         querystring: postsQuerySchema,
         response: {
@@ -45,7 +45,7 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["posts"],
+        tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
         querystring: queryFlagsSchema,
         body: createPostBaseSchema,
@@ -62,7 +62,7 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["posts"],
+        tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
         querystring: queryFlagsSchema,
         params: postIdParamsSchema,
@@ -81,7 +81,7 @@ async function postsRoutes(server: FastifyInstance) {
       preHandler: [server.authenticate],
       schema: {
         params: postIdParamsSchema,
-        tags: ["posts"],
+        tags: ["social-posts"],
         security: [{ bearerAuth: [] }]
       }
     },
@@ -93,7 +93,7 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["posts"],
+        tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
         querystring: queryFlagsSchema,
         params: postIdParamsSchema,
@@ -110,7 +110,7 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["posts"],
+        tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
         querystring: queryFlagsSchema,
         params: reactionParamsSchema,
@@ -127,7 +127,7 @@ async function postsRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["posts"],
+        tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
         querystring: authorQuerySchema,
         params: postIdParamsSchema,
