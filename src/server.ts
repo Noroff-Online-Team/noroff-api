@@ -26,6 +26,7 @@ import profilesRoutes from "./modules/social/profiles/profiles.route"
 import socialAuthRoutes from "./modules/social/auth/auth.route"
 import auctionAuthRoutes from "./modules/auction/auth/auth.route"
 import auctionProfilesRoutes from "./modules/auction/profiles/profiles.route"
+import aucstionListingRoutes from "./modules/auction/listings/listings.route"
 
 // Main startup
 function buildServer() {
@@ -146,6 +147,7 @@ function buildServer() {
   server.register(socialAuthRoutes, { prefix: "api/v1/social/auth" })
   server.register(auctionAuthRoutes, { prefix: "api/v1/auction/auth" })
   server.register(auctionProfilesRoutes, { prefix: "api/v1/auction/profiles" })
+  server.register(aucstionListingRoutes, { prefix: "api/v1/auction/listings" })
 
   return server
 }
