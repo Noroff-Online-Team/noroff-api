@@ -28,8 +28,7 @@ const swaggerOptions: SwaggerOptions = {
       { name: "social-posts", description: "Social posts related endpoints" },
       { name: "auction-auth", description: "Auction auth related endpoints" },
       { name: "auction-profiles", description: "Auction profiles related endpoints" },
-      { name: "auction-listings", description: "Auction listings related endpoints" },
-      { name: "auction-bids", description: "Auction bids related endpoints" }
+      { name: "auction-listings", description: "Auction listings related endpoints" }
     ],
     securityDefinitions: {
       bearerAuth: {
