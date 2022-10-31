@@ -110,3 +110,37 @@ model Comment {
   replies   Comment[] @relation("Replies")
   replyToId Int?
 }
+
+model AuctionProfile {
+  id       Int              @id @default(autoincrement())
+  name     String           @unique
+  email    String           @unique
+  avatar   String?
+  password String
+  salt     String
+  credits  Int
+  listings AuctionListing[]
+  bids     AuctionBid[]
+}
+
+model AuctionListing {
+  id          String         @id @default(uuid())
+  title       String
+  description String?
+  media       String[]
+  created     DateTime       @default(now())
+  updated     DateTime       @default(now())
+  endsAt      DateTime
+  seller      AuctionProfile @relation(fields: [sellerName], references: [name], onDelete: Cascade)
+  sellerName  String
+  bids        AuctionBid[]
+}
+
+model AuctionBid {
+  id         Int            @id @default(autoincrement())
+  amount     Int
+  bidder     AuctionProfile @relation(fields: [bidderName], references: [name], onDelete: Cascade)
+  bidderName String
+  listing    AuctionListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  listingId  String
+}
