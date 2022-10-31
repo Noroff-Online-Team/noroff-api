@@ -1,27 +1,25 @@
 import { z } from "zod"
 import { displayProfileSchema } from "../profiles/profiles.schema"
-// import { bidsSchema } from "../bids/bids.schema"
 
-export const listing = {
+const listingId = {
+  id: z.string().uuid()
+}
+
+const bidCore = {
   id: z.number(),
-  title: z.string({
-    required_error: "Title is required",
-    invalid_type_error: "Title must be a string"
-  }),
-  description: z.string({
-    invalid_type_error: "Description must be a string"
-  }),
-  image: z
-    .string({
-      invalid_type_error: "Image must be a string"
-    })
-    .url("Image must be valid URL")
-    .nullish()
-    .or(z.literal("")),
+  amount: z.number(),
+  created: z.date()
+}
+
+export const listingCore = {
+  ...listingId,
+  title: z.string(),
+  description: z.string().nullish(),
+  media: z.string().array().nullish(),
   created: z.date(),
-  startsAt: z.date(),
+  updated: z.date(),
   endsAt: z.date(),
-  bids: z.object({}).array().optional(),
+  bids: z.object(bidCore).array().optional(),
   seller: displayProfileSchema.omit({ credits: true }).optional(),
   _count: z
     .object({
@@ -30,7 +28,30 @@ export const listing = {
     .optional()
 }
 
-export const listingResponseSchema = z.object(listing)
+export const listingResponseSchema = z.object(listingCore)
+
+export const createListingSchema = z.object({
+  title: z.string({
+    required_error: "Title is required",
+    invalid_type_error: "Title must be a string"
+  }),
+  description: z
+    .string({
+      invalid_type_error: "Description must be a string"
+    })
+    .nullish(),
+  media: z
+    .string({
+      invalid_type_error: "Image must be a string"
+    })
+    .url("Image must be valid URL")
+    .array()
+    .nullish()
+    .or(z.literal("")),
+  endsAt: z.preprocess(arg => {
+    if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
+  }, z.date())
+})
 
 const queryFlagsCore = {
   _seller: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
@@ -39,16 +60,7 @@ const queryFlagsCore = {
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
-export const listingIdParamsSchema = z.object({
-  id: z.preprocess(
-    val => parseInt(val as string, 10),
-    z
-      .number({
-        invalid_type_error: "Listing ID must be a number"
-      })
-      .int()
-  )
-})
+export const listingIdParamsSchema = z.object(listingId)
 
 export const listingQuerySchema = z.object({
   sort: z
@@ -84,3 +96,7 @@ export const listingQuerySchema = z.object({
     .optional(),
   ...queryFlagsCore
 })
+
+export type ListingResponseSchema = z.infer<typeof listingResponseSchema>
+
+export type CreateListingSchema = z.infer<typeof createListingSchema>

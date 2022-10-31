@@ -1,10 +1,13 @@
-import { AuctionListing } from "@prisma/client"
+import { AuctionListing, AuctionProfile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
+import { mediaGuard } from "../../../utils/mediaGuard"
 import { NotFound, BadRequest } from "http-errors"
 
+import { CreateListingSchema } from "./listings.schema"
 import { getListings, getListing } from "./listings.service"
+import { createListing } from "./listings.service"
 
-export interface AuctionProfileIncludes {
+export interface AuctionListingIncludes {
   bids?: boolean
   seller?: boolean
 }
@@ -28,7 +31,7 @@ export async function getListingsHandler(
     throw new BadRequest("Limit cannot be greater than 100")
   }
 
-  const includes: AuctionProfileIncludes = {
+  const includes: AuctionListingIncludes = {
     bids: Boolean(_bids),
     seller: Boolean(_seller)
   }
@@ -39,7 +42,7 @@ export async function getListingsHandler(
 
 export async function getListingHandler(
   request: FastifyRequest<{
-    Params: { id: number }
+    Params: { id: string }
     Querystring: {
       _seller?: boolean
       _bids?: boolean
@@ -50,7 +53,7 @@ export async function getListingHandler(
   const { id } = request.params
   const { _bids, _seller } = request.query
 
-  const includes: AuctionProfileIncludes = {
+  const includes: AuctionListingIncludes = {
     bids: Boolean(_bids),
     seller: Boolean(_seller)
   }
@@ -62,4 +65,37 @@ export async function getListingHandler(
   }
 
   return reply.code(200).send(listing)
+}
+
+export async function createListingHandler(
+  request: FastifyRequest<{
+    Body: CreateListingSchema
+    Querystring: {
+      _seller?: boolean
+      _bids?: boolean
+    }
+  }>,
+  reply: FastifyReply
+) {
+  const { name } = request.user as AuctionProfile
+  const { media } = request.body
+  const { _bids, _seller } = request.query
+
+  const includes: AuctionListingIncludes = {
+    bids: Boolean(_bids),
+    seller: Boolean(_seller)
+  }
+
+  if (media) {
+    for (const url of media) {
+      await mediaGuard(url)
+    }
+  }
+
+  try {
+    const listing = await createListing(request.body, name, includes)
+    return reply.code(201).send(listing)
+  } catch (error) {
+    reply.code(500).send(error)
+  }
 }

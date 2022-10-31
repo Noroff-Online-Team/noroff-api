@@ -1,7 +1,13 @@
 import { FastifyInstance } from "fastify"
 
-import { getListingsHandler, getListingHandler } from "./listings.controller"
-import { listingQuerySchema, listingResponseSchema, queryFlagsSchema, listingIdParamsSchema } from "./listings.schema"
+import { getListingsHandler, getListingHandler, createListingHandler } from "./listings.controller"
+import {
+  listingQuerySchema,
+  listingResponseSchema,
+  queryFlagsSchema,
+  listingIdParamsSchema,
+  createListingSchema
+} from "./listings.schema"
 
 async function listingsRoutes(server: FastifyInstance) {
   server.get(
@@ -35,6 +41,22 @@ async function listingsRoutes(server: FastifyInstance) {
       }
     },
     getListingHandler
+  )
+
+  server.post(
+    "/",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["auction-listings"],
+        security: [{ bearerAuth: [] }],
+        body: createListingSchema,
+        response: {
+          201: listingResponseSchema
+        }
+      }
+    },
+    createListingHandler
   )
 }
 
