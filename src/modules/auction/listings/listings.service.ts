@@ -1,7 +1,7 @@
 import { AuctionListing } from "@prisma/client"
 import { prisma } from "../../../utils"
 import { AuctionListingIncludes } from "./listings.controller"
-import { CreateListingSchema } from "./listings.schema"
+import { CreateListingSchema, UpdateListingSchema } from "./listings.schema"
 
 export async function getListings(
   sort: keyof AuctionListing = "title",
@@ -41,13 +41,32 @@ export async function getListing(id: string, includes: AuctionListingIncludes = 
   })
 }
 
-export async function createListing(data: CreateListingSchema, seller: string, includes: AuctionListingIncludes) {
+export async function createListing(data: CreateListingSchema, seller: string, includes: AuctionListingIncludes = {}) {
   return await prisma.auctionListing.create({
     data: {
       ...data,
       sellerName: seller,
-      media: data.media ?? [],
+      media: data.media || [],
       created: new Date(),
+      updated: new Date()
+    },
+    include: {
+      ...includes,
+      _count: {
+        select: {
+          bids: true
+        }
+      }
+    }
+  })
+}
+
+export async function updateListing(id: string, data: UpdateListingSchema, includes: AuctionListingIncludes = {}) {
+  return await prisma.auctionListing.update({
+    where: { id },
+    data: {
+      ...data,
+      media: data.media || [],
       updated: new Date()
     },
     include: {

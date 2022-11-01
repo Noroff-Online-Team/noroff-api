@@ -31,14 +31,17 @@ export const listingCore = {
 export const listingResponseSchema = z.object(listingCore)
 
 export const createListingSchema = z.object({
-  title: z.string({
-    required_error: "Title is required",
-    invalid_type_error: "Title must be a string"
-  }),
+  title: z
+    .string({
+      required_error: "Title is required",
+      invalid_type_error: "Title must be a string"
+    })
+    .trim(),
   description: z
     .string({
       invalid_type_error: "Description must be a string"
     })
+    .trim()
     .nullish(),
   media: z
     .string({
@@ -50,8 +53,37 @@ export const createListingSchema = z.object({
     .or(z.literal("")),
   endsAt: z.preprocess(arg => {
     if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
-  }, z.date())
+  }, z.date({ required_error: "endsAt is required" }))
 })
+
+export const updateListingCore = {
+  title: z
+    .string({
+      invalid_type_error: "Title must be a string"
+    })
+    .trim(),
+  description: z
+    .string({
+      invalid_type_error: "Description must be a string"
+    })
+    .trim()
+    .nullish(),
+  media: z
+    .string({
+      invalid_type_error: "Image must be a string"
+    })
+    .url("Image must be valid URL")
+    .array()
+    .nullish()
+    .or(z.literal(""))
+}
+
+export const updateListingSchema = z
+  .object(updateListingCore)
+  .refine(
+    ({ title, description, media }) => !!title || !!description || !!media,
+    "You must provide either title, description, or media"
+  )
 
 const queryFlagsCore = {
   _seller: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
@@ -100,3 +132,5 @@ export const listingQuerySchema = z.object({
 export type ListingResponseSchema = z.infer<typeof listingResponseSchema>
 
 export type CreateListingSchema = z.infer<typeof createListingSchema>
+
+export type UpdateListingSchema = z.infer<typeof updateListingSchema>
