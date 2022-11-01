@@ -69,7 +69,6 @@ export const profileNameSchema = z.object({
 export const displayProfileSchema = z.object({
   ...profileCore,
   ...profileCredits,
-  // listings: listingSchema.array().optional(),
   _count: z
     .object({
       listings: z.number().int().optional()

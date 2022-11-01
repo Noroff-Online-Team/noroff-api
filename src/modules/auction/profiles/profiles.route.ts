@@ -7,7 +7,13 @@ import {
   profileNameSchema,
   queryFlagsSchema
 } from "./profiles.schema"
-import { getProfilesHandler, getProfileHandler, updateProfileMediaHandler } from "./profiles.controller"
+import {
+  getProfilesHandler,
+  getProfileHandler,
+  updateProfileMediaHandler,
+  getProfileListingsHandler
+} from "./profiles.controller"
+import { listingQuerySchema, listingResponseSchema } from "../listings/listings.schema"
 
 async function profilesRoutes(server: FastifyInstance) {
   server.get(
@@ -58,6 +64,23 @@ async function profilesRoutes(server: FastifyInstance) {
       }
     },
     updateProfileMediaHandler
+  )
+
+  server.get(
+    "/:name/listings",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["auction-profiles"],
+        security: [{ bearerAuth: [] }],
+        querystring: listingQuerySchema,
+        params: profileNameSchema,
+        response: {
+          200: listingResponseSchema.array()
+        }
+      }
+    },
+    getProfileListingsHandler
   )
 }
 

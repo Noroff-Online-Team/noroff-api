@@ -1,10 +1,12 @@
-import { AuctionProfile } from "@prisma/client"
+import { AuctionListing, AuctionProfile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "./../../../utils/mediaGuard"
 import { ProfileMediaSchema } from "./profiles.schema"
 import { NotFound, BadRequest } from "http-errors"
 
-import { getProfiles, getProfile, updateProfileMedia } from "./profiles.service"
+import { getProfiles, getProfile, updateProfileMedia, getProfileListings } from "./profiles.service"
+
+import { AuctionListingIncludes } from "../listings/listings.controller"
 
 export interface AuctionProfileIncludes {
   listings?: boolean
@@ -75,4 +77,40 @@ export async function updateProfileMediaHandler(
 
   const profile = await updateProfileMedia(name, request.body)
   reply.code(200).send(profile)
+}
+
+export async function getProfileListingsHandler(
+  request: FastifyRequest<{
+    Params: { name: string }
+    Querystring: {
+      limit?: number
+      offset?: number
+      sort?: keyof AuctionListing
+      sortOrder?: "asc" | "desc"
+      _seller?: boolean
+      _bids?: boolean
+    }
+  }>,
+  reply: FastifyReply
+) {
+  const { name } = request.params
+  const { sort, sortOrder, limit, offset, _seller, _bids } = request.query
+
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
+  }
+
+  const profileExists = await getProfile(name)
+
+  if (!profileExists) {
+    throw new NotFound("No profile with this name")
+  }
+
+  const includes: AuctionListingIncludes = {
+    bids: Boolean(_bids),
+    seller: Boolean(_seller)
+  }
+
+  const listings = await getProfileListings(name, sort, sortOrder, limit, offset, includes)
+  reply.code(200).send(listings)
 }

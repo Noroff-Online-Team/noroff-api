@@ -1,8 +1,8 @@
-import { AuctionProfile /* AuctionListing */ } from "@prisma/client"
+import { AuctionListing, AuctionProfile } from "@prisma/client"
 import { prisma } from "../../../utils"
+import { AuctionListingIncludes } from "../listings/listings.controller"
 import { AuctionProfileIncludes } from "./profiles.controller"
 import { ProfileMediaSchema } from "./profiles.schema"
-// import { ListingIncludes } from "../listings/listings.controller"
 
 export async function getProfiles(
   sort: keyof AuctionProfile = "name",
@@ -51,28 +51,28 @@ export const updateProfileMedia = async (name: string, { avatar }: ProfileMediaS
   })
 }
 
-// export const getProfileListings = async (
-//   name: string,
-//   sort: keyof AuctionListing = "created",
-//   sortOrder: "asc" | "desc" = "desc",
-//   limit = 100,
-//   offset = 0,
-//   includes: ListingIncludes = {}
-// ) => {
-//   return await prisma.auctionListing.findMany({
-//     where: { seller: { name } },
-//     orderBy: {
-//       [sort]: sortOrder
-//     },
-//     take: limit,
-//     skip: offset,
-//     include: {
-//       ...includes,
-//       _count: {
-//         select: {
-//           bids: true
-//         }
-//       }
-//     }
-//   })
-// }
+export const getProfileListings = async (
+  name: string,
+  sort: keyof AuctionListing = "created",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  offset = 0,
+  includes: AuctionListingIncludes = {}
+) => {
+  return await prisma.auctionListing.findMany({
+    where: { sellerName: name },
+    orderBy: {
+      [sort]: sortOrder
+    },
+    take: limit,
+    skip: offset,
+    include: {
+      ...includes,
+      _count: {
+        select: {
+          bids: true
+        }
+      }
+    }
+  })
+}
