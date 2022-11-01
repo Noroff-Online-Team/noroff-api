@@ -4,7 +4,7 @@ import { mediaGuard } from "../../../utils/mediaGuard"
 import { NotFound, BadRequest, Forbidden } from "http-errors"
 
 import { CreateListingSchema, UpdateListingSchema } from "./listings.schema"
-import { getListings, getListing, createListing, updateListing } from "./listings.service"
+import { getListings, getListing, createListing, updateListing, deleteListing } from "./listings.service"
 
 export interface AuctionListingIncludes {
   bids?: boolean
@@ -36,7 +36,7 @@ export async function getListingsHandler(
   }
 
   const listings = await getListings(sort, sortOrder, limit, offset, includes)
-  return reply.code(200).send(listings)
+  reply.code(200).send(listings)
 }
 
 export async function getListingHandler(
@@ -63,7 +63,7 @@ export async function getListingHandler(
     throw new NotFound("No listing with such ID")
   }
 
-  return reply.code(200).send(listing)
+  reply.code(200).send(listing)
 }
 
 export async function createListingHandler(
@@ -93,7 +93,7 @@ export async function createListingHandler(
 
   try {
     const listing = await createListing(request.body, name, includes)
-    return reply.code(201).send(listing)
+    reply.code(201).send(listing)
   } catch (error) {
     reply.code(500).send(error)
   }
@@ -138,7 +138,34 @@ export async function updateListingHandler(
 
   try {
     const updatedListing = await updateListing(id, request.body, includes)
-    return reply.code(200).send(updatedListing)
+    reply.code(200).send(updatedListing)
+  } catch (error) {
+    reply.code(500).send(error)
+  }
+}
+
+export async function deleteListingHandler(
+  request: FastifyRequest<{
+    Params: { id: string }
+  }>,
+  reply: FastifyReply
+) {
+  const { id } = request.params
+  const { name } = request.user as AuctionProfile
+
+  const listing = await getListing(id)
+
+  if (!listing) {
+    throw new NotFound("No listing with such ID")
+  }
+
+  if (listing.sellerName.toLowerCase() !== name.toLowerCase()) {
+    throw new Forbidden("You do not have permission to delete this listing")
+  }
+
+  try {
+    await deleteListing(id)
+    reply.code(204)
   } catch (error) {
     reply.code(500).send(error)
   }

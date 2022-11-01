@@ -79,3 +79,9 @@ export async function updateListing(id: string, data: UpdateListingSchema, inclu
     }
   })
 }
+
+export async function deleteListing(id: string) {
+  return await prisma.auctionListing.delete({
+    where: { id }
+  })
+}

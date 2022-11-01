@@ -4,7 +4,8 @@ import {
   getListingsHandler,
   getListingHandler,
   createListingHandler,
-  updateListingHandler
+  updateListingHandler,
+  deleteListingHandler
 } from "./listings.controller"
 import {
   listingQuerySchema,
@@ -81,6 +82,19 @@ async function listingsRoutes(server: FastifyInstance) {
       }
     },
     updateListingHandler
+  )
+
+  server.delete(
+    "/:id",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["auction-listings"],
+        security: [{ bearerAuth: [] }],
+        params: listingIdParamsSchema
+      }
+    },
+    deleteListingHandler
   )
 }
 
