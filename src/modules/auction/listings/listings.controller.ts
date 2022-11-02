@@ -112,7 +112,7 @@ export async function updateListingHandler(
 ) {
   const { id } = request.params
   const { name } = request.user as AuctionProfile
-  const { media } = request.body
+  const { media, endsAt } = request.body
   const { _bids, _seller } = request.query
 
   const includes: AuctionListingIncludes = {
@@ -128,6 +128,10 @@ export async function updateListingHandler(
 
   if (listing.sellerName.toLowerCase() !== name.toLowerCase()) {
     throw new Forbidden("You do not have permission to update this listing")
+  }
+
+  if (endsAt && new Date(endsAt) < new Date()) {
+    throw new BadRequest("endsAt cannot be in the past")
   }
 
   if (media) {
