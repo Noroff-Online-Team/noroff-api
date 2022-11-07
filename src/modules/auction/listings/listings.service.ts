@@ -2,6 +2,7 @@ import { AuctionListing } from "@prisma/client"
 import { prisma } from "../../../utils"
 import { AuctionListingIncludes } from "./listings.controller"
 import { CreateListingSchema, UpdateListingSchema } from "./listings.schema"
+import { scheduleCreditsTransfer } from "./listing.utils"
 
 export async function getListings(
   sort: keyof AuctionListing = "title",
@@ -42,7 +43,7 @@ export async function getListing(id: string, includes: AuctionListingIncludes = 
 }
 
 export async function createListing(data: CreateListingSchema, seller: string, includes: AuctionListingIncludes = {}) {
-  return await prisma.auctionListing.create({
+  const listing = await prisma.auctionListing.create({
     data: {
       ...data,
       sellerName: seller,
@@ -59,6 +60,9 @@ export async function createListing(data: CreateListingSchema, seller: string, i
       }
     }
   })
+
+  await scheduleCreditsTransfer(listing.id, listing.endsAt)
+  return listing
 }
 
 export async function updateListing(id: string, data: UpdateListingSchema, includes: AuctionListingIncludes = {}) {
@@ -83,5 +87,21 @@ export async function updateListing(id: string, data: UpdateListingSchema, inclu
 export async function deleteListing(id: string) {
   return await prisma.auctionListing.delete({
     where: { id }
+  })
+}
+
+export async function createListingBid(id: string, bidderName: string, amount: number) {
+  await prisma.auctionProfile.update({
+    where: { name: bidderName },
+    data: { credits: { decrement: amount } }
+  })
+
+  return await prisma.auctionBid.create({
+    data: {
+      listingId: id,
+      bidderName,
+      amount,
+      created: new Date()
+    }
   })
 }

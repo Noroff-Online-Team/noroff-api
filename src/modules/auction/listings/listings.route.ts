@@ -5,7 +5,8 @@ import {
   getListingHandler,
   createListingHandler,
   updateListingHandler,
-  deleteListingHandler
+  deleteListingHandler,
+  bidListingHandler
 } from "./listings.controller"
 import {
   listingQuerySchema,
@@ -13,7 +14,8 @@ import {
   queryFlagsSchema,
   listingIdParamsSchema,
   createListingSchema,
-  updateListingSchema
+  updateListingSchema,
+  bidBodySchema
 } from "./listings.schema"
 
 async function listingsRoutes(server: FastifyInstance) {
@@ -95,6 +97,24 @@ async function listingsRoutes(server: FastifyInstance) {
       }
     },
     deleteListingHandler
+  )
+
+  server.put(
+    "/:id/bid",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["auction-listings"],
+        security: [{ bearerAuth: [] }],
+        params: listingIdParamsSchema,
+        querystring: queryFlagsSchema,
+        body: bidBodySchema,
+        response: {
+          200: listingResponseSchema
+        }
+      }
+    },
+    bidListingHandler
   )
 }
 

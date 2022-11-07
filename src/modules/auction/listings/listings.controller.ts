@@ -1,10 +1,20 @@
-import { AuctionListing, AuctionProfile } from "@prisma/client"
+import { getProfile } from "./../profiles/profiles.service"
+import { AuctionBid, AuctionListing, AuctionProfile, Prisma } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "../../../utils/mediaGuard"
 import { NotFound, BadRequest, Forbidden } from "http-errors"
 
 import { CreateListingSchema, UpdateListingSchema } from "./listings.schema"
-import { getListings, getListing, createListing, updateListing, deleteListing } from "./listings.service"
+import {
+  getListings,
+  getListing,
+  createListing,
+  updateListing,
+  deleteListing,
+  createListingBid
+} from "./listings.service"
+
+export type ListingWithBids = Prisma.PromiseReturnType<typeof getListing> & { bids: Array<AuctionBid> | [] }
 
 export interface AuctionListingIncludes {
   bids?: boolean
@@ -170,6 +180,62 @@ export async function deleteListingHandler(
   try {
     await deleteListing(id)
     reply.code(204)
+  } catch (error) {
+    reply.code(500).send(error)
+  }
+}
+
+export async function bidListingHandler(
+  request: FastifyRequest<{
+    Params: { id: string }
+    Body: {
+      amount: number
+    }
+    Querystring: {
+      _seller?: boolean
+      _bids?: boolean
+    }
+  }>,
+  reply: FastifyReply
+) {
+  const { id } = request.params
+  const { amount } = request.body
+  const { name } = request.user as AuctionProfile
+  const { _bids, _seller } = request.query
+
+  const includes: AuctionListingIncludes = {
+    bids: Boolean(_bids),
+    seller: Boolean(_seller)
+  }
+
+  const listing = (await getListing(id, { bids: true })) as ListingWithBids
+
+  if (!listing) {
+    throw new NotFound("No listing with such ID")
+  }
+
+  if (listing.sellerName.toLowerCase() === name.toLowerCase()) {
+    throw new Forbidden("You cannot bid on your own listing")
+  }
+
+  if (listing.endsAt && new Date(listing.endsAt) < new Date()) {
+    throw new BadRequest("This listing has already ended")
+  }
+
+  const bidderProfile = (await getProfile(name)) as AuctionProfile
+  if (bidderProfile.credits < amount) {
+    throw new BadRequest("You do not have enough balance to bid this amount")
+  }
+
+  const currentHighestBid = Math.max(...listing.bids.map(bid => bid.amount), 0)
+  if (currentHighestBid >= amount) {
+    throw new BadRequest("Your bid must be higher than the current bid")
+  }
+
+  try {
+    await createListingBid(id, name, amount)
+    const updatedListing = await getListing(id, includes)
+    reply.code(200).send(updatedListing)
   } catch (error) {
     reply.code(500).send(error)
   }

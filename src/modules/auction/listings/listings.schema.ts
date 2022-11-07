@@ -6,8 +6,9 @@ const listingId = {
 }
 
 const bidCore = {
-  id: z.number(),
+  id: z.string().uuid(),
   amount: z.number(),
+  bidderName: z.string(),
   created: z.date()
 }
 
@@ -130,6 +131,16 @@ export const listingQuerySchema = z.object({
     )
     .optional(),
   ...queryFlagsCore
+})
+
+export const bidBodySchema = z.object({
+  amount: z
+    .number({
+      required_error: "Amount is required",
+      invalid_type_error: "Amount must be a number"
+    })
+    .int()
+    .positive("Amount must be a positive number")
 })
 
 export type ListingResponseSchema = z.infer<typeof listingResponseSchema>
