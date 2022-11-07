@@ -1,5 +1,4 @@
 import { z } from "zod"
-// import { listingSchema } from "../listings/listings.schema"
 
 const profileMedia = {
   avatar: z
@@ -69,6 +68,23 @@ export const profileNameSchema = z.object({
 export const displayProfileSchema = z.object({
   ...profileCore,
   ...profileCredits,
+  listings: z
+    .object({
+      id: z.string().uuid(),
+      title: z.string(),
+      description: z.string().nullish(),
+      media: z.string().array().nullish(),
+      created: z.date(),
+      updated: z.date(),
+      endsAt: z.date(),
+      _count: z
+        .object({
+          bids: z.number().int().optional()
+        })
+        .optional()
+    })
+    .array()
+    .optional(),
   _count: z
     .object({
       listings: z.number().int().optional()
