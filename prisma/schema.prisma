@@ -137,10 +137,11 @@ model AuctionListing {
 }
 
 model AuctionBid {
-  id         Int            @id @default(autoincrement())
+  id         String         @id @default(uuid())
   amount     Int
   bidder     AuctionProfile @relation(fields: [bidderName], references: [name], onDelete: Cascade)
   bidderName String
   listing    AuctionListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
   listingId  String
+  created    DateTime       @default(now())
 }
