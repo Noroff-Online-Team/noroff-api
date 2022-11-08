@@ -72,7 +72,6 @@ export async function updateListing(id: string, data: UpdateListingSchema, inclu
       ...data,
       title: data.title || undefined,
       media: data.media || undefined,
-      endsAt: data.endsAt || undefined,
       updated: new Date()
     },
     include: {

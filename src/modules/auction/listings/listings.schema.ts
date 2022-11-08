@@ -77,19 +77,14 @@ export const updateListingCore = {
     .url("Image must be valid URL")
     .array()
     .nullish()
-    .or(z.literal("")),
-  endsAt: z
-    .preprocess(arg => {
-      if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
-    }, z.date())
-    .nullish()
+    .or(z.literal(""))
 }
 
 export const updateListingSchema = z
   .object(updateListingCore)
   .refine(
-    ({ title, description, media, endsAt }) => !!title || !!description || !!media || !endsAt,
-    "You must provide either title, description, media, or endsAt"
+    ({ title, description, media }) => !!title || !!description || !!media,
+    "You must provide either title, description, or media"
   )
 
 const queryFlagsCore = {
