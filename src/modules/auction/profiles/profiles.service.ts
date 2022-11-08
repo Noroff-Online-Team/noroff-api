@@ -28,7 +28,7 @@ export async function getProfiles(
   })
 }
 
-export const getProfile = async (name: string, includes: AuctionProfileIncludes = {}) => {
+export async function getProfile(name: string, includes: AuctionProfileIncludes = {}) {
   return await prisma.auctionProfile.findUnique({
     where: { name },
     include: {
@@ -42,7 +42,7 @@ export const getProfile = async (name: string, includes: AuctionProfileIncludes 
   })
 }
 
-export const updateProfileMedia = async (name: string, { avatar }: ProfileMediaSchema) => {
+export async function updateProfileMedia(name: string, { avatar }: ProfileMediaSchema) {
   return await prisma.auctionProfile.update({
     where: { name },
     data: {
@@ -51,14 +51,14 @@ export const updateProfileMedia = async (name: string, { avatar }: ProfileMediaS
   })
 }
 
-export const getProfileListings = async (
+export async function getProfileListings(
   name: string,
   sort: keyof AuctionListing = "created",
   sortOrder: "asc" | "desc" = "desc",
   limit = 100,
   offset = 0,
   includes: AuctionListingIncludes = {}
-) => {
+) {
   return await prisma.auctionListing.findMany({
     where: { sellerName: name },
     orderBy: {
@@ -73,6 +73,15 @@ export const getProfileListings = async (
           bids: true
         }
       }
+    }
+  })
+}
+
+export async function getProfileCredits(name: string) {
+  return await prisma.auctionProfile.findUnique({
+    where: { name },
+    select: {
+      credits: true
     }
   })
 }

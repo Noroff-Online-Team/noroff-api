@@ -2,7 +2,7 @@ import { AuctionListing, AuctionProfile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "./../../../utils/mediaGuard"
 import { ProfileMediaSchema } from "./profiles.schema"
-import { NotFound, BadRequest } from "http-errors"
+import { NotFound, BadRequest, Forbidden } from "http-errors"
 
 import { getProfiles, getProfile, updateProfileMedia, getProfileListings } from "./profiles.service"
 
@@ -113,4 +113,25 @@ export async function getProfileListingsHandler(
 
   const listings = await getProfileListings(name, sort, sortOrder, limit, offset, includes)
   reply.code(200).send(listings)
+}
+
+export async function getProfileCreditsHandler(
+  request: FastifyRequest<{
+    Params: { name: string }
+  }>,
+  reply: FastifyReply
+) {
+  const { name } = request.params
+  const { name: reqName } = request.user as AuctionProfile
+  const profile = await getProfile(name)
+
+  if (!profile) {
+    throw new NotFound("No profile with this name")
+  }
+
+  if (reqName.toLowerCase() !== name.toLowerCase()) {
+    throw new Forbidden("You do not have permission to view another user's credits")
+  }
+
+  reply.code(200).send({ credits: profile.credits })
 }
