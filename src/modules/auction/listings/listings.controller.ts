@@ -185,7 +185,7 @@ export async function deleteListingHandler(
   }
 }
 
-export async function bidListingHandler(
+export async function createListingBidHandler(
   request: FastifyRequest<{
     Params: { id: string }
     Body: {

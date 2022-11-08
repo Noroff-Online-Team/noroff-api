@@ -6,7 +6,7 @@ import {
   createListingHandler,
   updateListingHandler,
   deleteListingHandler,
-  bidListingHandler
+  createListingBidHandler
 } from "./listings.controller"
 import {
   listingQuerySchema,
@@ -99,8 +99,8 @@ async function listingsRoutes(server: FastifyInstance) {
     deleteListingHandler
   )
 
-  server.put(
-    "/:id/bid",
+  server.post(
+    "/:id/bids",
     {
       preHandler: [server.authenticate],
       schema: {
@@ -114,7 +114,7 @@ async function listingsRoutes(server: FastifyInstance) {
         }
       }
     },
-    bidListingHandler
+    createListingBidHandler
   )
 }
 
