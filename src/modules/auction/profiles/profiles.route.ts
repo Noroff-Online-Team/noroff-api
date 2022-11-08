@@ -59,7 +59,7 @@ async function profilesRoutes(server: FastifyInstance) {
         params: profileNameSchema,
         body: profileMediaSchema,
         response: {
-          200: displayProfileSchema
+          200: displayProfileSchema.omit({ listings: true })
         }
       }
     },

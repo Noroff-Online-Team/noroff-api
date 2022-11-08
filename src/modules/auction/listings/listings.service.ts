@@ -70,7 +70,9 @@ export async function updateListing(id: string, data: UpdateListingSchema, inclu
     where: { id },
     data: {
       ...data,
-      media: data.media || [],
+      title: data.title || undefined,
+      media: data.media || undefined,
+      endsAt: data.endsAt || undefined,
       updated: new Date()
     },
     include: {

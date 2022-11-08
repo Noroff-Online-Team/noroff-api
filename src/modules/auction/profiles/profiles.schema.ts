@@ -77,11 +77,6 @@ export const displayProfileSchema = z.object({
       created: z.date(),
       updated: z.date(),
       endsAt: z.date(),
-      _count: z
-        .object({
-          bids: z.number().int().optional()
-        })
-        .optional()
     })
     .array()
     .optional(),

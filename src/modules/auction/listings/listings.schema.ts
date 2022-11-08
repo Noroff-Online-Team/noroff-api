@@ -21,7 +21,7 @@ export const listingCore = {
   updated: z.date(),
   endsAt: z.date(),
   bids: z.object(bidCore).array().optional(),
-  seller: displayProfileSchema.omit({ credits: true }).optional(),
+  seller: displayProfileSchema.omit({ credits: true, listings: true, _count: true }).optional(),
   _count: z
     .object({
       bids: z.number().int().optional()
@@ -62,7 +62,8 @@ export const updateListingCore = {
     .string({
       invalid_type_error: "Title must be a string"
     })
-    .trim(),
+    .trim()
+    .nullish(),
   description: z
     .string({
       invalid_type_error: "Description must be a string"
@@ -77,9 +78,11 @@ export const updateListingCore = {
     .array()
     .nullish()
     .or(z.literal("")),
-  endsAt: z.preprocess(arg => {
-    if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
-  }, z.date())
+  endsAt: z
+    .preprocess(arg => {
+      if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
+    }, z.date())
+    .nullish()
 }
 
 export const updateListingSchema = z
