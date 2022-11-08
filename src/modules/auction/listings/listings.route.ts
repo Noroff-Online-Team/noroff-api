@@ -22,10 +22,8 @@ async function listingsRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      preHandler: [server.authenticate],
       schema: {
         tags: ["auction-listings"],
-        security: [{ bearerAuth: [] }],
         querystring: listingQuerySchema,
         response: {
           200: listingResponseSchema.array()
@@ -38,10 +36,8 @@ async function listingsRoutes(server: FastifyInstance) {
   server.get(
     "/:id",
     {
-      preHandler: [server.authenticate],
       schema: {
         tags: ["auction-listings"],
-        security: [{ bearerAuth: [] }],
         querystring: queryFlagsSchema,
         params: listingIdParamsSchema,
         response: {
