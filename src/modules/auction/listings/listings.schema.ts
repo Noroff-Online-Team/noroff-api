@@ -52,9 +52,23 @@ export const createListingSchema = z.object({
     .array()
     .nullish()
     .or(z.literal("")),
-  endsAt: z.preprocess(arg => {
-    if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
-  }, z.date({ required_error: "endsAt is required" }))
+  endsAt: z
+    .preprocess(arg => {
+      if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
+    }, z.date({ required_error: "endsAt is required" }))
+    .refine(
+      date => {
+        const today = new Date()
+        const oneYearFromToday = new Date(today.setFullYear(today.getFullYear() + 1))
+        if (date > oneYearFromToday) {
+          return false
+        }
+        return true
+      },
+      {
+        message: "endsAt cannot be more than one year from now"
+      }
+    )
 })
 
 export const updateListingCore = {
