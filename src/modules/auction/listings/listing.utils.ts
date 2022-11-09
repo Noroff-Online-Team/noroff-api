@@ -16,24 +16,22 @@ export async function scheduleCreditsTransfer(listingId: string, endsAt: Date): 
 
     if (listing.bids.length > 0) {
       // Get highest bid of listing
-      const highestBid = Math.max(...listing.bids.map(bid => bid.amount), 0)
+      const [winner, ...losers] = listing.bids.sort((a, b) => b.amount - a.amount)
 
       // Transfer credits from highest bid to seller
       await prisma.auctionProfile.update({
         where: { name: listing.sellerName },
-        data: { credits: { increment: highestBid } }
+        data: { credits: { increment: winner.amount } }
       })
 
       // Transfer all non-winning bids back to their bidders
       await Promise.all(
-        listing.bids
-          .filter(bid => bid.amount !== highestBid)
-          .map(bid =>
-            prisma.auctionProfile.update({
-              where: { name: bid.bidderName },
-              data: { credits: { increment: bid.amount } }
-            })
-          )
+        losers.map(bid =>
+          prisma.auctionProfile.update({
+            where: { name: bid.bidderName },
+            data: { credits: { increment: bid.amount } }
+          })
+        )
       )
     }
   })
