@@ -85,7 +85,33 @@ export async function updateListing(id: string, data: UpdateListingSchema, inclu
   })
 }
 
+export async function refundCredits(id: string) {
+  const listing = await prisma.auctionListing.findUnique({
+    where: { id },
+    include: {
+      bids: true
+    }
+  })
+
+  if (listing) {
+    await Promise.all(
+      listing.bids.map(bid =>
+        prisma.auctionProfile.update({
+          where: { name: bid.bidderName },
+          data: {
+            credits: {
+              increment: bid.amount
+            }
+          }
+        })
+      )
+    )
+  }
+}
+
 export async function deleteListing(id: string) {
+  await refundCredits(id)
+
   return await prisma.auctionListing.delete({
     where: { id }
   })
