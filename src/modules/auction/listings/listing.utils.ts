@@ -43,10 +43,7 @@ export async function scheduleCreditsTransfer(listingId: string, endsAt: Date): 
       // Transfer all non-winning bids back to their bidders
       await Promise.all(
         losers.map(bid =>
-          prisma.auctionProfile.update({
-            where: { name: bid.bidderName },
-            data: { credits: { increment: bid.amount } }
-          })
+          awardCreditsOrCap(bid.bidderName, bid.amount)
         )
       )
     }
