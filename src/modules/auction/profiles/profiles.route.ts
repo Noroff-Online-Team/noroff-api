@@ -5,17 +5,17 @@ import {
   profilesQuerySchema,
   profileMediaSchema,
   profileNameSchema,
-  queryFlagsSchema
+  queryFlagsSchema,
+  profileCreditsSchema
 } from "./profiles.schema"
 import {
   getProfilesHandler,
   getProfileHandler,
   updateProfileMediaHandler,
-  followProfileHandler,
-  unfollowProfileHandler,
-  getProfilePostsHandler
+  getProfileListingsHandler,
+  getProfileCreditsHandler
 } from "./profiles.controller"
-import { displayPostSchema, postsQuerySchema } from "../posts/posts.schema"
+import { listingQuerySchema, listingResponseSchema } from "../listings/listings.schema"
 
 async function profilesRoutes(server: FastifyInstance) {
   server.get(
@@ -23,7 +23,7 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["social-profiles"],
+        tags: ["auction-profiles"],
         security: [{ bearerAuth: [] }],
         querystring: profilesQuerySchema,
         response: {
@@ -34,29 +34,12 @@ async function profilesRoutes(server: FastifyInstance) {
     getProfilesHandler
   )
 
-  server.put(
-    "/:name/media",
-    {
-      preHandler: [server.authenticate],
-      schema: {
-        tags: ["social-profiles"],
-        security: [{ bearerAuth: [] }],
-        params: profileNameSchema,
-        body: profileMediaSchema,
-        response: {
-          200: displayProfileSchema
-        }
-      }
-    },
-    updateProfileMediaHandler
-  )
-
   server.get(
     "/:name",
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["social-profiles"],
+        tags: ["auction-profiles"],
         security: [{ bearerAuth: [] }],
         querystring: queryFlagsSchema,
         params: profileNameSchema,
@@ -69,46 +52,53 @@ async function profilesRoutes(server: FastifyInstance) {
   )
 
   server.put(
-    "/:name/follow",
+    "/:name/media",
     {
       preHandler: [server.authenticate],
       schema: {
-        tags: ["social-profiles"],
-        security: [{ bearerAuth: [] }],
-        params: profileNameSchema
-      }
-    },
-    followProfileHandler
-  )
-
-  server.put(
-    "/:name/unfollow",
-    {
-      preHandler: [server.authenticate],
-      schema: {
-        tags: ["social-profiles"],
-        security: [{ bearerAuth: [] }],
-        params: profileNameSchema
-      }
-    },
-    unfollowProfileHandler
-  )
-
-  server.get(
-    "/:name/posts",
-    {
-      preHandler: [server.authenticate],
-      schema: {
-        tags: ["social-profiles"],
+        tags: ["auction-profiles"],
         security: [{ bearerAuth: [] }],
         params: profileNameSchema,
-        querystring: postsQuerySchema,
+        body: profileMediaSchema,
         response: {
-          200: displayPostSchema.array()
+          200: displayProfileSchema.omit({ listings: true })
         }
       }
     },
-    getProfilePostsHandler
+    updateProfileMediaHandler
+  )
+
+  server.get(
+    "/:name/listings",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["auction-profiles"],
+        security: [{ bearerAuth: [] }],
+        querystring: listingQuerySchema,
+        params: profileNameSchema,
+        response: {
+          200: listingResponseSchema.array()
+        }
+      }
+    },
+    getProfileListingsHandler
+  )
+
+  server.get(
+    "/:name/credits",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["auction-profiles"],
+        security: [{ bearerAuth: [] }],
+        params: profileNameSchema,
+        response: {
+          200: profileCreditsSchema
+        }
+      }
+    },
+    getProfileCreditsHandler
   )
 }
 
