@@ -9,8 +9,15 @@ export async function getListings(
   sortOrder: "asc" | "desc" = "desc",
   limit = 100,
   offset = 0,
-  includes: AuctionListingIncludes = {}
+  includes: AuctionListingIncludes = {},
+  tag: string | undefined
 ) {
+  const whereTag = tag
+    ? {
+        tags: { has: tag }
+      }
+    : {}
+
   return await prisma.auctionListing.findMany({
     include: {
       ...includes,
@@ -20,6 +27,7 @@ export async function getListings(
         }
       }
     },
+    where: { ...whereTag },
     orderBy: {
       [sort]: sortOrder
     },
@@ -48,6 +56,7 @@ export async function createListing(data: CreateListingSchema, seller: string, i
       ...data,
       sellerName: seller,
       media: data.media || [],
+      tags: data.tags || [],
       created: new Date(),
       updated: new Date()
     },
@@ -72,6 +81,7 @@ export async function updateListing(id: string, data: UpdateListingSchema, inclu
       ...data,
       title: data.title || undefined,
       media: data.media || undefined,
+      tags: data.tags || undefined,
       updated: new Date()
     },
     include: {
