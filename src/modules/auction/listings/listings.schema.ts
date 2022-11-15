@@ -17,6 +17,7 @@ export const listingCore = {
   title: z.string(),
   description: z.string().nullish(),
   media: z.string().array().nullish(),
+  tags: z.string().array().nullish(),
   created: z.date(),
   updated: z.date(),
   endsAt: z.date(),
@@ -31,6 +32,25 @@ export const listingCore = {
 
 export const listingResponseSchema = z.object(listingCore)
 
+const tagsAndMedia = {
+  tags: z.union([
+    z
+      .string({
+        invalid_type_error: "Tags must be an array of strings"
+      })
+      .array(),
+    z.undefined()
+  ]),
+  media: z
+    .string({
+      invalid_type_error: "Image must be a string"
+    })
+    .url("Image must be valid URL")
+    .array()
+    .nullish()
+    .or(z.literal(""))
+}
+
 export const createListingSchema = z.object({
   title: z
     .string({
@@ -44,14 +64,6 @@ export const createListingSchema = z.object({
     })
     .trim()
     .nullish(),
-  media: z
-    .string({
-      invalid_type_error: "Image must be a string"
-    })
-    .url("Image must be valid URL")
-    .array()
-    .nullish()
-    .or(z.literal("")),
   endsAt: z
     .preprocess(arg => {
       if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
@@ -68,7 +80,8 @@ export const createListingSchema = z.object({
       {
         message: "endsAt cannot be more than one year from now"
       }
-    )
+    ),
+  ...tagsAndMedia
 })
 
 export const updateListingCore = {
@@ -84,21 +97,14 @@ export const updateListingCore = {
     })
     .trim()
     .nullish(),
-  media: z
-    .string({
-      invalid_type_error: "Image must be a string"
-    })
-    .url("Image must be valid URL")
-    .array()
-    .nullish()
-    .or(z.literal(""))
+  ...tagsAndMedia
 }
 
 export const updateListingSchema = z
   .object(updateListingCore)
   .refine(
-    ({ title, description, media }) => !!title || !!description || !!media,
-    "You must provide either title, description, or media"
+    ({ title, description, media, tags }) => !!title || !!description || !!media || !!tags,
+    "You must provide either title, description, media, or tags"
   )
 
 const queryFlagsCore = {
@@ -141,6 +147,11 @@ export const listingQuerySchema = z.object({
         })
         .int()
     )
+    .optional(),
+  _tags: z
+    .string({
+      invalid_type_error: "Tag must be a string"
+    })
     .optional(),
   ...queryFlagsCore
 })
