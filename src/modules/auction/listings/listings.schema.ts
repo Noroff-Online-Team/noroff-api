@@ -148,7 +148,7 @@ export const listingQuerySchema = z.object({
         .int()
     )
     .optional(),
-  _tags: z
+  _tag: z
     .string({
       invalid_type_error: "Tag must be a string"
     })
