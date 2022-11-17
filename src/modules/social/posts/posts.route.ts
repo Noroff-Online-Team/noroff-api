@@ -41,7 +41,6 @@ async function postsRoutes(server: FastifyInstance) {
     getPostsHandler
   )
 
-
   server.get(
     "/following",
     {
