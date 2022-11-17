@@ -20,7 +20,8 @@ import {
   updatePostHandler,
   createReactionHandler,
   deletePostHandler,
-  createCommentHandler
+  createCommentHandler,
+  getPostsOfFollowedUsersHandler
 } from "./posts.controller"
 
 async function postsRoutes(server: FastifyInstance) {
@@ -38,6 +39,22 @@ async function postsRoutes(server: FastifyInstance) {
       }
     },
     getPostsHandler
+  )
+
+  server.get(
+    "/following",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["social-posts"],
+        security: [{ bearerAuth: [] }],
+        querystring: postsQuerySchema,
+        response: {
+          200: displayPostSchema.array()
+        }
+      }
+    },
+    getPostsOfFollowedUsersHandler
   )
 
   server.post(

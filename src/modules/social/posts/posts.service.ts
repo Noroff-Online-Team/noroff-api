@@ -161,3 +161,36 @@ export const getComment = async (id: number) =>
       replies: true
     }
   })
+
+export const getPostsOfFollowedUsers = async (
+  id: number,
+  sort: keyof Post = "created",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  offset = 0,
+  includes: PostIncludes = {}
+) => {
+  return await prisma.post.findMany({
+    where: {
+      author: {
+        followers: {
+          some: { id }
+        }
+      }
+    },
+    orderBy: {
+      [sort]: sortOrder
+    },
+    take: limit,
+    skip: offset,
+    include: {
+      ...includes,
+      _count: {
+        select: {
+          comments: true,
+          reactions: true,
+        }
+      }
+    }
+  })
+}
