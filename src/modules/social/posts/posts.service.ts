@@ -169,7 +169,7 @@ export const getPostsOfFollowedUsers = async (
   limit = 100,
   offset = 0,
   includes: PostIncludes = {}
-  ) => {
+) => {
   return await prisma.post.findMany({
     where: {
       author: {
