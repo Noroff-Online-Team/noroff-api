@@ -37,6 +37,14 @@ export async function scheduleCreditsTransfer(listingId: string, endsAt: Date): 
       // Get highest bid of listing
       const [winner, ...losers] = listing.bids.sort((a, b) => b.amount - a.amount)
 
+      // Add listing id to winner wins
+      await prisma.auctionProfile.update({
+        where: { name: winner.bidderName },
+        data: {
+          wins: { push: listingId }
+        }
+      })
+
       // Transfer credits from highest bid to seller
       await awardCreditsOrCap(listing.sellerName, winner.amount)
 
