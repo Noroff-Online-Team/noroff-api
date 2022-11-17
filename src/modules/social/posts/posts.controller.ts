@@ -4,7 +4,7 @@ import { mediaGuard } from "./../../../utils/mediaGuard";
 import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
 import { NotFound, Forbidden, BadRequest } from 'http-errors'
 
-import { getPosts, getPost, createPost, updatePost, createReaction, deletePost, createComment, getComment } from "./posts.service"
+import { getPosts, getPost, createPost, updatePost, createReaction, deletePost, createComment, getComment, getPostsOfFollowedUsers } from "./posts.service"
 
 export interface PostIncludes {
   author?: boolean;
@@ -267,3 +267,37 @@ export async function deleteCommentHandler(request: FastifyRequest<{
   }
 }
 
+export async function getPostsOfFollowedUsersHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      sort?: keyof Post
+      sortOrder?: "asc" | "desc"
+      limit?: number
+      offset?: number
+      _author?: boolean
+      _reactions?: boolean
+      _comments?: boolean
+    }
+  }>,
+  reply: FastifyReply
+) {
+  const { id } = request.user as Profile
+  const { sort, sortOrder, limit, offset, _author, _reactions, _comments } = request.query
+
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
+  }
+
+  const includes: PostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
+  }
+
+  try {
+    const posts = await getPostsOfFollowedUsers(id, sort, sortOrder, limit, offset, includes)
+    reply.code(200).send(posts)
+  } catch (error) {
+    reply.code(500).send(error)
+  }
+}
