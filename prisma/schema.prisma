@@ -121,6 +121,7 @@ model AuctionProfile {
   credits  Int
   listings AuctionListing[]
   bids     AuctionBid[]
+  wins     String[]
 }
 
 model AuctionListing {

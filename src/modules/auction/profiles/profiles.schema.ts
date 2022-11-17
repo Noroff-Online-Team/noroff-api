@@ -80,6 +80,7 @@ export const displayProfileSchema = z.object({
     })
     .array()
     .optional(),
+  wins: z.string().uuid().array().optional(),
   _count: z
     .object({
       listings: z.number().int().optional()
