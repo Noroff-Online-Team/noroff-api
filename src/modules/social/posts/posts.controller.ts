@@ -24,11 +24,12 @@ export async function getPostsHandler(
       _comments?: boolean,
       sort?: keyof Post
       sortOrder?: "asc" | "desc"
+      _tag?: string
     }
   }>,
   reply: FastifyReply
 ) {
-  const { sort, sortOrder, limit, offset, _author, _reactions, _comments } = request.query
+  const { sort, sortOrder, limit, offset, _author, _reactions, _comments, _tag } = request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -40,7 +41,7 @@ export async function getPostsHandler(
     comments: Boolean(_comments)
   }
 
-  const posts = await getPosts(sort, sortOrder, limit, offset, includes)
+  const posts = await getPosts(sort, sortOrder, limit, offset, includes, _tag)
   reply.code(200).send(posts)
 }
 
@@ -277,12 +278,13 @@ export async function getPostsOfFollowedUsersHandler(
       _author?: boolean
       _reactions?: boolean
       _comments?: boolean
+      _tag?: string
     }
   }>,
   reply: FastifyReply
 ) {
   const { id } = request.user as Profile
-  const { sort, sortOrder, limit, offset, _author, _reactions, _comments } = request.query
+  const { sort, sortOrder, limit, offset, _author, _reactions, _comments, _tag } = request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -295,7 +297,7 @@ export async function getPostsOfFollowedUsersHandler(
   }
 
   try {
-    const posts = await getPostsOfFollowedUsers(id, sort, sortOrder, limit, offset, includes)
+    const posts = await getPostsOfFollowedUsers(id, sort, sortOrder, limit, offset, includes, _tag)
     reply.code(200).send(posts)
   } catch (error) {
     reply.code(500).send(error)

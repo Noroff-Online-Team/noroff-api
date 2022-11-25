@@ -1,25 +1,35 @@
 import { Post } from "@prisma/client"
 import { prisma } from "../../../utils"
 import { PostIncludes } from "./posts.controller"
-import {
-  CreateCommentSchema,
-  CreatePostBaseSchema,
-  CreatePostSchema
-} from "./posts.schema"
+import { CreateCommentSchema, CreatePostBaseSchema, CreatePostSchema } from "./posts.schema"
 
-export async function getPosts(sort: keyof Post = "created", sortOrder: "asc" | "desc" = "desc", limit = 100, offset = 0, includes: PostIncludes = {}) {
+export async function getPosts(
+  sort: keyof Post = "created",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  offset = 0,
+  includes: PostIncludes = {},
+  tag: string | undefined
+) {
+  const whereTag = tag
+    ? {
+        tags: { has: tag }
+      }
+    : {}
+
   return await prisma.post.findMany({
     orderBy: {
       [sort]: sortOrder
     },
     take: limit,
     skip: offset,
+    where: { ...whereTag },
     include: {
       ...includes,
       _count: {
         select: {
           comments: true,
-          reactions: true,
+          reactions: true
         }
       }
     }
@@ -34,7 +44,7 @@ export async function getPost(id: number, includes: PostIncludes = {}) {
       _count: {
         select: {
           comments: true,
-          reactions: true,
+          reactions: true
         }
       }
     }
@@ -53,7 +63,7 @@ export const createPost = async (data: CreatePostSchema, includes: PostIncludes 
       _count: {
         select: {
           comments: true,
-          reactions: true,
+          reactions: true
         }
       }
     }
@@ -74,7 +84,7 @@ export const updatePost = async (id: number, data: CreatePostBaseSchema, include
       _count: {
         select: {
           comments: true,
-          reactions: true,
+          reactions: true
         }
       }
     }
@@ -118,27 +128,24 @@ export const createReaction = async (postId: number, symbol: string) => {
   return item
 }
 
-export const createComment = async (
-  postId: number,
-  owner: string,
-  comment: CreateCommentSchema
-) => await prisma.comment.create({
-  data: {
-    body: comment.body,
-    replyToId: comment.replyToId,
-    postId,
-    created: new Date(),
-    owner
-  },
-  select: {
-    id: true,
-    body: true,
-    created: true,
-    owner: true,
-    replyToId: true,
-    postId: true
-  }
-})
+export const createComment = async (postId: number, owner: string, comment: CreateCommentSchema) =>
+  await prisma.comment.create({
+    data: {
+      body: comment.body,
+      replyToId: comment.replyToId,
+      postId,
+      created: new Date(),
+      owner
+    },
+    select: {
+      id: true,
+      body: true,
+      created: true,
+      owner: true,
+      replyToId: true,
+      postId: true
+    }
+  })
 
 export const deleteComment = async (id: number) =>
   await prisma.comment.delete({
@@ -168,10 +175,18 @@ export const getPostsOfFollowedUsers = async (
   sortOrder: "asc" | "desc" = "desc",
   limit = 100,
   offset = 0,
-  includes: PostIncludes = {}
+  includes: PostIncludes = {},
+  tag: string | undefined
 ) => {
+  const whereTag = tag
+    ? {
+        tags: { has: tag }
+      }
+    : {}
+
   return await prisma.post.findMany({
     where: {
+      ...whereTag,
       author: {
         followers: {
           some: { id }
@@ -188,7 +203,7 @@ export const getPostsOfFollowedUsers = async (
       _count: {
         select: {
           comments: true,
-          reactions: true,
+          reactions: true
         }
       }
     }

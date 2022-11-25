@@ -185,6 +185,9 @@ export const postsQuerySchema = z
     offset: z.preprocess(val => parseInt(val as string, 10), z.number({
       invalid_type_error: "Offset must be a number"
     }).int()).optional(),
+    _tag: z.string({
+      invalid_type_error: "Tag must be a string"
+    }).optional(),
     ...queryFlagsCore
   })
 
