@@ -38,7 +38,8 @@ const tagsAndMedia = {
       .string({
         invalid_type_error: "Tags must be an array of strings"
       })
-      .array(),
+      .array()
+      .max(8, "You cannot have more than 8 tags"),
     z.undefined()
   ]),
   media: z
@@ -47,6 +48,7 @@ const tagsAndMedia = {
     })
     .url("Image must be valid URL")
     .array()
+    .max(8, "You cannot have more than 8 images")
     .nullish()
     .or(z.literal(""))
 }
@@ -57,11 +59,13 @@ export const createListingSchema = z.object({
       required_error: "Title is required",
       invalid_type_error: "Title must be a string"
     })
+    .max(280, "Title cannot be greater than 280 characters")
     .trim(),
   description: z
     .string({
       invalid_type_error: "Description must be a string"
     })
+    .max(280, "Description cannot be greater than 280 characters")
     .trim()
     .nullish(),
   endsAt: z
@@ -89,12 +93,14 @@ export const updateListingCore = {
     .string({
       invalid_type_error: "Title must be a string"
     })
+    .max(280, "Title cannot be greater than 280 characters")
     .trim()
     .nullish(),
   description: z
     .string({
       invalid_type_error: "Description must be a string"
     })
+    .max(280, "Description cannot be greater than 280 characters")
     .trim()
     .nullish(),
   ...tagsAndMedia
