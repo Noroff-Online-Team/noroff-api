@@ -107,7 +107,15 @@ export const displayCommentSchema = z.object({
   id: z.number().int(),
   postId: z.number().int().nullish(),
   owner: z.string(),
-  created: z.date()
+  created: z.date(),
+  author: z
+    .object({
+      name: z.string(),
+      email: z.string().email(),
+      avatar: z.string().nullable(),
+      banner: z.string().nullable()
+    })
+    .optional(),
 })
 
 const comments = {

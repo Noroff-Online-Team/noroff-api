@@ -11,11 +11,8 @@ export async function getPosts(
   includes: PostIncludes = {},
   tag: string | undefined
 ) {
-  const whereTag = tag
-    ? {
-        tags: { has: tag }
-      }
-    : {}
+  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const whereTag = tag ? { tags: { has: tag } } : {}
 
   return await prisma.post.findMany({
     orderBy: {
@@ -26,6 +23,7 @@ export async function getPosts(
     where: { ...whereTag },
     include: {
       ...includes,
+      ...withCommentAuthor,
       _count: {
         select: {
           comments: true,
@@ -37,10 +35,13 @@ export async function getPosts(
 }
 
 export async function getPost(id: number, includes: PostIncludes = {}) {
+  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+
   return await prisma.post.findUnique({
     where: { id },
     include: {
       ...includes,
+      ...withCommentAuthor,
       _count: {
         select: {
           comments: true,
@@ -52,6 +53,8 @@ export async function getPost(id: number, includes: PostIncludes = {}) {
 }
 
 export const createPost = async (data: CreatePostSchema, includes: PostIncludes = {}) => {
+  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+
   return await prisma.post.create({
     data: {
       ...data,
@@ -60,6 +63,7 @@ export const createPost = async (data: CreatePostSchema, includes: PostIncludes 
     },
     include: {
       ...includes,
+      ...withCommentAuthor,
       _count: {
         select: {
           comments: true,
@@ -70,17 +74,18 @@ export const createPost = async (data: CreatePostSchema, includes: PostIncludes 
   })
 }
 
-export const updatePost = async (id: number, data: CreatePostBaseSchema, includes: PostIncludes = {}) =>
-  await prisma.post.update({
+export const updatePost = async (id: number, data: CreatePostBaseSchema, includes: PostIncludes = {}) => {
+  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+
+  return await prisma.post.update({
     data: {
       ...data,
       updated: new Date()
     },
-    where: {
-      id
-    },
+    where: { id },
     include: {
       ...includes,
+      ...withCommentAuthor,
       _count: {
         select: {
           comments: true,
@@ -89,6 +94,7 @@ export const updatePost = async (id: number, data: CreatePostBaseSchema, include
       }
     }
   })
+}
 
 export const deletePost = async (id: number) =>
   await prisma.post.delete({
@@ -143,7 +149,8 @@ export const createComment = async (postId: number, owner: string, comment: Crea
       created: true,
       owner: true,
       replyToId: true,
-      postId: true
+      postId: true,
+      author: true
     }
   })
 
@@ -165,7 +172,8 @@ export const getComment = async (id: number) =>
       created: true,
       owner: true,
       replyToId: true,
-      replies: true
+      replies: true,
+      author: true
     }
   })
 
@@ -178,11 +186,8 @@ export const getPostsOfFollowedUsers = async (
   includes: PostIncludes = {},
   tag: string | undefined
 ) => {
-  const whereTag = tag
-    ? {
-        tags: { has: tag }
-      }
-    : {}
+  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const whereTag = tag ? { tags: { has: tag } } : {}
 
   return await prisma.post.findMany({
     where: {
@@ -200,6 +205,7 @@ export const getPostsOfFollowedUsers = async (
     skip: offset,
     include: {
       ...includes,
+      ...withCommentAuthor,
       _count: {
         select: {
           comments: true,
