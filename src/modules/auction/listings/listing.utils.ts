@@ -49,11 +49,7 @@ export async function scheduleCreditsTransfer(listingId: string, endsAt: Date): 
       await awardCreditsOrCap(listing.sellerName, winner.amount)
 
       // Transfer all non-winning bids back to their bidders
-      await Promise.all(
-        losers.map(bid =>
-          awardCreditsOrCap(bid.bidderName, bid.amount)
-        )
-      )
+      await Promise.all(losers.map(bid => awardCreditsOrCap(bid.bidderName, bid.amount)))
     }
   })
 }

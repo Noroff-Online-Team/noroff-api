@@ -76,7 +76,7 @@ export const displayProfileSchema = z.object({
       media: z.string().array().nullish(),
       created: z.date(),
       updated: z.date(),
-      endsAt: z.date(),
+      endsAt: z.date()
     })
     .array()
     .optional(),

@@ -8,9 +8,14 @@ export const jokeResponseSchema = z.object({
 })
 
 export const jokeParamsSchema = z.object({
-  id: z.preprocess(val => parseInt(val as string, 10), z.number({
-    invalid_type_error: "ID parameter must be a number"
-  }).int())
+  id: z.preprocess(
+    val => parseInt(val as string, 10),
+    z
+      .number({
+        invalid_type_error: "ID parameter must be a number"
+      })
+      .int()
+  )
 })
 
 export type JokeSchema = z.infer<typeof jokeResponseSchema>

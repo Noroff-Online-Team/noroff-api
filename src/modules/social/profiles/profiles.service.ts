@@ -4,7 +4,13 @@ import { ProfileIncludes } from "./profiles.controller"
 import { ProfileMediaSchema } from "./profiles.schema"
 import { PostIncludes } from "../posts/posts.controller"
 
-export async function getProfiles(sort: keyof Profile = "name", sortOrder: "asc" | "desc" = "desc", limit = 100, offset = 0, includes: ProfileIncludes = {}) {
+export async function getProfiles(
+  sort: keyof Profile = "name",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  offset = 0,
+  includes: ProfileIncludes = {}
+) {
   return await prisma.profile.findMany({
     include: {
       ...includes,
@@ -20,23 +26,24 @@ export async function getProfiles(sort: keyof Profile = "name", sortOrder: "asc"
       [sort]: sortOrder
     },
     take: limit,
-    skip: offset,
+    skip: offset
   })
 }
 
-export const getProfile = async (name: string, includes: ProfileIncludes = {}) => await prisma.profile.findUnique({
-  where: { name },
-  include: {
-    ...includes,
-    _count: {
-      select: {
-        posts: true,
-        followers: true,
-        following: true
+export const getProfile = async (name: string, includes: ProfileIncludes = {}) =>
+  await prisma.profile.findUnique({
+    where: { name },
+    include: {
+      ...includes,
+      _count: {
+        select: {
+          posts: true,
+          followers: true,
+          following: true
+        }
       }
     }
-  }
-})
+  })
 
 export const createProfile = async (data: Prisma.ProfileCreateInput) => {
   return await prisma.profile.create({ data })
@@ -48,7 +55,7 @@ export const updateProfileMedia = async (name: string, { avatar, banner }: Profi
     data: {
       avatar,
       banner
-    },
+    }
   })
 }
 
@@ -70,13 +77,13 @@ export const followProfile = async (target: string, follower: string) => {
       followers: {
         select: {
           name: true,
-          avatar: true,
+          avatar: true
         }
       },
       following: {
         select: {
           name: true,
-          avatar: true,
+          avatar: true
         }
       }
     }
@@ -101,20 +108,27 @@ export const unfollowProfile = async (target: string, follower: string) => {
       followers: {
         select: {
           name: true,
-          avatar: true,
+          avatar: true
         }
       },
       following: {
         select: {
           name: true,
-          avatar: true,
+          avatar: true
         }
       }
     }
   })
 }
 
-export const getProfilePosts = async (name: string, sort: keyof Post = "created", sortOrder: "asc" | "desc" = "desc", limit = 100, offset = 0, includes: PostIncludes = {}) => {
+export const getProfilePosts = async (
+  name: string,
+  sort: keyof Post = "created",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  offset = 0,
+  includes: PostIncludes = {}
+) => {
   return await prisma.post.findMany({
     where: { owner: name },
     orderBy: {
@@ -127,7 +141,7 @@ export const getProfilePosts = async (name: string, sort: keyof Post = "created"
       _count: {
         select: {
           comments: true,
-          reactions: true,
+          reactions: true
         }
       }
     }

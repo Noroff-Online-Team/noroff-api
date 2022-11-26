@@ -1,12 +1,21 @@
 import { z } from "zod"
 
 const tagsAndMedia = {
-  tags: z.union([z.string({
-    invalid_type_error: "Tags must be an array of strings"
-  }).array(), z.undefined()]),
-  media: z.string({
-    invalid_type_error: "Media must be a string",
-  }).url("Must be valid URL").nullish().or(z.literal(""))
+  tags: z.union([
+    z
+      .string({
+        invalid_type_error: "Tags must be an array of strings"
+      })
+      .array(),
+    z.undefined()
+  ]),
+  media: z
+    .string({
+      invalid_type_error: "Media must be a string"
+    })
+    .url("Must be valid URL")
+    .nullish()
+    .or(z.literal(""))
 }
 
 export const postCore = {
@@ -54,9 +63,14 @@ const postId = {
 }
 
 export const postIdParamsSchema = z.object({
-  id: z.preprocess(val => parseInt(val as string, 10), z.number({
-    invalid_type_error: "Post ID must be a number"
-  }).int())
+  id: z.preprocess(
+    val => parseInt(val as string, 10),
+    z
+      .number({
+        invalid_type_error: "Post ID must be a number"
+      })
+      .int()
+  )
 })
 
 const postMeta = {
@@ -71,7 +85,10 @@ export const reactionSchema = z.object({
 })
 
 export const reactionParamsSchema = z.object({
-  symbol: z.string().regex(/\p{Extended_Pictographic}/u, "Must be a valid emoji").trim(),
+  symbol: z
+    .string()
+    .regex(/\p{Extended_Pictographic}/u, "Must be a valid emoji")
+    .trim(),
   id: z.preprocess(
     val => parseInt(val as string, 10),
     z
@@ -95,9 +112,12 @@ const commentCore = {
     })
     .max(280, "Body cannot be greater than 280 characters")
     .trim(),
-  replyToId: z.number({
-    invalid_type_error: "ReplyToId must be a number"
-  }).int().nullish()
+  replyToId: z
+    .number({
+      invalid_type_error: "ReplyToId must be a number"
+    })
+    .int()
+    .nullish()
 }
 
 export const createCommentSchema = z.object(commentCore)
@@ -115,7 +135,7 @@ export const displayCommentSchema = z.object({
       avatar: z.string().nullable(),
       banner: z.string().nullable()
     })
-    .optional(),
+    .optional()
 })
 
 const comments = {
@@ -179,25 +199,45 @@ const queryFlagsCore = {
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
-export const postsQuerySchema = z
-  .object({
-    sort: z.string({
+export const postsQuerySchema = z.object({
+  sort: z
+    .string({
       invalid_type_error: "Sort must be a string"
-    }).optional(),
-    sortOrder: z.string({
+    })
+    .optional(),
+  sortOrder: z
+    .string({
       invalid_type_error: "Sort order must be a string"
-    }).optional(),
-    limit: z.preprocess(val => parseInt(val as string, 10), z.number({
-      invalid_type_error: "Limit must be a number"
-    }).int().max(100, "Limit cannot be greater than 100")).optional(),
-    offset: z.preprocess(val => parseInt(val as string, 10), z.number({
-      invalid_type_error: "Offset must be a number"
-    }).int()).optional(),
-    _tag: z.string({
+    })
+    .optional(),
+  limit: z
+    .preprocess(
+      val => parseInt(val as string, 10),
+      z
+        .number({
+          invalid_type_error: "Limit must be a number"
+        })
+        .int()
+        .max(100, "Limit cannot be greater than 100")
+    )
+    .optional(),
+  offset: z
+    .preprocess(
+      val => parseInt(val as string, 10),
+      z
+        .number({
+          invalid_type_error: "Offset must be a number"
+        })
+        .int()
+    )
+    .optional(),
+  _tag: z
+    .string({
       invalid_type_error: "Tag must be a string"
-    }).optional(),
-    ...queryFlagsCore
-  })
+    })
+    .optional(),
+  ...queryFlagsCore
+})
 
 export type PostSchema = z.infer<typeof postSchema>
 
