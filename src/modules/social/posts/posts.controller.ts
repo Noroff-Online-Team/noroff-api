@@ -1,15 +1,25 @@
 import { Prisma, Post, Profile, Comment } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { mediaGuard } from "./../../../utils/mediaGuard";
+import { mediaGuard } from "./../../../utils/mediaGuard"
 import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
-import { NotFound, Forbidden, BadRequest } from 'http-errors'
+import { NotFound, Forbidden, BadRequest } from "http-errors"
 
-import { getPosts, getPost, createPost, updatePost, createReaction, deletePost, createComment, getComment, getPostsOfFollowedUsers } from "./posts.service"
+import {
+  getPosts,
+  getPost,
+  createPost,
+  updatePost,
+  createReaction,
+  deletePost,
+  createComment,
+  getComment,
+  getPostsOfFollowedUsers
+} from "./posts.service"
 
 export interface PostIncludes {
-  author?: boolean;
-  reactions?: boolean;
-  comments?: boolean;
+  author?: boolean
+  reactions?: boolean
+  comments?: boolean
 }
 
 type PostWithComments = Prisma.PromiseReturnType<typeof getPost> & { comments: Array<Comment> | [] }
@@ -21,7 +31,7 @@ export async function getPostsHandler(
       offset?: number
       _author?: boolean
       _reactions?: boolean
-      _comments?: boolean,
+      _comments?: boolean
       sort?: keyof Post
       sortOrder?: "asc" | "desc"
       _tag?: string
@@ -47,15 +57,14 @@ export async function getPostsHandler(
 
 export async function getPostHandler(
   request: FastifyRequest<{
-    Params: { id: number },
+    Params: { id: number }
     Querystring: {
       _author?: boolean
       _reactions?: boolean
-      _comments?: boolean,
+      _comments?: boolean
     }
   }>
 ) {
-
   const { id } = request.params
   const { _author, _reactions, _comments } = request.query
 
@@ -76,11 +85,11 @@ export async function getPostHandler(
 
 export async function createPostHandler(
   request: FastifyRequest<{
-    Body: CreatePostBaseSchema;
+    Body: CreatePostBaseSchema
     Querystring: {
       _author?: boolean
       _reactions?: boolean
-      _comments?: boolean,
+      _comments?: boolean
     }
   }>,
   reply: FastifyReply
@@ -97,24 +106,24 @@ export async function createPostHandler(
 
   try {
     await mediaGuard(media)
-    const post = await createPost({
-      ...request.body,
-      owner: name,
-    }, includes)
-    reply.send(post);
+    const post = await createPost(
+      {
+        ...request.body,
+        owner: name
+      },
+      includes
+    )
+    reply.send(post)
     return post
   } catch (error) {
-    reply.code(500).send(error);
+    reply.code(500).send(error)
   }
 }
 
-export async function deletePostHandler(
-  request: FastifyRequest<{ Params: { id: number } }>,
-  reply: FastifyReply
-) {
+export async function deletePostHandler(request: FastifyRequest<{ Params: { id: number } }>, reply: FastifyReply) {
   const { id } = request.params
   const { name } = request.user as Profile
-  const post = await getPost(id);
+  const post = await getPost(id)
 
   if (!post) {
     throw new NotFound("Post not found")
@@ -126,7 +135,7 @@ export async function deletePostHandler(
 
   try {
     await deletePost(id)
-    reply.send(204);
+    reply.send(204)
   } catch (error) {
     reply.code(500).send(error)
   }
@@ -134,19 +143,19 @@ export async function deletePostHandler(
 
 export async function updatePostHandler(
   request: FastifyRequest<{
-    Params: { id: number },
+    Params: { id: number }
     Body: CreatePostBaseSchema
     Querystring: {
       _author?: boolean
       _reactions?: boolean
-      _comments?: boolean,
+      _comments?: boolean
     }
   }>,
   reply: FastifyReply
 ) {
   const { id } = request.params
   const { name } = request.user as Profile
-  const { media } = request.body;
+  const { media } = request.body
   const { _author, _reactions, _comments } = request.query
 
   await mediaGuard(media)
@@ -157,7 +166,7 @@ export async function updatePostHandler(
     comments: Boolean(_comments)
   }
 
-  const post = await getPost(id);
+  const post = await getPost(id)
 
   if (!post) {
     throw new NotFound("Post not found")
@@ -169,16 +178,17 @@ export async function updatePostHandler(
 
   try {
     const updatedPost = await updatePost(id, request.body, includes)
-    reply.send(updatedPost);
+    reply.send(updatedPost)
     return updatedPost
   } catch (error) {
     reply.code(500).send(error)
   }
 }
 
-export async function createReactionHandler(request: FastifyRequest<{
-  Params: { id: number, symbol: string }
-}>,
+export async function createReactionHandler(
+  request: FastifyRequest<{
+    Params: { id: number; symbol: string }
+  }>,
   reply: FastifyReply
 ) {
   try {
@@ -196,38 +206,39 @@ export async function createReactionHandler(request: FastifyRequest<{
     }
 
     const result = await createReaction(id, symbol)
-    reply.send(result);
+    reply.send(result)
     return result
   } catch (error) {
     reply.code(500).send(error)
   }
 }
 
-export async function createCommentHandler(request: FastifyRequest<{
-  Params: { id: number },
-  Body: CreateCommentSchema
-}>,
+export async function createCommentHandler(
+  request: FastifyRequest<{
+    Params: { id: number }
+    Body: CreateCommentSchema
+  }>,
   reply: FastifyReply
 ) {
   const { id } = request.params
   const { name } = request.user as Profile
   const { replyToId } = request.body
 
-  const post = await getPost(id, { comments: true }) as PostWithComments | null
+  const post = (await getPost(id, { comments: true })) as PostWithComments | null
 
   if (!post) {
     throw new NotFound("Post not found")
   }
 
   if (replyToId) {
-    const replyComment = await getComment(replyToId);
+    const replyComment = await getComment(replyToId)
 
     if (!replyComment) {
       throw new NotFound("You can't reply to a comment that does not exist")
     }
 
-    const isRelatedToPost = post.comments?.find((comment) => comment.id === replyToId)
-    
+    const isRelatedToPost = post.comments?.find(comment => comment.id === replyToId)
+
     if (!isRelatedToPost) {
       throw new BadRequest("Comment is not related to this post")
     }
@@ -235,22 +246,23 @@ export async function createCommentHandler(request: FastifyRequest<{
 
   try {
     const result = await createComment(id, name, request.body)
-    reply.send(result);
+    reply.send(result)
     return result
   } catch (error) {
     reply.code(500).send(error)
   }
 }
 
-export async function deleteCommentHandler(request: FastifyRequest<{
-  Params: { id: number }
-}>,
+export async function deleteCommentHandler(
+  request: FastifyRequest<{
+    Params: { id: number }
+  }>,
   reply: FastifyReply
 ) {
   const { id } = request.params
   const { name } = request.user as Profile
 
-  const comment = await getComment(id);
+  const comment = await getComment(id)
 
   if (!comment) {
     throw new NotFound("Comment not found")
@@ -262,7 +274,7 @@ export async function deleteCommentHandler(request: FastifyRequest<{
 
   try {
     await deletePost(id)
-    reply.send(204);
+    reply.send(204)
   } catch (error) {
     reply.code(500).send(error)
   }

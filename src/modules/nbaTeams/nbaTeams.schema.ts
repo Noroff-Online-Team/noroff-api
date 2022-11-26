@@ -10,9 +10,14 @@ export const nbaTeamResponseSchema = z.object({
 })
 
 export const nbaTeamParamsSchema = z.object({
-  id: z.preprocess(val => parseInt(val as string, 10), z.number({
-    invalid_type_error: "ID parameter must be a number"
-  }).int())
+  id: z.preprocess(
+    val => parseInt(val as string, 10),
+    z
+      .number({
+        invalid_type_error: "ID parameter must be a number"
+      })
+      .int()
+  )
 })
 
 export type NbaTeamSchema = z.infer<typeof nbaTeamResponseSchema>

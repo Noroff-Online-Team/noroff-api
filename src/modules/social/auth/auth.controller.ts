@@ -15,11 +15,11 @@ export async function registerProfileHandler(
   const body = request.body
 
   const checkProfile = await findProfileByEmailOrName(body.email, body.name)
-  
+
   if (checkProfile) {
     throw new BadRequest("Profile already exists")
   }
-  
+
   await mediaGuard(body.banner)
   await mediaGuard(body.avatar)
 
