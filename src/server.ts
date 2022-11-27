@@ -42,7 +42,8 @@ function buildServer() {
   // Register rate-limit
   server.register(fRateLimit, {
     max: 30,
-    timeWindow: "1 minute"
+    timeWindow: "1 minute",
+    keyGenerator: (req: FastifyRequest) => (req.headers["true-client-ip"] as string) || req.ip
   })
 
   // Register CORS
