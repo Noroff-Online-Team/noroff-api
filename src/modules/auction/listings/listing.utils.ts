@@ -33,7 +33,7 @@ export async function scheduleCreditsTransfer(listingId: string, endsAt: Date): 
     // Get listing
     const listing = (await getListing(listingId, { bids: true })) as ListingWithBids
 
-    if (listing.bids.length > 0) {
+    if (listing?.bids?.length > 0) {
       // Get highest bid of listing
       const [winner, ...losers] = listing.bids.sort((a, b) => b.amount - a.amount)
 
