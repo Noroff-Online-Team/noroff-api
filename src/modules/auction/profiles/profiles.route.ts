@@ -13,9 +13,10 @@ import {
   getProfileHandler,
   updateProfileMediaHandler,
   getProfileListingsHandler,
-  getProfileCreditsHandler
+  getProfileCreditsHandler,
+  getProfileBidsHandler
 } from "./profiles.controller"
-import { listingQuerySchema, listingResponseSchema } from "../listings/listings.schema"
+import { listingQuerySchema, listingResponseSchema, profileBidsResponseSchema } from "../listings/listings.schema"
 
 async function profilesRoutes(server: FastifyInstance) {
   server.get(
@@ -83,6 +84,23 @@ async function profilesRoutes(server: FastifyInstance) {
       }
     },
     getProfileListingsHandler
+  )
+
+  server.get(
+    "/:name/bids",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["auction-profiles"],
+        security: [{ bearerAuth: [] }],
+        querystring: profilesQuerySchema,
+        params: profileNameSchema,
+        response: {
+          200: profileBidsResponseSchema.array()
+        }
+      }
+    },
+    getProfileBidsHandler
   )
 
   server.get(

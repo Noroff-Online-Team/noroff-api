@@ -32,6 +32,11 @@ export const listingCore = {
 
 export const listingResponseSchema = z.object(listingCore)
 
+export const profileBidsResponseSchema = z.object({
+  ...bidCore,
+  listing: listingResponseSchema.omit({ bids: true, seller: true, _count: true }).optional()
+})
+
 const tagsAndMedia = {
   tags: z.union([
     z

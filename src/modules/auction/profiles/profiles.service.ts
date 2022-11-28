@@ -1,4 +1,4 @@
-import { AuctionListing, AuctionProfile } from "@prisma/client"
+import { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/client"
 import { prisma } from "../../../utils"
 import { AuctionListingIncludes } from "../listings/listings.controller"
 import { AuctionProfileIncludes } from "./profiles.controller"
@@ -82,6 +82,27 @@ export async function getProfileCredits(name: string) {
     where: { name },
     select: {
       credits: true
+    }
+  })
+}
+
+export async function getProfileBids(
+  name: string,
+  sort: keyof AuctionBid = "created",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  offset = 0,
+  includes: { listing?: boolean } = {}
+) {
+  return await prisma.auctionBid.findMany({
+    where: { bidderName: name },
+    orderBy: {
+      [sort]: sortOrder
+    },
+    take: limit,
+    skip: offset,
+    include: {
+      ...includes
     }
   })
 }
