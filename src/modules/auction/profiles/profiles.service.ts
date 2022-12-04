@@ -57,10 +57,19 @@ export async function getProfileListings(
   sortOrder: "asc" | "desc" = "desc",
   limit = 100,
   offset = 0,
-  includes: AuctionListingIncludes = {}
+  includes: AuctionListingIncludes = {},
+  tag: string | undefined,
+  active: boolean | undefined
 ) {
+  const whereTag = tag ? { tags: { has: tag } } : {}
+  const whereActive = active ? { endsAt: { gte: new Date() } } : {}
+
   return await prisma.auctionListing.findMany({
-    where: { sellerName: name },
+    where: {
+      sellerName: name,
+      ...whereTag,
+      ...whereActive
+    },
     orderBy: {
       [sort]: sortOrder
     },
