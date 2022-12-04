@@ -31,11 +31,12 @@ export async function getListingsHandler(
       _seller?: boolean
       _bids?: boolean
       _tag?: string
+      _active?: boolean
     }
   }>,
   reply: FastifyReply
 ) {
-  const { sort, sortOrder, limit, offset, _bids, _seller, _tag } = request.query
+  const { sort, sortOrder, limit, offset, _bids, _seller, _tag, _active } = request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -46,7 +47,7 @@ export async function getListingsHandler(
     seller: Boolean(_seller)
   }
 
-  const listings = await getListings(sort, sortOrder, limit, offset, includes, _tag)
+  const listings = await getListings(sort, sortOrder, limit, offset, includes, _tag, _active)
   reply.code(200).send(listings)
 }
 

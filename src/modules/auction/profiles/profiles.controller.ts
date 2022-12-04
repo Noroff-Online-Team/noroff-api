@@ -89,12 +89,14 @@ export async function getProfileListingsHandler(
       sortOrder?: "asc" | "desc"
       _seller?: boolean
       _bids?: boolean
+      _tag?: string
+      _active?: boolean
     }
   }>,
   reply: FastifyReply
 ) {
   const { name } = request.params
-  const { sort, sortOrder, limit, offset, _seller, _bids } = request.query
+  const { sort, sortOrder, limit, offset, _seller, _bids, _tag, _active } = request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -111,7 +113,7 @@ export async function getProfileListingsHandler(
     seller: Boolean(_seller)
   }
 
-  const listings = await getProfileListings(name, sort, sortOrder, limit, offset, includes)
+  const listings = await getProfileListings(name, sort, sortOrder, limit, offset, includes, _tag, _active)
   reply.code(200).send(listings)
 }
 
