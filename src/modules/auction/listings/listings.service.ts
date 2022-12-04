@@ -10,13 +10,11 @@ export async function getListings(
   limit = 100,
   offset = 0,
   includes: AuctionListingIncludes = {},
-  tag: string | undefined
+  tag: string | undefined,
+  active: boolean | undefined
 ) {
-  const whereTag = tag
-    ? {
-        tags: { has: tag }
-      }
-    : {}
+  const whereTag = tag ? { tags: { has: tag } } : {}
+  const whereActive = active ? { endsAt: { gte: new Date() } } : {}
 
   return await prisma.auctionListing.findMany({
     include: {
@@ -27,7 +25,10 @@ export async function getListings(
         }
       }
     },
-    where: { ...whereTag },
+    where: {
+      ...whereTag,
+      ...whereActive
+    },
     orderBy: {
       [sort]: sortOrder
     },

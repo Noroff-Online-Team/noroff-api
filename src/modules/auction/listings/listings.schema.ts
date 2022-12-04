@@ -164,6 +164,7 @@ export const listingQuerySchema = z.object({
       invalid_type_error: "Tag must be a string"
     })
     .optional(),
+  _active: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
   ...queryFlagsCore
 })
 
