@@ -6,7 +6,7 @@ const tagsAndMedia = {
       .string({
         invalid_type_error: "Tags must be an array of strings"
       })
-      .length(24, "Tags cannot be greater than 24 characters")
+      .max(24, "Tags cannot be greater than 24 characters")
       .array()
       .max(8, "You cannot have more than 8 tags"),
     z.undefined()
