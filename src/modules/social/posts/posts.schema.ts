@@ -6,14 +6,16 @@ const tagsAndMedia = {
       .string({
         invalid_type_error: "Tags must be an array of strings"
       })
-      .array(),
+      .length(24, "Tags cannot be greater than 24 characters")
+      .array()
+      .max(8, "You cannot have more than 8 tags"),
     z.undefined()
   ]),
   media: z
     .string({
-      invalid_type_error: "Media must be a string"
+      invalid_type_error: "Image must be a string"
     })
-    .url("Must be valid URL")
+    .url("Image must be valid URL")
     .nullish()
     .or(z.literal(""))
 }
