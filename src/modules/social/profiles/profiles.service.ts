@@ -129,6 +129,8 @@ export const getProfilePosts = async (
   offset = 0,
   includes: PostIncludes = {}
 ) => {
+  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+
   return await prisma.post.findMany({
     where: { owner: name },
     orderBy: {
@@ -138,6 +140,7 @@ export const getProfilePosts = async (
     skip: offset,
     include: {
       ...includes,
+      ...withCommentAuthor,
       _count: {
         select: {
           comments: true,
