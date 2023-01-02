@@ -61,6 +61,27 @@ model Quote {
   length     Int
 }
 
+model OnlineShopProduct {
+  id              String             @id @default(uuid())
+  title           String
+  description     String
+  price           Float
+  discountedPrice Float
+  imageUrl        String
+  rating          Float
+  reviews         OnlineShopReview[]
+  tags            String[]
+}
+
+model OnlineShopReview {
+  id          String            @id @default(uuid())
+  username    String
+  rating      Float
+  description String
+  productId   String
+  product     OnlineShopProduct @relation(fields: [productId], references: [id])
+}
+
 model Profile {
   id        Int       @id @default(autoincrement())
   name      String    @unique
