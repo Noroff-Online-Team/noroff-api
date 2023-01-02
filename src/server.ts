@@ -21,6 +21,7 @@ import jokeRoutes from "./modules/jokes/jokes.route"
 import nbaTeamRoutes from "./modules/nbaTeams/nbaTeams.route"
 import oldGameRoutes from "./modules/oldGames/oldGames.route"
 import quotesRoutes from "./modules/quotes/quotes.route"
+import onlineShopRoutes from "./modules/onlineShop/onlineShop.route"
 import postsRoutes from "./modules/social/posts/posts.route"
 import profilesRoutes from "./modules/social/profiles/profiles.route"
 import socialAuthRoutes from "./modules/social/auth/auth.route"
@@ -143,6 +144,7 @@ function buildServer() {
   server.register(nbaTeamRoutes, { prefix: "api/v1/nba-teams" })
   server.register(oldGameRoutes, { prefix: "api/v1/old-games" })
   server.register(quotesRoutes, { prefix: "api/v1/quotes" })
+  server.register(onlineShopRoutes, { prefix: "api/v1/online-shop" })
   server.register(postsRoutes, { prefix: "api/v1/social/posts" })
   server.register(profilesRoutes, { prefix: "api/v1/social/profiles" })
   server.register(socialAuthRoutes, { prefix: "api/v1/social/auth" })
