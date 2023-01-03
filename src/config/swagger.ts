@@ -23,6 +23,7 @@ const swaggerOptions: SwaggerOptions = {
       { name: "nba-teams", description: "NBA teams related endpoints" },
       { name: "old-games", description: "Old games related endpoints" },
       { name: "quotes", description: "Quotes related endpoints" },
+      { name: "online-shop", description: "Online shop related endpoints" },
       { name: "social-auth", description: "Social auth related endpoints" },
       { name: "social-profiles", description: "Social profiles related endpoints" },
       { name: "social-posts", description: "Social posts related endpoints" },
