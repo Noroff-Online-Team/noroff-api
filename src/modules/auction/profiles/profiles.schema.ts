@@ -33,7 +33,7 @@ export const profileCore = {
       invalid_type_error: "Email must be a string"
     })
     .email()
-    .regex(/^[\w\-.]+@(stud.)?noroff\.no$/, "Only noroff.no emails are allowed to register")
+    .regex(/^[\w\-.]+@(stud\.)?noroff\.no$/, "Only noroff.no emails are allowed to register")
     .trim(),
   ...profileMedia
 }
