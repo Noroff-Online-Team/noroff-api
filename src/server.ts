@@ -4,7 +4,6 @@ import cors from "@fastify/cors"
 import fStatic from "@fastify/static"
 import fJwt from "@fastify/jwt"
 import fAuth from "@fastify/auth"
-import fRateLimit from "@fastify/rate-limit"
 import fAutoLoad from "@fastify/autoload"
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
 import statuses from "statuses"
@@ -42,13 +41,6 @@ function buildServer() {
   server.register(fAutoLoad, {
     dir: path.join(__dirname, "plugins"),
     options: Object.assign({}, server)
-  })
-
-  // Register rate-limit
-  server.register(fRateLimit, {
-    max: 30,
-    timeWindow: "1 minute",
-    keyGenerator: (req: FastifyRequest) => (req.headers["true-client-ip"] as string) || req.ip
   })
 
   // Register CORS
