@@ -1,7 +1,6 @@
 import path from "path"
 import Fastify, { FastifyRequest, FastifyReply } from "fastify"
 import fStatic from "@fastify/static"
-import fJwt from "@fastify/jwt"
 import fAuth from "@fastify/auth"
 import fAutoLoad from "@fastify/autoload"
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
@@ -45,11 +44,6 @@ function buildServer() {
   // Register static serving of files
   server.register(fStatic, {
     root: path.join(__dirname, "public")
-  })
-
-  // Register JWT
-  server.register(fJwt, {
-    secret: process.env.JWT_SECRET as string
   })
 
   // Register Auth
