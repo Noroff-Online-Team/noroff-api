@@ -1,6 +1,6 @@
 import path from "path"
 import Fastify, { FastifyRequest, FastifyReply } from "fastify"
-import fAutoLoad from "@fastify/autoload"
+import autoLoad from "@fastify/autoload"
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
 import statuses from "statuses"
 import { ZodError, ZodIssueCode } from "zod"
@@ -34,9 +34,13 @@ function buildServer() {
   server.setSerializerCompiler(serializerCompiler)
 
   // Register plugins
-  server.register(fAutoLoad, {
-    dir: path.join(__dirname, "plugins"),
-    options: Object.assign({}, server)
+  server.register(autoLoad, {
+    dir: path.join(__dirname, "plugins")
+  })
+
+  // Register hooks
+  server.register(autoLoad, {
+    dir: path.join(__dirname, "hooks")
   })
 
   // We add an "authenticate" decorator so we can add JWT to routes manually instead of adding it globally.
@@ -46,12 +50,6 @@ function buildServer() {
     } catch (err) {
       return reply.send(err)
     }
-  })
-
-  // Add JWT to the request object so we can access it in our controllers.
-  server.addHook("preHandler", (req, reply, next) => {
-    req.jwt = server.jwt
-    return next()
   })
 
   // Set custom error handler
