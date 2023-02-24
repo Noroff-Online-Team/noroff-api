@@ -1,16 +1,14 @@
 import path from "path"
 import Fastify, { FastifyRequest, FastifyReply } from "fastify"
 import cors from "@fastify/cors"
-import swagger from "@fastify/swagger"
 import fStatic from "@fastify/static"
 import fJwt from "@fastify/jwt"
 import fAuth from "@fastify/auth"
 import fRateLimit from "@fastify/rate-limit"
+import fAutoLoad from "@fastify/autoload"
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
 import statuses from "statuses"
 import { ZodError, ZodIssueCode } from "zod"
-
-import swaggerOptions from "./config/swagger"
 
 // Route imports
 import statusRoutes from "./modules/status/status.route"
@@ -39,6 +37,12 @@ function buildServer() {
   // Set custom validator and serializer compilers for Zod
   server.setValidatorCompiler(validatorCompiler)
   server.setSerializerCompiler(serializerCompiler)
+
+  // Register plugins
+  server.register(fAutoLoad, {
+    dir: path.join(__dirname, "plugins"),
+    options: Object.assign({}, server)
+  })
 
   // Register rate-limit
   server.register(fRateLimit, {
@@ -91,9 +95,6 @@ function buildServer() {
     req.jwt = server.jwt
     return next()
   })
-
-  // Register and generate swagger docs
-  server.register(swagger, swaggerOptions)
 
   // Set custom error handler
   server.setErrorHandler((error, _request, reply) => {
