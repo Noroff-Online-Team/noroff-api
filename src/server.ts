@@ -39,18 +39,6 @@ function buildServer() {
     options: Object.assign({}, server)
   })
 
-  server.addContentTypeParser("application/json", { parseAs: "string" }, (_request, body, done) => {
-    if (!body) {
-      done(null)
-    }
-
-    try {
-      done(null, JSON.parse(body as string))
-    } catch (error) {
-      done(error as Error, undefined)
-    }
-  })
-
   // We add an "authenticate" decorator so we can add JWT to routes manually instead of adding it globally.
   server.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
     try {
