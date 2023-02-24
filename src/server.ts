@@ -1,6 +1,5 @@
 import path from "path"
 import Fastify, { FastifyRequest, FastifyReply } from "fastify"
-import cors from "@fastify/cors"
 import fStatic from "@fastify/static"
 import fJwt from "@fastify/jwt"
 import fAuth from "@fastify/auth"
@@ -41,11 +40,6 @@ function buildServer() {
   server.register(fAutoLoad, {
     dir: path.join(__dirname, "plugins"),
     options: Object.assign({}, server)
-  })
-
-  // Register CORS
-  server.register(cors, {
-    origin: "*"
   })
 
   // Register static serving of files
