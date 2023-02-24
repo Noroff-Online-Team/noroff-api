@@ -1,6 +1,5 @@
 import path from "path"
 import Fastify, { FastifyRequest, FastifyReply } from "fastify"
-import fAuth from "@fastify/auth"
 import fAutoLoad from "@fastify/autoload"
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
 import statuses from "statuses"
@@ -39,9 +38,6 @@ function buildServer() {
     dir: path.join(__dirname, "plugins"),
     options: Object.assign({}, server)
   })
-
-  // Register Auth
-  server.register(fAuth)
 
   server.addContentTypeParser("application/json", { parseAs: "string" }, (_request, body, done) => {
     if (!body) {
