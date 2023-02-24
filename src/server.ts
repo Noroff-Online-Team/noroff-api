@@ -1,6 +1,5 @@
 import path from "path"
 import Fastify, { FastifyRequest, FastifyReply } from "fastify"
-import fStatic from "@fastify/static"
 import fAuth from "@fastify/auth"
 import fAutoLoad from "@fastify/autoload"
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
@@ -39,11 +38,6 @@ function buildServer() {
   server.register(fAutoLoad, {
     dir: path.join(__dirname, "plugins"),
     options: Object.assign({}, server)
-  })
-
-  // Register static serving of files
-  server.register(fStatic, {
-    root: path.join(__dirname, "public")
   })
 
   // Register Auth
