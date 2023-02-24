@@ -1,5 +1,5 @@
 import path from "path"
-import Fastify, { FastifyRequest, FastifyReply } from "fastify"
+import Fastify from "fastify"
 import autoLoad from "@fastify/autoload"
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
 import statuses from "statuses"
@@ -43,13 +43,9 @@ function buildServer() {
     dir: path.join(__dirname, "hooks")
   })
 
-  // We add an "authenticate" decorator so we can add JWT to routes manually instead of adding it globally.
-  server.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
-    try {
-      await request.jwtVerify()
-    } catch (err) {
-      return reply.send(err)
-    }
+  // Register decorators
+  server.register(autoLoad, {
+    dir: path.join(__dirname, "decorators")
   })
 
   // Set custom error handler
