@@ -13,7 +13,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@fastify/auth": "^4.0.0",
+    "@fastify/autoload": "^5.7.1",
     "@fastify/cors": "^8.1.0",
     "@fastify/jwt": "^6.3.2",
     "@fastify/rate-limit": "^7.4.0",
@@ -22,6 +22,7 @@
     "@prisma/client": "^4.3.1",
     "axios": "^0.27.2",
     "fastify": "^4.8.1",
+    "fastify-plugin": "^4.5.0",
     "fastify-type-provider-zod": "^1.1.7",
     "http-errors": "^2.0.0",
     "node-schedule": "^2.1.0",
