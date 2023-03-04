@@ -4,8 +4,8 @@ import rateLimit from "@fastify/rate-limit"
 
 export default fp(async fastify => {
   fastify.register(rateLimit, {
-    max: 30,
-    timeWindow: "1 minute",
+    max: 600,
+    timeWindow: "10 minutes",
     keyGenerator: (req: FastifyRequest) => (req.headers["true-client-ip"] as string) || req.ip
   })
 })
