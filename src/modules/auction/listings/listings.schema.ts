@@ -82,13 +82,13 @@ export const createListingSchema = z.object({
       date => {
         const today = new Date()
         const oneYearFromToday = new Date(today.setFullYear(today.getFullYear() + 1))
-        if (date > oneYearFromToday) {
+        if (date > oneYearFromToday || date < today) {
           return false
         }
         return true
       },
       {
-        message: "endsAt cannot be more than one year from now"
+        message: "endsAt cannot be past date or more than one year from now"
       }
     ),
   ...tagsAndMedia
