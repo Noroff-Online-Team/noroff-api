@@ -82,7 +82,8 @@ export const createListingSchema = z.object({
       date => {
         const today = new Date()
         const oneYearFromToday = new Date(today.setFullYear(today.getFullYear() + 1))
-        if (date > oneYearFromToday || date < today) {
+        const now = new Date()
+        if (date > oneYearFromToday || date < now) {
           return false
         }
         return true
