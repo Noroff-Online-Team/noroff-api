@@ -183,3 +183,18 @@ model RainyDaysProduct {
   tags            String[]
   favorite        Boolean
 }
+
+model GameHubProducts {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  genre           String
+  released        String
+  ageRating       String
+  price           Float
+  discountedPrice Float
+  onSale          Boolean
+  image           String
+  tags            String[]
+  favorite        Boolean
+}
