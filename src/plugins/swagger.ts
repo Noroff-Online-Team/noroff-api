@@ -24,6 +24,7 @@ export default fp(async fastify => {
         { name: "jokes", description: "Jokes related endpoints" },
         { name: "nba-teams", description: "NBA teams related endpoints" },
         { name: "old-games", description: "Old games related endpoints" },
+        { name: "e-com", description: "E-commerce related endpoints" },
         { name: "quotes", description: "Quotes related endpoints" },
         { name: "online-shop", description: "Online shop related endpoints" },
         { name: "social-auth", description: "Social auth related endpoints" },
