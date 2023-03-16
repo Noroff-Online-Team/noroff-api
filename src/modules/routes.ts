@@ -10,6 +10,7 @@ import quotesRoutes from "./quotes/quotes.route"
 import onlineShopRoutes from "./onlineShop/onlineShop.route"
 import rainyDaysRoutes from "./rainyDays/rainyDays.route"
 import gameHubRoutes from "./gameHub/gameHub.route"
+import squareEyesRoutes from "./squareEyes/squareEyes.route"
 import postsRoutes from "./social/posts/posts.route"
 import profilesRoutes from "./social/profiles/profiles.route"
 import socialAuthRoutes from "./social/auth/auth.route"
@@ -28,6 +29,7 @@ export default async function (fastify: FastifyInstance) {
   fastify.register(onlineShopRoutes, { prefix: "online-shop" })
   fastify.register(rainyDaysRoutes, { prefix: "rainy-days" })
   fastify.register(gameHubRoutes, { prefix: "gamehub" })
+  fastify.register(squareEyesRoutes, { prefix: "square-eyes" })
   fastify.register(postsRoutes, { prefix: "social/posts" })
   fastify.register(profilesRoutes, { prefix: "social/profiles" })
   fastify.register(socialAuthRoutes, { prefix: "social/auth" })
