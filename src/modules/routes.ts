@@ -8,6 +8,7 @@ import nbaTeamRoutes from "./nbaTeams/nbaTeams.route"
 import oldGameRoutes from "./oldGames/oldGames.route"
 import quotesRoutes from "./quotes/quotes.route"
 import onlineShopRoutes from "./onlineShop/onlineShop.route"
+import rainyDaysRoutes from "./rainyDays/rainyDays.route"
 import postsRoutes from "./social/posts/posts.route"
 import profilesRoutes from "./social/profiles/profiles.route"
 import socialAuthRoutes from "./social/auth/auth.route"
@@ -24,6 +25,7 @@ export default async function (fastify: FastifyInstance) {
   fastify.register(oldGameRoutes, { prefix: "old-games" })
   fastify.register(quotesRoutes, { prefix: "quotes" })
   fastify.register(onlineShopRoutes, { prefix: "online-shop" })
+  fastify.register(rainyDaysRoutes, { prefix: "rainy-days" })
   fastify.register(postsRoutes, { prefix: "social/posts" })
   fastify.register(profilesRoutes, { prefix: "social/profiles" })
   fastify.register(socialAuthRoutes, { prefix: "social/auth" })

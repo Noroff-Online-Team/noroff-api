@@ -168,3 +168,18 @@ model AuctionBid {
   listingId  String
   created    DateTime       @default(now())
 }
+
+model RainyDaysProduct {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  gender          String
+  sizes           String[]
+  baseColor       String
+  price           Float
+  discountedPrice Float
+  onSale          Boolean
+  image           String
+  tags            String[]
+  favorite        Boolean
+}
