@@ -6,7 +6,6 @@ export const squareEyesResponseSchema = z.object({
   description: z.string(),
   genre: z.string(),
   rating: z.string(),
-  value: z.string(),
   released: z.string(),
   price: z.number(),
   discountedPrice: z.number(),

@@ -205,7 +205,6 @@ model SquareEyesProduct {
   description     String
   genre           String
   rating          String
-  value           String
   released        String
   price           Float
   discountedPrice Float
