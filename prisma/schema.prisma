@@ -198,3 +198,18 @@ model GameHubProducts {
   tags            String[]
   favorite        Boolean
 }
+
+model SquareEyesProduct {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  genre           String
+  rating          String
+  released        String
+  price           Float
+  discountedPrice Float
+  onSale          Boolean
+  image           String
+  tags            String[]
+  favorite        Boolean
+}
