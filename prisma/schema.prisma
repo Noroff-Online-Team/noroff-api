@@ -232,6 +232,8 @@ model HolidazeVenue {
   media       String[]          @default(["https://source.unsplash.com/1600x900/?hotel"])
   price       Float
   maxGuests   Int
+  created     DateTime          @default(now())
+  updated     DateTime          @default(now())
   meta        HolidazeVenueMeta @relation(fields: [metaId], references: [id], onDelete: Cascade)
   metaId      String            @unique
   owner       HolidazeProfile   @relation(fields: [ownerName], references: [name], onDelete: Cascade)
@@ -253,6 +255,8 @@ model HolidazeBooking {
   dateFrom     DateTime
   dateTo       DateTime
   guests       Int
+  created      DateTime        @default(now())
+  updated      DateTime        @default(now())
   venue        HolidazeVenue   @relation(fields: [venueId], references: [id], onDelete: Cascade)
   venueId      String
   customer     HolidazeProfile @relation(fields: [customerName], references: [name], onDelete: Cascade)
