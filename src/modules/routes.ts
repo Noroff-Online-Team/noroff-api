@@ -18,6 +18,7 @@ import auctionAuthRoutes from "./auction/auth/auth.route"
 import auctionProfilesRoutes from "./auction/profiles/profiles.route"
 import auctionListingRoutes from "./auction/listings/listings.route"
 import holidazeAuthRoutes from "./holidaze/auth/auth.route"
+import holidazeProfilesRoutes from "./holidaze/profiles/profiles.route"
 
 export default async function (fastify: FastifyInstance) {
   fastify.register(authRoutes, { prefix: "auth" })
@@ -38,4 +39,5 @@ export default async function (fastify: FastifyInstance) {
   fastify.register(auctionProfilesRoutes, { prefix: "auction/profiles" })
   fastify.register(auctionListingRoutes, { prefix: "auction/listings" })
   fastify.register(holidazeAuthRoutes, { prefix: "holidaze/auth" })
+  fastify.register(holidazeProfilesRoutes, { prefix: "holidaze/profiles" })
 }
