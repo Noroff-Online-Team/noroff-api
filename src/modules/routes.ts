@@ -16,7 +16,7 @@ import profilesRoutes from "./social/profiles/profiles.route"
 import socialAuthRoutes from "./social/auth/auth.route"
 import auctionAuthRoutes from "./auction/auth/auth.route"
 import auctionProfilesRoutes from "./auction/profiles/profiles.route"
-import aucstionListingRoutes from "./auction/listings/listings.route"
+import auctionListingRoutes from "./auction/listings/listings.route"
 
 export default async function (fastify: FastifyInstance) {
   fastify.register(authRoutes, { prefix: "auth" })
@@ -35,5 +35,5 @@ export default async function (fastify: FastifyInstance) {
   fastify.register(socialAuthRoutes, { prefix: "social/auth" })
   fastify.register(auctionAuthRoutes, { prefix: "auction/auth" })
   fastify.register(auctionProfilesRoutes, { prefix: "auction/profiles" })
-  fastify.register(aucstionListingRoutes, { prefix: "auction/listings" })
+  fastify.register(auctionListingRoutes, { prefix: "auction/listings" })
 }
