@@ -213,3 +213,48 @@ model SquareEyesProduct {
   tags            String[]
   favorite        Boolean
 }
+
+model HolidazeProfile {
+  id       Int               @id @default(autoincrement())
+  name     String            @unique
+  email    String            @unique
+  avatar   String?
+  password String
+  salt     String
+  venues   HolidazeVenue[]
+  bookings HolidazeBooking[]
+}
+
+model HolidazeVenue {
+  id          String            @id @default(uuid())
+  name        String
+  description String
+  media       String[]          @default(["https://source.unsplash.com/1600x900/?hotel"])
+  price       Float
+  maxGuests   Int
+  meta        HolidazeVenueMeta @relation(fields: [metaId], references: [id], onDelete: Cascade)
+  metaId      String            @unique
+  owner       HolidazeProfile   @relation(fields: [ownerName], references: [name], onDelete: Cascade)
+  ownerName   String
+  bookings    HolidazeBooking[]
+}
+
+model HolidazeVenueMeta {
+  id        String         @id @default(uuid())
+  wifi      Boolean        @default(false)
+  parking   Boolean        @default(false)
+  breakfast Boolean        @default(false)
+  pets      Boolean        @default(false)
+  venue     HolidazeVenue?
+}
+
+model HolidazeBooking {
+  id           String          @id @default(uuid())
+  dateFrom     DateTime
+  dateTo       DateTime
+  guests       Int
+  venue        HolidazeVenue   @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  venueId      String
+  customer     HolidazeProfile @relation(fields: [customerName], references: [name], onDelete: Cascade)
+  customerName String
+}
