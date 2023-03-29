@@ -4,9 +4,10 @@ import {
   displayBookingSchema,
   bookingsQuerySchema,
   queryFlagsSchema,
-  bookingIdSchema
-} from "../bookings/bookings.schema"
-import { getBookingsHandler, getBookingHandler } from "./bookings.controller"
+  bookingIdSchema,
+  createBookingSchema
+} from "./bookings.schema"
+import { getBookingsHandler, getBookingHandler, createBookingHandler } from "./bookings.controller"
 
 async function bookingsRoutes(server: FastifyInstance) {
   server.get(
@@ -40,6 +41,23 @@ async function bookingsRoutes(server: FastifyInstance) {
       }
     },
     getBookingHandler
+  )
+
+  server.post(
+    "/",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["holidaze-bookings"],
+        security: [{ bearerAuth: [] }],
+        querystring: queryFlagsSchema,
+        body: createBookingSchema.omit({ customerName: true }),
+        response: {
+          201: displayBookingSchema
+        }
+      }
+    },
+    createBookingHandler
   )
 }
 

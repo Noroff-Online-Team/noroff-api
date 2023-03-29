@@ -67,3 +67,30 @@ export const bookingsQuerySchema = z.object({
     .optional(),
   ...queryFlagsCore
 })
+
+export const createBookingSchema = z.object({
+  dateFrom: z.preprocess(arg => {
+    if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
+  }, z.date({ required_error: "dateFrom is required" })),
+  dateTo: z.preprocess(arg => {
+    if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
+  }, z.date({ required_error: "dateTo is required" })),
+  guests: z
+    .number({
+      invalid_type_error: "Guests must be a number"
+    })
+    .int("Guests must be an integer")
+    .min(1, "Guests must be at least 1"),
+  venueId: z
+    .string({
+      required_error: "venueId is required",
+      invalid_type_error: "venueId must be a string"
+    })
+    .uuid("venueId must be a valid UUID"),
+  customerName: z.string({
+    required_error: "customerName is required",
+    invalid_type_error: "customerName must be a string"
+  })
+})
+
+export type CreateBookingSchema = z.infer<typeof createBookingSchema>

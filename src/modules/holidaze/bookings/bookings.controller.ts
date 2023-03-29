@@ -1,7 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify"
-import { HolidazeBooking } from "@prisma/client"
+import { HolidazeBooking, HolidazeProfile } from "@prisma/client"
 import { BadRequest, NotFound } from "http-errors"
-import { getBookings, getBooking } from "./booking.service"
+import { getBookings, getBooking, createBooking } from "./booking.service"
+import { CreateBookingSchema } from "./bookings.schema"
+import { getVenue } from "../venues/venues.service"
 
 export interface HolidazeBookingIncludes {
   customer?: boolean
@@ -61,4 +63,36 @@ export async function getBookingHandler(
   }
 
   reply.code(200).send(booking)
+}
+
+export async function createBookingHandler(
+  request: FastifyRequest<{
+    Body: CreateBookingSchema
+    Querystring: {
+      _customer?: boolean
+    }
+  }>,
+  reply: FastifyReply
+) {
+  const { name } = request.user as HolidazeProfile
+  const { _customer } = request.query
+
+  const includes: HolidazeBookingIncludes = {
+    customer: Boolean(_customer)
+  }
+
+  const venue = await getVenue(request.body.venueId)
+
+  if (!venue) {
+    throw new NotFound("No venue with this id")
+  }
+
+  const booking = await createBooking(
+    {
+      ...request.body,
+      customerName: name
+    },
+    includes
+  )
+  reply.code(201).send(booking)
 }
