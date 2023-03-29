@@ -32,12 +32,16 @@ export async function getProfiles(
 
 export async function getProfile(name: string, includes: HolidazeProfileIncludes = {}) {
   const venueMeta = includes.venues ? { venues: { include: { meta: true } } } : {}
+  const includeVenueIfBookings = includes.bookings
+    ? { bookings: { include: { venue: { include: { meta: true } } } } }
+    : {}
 
   return await prisma.holidazeProfile.findUnique({
     where: { name },
     include: {
       ...includes,
       ...venueMeta,
+      ...includeVenueIfBookings,
       _count: {
         select: {
           venues: true,

@@ -59,7 +59,7 @@ export const profileNameSchema = z.object({
 export const displayProfileSchema = z.object({
   ...profileCore,
   venues: z.object(venueCore).omit({ bookings: true }).array().optional(),
-  bookings: z.object(bookingCore).omit({ venue: true }).array().optional(),
+  bookings: z.object(bookingCore).array().optional(),
   _count: z
     .object({
       venues: z.number().int().optional(),
