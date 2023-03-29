@@ -17,7 +17,7 @@ export const bookingCore = {
     .object({
       name: z.string(),
       email: z.string(),
-      media: z.string().url().nullish().or(z.literal(""))
+      avatar: z.string().url().nullish().or(z.literal(""))
     })
     .optional()
 }
