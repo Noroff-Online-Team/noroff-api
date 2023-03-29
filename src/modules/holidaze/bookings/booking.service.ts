@@ -23,3 +23,15 @@ export async function getBookings(
     }
   })
 }
+
+export async function getBooking(id: string, includes: HolidazeBookingIncludes = {}) {
+  const venueMeta = includes.venue ? { venue: { include: { meta: true } } } : {}
+
+  return await prisma.holidazeBooking.findUnique({
+    where: { id },
+    include: {
+      ...includes,
+      ...venueMeta
+    }
+  })
+}

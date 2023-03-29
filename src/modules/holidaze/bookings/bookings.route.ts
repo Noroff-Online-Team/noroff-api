@@ -1,7 +1,12 @@
 import { FastifyInstance } from "fastify"
 
-import { displayBookingSchema, bookingsQuerySchema } from "../bookings/bookings.schema"
-import { getBookingsHandler } from "./bookings.controller"
+import {
+  displayBookingSchema,
+  bookingsQuerySchema,
+  queryFlagsSchema,
+  bookingIdSchema
+} from "../bookings/bookings.schema"
+import { getBookingsHandler, getBookingHandler } from "./bookings.controller"
 
 async function bookingsRoutes(server: FastifyInstance) {
   server.get(
@@ -18,6 +23,23 @@ async function bookingsRoutes(server: FastifyInstance) {
       }
     },
     getBookingsHandler
+  )
+
+  server.get(
+    "/:id",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["holidaze-bookings"],
+        security: [{ bearerAuth: [] }],
+        querystring: queryFlagsSchema,
+        params: bookingIdSchema,
+        response: {
+          200: displayBookingSchema
+        }
+      }
+    },
+    getBookingHandler
   )
 }
 

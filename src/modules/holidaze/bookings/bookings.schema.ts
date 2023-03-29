@@ -5,6 +5,8 @@ const bookingId = {
   id: z.string().uuid()
 }
 
+export const bookingIdSchema = z.object(bookingId)
+
 export const bookingCore = {
   ...bookingId,
   dateFrom: z.date(),
