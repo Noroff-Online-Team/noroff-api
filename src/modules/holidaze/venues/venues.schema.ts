@@ -4,6 +4,8 @@ const venueId = {
   id: z.string().uuid()
 }
 
+export const venueIdSchema = z.object(venueId)
+
 const venueMeta = {
   wifi: z.boolean(),
   parking: z.boolean(),
@@ -25,7 +27,7 @@ export const venueCore = {
     .object({
       name: z.string(),
       email: z.string(),
-      media: z.string().url().nullish().or(z.literal(""))
+      avatar: z.string().url().nullish().or(z.literal(""))
     })
     .optional(),
   bookings: z
