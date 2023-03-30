@@ -38,6 +38,8 @@ export async function getBooking(id: string, includes: HolidazeBookingIncludes =
 }
 
 export async function createBooking(data: CreateBookingSchema, includes: HolidazeBookingIncludes = {}) {
+  const venueMeta = includes.venue ? { venue: { include: { meta: true } } } : {}
+
   return await prisma.holidazeBooking.create({
     data: {
       ...data,
@@ -45,7 +47,8 @@ export async function createBooking(data: CreateBookingSchema, includes: Holidaz
       updated: new Date()
     },
     include: {
-      ...includes
+      ...includes,
+      ...venueMeta
     }
   })
 }

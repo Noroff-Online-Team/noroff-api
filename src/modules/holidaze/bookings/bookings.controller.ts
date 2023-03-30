@@ -70,15 +70,17 @@ export async function createBookingHandler(
     Body: CreateBookingSchema
     Querystring: {
       _customer?: boolean
+      _venue?: boolean
     }
   }>,
   reply: FastifyReply
 ) {
   const { name } = request.user as HolidazeProfile
-  const { _customer } = request.query
+  const { _customer, _venue } = request.query
 
   const includes: HolidazeBookingIncludes = {
-    customer: Boolean(_customer)
+    customer: Boolean(_customer),
+    venue: Boolean(_venue)
   }
 
   const venue = await getVenue(request.body.venueId)
