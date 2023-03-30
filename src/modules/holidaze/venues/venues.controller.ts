@@ -3,7 +3,7 @@ import { FastifyRequest, FastifyReply } from "fastify"
 import { BadRequest, NotFound, Forbidden } from "http-errors"
 import { CreateVenueSchema } from "./venues.schema"
 import { getProfile } from "../profiles/profiles.service"
-import { getVenues, getVenue, createVenue } from "./venues.service"
+import { getVenues, getVenue, createVenue, deleteVenue } from "./venues.service"
 import { mediaGuard } from "../../../utils/mediaGuard"
 
 export interface HolidazeVenueIncludes {
@@ -103,4 +103,33 @@ export async function createVenueHandler(
 
   const venue = await createVenue(request.body, name, includes)
   reply.code(201).send(venue)
+}
+
+export async function deleteVenueHandler(
+  request: FastifyRequest<{
+    Params: { id: string }
+  }>,
+  reply: FastifyReply
+) {
+  const { name } = request.user as HolidazeProfile
+  const { id } = request.params
+
+  const venue = await getVenue(id)
+
+  if (!venue) {
+    throw new NotFound("Venue not found")
+  }
+
+  if (venue.ownerName.toLowerCase() !== name.toLowerCase()) {
+    throw new Forbidden("You are not the owner of this venue")
+  }
+
+  const profile = await getProfile(name)
+
+  if (profile && !profile.venueManager) {
+    throw new Forbidden("You are not a venue manager")
+  }
+
+  await deleteVenue(id)
+  reply.code(204)
 }

@@ -7,7 +7,7 @@ import {
   queryFlagsSchema,
   createVenueSchema
 } from "./venues.schema"
-import { getVenuesHandler, getVenueHandler, createVenueHandler } from "./venues.controller"
+import { getVenuesHandler, getVenueHandler, createVenueHandler, deleteVenueHandler } from "./venues.controller"
 
 async function venuesRoutes(server: FastifyInstance) {
   server.get(
@@ -58,6 +58,19 @@ async function venuesRoutes(server: FastifyInstance) {
       }
     },
     createVenueHandler
+  )
+
+  server.delete(
+    "/:id",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["holidaze-venues"],
+        security: [{ bearerAuth: [] }],
+        params: venueIdSchema
+      }
+    },
+    deleteVenueHandler
   )
 }
 

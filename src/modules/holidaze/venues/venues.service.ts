@@ -56,3 +56,9 @@ export async function createVenue(data: CreateVenueSchema, ownerName: string, in
     }
   })
 }
+
+export async function deleteVenue(id: string) {
+  return await prisma.holidazeVenue.delete({
+    where: { id }
+  })
+}
