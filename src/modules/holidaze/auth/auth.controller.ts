@@ -55,6 +55,7 @@ export async function loginHandler(
       name: profile.name,
       email: profile.email,
       avatar: profile.avatar,
+      venueManager: profile.venueManager,
       accessToken: request.jwt.sign(rest)
     })
   }

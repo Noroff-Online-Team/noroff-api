@@ -17,6 +17,7 @@ export const loginResponseSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   avatar: z.string().url().nullable().or(z.literal("")),
+  venueManager: z.boolean(),
   accessToken: z.string()
 })
 

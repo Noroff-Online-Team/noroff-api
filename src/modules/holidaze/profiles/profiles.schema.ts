@@ -12,6 +12,15 @@ const profileMedia = {
     .or(z.literal(""))
 }
 
+const profileVenueManager = {
+  venueManager: z
+    .boolean({
+      invalid_type_error: "Venue manager must be a boolean"
+    })
+    .optional()
+    .default(false)
+}
+
 export const profileMediaSchema = z.object(profileMedia)
 
 export const profileCore = {
@@ -27,7 +36,8 @@ export const profileCore = {
     .email()
     .regex(/^[\w\-.]+@(stud\.)?noroff\.no$/, "Only noroff.no emails are allowed to register")
     .trim(),
-  ...profileMedia
+  ...profileMedia,
+  ...profileVenueManager
 }
 
 export const createProfileSchema = z.object({
