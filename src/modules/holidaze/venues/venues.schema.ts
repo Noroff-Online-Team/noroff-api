@@ -86,3 +86,59 @@ export const venuesQuerySchema = z.object({
     .optional(),
   ...queryFlagsCore
 })
+
+export const createVenueSchema = z.object({
+  name: z.string({
+    invalid_type_error: "Name must be a string",
+    required_error: "Name is required"
+  }),
+  description: z.string({
+    invalid_type_error: "Description must be a string",
+    required_error: "Description is required"
+  }),
+  media: z
+    .string({
+      invalid_type_error: "Media must be a string"
+    })
+    .url("Media must be a valid URL")
+    .array()
+    .max(8, "You cannot have more than 8 images")
+    .or(z.literal(""))
+    .optional(),
+  price: z.number({
+    invalid_type_error: "Price must be a number",
+    required_error: "Price is required"
+  }),
+  maxGuests: z
+    .number({
+      invalid_type_error: "Max guests must be a number",
+      required_error: "Max guests is required"
+    })
+    .int("Max guests must be an integer"),
+  meta: z
+    .object({
+      wifi: z
+        .boolean({
+          invalid_type_error: "Wifi must be a boolean"
+        })
+        .optional(),
+      parking: z
+        .boolean({
+          invalid_type_error: "Parking must be a boolean"
+        })
+        .optional(),
+      breakfast: z
+        .boolean({
+          invalid_type_error: "Breakfast must be a boolean"
+        })
+        .optional(),
+      pets: z
+        .boolean({
+          invalid_type_error: "Pets must be a boolean"
+        })
+        .optional()
+    })
+    .optional()
+})
+
+export type CreateVenueSchema = z.infer<typeof createVenueSchema>

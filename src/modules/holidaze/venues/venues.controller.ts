@@ -1,7 +1,10 @@
-import { HolidazeVenue } from "@prisma/client"
+import { HolidazeProfile, HolidazeVenue } from "@prisma/client"
 import { FastifyRequest, FastifyReply } from "fastify"
-import { BadRequest, NotFound } from "http-errors"
-import { getVenues, getVenue } from "./venues.service"
+import { BadRequest, NotFound, Forbidden } from "http-errors"
+import { CreateVenueSchema } from "./venues.schema"
+import { getProfile } from "../profiles/profiles.service"
+import { getVenues, getVenue, createVenue } from "./venues.service"
+import { mediaGuard } from "../../../utils/mediaGuard"
 
 export interface HolidazeVenueIncludes {
   owner?: boolean
@@ -61,4 +64,43 @@ export async function getVenueHandler(
   }
 
   reply.code(200).send(venue)
+}
+
+export async function createVenueHandler(
+  request: FastifyRequest<{
+    Body: CreateVenueSchema
+    Querystring: {
+      _owner?: boolean
+      _bookings?: boolean
+    }
+  }>,
+  reply: FastifyReply
+) {
+  const { name } = request.user as HolidazeProfile
+  const { media } = request.body
+  const { _owner, _bookings } = request.query
+
+  const includes: HolidazeVenueIncludes = {
+    owner: Boolean(_owner),
+    bookings: Boolean(_bookings)
+  }
+
+  if (media) {
+    for (const url of media) {
+      await mediaGuard(url)
+    }
+  }
+
+  const profile = await getProfile(name)
+
+  if (!profile) {
+    throw new NotFound("Profile not found")
+  }
+
+  if (!profile.venueManager) {
+    throw new Forbidden("You are not a venue manager")
+  }
+
+  const venue = await createVenue(request.body, name, includes)
+  reply.code(201).send(venue)
 }
