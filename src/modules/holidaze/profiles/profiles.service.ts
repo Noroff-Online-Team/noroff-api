@@ -12,6 +12,8 @@ export async function getProfiles(
   offset = 0,
   includes: HolidazeProfileIncludes = {}
 ) {
+  const venueMeta = includes.venues ? { venues: { include: { meta: true } } } : {}
+
   return await prisma.holidazeProfile.findMany({
     orderBy: {
       [sort]: sortOrder
@@ -20,6 +22,7 @@ export async function getProfiles(
     skip: offset,
     include: {
       ...includes,
+      ...venueMeta,
       _count: {
         select: {
           venues: true,
