@@ -215,14 +215,15 @@ model SquareEyesProduct {
 }
 
 model HolidazeProfile {
-  id       Int               @id @default(autoincrement())
-  name     String            @unique
-  email    String            @unique
-  avatar   String?
-  password String
-  salt     String
-  venues   HolidazeVenue[]
-  bookings HolidazeBooking[]
+  id           Int               @id @default(autoincrement())
+  name         String            @unique
+  email        String            @unique
+  avatar       String?
+  password     String
+  salt         String
+  venueManager Boolean           @default(false)
+  venues       HolidazeVenue[]
+  bookings     HolidazeBooking[]
 }
 
 model HolidazeVenue {
