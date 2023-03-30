@@ -52,3 +52,9 @@ export async function createBooking(data: CreateBookingSchema, includes: Holidaz
     }
   })
 }
+
+export async function deleteBooking(id: string) {
+  return await prisma.holidazeBooking.delete({
+    where: { id }
+  })
+}

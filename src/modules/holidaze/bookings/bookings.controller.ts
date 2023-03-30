@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { HolidazeBooking, HolidazeProfile } from "@prisma/client"
-import { BadRequest, NotFound } from "http-errors"
-import { getBookings, getBooking, createBooking } from "./booking.service"
+import { BadRequest, NotFound, Forbidden } from "http-errors"
+import { getBookings, getBooking, createBooking, deleteBooking } from "./booking.service"
 import { CreateBookingSchema } from "./bookings.schema"
 import { getVenue } from "../venues/venues.service"
 
@@ -97,4 +97,30 @@ export async function createBookingHandler(
     includes
   )
   reply.code(201).send(booking)
+}
+
+export async function deleteBookingHandler(
+  request: FastifyRequest<{
+    Params: { id: string }
+  }>,
+  reply: FastifyReply
+) {
+  const { name } = request.user as HolidazeProfile
+  const { id } = request.params
+
+  // For some reason, not including a "includes" object here leads to error
+  // "The `include` statement for type HolidazeBooking must not be empty."
+  // I'm not totally sure why, but it works with this workaround.
+  const booking = await getBooking(id, { customer: false })
+
+  if (!booking) {
+    throw new NotFound("Booking not found")
+  }
+
+  if (booking.customerName.toLowerCase() !== name.toLowerCase()) {
+    throw new Forbidden("You are not the owner of this booking")
+  }
+
+  await deleteBooking(id)
+  reply.code(204)
 }
