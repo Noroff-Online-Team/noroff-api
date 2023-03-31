@@ -1,7 +1,9 @@
-import { CreateVenueSchema } from "./venues.schema"
+import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
 import { HolidazeVenue } from "@prisma/client"
 import { prisma } from "../../../utils"
 import { HolidazeVenueIncludes } from "./venues.controller"
+
+const DEFAULT_IMAGE = "https://source.unsplash.com/1600x900/?hotel"
 
 export async function getVenues(
   sort: keyof HolidazeVenue = "name",
@@ -34,7 +36,6 @@ export async function getVenue(id: string, includes: HolidazeVenueIncludes = {})
 }
 
 export async function createVenue(data: CreateVenueSchema, ownerName: string, includes: HolidazeVenueIncludes = {}) {
-  const DEFAULT_IMAGE = "https://source.unsplash.com/1600x900/?hotel"
   const { meta, ...rest } = data
 
   const venueMeta = await prisma.holidazeVenueMeta.create({
@@ -49,6 +50,28 @@ export async function createVenue(data: CreateVenueSchema, ownerName: string, in
       updated: new Date(),
       ownerName,
       metaId: venueMeta.id
+    },
+    include: {
+      ...includes,
+      meta: true
+    }
+  })
+}
+
+export async function updateVenue(id: string, data: UpdateVenueSchema, includes: HolidazeVenueIncludes = {}) {
+  const { meta, ...rest } = data
+
+  return await prisma.holidazeVenue.update({
+    where: { id },
+    data: {
+      ...rest,
+      media: data.media || DEFAULT_IMAGE,
+      updated: new Date(),
+      meta: {
+        update: {
+          ...meta
+        }
+      }
     },
     include: {
       ...includes,

@@ -141,4 +141,67 @@ export const createVenueSchema = z.object({
     .optional()
 })
 
+const updateVenueCore = {
+  name: z
+    .string({
+      invalid_type_error: "Name must be a string"
+    })
+    .optional(),
+  description: z
+    .string({
+      invalid_type_error: "Description must be a string"
+    })
+    .optional(),
+  media: z
+    .string({
+      invalid_type_error: "Media must be a string"
+    })
+    .url("Media must be a valid URL")
+    .array()
+    .max(8, "You cannot have more than 8 images")
+    .or(z.literal(""))
+    .optional(),
+  price: z
+    .number({
+      invalid_type_error: "Price must be a number"
+    })
+    .optional(),
+  maxGuests: z
+    .number({
+      invalid_type_error: "Max guests must be a number"
+    })
+    .int("Max guests must be an integer")
+    .optional(),
+  meta: z
+    .object({
+      wifi: z
+        .boolean({
+          invalid_type_error: "Wifi must be a boolean"
+        })
+        .optional(),
+      parking: z
+        .boolean({
+          invalid_type_error: "Parking must be a boolean"
+        })
+        .optional(),
+      breakfast: z
+        .boolean({
+          invalid_type_error: "Breakfast must be a boolean"
+        })
+        .optional(),
+      pets: z
+        .boolean({
+          invalid_type_error: "Pets must be a boolean"
+        })
+        .optional()
+    })
+    .optional()
+}
+
+export const updateVenueSchema = z
+  .object(updateVenueCore)
+  .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
+
 export type CreateVenueSchema = z.infer<typeof createVenueSchema>
+
+export type UpdateVenueSchema = z.infer<typeof updateVenueSchema>
