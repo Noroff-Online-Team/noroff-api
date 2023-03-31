@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { HolidazeBooking, HolidazeProfile } from "@prisma/client"
 import { BadRequest, NotFound, Forbidden } from "http-errors"
-import { getBookings, getBooking, createBooking, deleteBooking } from "./booking.service"
-import { CreateBookingSchema } from "./bookings.schema"
+import { getBookings, getBooking, createBooking, deleteBooking, updateBooking } from "./booking.service"
+import { CreateBookingSchema, UpdateBookingSchema } from "./bookings.schema"
 import { getVenue } from "../venues/venues.service"
 
 export interface HolidazeBookingIncludes {
@@ -97,6 +97,41 @@ export async function createBookingHandler(
     includes
   )
   reply.code(201).send(booking)
+}
+
+export async function updateBookingHandler(
+  request: FastifyRequest<{
+    Params: { id: string }
+    Body: UpdateBookingSchema
+    Querystring: {
+      _customer?: boolean
+      _venue?: boolean
+    }
+  }>,
+  reply: FastifyReply
+) {
+  const { id } = request.params
+  const { name } = request.user as HolidazeProfile
+  const { _customer, _venue } = request.query
+
+  const includes: HolidazeBookingIncludes = {
+    customer: Boolean(_customer),
+    venue: Boolean(_venue)
+  }
+
+  // See comment in deleteBookingHandler.
+  const booking = await getBooking(id, { customer: false })
+
+  if (!booking) {
+    throw new NotFound("No booking with such ID")
+  }
+
+  if (booking.customerName.toLowerCase() !== name.toLowerCase()) {
+    throw new Forbidden("You are not the owner of this booking")
+  }
+
+  const updatedBooking = await updateBooking(id, request.body, includes)
+  reply.code(200).send(updatedBooking)
 }
 
 export async function deleteBookingHandler(

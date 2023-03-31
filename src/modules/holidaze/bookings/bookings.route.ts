@@ -5,13 +5,15 @@ import {
   bookingsQuerySchema,
   queryFlagsSchema,
   bookingIdSchema,
-  createBookingSchema
+  createBookingSchema,
+  updateBookingSchema
 } from "./bookings.schema"
 import {
   getBookingsHandler,
   getBookingHandler,
   createBookingHandler,
-  deleteBookingHandler
+  deleteBookingHandler,
+  updateBookingHandler
 } from "./bookings.controller"
 
 async function bookingsRoutes(server: FastifyInstance) {
@@ -63,6 +65,24 @@ async function bookingsRoutes(server: FastifyInstance) {
       }
     },
     createBookingHandler
+  )
+
+  server.put(
+    "/:id",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["holidaze-bookings"],
+        security: [{ bearerAuth: [] }],
+        querystring: queryFlagsSchema,
+        params: bookingIdSchema,
+        body: updateBookingSchema,
+        response: {
+          200: displayBookingSchema
+        }
+      }
+    },
+    updateBookingHandler
   )
 
   server.delete(

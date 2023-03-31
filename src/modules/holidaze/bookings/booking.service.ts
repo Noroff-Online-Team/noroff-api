@@ -1,7 +1,7 @@
 import { HolidazeBooking } from "@prisma/client"
 import { prisma } from "../../../utils"
 import { HolidazeBookingIncludes } from "./bookings.controller"
-import { CreateBookingSchema } from "./bookings.schema"
+import { CreateBookingSchema, UpdateBookingSchema } from "./bookings.schema"
 
 export async function getBookings(
   sort: keyof HolidazeBooking = "id",
@@ -44,6 +44,22 @@ export async function createBooking(data: CreateBookingSchema, includes: Holidaz
     data: {
       ...data,
       created: new Date(),
+      updated: new Date()
+    },
+    include: {
+      ...includes,
+      ...venueMeta
+    }
+  })
+}
+
+export async function updateBooking(id: string, data: UpdateBookingSchema, includes: HolidazeBookingIncludes = {}) {
+  const venueMeta = includes.venue ? { venue: { include: { meta: true } } } : {}
+
+  return await prisma.holidazeBooking.update({
+    where: { id },
+    data: {
+      ...data,
       updated: new Date()
     },
     include: {

@@ -93,4 +93,65 @@ export const createBookingSchema = z.object({
   })
 })
 
+const updateBookingCore = {
+  dateFrom: z
+    .preprocess(arg => {
+      if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
+    }, z.date())
+    .refine(
+      date => {
+        const today = new Date()
+        if (date < today) {
+          return false
+        }
+        return true
+      },
+      {
+        message: "dateFrom cannot be in the past"
+      }
+    )
+    .optional(),
+  dateTo: z
+    .preprocess(arg => {
+      if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
+    }, z.date())
+    .refine(
+      date => {
+        const today = new Date()
+        if (date < today) {
+          return false
+        }
+        return true
+      },
+      {
+        message: "dateTo cannot be in the past"
+      }
+    )
+    .optional(),
+  guests: z
+    .number({
+      invalid_type_error: "Guests must be a number"
+    })
+    .int("Guests must be an integer")
+    .min(1, "Guests must be at least 1")
+    .optional()
+}
+
+export const updateBookingSchema = z
+  .object(updateBookingCore)
+  .refine(
+    ({ dateFrom, dateTo, guests }) => !!dateFrom || !!dateTo || !!guests,
+    "You must provide either dateFrom, dateTo, or guests"
+  )
+  .refine(({ dateFrom, dateTo }) => {
+    if (dateFrom && dateTo) {
+      if (dateFrom > dateTo) {
+        return false
+      }
+    }
+    return true
+  }, "dateFrom cannot be after dateTo")
+
 export type CreateBookingSchema = z.infer<typeof createBookingSchema>
+
+export type UpdateBookingSchema = z.infer<typeof updateBookingSchema>
