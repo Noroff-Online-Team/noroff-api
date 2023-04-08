@@ -18,7 +18,7 @@ export const venueCore = {
   name: z.string(),
   description: z.string().nullish(),
   media: z.string().array().nullish(),
-  price: z.number(),
+  price: z.number().min(0, "You cannot pay guests to stay at your venue"),
   maxGuests: z.number().int(),
   created: z.date(),
   updated: z.date(),
