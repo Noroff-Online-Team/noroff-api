@@ -91,7 +91,7 @@ export async function createBookingHandler(
   
   if (request.body.guests > venue.maxGuests) {
     throw new BadRequest(
-      `This venue only accommodates ${venue.maxGuests}, but you are attempting to book with ${booking.guests} guests.`
+      `This venue only accommodates ${venue.maxGuests}, but you are attempting to book with ${request.body.guests} guests.`
     )
   }
 
