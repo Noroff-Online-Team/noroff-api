@@ -88,8 +88,11 @@ export async function createBookingHandler(
   if (!venue) {
     throw new NotFound("No venue with this id")
   }
-  if (booking.guests > venue.maxGuests) {
-    throw new BadRequest(`This venue only accommodates ${venue.maxGuests}, but you are attempting to book with ${booking.guests} guests.`)
+  
+  if (request.body.guests > venue.maxGuests) {
+    throw new BadRequest(
+      `This venue only accommodates ${venue.maxGuests}, but you are attempting to book with ${booking.guests} guests.`
+    )
   }
 
   const booking = await createBooking(
@@ -99,6 +102,7 @@ export async function createBookingHandler(
     },
     includes
   )
+  
   reply.code(201).send(booking)
 }
 
