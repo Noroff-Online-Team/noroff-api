@@ -20,10 +20,8 @@ async function venuesRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      preHandler: [server.authenticate],
       schema: {
         tags: ["holidaze-venues"],
-        security: [{ bearerAuth: [] }],
         querystring: venuesQuerySchema,
         response: {
           200: displayVenueSchema.array()
@@ -36,10 +34,8 @@ async function venuesRoutes(server: FastifyInstance) {
   server.get(
     "/:id",
     {
-      preHandler: [server.authenticate],
       schema: {
         tags: ["holidaze-venues"],
-        security: [{ bearerAuth: [] }],
         params: venueIdSchema,
         querystring: queryFlagsSchema,
         response: {
