@@ -18,8 +18,8 @@ export const venueCore = {
   name: z.string(),
   description: z.string().nullish(),
   media: z.string().array().nullish(),
-  price: z.number().min(0, "You cannot pay guests to stay at your venue"),
-  maxGuests: z.number().int().min(1, "A venue must accommodate at least one guest"),
+  price: z.number(),
+  maxGuests: z.number().int(),
   created: z.date(),
   updated: z.date(),
   meta: z.object(venueMeta),
@@ -105,16 +105,20 @@ export const createVenueSchema = z.object({
     .max(8, "You cannot have more than 8 images")
     .or(z.literal(""))
     .optional(),
-  price: z.number({
-    invalid_type_error: "Price must be a number",
-    required_error: "Price is required"
-  }),
+  price: z
+    .number({
+      invalid_type_error: "Price must be a number",
+      required_error: "Price is required"
+    })
+    .min(0, "You cannot pay guests to stay at your venue"),
   maxGuests: z
     .number({
       invalid_type_error: "Max guests must be a number",
       required_error: "Max guests is required"
     })
-    .int("Max guests must be an integer"),
+    .int("Max guests must be an integer")
+    .min(1, "A venue must accommodate at least one guest")
+    .max(100, "A venue cannot accommodate more than 100 guests"),
   meta: z
     .object({
       wifi: z
