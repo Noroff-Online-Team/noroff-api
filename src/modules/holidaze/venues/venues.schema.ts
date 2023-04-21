@@ -13,6 +13,14 @@ const venueMeta = {
   pets: z.boolean()
 }
 
+const venueLocation = {
+  address: z.string(),
+  city: z.string(),
+  zip: z.string(),
+  country: z.string(),
+  continent: z.string()
+}
+
 export const venueCore = {
   ...venueId,
   name: z.string(),
@@ -20,9 +28,11 @@ export const venueCore = {
   media: z.string().array().nullish(),
   price: z.number(),
   maxGuests: z.number().int(),
+  rating: z.number().nullish(),
   created: z.date(),
   updated: z.date(),
   meta: z.object(venueMeta),
+  location: z.object(venueLocation),
   owner: z
     .object({
       name: z.string(),
@@ -119,6 +129,13 @@ export const createVenueSchema = z.object({
     .int("Max guests must be an integer")
     .min(1, "A venue must accommodate at least one guest")
     .max(100, "A venue cannot accommodate more than 100 guests"),
+  rating: z
+    .number({
+      invalid_type_error: "Rating must be a number"
+    })
+    .min(0, "Rating cannot be less than 0")
+    .max(5, "Rating cannot be greater than 5")
+    .optional(),
   meta: z
     .object({
       wifi: z
@@ -139,6 +156,35 @@ export const createVenueSchema = z.object({
       pets: z
         .boolean({
           invalid_type_error: "Pets must be a boolean"
+        })
+        .optional()
+    })
+    .optional(),
+  location: z
+    .object({
+      address: z
+        .string({
+          invalid_type_error: "Address must be a string"
+        })
+        .optional(),
+      city: z
+        .string({
+          invalid_type_error: "City must be a string"
+        })
+        .optional(),
+      zip: z
+        .string({
+          invalid_type_error: "Zip must be a string"
+        })
+        .optional(),
+      country: z
+        .string({
+          invalid_type_error: "Country must be a string"
+        })
+        .optional(),
+      continent: z
+        .string({
+          invalid_type_error: "Continent must be a string"
         })
         .optional()
     })
@@ -176,6 +222,13 @@ const updateVenueCore = {
     })
     .int("Max guests must be an integer")
     .optional(),
+  rating: z
+    .number({
+      invalid_type_error: "Rating must be a number"
+    })
+    .min(0, "Rating cannot be less than 0")
+    .max(5, "Rating cannot be greater than 5")
+    .optional(),
   meta: z
     .object({
       wifi: z
@@ -196,6 +249,35 @@ const updateVenueCore = {
       pets: z
         .boolean({
           invalid_type_error: "Pets must be a boolean"
+        })
+        .optional()
+    })
+    .optional(),
+  location: z
+    .object({
+      address: z
+        .string({
+          invalid_type_error: "Address must be a string"
+        })
+        .optional(),
+      city: z
+        .string({
+          invalid_type_error: "City must be a string"
+        })
+        .optional(),
+      zip: z
+        .string({
+          invalid_type_error: "Zip must be a string"
+        })
+        .optional(),
+      country: z
+        .string({
+          invalid_type_error: "Country must be a string"
+        })
+        .optional(),
+      continent: z
+        .string({
+          invalid_type_error: "Continent must be a string"
         })
         .optional()
     })
