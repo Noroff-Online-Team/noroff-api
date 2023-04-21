@@ -20,7 +20,8 @@ export async function getVenues(
     skip: offset,
     include: {
       ...includes,
-      meta: true
+      meta: true,
+      location: true
     }
   })
 }
@@ -30,16 +31,21 @@ export async function getVenue(id: string, includes: HolidazeVenueIncludes = {})
     where: { id },
     include: {
       ...includes,
-      meta: true
+      meta: true,
+      location: true
     }
   })
 }
 
 export async function createVenue(data: CreateVenueSchema, ownerName: string, includes: HolidazeVenueIncludes = {}) {
-  const { meta, ...rest } = data
+  const { meta, location, ...rest } = data
 
   const venueMeta = await prisma.holidazeVenueMeta.create({
     data: { ...meta }
+  })
+
+  const venueLocation = await prisma.holidazeVenueLocation.create({
+    data: { ...location }
   })
 
   return await prisma.holidazeVenue.create({
@@ -49,17 +55,19 @@ export async function createVenue(data: CreateVenueSchema, ownerName: string, in
       created: new Date(),
       updated: new Date(),
       ownerName,
-      metaId: venueMeta.id
+      metaId: venueMeta.id,
+      locationId: venueLocation.id
     },
     include: {
       ...includes,
-      meta: true
+      meta: true,
+      location: true
     }
   })
 }
 
 export async function updateVenue(id: string, data: UpdateVenueSchema, includes: HolidazeVenueIncludes = {}) {
-  const { meta, ...rest } = data
+  const { meta, location, ...rest } = data
 
   return await prisma.holidazeVenue.update({
     where: { id },
@@ -71,11 +79,17 @@ export async function updateVenue(id: string, data: UpdateVenueSchema, includes:
         update: {
           ...meta
         }
+      },
+      location: {
+        update: {
+          ...location
+        }
       }
     },
     include: {
       ...includes,
-      meta: true
+      meta: true,
+      location: true
     }
   })
 }

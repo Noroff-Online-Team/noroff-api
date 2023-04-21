@@ -227,18 +227,21 @@ model HolidazeProfile {
 }
 
 model HolidazeVenue {
-  id          String            @id @default(uuid())
+  id          String                @id @default(uuid())
   name        String
   description String
-  media       String[]          @default(["https://source.unsplash.com/1600x900/?hotel"])
+  media       String[]              @default(["https://source.unsplash.com/1600x900/?hotel"])
   price       Float
   maxGuests   Int
-  created     DateTime          @default(now())
-  updated     DateTime          @default(now())
-  meta        HolidazeVenueMeta @relation(fields: [metaId], references: [id], onDelete: Cascade)
-  metaId      String            @unique
-  owner       HolidazeProfile   @relation(fields: [ownerName], references: [name], onDelete: Cascade)
+  rating      Float                 @default(0)
+  created     DateTime              @default(now())
+  updated     DateTime              @default(now())
+  meta        HolidazeVenueMeta     @relation(fields: [metaId], references: [id], onDelete: Cascade)
+  metaId      String                @unique
+  owner       HolidazeProfile       @relation(fields: [ownerName], references: [name], onDelete: Cascade)
   ownerName   String
+  location    HolidazeVenueLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  locationId  String                @unique
   bookings    HolidazeBooking[]
 }
 
@@ -248,6 +251,16 @@ model HolidazeVenueMeta {
   parking   Boolean        @default(false)
   breakfast Boolean        @default(false)
   pets      Boolean        @default(false)
+  venue     HolidazeVenue?
+}
+
+model HolidazeVenueLocation {
+  id        String         @id @default(uuid())
+  address   String         @default("Unknown")
+  city      String         @default("Unknown")
+  zip       String         @default("Unknown")
+  country   String         @default("Unknown")
+  continent String         @default("Unknown")
   venue     HolidazeVenue?
 }
 
