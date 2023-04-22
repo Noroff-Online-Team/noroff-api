@@ -18,7 +18,9 @@ const venueLocation = {
   city: z.string(),
   zip: z.string(),
   country: z.string(),
-  continent: z.string()
+  continent: z.string(),
+  lat: z.number(),
+  lng: z.number()
 }
 
 export const venueCore = {
@@ -186,6 +188,16 @@ export const createVenueSchema = z.object({
         .string({
           invalid_type_error: "Continent must be a string"
         })
+        .optional(),
+      lat: z
+        .number({
+          invalid_type_error: "Latitude must be a number"
+        })
+        .optional(),
+      lng: z
+        .number({
+          invalid_type_error: "Longitude must be a number"
+        })
         .optional()
     })
     .optional()
@@ -278,6 +290,16 @@ const updateVenueCore = {
       continent: z
         .string({
           invalid_type_error: "Continent must be a string"
+        })
+        .optional(),
+      lat: z
+        .number({
+          invalid_type_error: "Latitude must be a number"
+        })
+        .optional(),
+      lng: z
+        .number({
+          invalid_type_error: "Longitude must be a number"
         })
         .optional()
     })
