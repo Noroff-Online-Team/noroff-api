@@ -261,6 +261,8 @@ model HolidazeVenueLocation {
   zip       String         @default("Unknown")
   country   String         @default("Unknown")
   continent String         @default("Unknown")
+  lat       Float          @default(0)
+  lng       Float          @default(0)
   venue     HolidazeVenue?
 }
 
