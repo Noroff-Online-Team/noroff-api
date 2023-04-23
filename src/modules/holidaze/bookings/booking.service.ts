@@ -10,7 +10,7 @@ export async function getBookings(
   offset = 0,
   includes: HolidazeBookingIncludes = {}
 ) {
-  const venueMeta = includes.venue ? { venue: { include: { meta: true } } } : {}
+  const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
 
   return await prisma.holidazeBooking.findMany({
     orderBy: {
@@ -20,25 +20,25 @@ export async function getBookings(
     skip: offset,
     include: {
       ...includes,
-      ...venueMeta
+      ...venueMetaAndLocation
     }
   })
 }
 
 export async function getBooking(id: string, includes: HolidazeBookingIncludes = {}) {
-  const venueMeta = includes.venue ? { venue: { include: { meta: true } } } : {}
+  const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
 
   return await prisma.holidazeBooking.findUnique({
     where: { id },
     include: {
       ...includes,
-      ...venueMeta
+      ...venueMetaAndLocation
     }
   })
 }
 
 export async function createBooking(data: CreateBookingSchema, includes: HolidazeBookingIncludes = {}) {
-  const venueMeta = includes.venue ? { venue: { include: { meta: true } } } : {}
+  const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
 
   return await prisma.holidazeBooking.create({
     data: {
@@ -48,13 +48,13 @@ export async function createBooking(data: CreateBookingSchema, includes: Holidaz
     },
     include: {
       ...includes,
-      ...venueMeta
+      ...venueMetaAndLocation
     }
   })
 }
 
 export async function updateBooking(id: string, data: UpdateBookingSchema, includes: HolidazeBookingIncludes = {}) {
-  const venueMeta = includes.venue ? { venue: { include: { meta: true } } } : {}
+  const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
 
   return await prisma.holidazeBooking.update({
     where: { id },
@@ -64,7 +64,7 @@ export async function updateBooking(id: string, data: UpdateBookingSchema, inclu
     },
     include: {
       ...includes,
-      ...venueMeta
+      ...venueMetaAndLocation
     }
   })
 }

@@ -12,7 +12,7 @@ export async function getProfiles(
   offset = 0,
   includes: HolidazeProfileIncludes = {}
 ) {
-  const venueMeta = includes.venues ? { venues: { include: { meta: true } } } : {}
+  const venueMetaAndLocation = includes.venues ? { venues: { include: { meta: true, location: true } } } : {}
 
   return await prisma.holidazeProfile.findMany({
     orderBy: {
@@ -22,7 +22,7 @@ export async function getProfiles(
     skip: offset,
     include: {
       ...includes,
-      ...venueMeta,
+      ...venueMetaAndLocation,
       _count: {
         select: {
           venues: true,
@@ -34,7 +34,7 @@ export async function getProfiles(
 }
 
 export async function getProfile(name: string, includes: HolidazeProfileIncludes = {}) {
-  const venueMeta = includes.venues ? { venues: { include: { meta: true } } } : {}
+  const venueMetaAndLocation = includes.venues ? { venues: { include: { meta: true, location: true } } } : {}
   const includeVenueIfBookings = includes.bookings
     ? { bookings: { include: { venue: { include: { meta: true } } } } }
     : {}
@@ -43,7 +43,7 @@ export async function getProfile(name: string, includes: HolidazeProfileIncludes
     where: { name },
     include: {
       ...includes,
-      ...venueMeta,
+      ...venueMetaAndLocation,
       ...includeVenueIfBookings,
       _count: {
         select: {
@@ -84,6 +84,7 @@ export async function getProfileVenues(
     include: {
       ...includes,
       meta: true,
+      location: true,
       _count: {
         select: {
           bookings: true
@@ -101,7 +102,7 @@ export async function getProfileBookings(
   offset = 0,
   includes: HolidazeBookingIncludes = {}
 ) {
-  const venueMeta = includes.venue ? { venue: { include: { meta: true } } } : {}
+  const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
 
   return await prisma.holidazeBooking.findMany({
     where: {
@@ -114,7 +115,7 @@ export async function getProfileBookings(
     skip: offset,
     include: {
       ...includes,
-      ...venueMeta
+      ...venueMetaAndLocation
     }
   })
 }
