@@ -2,7 +2,7 @@ import { HolidazeBooking, HolidazeProfile, HolidazeVenue } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "./../../../utils/mediaGuard"
 import { ProfileMediaSchema } from "./profiles.schema"
-import { NotFound, BadRequest } from "http-errors"
+import { NotFound, BadRequest, Forbidden } from "http-errors"
 
 import {
   getProfiles,
@@ -84,11 +84,16 @@ export async function updateProfileMediaHandler(
 ) {
   const { name } = request.params
   const { avatar } = request.body
+  const { name: reqUser } = request.user as HolidazeProfile
 
   const profile = await getProfile(name)
 
   if (!profile) {
     throw new NotFound("No profile with this name")
+  }
+
+  if (profile.name.toLowerCase() !== reqUser.toLowerCase()) {
+    throw new Forbidden("You do not have permission to update this profile")
   }
 
   await mediaGuard(avatar)
@@ -106,11 +111,16 @@ export async function updateProfileHandler(
 ) {
   const { name } = request.params
   const { venueManager } = request.body
+  const { name: reqUser } = request.user as HolidazeProfile
 
   const profile = await getProfile(name)
 
   if (!profile) {
     throw new NotFound("No profile with this name")
+  }
+
+  if (profile.name.toLowerCase() !== reqUser.toLowerCase()) {
+    throw new Forbidden("You do not have permission to update this profile")
   }
 
   const updatedProfile = await updateProfile(name, venueManager)
