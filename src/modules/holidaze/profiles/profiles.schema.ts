@@ -23,6 +23,13 @@ const profileVenueManager = {
 
 export const profileMediaSchema = z.object(profileMedia)
 
+export const profileVenueManagerSchema = z.object({
+  venueManager: z.boolean({
+    required_error: "Venue manager is required",
+    invalid_type_error: "Venue manager must be a boolean"
+  })
+})
+
 export const profileCore = {
   name: z
     .string()

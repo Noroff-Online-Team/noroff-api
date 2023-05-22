@@ -55,6 +55,15 @@ export async function getProfile(name: string, includes: HolidazeProfileIncludes
   })
 }
 
+export async function updateProfile(name: string, venueManager: boolean) {
+  return await prisma.holidazeProfile.update({
+    where: { name },
+    data: {
+      venueManager
+    }
+  })
+}
+
 export async function updateProfileMedia(name: string, { avatar }: ProfileMediaSchema) {
   return await prisma.holidazeProfile.update({
     where: { name },
