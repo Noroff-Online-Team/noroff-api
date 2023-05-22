@@ -5,11 +5,13 @@ import {
   profilesQuerySchema,
   profileNameSchema,
   queryFlagsSchema,
-  profileMediaSchema
+  profileMediaSchema,
+  profileVenueManagerSchema
 } from "./profiles.schema"
 import {
   getProfilesHandler,
   getProfileHandler,
+  updateProfileHandler,
   updateProfileMediaHandler,
   getProfileVenuesHandler,
   getProfileBookingsHandler
@@ -50,6 +52,23 @@ async function profilesRoutes(server: FastifyInstance) {
       }
     },
     getProfileHandler
+  )
+
+  server.put(
+    "/:name",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["holidaze-profiles"],
+        security: [{ bearerAuth: [] }],
+        params: profileNameSchema,
+        body: profileVenueManagerSchema,
+        response: {
+          200: displayProfileSchema
+        }
+      }
+    },
+    updateProfileHandler
   )
 
   server.put(

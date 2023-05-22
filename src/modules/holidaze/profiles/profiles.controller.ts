@@ -4,7 +4,14 @@ import { mediaGuard } from "./../../../utils/mediaGuard"
 import { ProfileMediaSchema } from "./profiles.schema"
 import { NotFound, BadRequest } from "http-errors"
 
-import { getProfiles, getProfile, updateProfileMedia, getProfileVenues, getProfileBookings } from "./profiles.service"
+import {
+  getProfiles,
+  getProfile,
+  updateProfileMedia,
+  getProfileVenues,
+  getProfileBookings,
+  updateProfile
+} from "./profiles.service"
 import { HolidazeBookingIncludes } from "../bookings/bookings.controller"
 import { HolidazeVenueIncludes } from "../venues/venues.controller"
 
@@ -78,10 +85,36 @@ export async function updateProfileMediaHandler(
   const { name } = request.params
   const { avatar } = request.body
 
+  const profile = await getProfile(name)
+
+  if (!profile) {
+    throw new NotFound("No profile with this name")
+  }
+
   await mediaGuard(avatar)
 
-  const profile = await updateProfileMedia(name, request.body)
-  reply.code(200).send(profile)
+  const updatedProfile = await updateProfileMedia(name, request.body)
+  reply.code(200).send(updatedProfile)
+}
+
+export async function updateProfileHandler(
+  request: FastifyRequest<{
+    Params: { name: string }
+    Body: { venueManager: boolean }
+  }>,
+  reply: FastifyReply
+) {
+  const { name } = request.params
+  const { venueManager } = request.body
+
+  const profile = await getProfile(name)
+
+  if (!profile) {
+    throw new NotFound("No profile with this name")
+  }
+
+  const updatedProfile = await updateProfile(name, venueManager)
+  reply.code(200).send(updatedProfile)
 }
 
 export async function getProfileVenuesHandler(
