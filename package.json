@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18.16.0"
+  },
   "scripts": {
     "dev": "tsnd --respawn --transpile-only --exit-child -r tsconfig-paths/register src/app.ts",
     "start": "node dist/src/app.js",
