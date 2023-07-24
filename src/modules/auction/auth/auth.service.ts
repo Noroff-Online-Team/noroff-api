@@ -1,4 +1,4 @@
-import { prisma, hashPassword } from "../../../utils"
+import { prisma, hashPassword } from "@/utils"
 import { CreateProfileInput } from "../profiles/profiles.schema"
 
 const DEFAULT_CREDITS = 1000

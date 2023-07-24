@@ -1,5 +1,5 @@
 import { Prisma, Profile, Post } from "@prisma/client"
-import { prisma } from "../../../utils"
+import { prisma } from "@/utils"
 import { ProfileIncludes } from "./profiles.controller"
 import { ProfileMediaSchema } from "./profiles.schema"
 import { PostIncludes } from "../posts/posts.controller"

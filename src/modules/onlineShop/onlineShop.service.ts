@@ -1,4 +1,4 @@
-import { prisma } from "../../utils"
+import { prisma } from "@/utils"
 
 export async function getOnlineShopProducts() {
   return await prisma.onlineShopProduct.findMany({

@@ -1,5 +1,5 @@
 import { AuctionListing } from "@prisma/client"
-import { prisma } from "../../../utils"
+import { prisma } from "@/utils"
 import { AuctionListingIncludes } from "./listings.controller"
 import { CreateListingSchema, UpdateListingSchema } from "./listings.schema"
 import { scheduleCreditsTransfer } from "./listing.utils"

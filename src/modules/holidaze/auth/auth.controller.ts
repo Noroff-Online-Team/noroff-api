@@ -3,8 +3,8 @@ import { BadRequest, Unauthorized } from "http-errors"
 import { LoginInput } from "./auth.schema"
 import { createProfile, findProfileByEmail, findProfileByEmailOrName } from "./auth.service"
 import { CreateProfileInput } from "../profiles/profiles.schema"
-import { verifyPassword } from "../../../utils/hash"
-import { mediaGuard } from "./../../../utils/mediaGuard"
+import { verifyPassword } from "@/utils/hash"
+import { mediaGuard } from "@/utils/mediaGuard"
 
 export async function registerProfileHandler(
   request: FastifyRequest<{

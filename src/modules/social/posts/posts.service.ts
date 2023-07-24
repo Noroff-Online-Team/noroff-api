@@ -1,5 +1,5 @@
 import { Post } from "@prisma/client"
-import { prisma } from "../../../utils"
+import { prisma } from "@/utils"
 import { PostIncludes } from "./posts.controller"
 import { CreateCommentSchema, CreatePostBaseSchema, CreatePostSchema } from "./posts.schema"
 

@@ -1,6 +1,6 @@
 import { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { mediaGuard } from "./../../../utils/mediaGuard"
+import { mediaGuard } from "@/utils/mediaGuard"
 import { ProfileMediaSchema } from "./profiles.schema"
 import { NotFound, BadRequest, Forbidden } from "http-errors"
 

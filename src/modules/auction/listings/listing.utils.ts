@@ -1,5 +1,5 @@
 import schedule from "node-schedule"
-import { prisma } from "../../../utils"
+import { prisma } from "@/utils"
 import { getListing } from "./listings.service"
 import { ListingWithBids } from "./listings.controller"
 

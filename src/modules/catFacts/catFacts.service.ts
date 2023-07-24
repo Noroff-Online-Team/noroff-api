@@ -1,4 +1,4 @@
-import { prisma, getRandomNumber } from "../../utils"
+import { prisma, getRandomNumber } from "@/utils"
 
 export async function getCatFacts() {
   return await prisma.catFact.findMany()

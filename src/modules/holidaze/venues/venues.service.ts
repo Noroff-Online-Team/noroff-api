@@ -1,6 +1,6 @@
 import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
 import { HolidazeVenue } from "@prisma/client"
-import { prisma } from "../../../utils"
+import { prisma } from "@/utils"
 import { HolidazeVenueIncludes } from "./venues.controller"
 
 const DEFAULT_IMAGE = "https://source.unsplash.com/1600x900/?hotel"

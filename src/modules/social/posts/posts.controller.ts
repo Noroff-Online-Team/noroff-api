@@ -1,6 +1,6 @@
 import { Prisma, Post, Profile, Comment } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { mediaGuard } from "./../../../utils/mediaGuard"
+import { mediaGuard } from "@/utils/mediaGuard"
 import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
 import { NotFound, Forbidden, BadRequest } from "http-errors"
 

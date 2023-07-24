@@ -4,7 +4,7 @@ import { BadRequest, NotFound, Forbidden } from "http-errors"
 import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
 import { getProfile } from "../profiles/profiles.service"
 import { getVenues, getVenue, createVenue, deleteVenue, updateVenue } from "./venues.service"
-import { mediaGuard } from "../../../utils/mediaGuard"
+import { mediaGuard } from "@/utils/mediaGuard"
 
 export interface HolidazeVenueIncludes {
   owner?: boolean

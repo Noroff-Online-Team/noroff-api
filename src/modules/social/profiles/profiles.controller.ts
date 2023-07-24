@@ -1,6 +1,6 @@
 import { Profile, Post } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { mediaGuard } from "./../../../utils/mediaGuard"
+import { mediaGuard } from "@/utils/mediaGuard"
 import { ProfileMediaSchema } from "./profiles.schema"
 import { PostIncludes } from "../posts/posts.controller"
 import { NotFound, BadRequest } from "http-errors"

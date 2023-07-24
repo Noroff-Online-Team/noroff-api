@@ -1,5 +1,5 @@
 import { HolidazeBooking } from "@prisma/client"
-import { prisma } from "../../../utils"
+import { prisma } from "@/utils"
 import { HolidazeBookingIncludes } from "./bookings.controller"
 import { CreateBookingSchema, UpdateBookingSchema } from "./bookings.schema"
 

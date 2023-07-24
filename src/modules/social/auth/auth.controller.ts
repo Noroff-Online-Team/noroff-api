@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
-import { verifyPassword } from "../../../utils/hash"
-import { mediaGuard } from "./../../../utils/mediaGuard"
+import { verifyPassword } from "@/utils/hash"
+import { mediaGuard } from "@/utils/mediaGuard"
 import { CreateProfileInput } from "../profiles/profiles.schema"
 import { LoginInput } from "./auth.schema"
 import { createProfile, findProfileByEmail, findProfileByEmailOrName } from "./auth.service"

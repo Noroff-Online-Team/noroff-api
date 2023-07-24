@@ -1,7 +1,7 @@
 import { getProfile } from "./../profiles/profiles.service"
 import { AuctionBid, AuctionListing, AuctionProfile, Prisma } from "@prisma/client"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { mediaGuard } from "../../../utils/mediaGuard"
+import { mediaGuard } from "@/utils/mediaGuard"
 import { NotFound, BadRequest, Forbidden } from "http-errors"
 
 import { CreateListingSchema, UpdateListingSchema } from "./listings.schema"
