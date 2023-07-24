@@ -7,7 +7,7 @@ import errorHandler from "./exceptions/errorHandler"
 import notFoundHandler from "./exceptions/notFoundHandler"
 
 import statusRoutes from "./modules/status/status.route"
-import routes from "./modules/routes"
+import v1routes from "./modules/v1/routes"
 
 // Main startup
 function buildServer() {
@@ -45,7 +45,7 @@ function buildServer() {
   server.register(statusRoutes, { prefix: "status" })
 
   // Register all v1 routes
-  server.register(routes, { prefix: "api/v1" })
+  server.register(v1routes, { prefix: "api/v1" })
 
   return server
 }
