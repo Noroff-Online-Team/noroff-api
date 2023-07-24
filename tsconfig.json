@@ -11,7 +11,10 @@
     "outDir": "dist",
     "baseUrl": "src",
     "strict": true,
-    "typeRoots": ["types"]
+    "typeRoots": ["types"],
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
   "include": ["src/**/*", "types"],
   "exclude": ["node_modules"]
