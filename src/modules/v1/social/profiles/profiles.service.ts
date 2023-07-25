@@ -1,4 +1,4 @@
-import { Prisma, Profile, Post } from "@prisma/client"
+import { Profile, Post } from "@prisma/client"
 import { prisma } from "@/utils"
 import { ProfileIncludes } from "./profiles.controller"
 import { ProfileMediaSchema } from "./profiles.schema"
@@ -44,10 +44,6 @@ export const getProfile = async (name: string, includes: ProfileIncludes = {}) =
       }
     }
   })
-
-export const createProfile = async (data: Prisma.ProfileCreateInput) => {
-  return await prisma.profile.create({ data })
-}
 
 export const updateProfileMedia = async (name: string, { avatar, banner }: ProfileMediaSchema) => {
   return await prisma.profile.update({
