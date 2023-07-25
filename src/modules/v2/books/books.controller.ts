@@ -9,7 +9,7 @@ export async function getBooksHandler() {
   try {
     const books = await getBooks()
 
-    if (!books.data) {
+    if (!books.data.length) {
       throw new NotFound("Couldn't find any books.")
     }
 
