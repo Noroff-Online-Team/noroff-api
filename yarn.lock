@@ -1952,6 +1952,11 @@ prettier@^2.7.1:
   resolved "https://registry.npmjs.org/prettier/-/prettier-2.7.1.tgz"
   integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==
 
+prisma-extension-pagination@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/prisma-extension-pagination/-/prisma-extension-pagination-0.4.1.tgz#ddf4734d18f672c970ffd8efa7713c313e39b3f3"
+  integrity sha512-iEhtJESx2eP2/23Yk5uIu3jH5DjI2vtVlg6r1KfxWRf2/8DAybXH5Y0znSxPOdefKnKn9D+WA+0YNO9TRdtSjQ==
+
 prisma@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/prisma/-/prisma-5.0.0.tgz#f6571c46dc2478172cb7bc1bb62d74026a2c2630"
