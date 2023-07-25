@@ -3,7 +3,7 @@ import { HolidazeVenue } from "@prisma/client"
 import { prisma } from "@/utils"
 import { HolidazeVenueIncludes } from "./venues.controller"
 
-const DEFAULT_IMAGE = "https://source.unsplash.com/1600x900/?hotel"
+const DEFAULT_MEDIA = ["https://source.unsplash.com/1600x900/?hotel"]
 
 export async function getVenues(
   sort: keyof HolidazeVenue = "name",
@@ -51,7 +51,7 @@ export async function createVenue(data: CreateVenueSchema, ownerName: string, in
   return await prisma.holidazeVenue.create({
     data: {
       ...rest,
-      media: data.media || DEFAULT_IMAGE,
+      media: data.media || DEFAULT_MEDIA,
       created: new Date(),
       updated: new Date(),
       ownerName,
@@ -73,7 +73,7 @@ export async function updateVenue(id: string, data: UpdateVenueSchema, includes:
     where: { id },
     data: {
       ...rest,
-      media: data.media || DEFAULT_IMAGE,
+      media: data.media || DEFAULT_MEDIA,
       updated: new Date(),
       meta: {
         update: {
