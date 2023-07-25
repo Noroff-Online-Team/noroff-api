@@ -29,7 +29,7 @@
     "fastify-type-provider-zod": "^1.1.7",
     "http-errors": "^2.0.0",
     "node-schedule": "^2.1.0",
-    "prisma-extension-pagination": "^0.4.1",
+    "prisma-extension-pagination": "^0.4.2",
     "statuses": "^2.0.1",
     "zod": "^3.21.4",
     "zod-to-json-schema": "^3.18.1"

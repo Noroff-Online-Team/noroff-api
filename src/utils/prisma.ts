@@ -1,12 +1,6 @@
 import { PrismaClient } from "@prisma/client"
-import { paginate } from "prisma-extension-pagination"
+import pagination from "prisma-extension-pagination"
 
-const prisma = new PrismaClient().$extends({
-  model: {
-    $allModels: {
-      paginate
-    }
-  }
-})
+const prisma = new PrismaClient().$extends(pagination)
 
 export default prisma
