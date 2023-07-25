@@ -1,6 +1,14 @@
 import { JWT } from "@fastify/jwt"
 
 declare module "fastify" {
+  interface FastifySchema {
+    body?: unknown
+    querystring?: unknown
+    params?: unknown
+    headers?: unknown
+    response?: unknown
+    tags?: string[]
+  }
   interface FastifyRequest {
     jwt: JWT
   }
