@@ -14,7 +14,13 @@ export async function getOldGamesHandler() {
     }
 
     return oldGames
-  } catch (error) {}
+  } catch (error) {
+    if (error instanceof NotFound) {
+      throw error
+    }
+
+    throw new InternalServerError("Something went wrong.")
+  }
 }
 
 export async function getOldGameHandler(
