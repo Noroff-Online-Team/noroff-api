@@ -12,7 +12,7 @@ export async function getQuote(id: number) {
 
 export async function getRandomQuote() {
   const resultLength = await prisma.quote.count()
-  const id = getRandomNumber(0, resultLength)
+  const id = getRandomNumber(1, resultLength)
 
   return await prisma.quote.findUnique({
     where: { id }

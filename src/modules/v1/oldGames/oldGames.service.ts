@@ -12,7 +12,7 @@ export async function getOldGame(id: number) {
 
 export async function getRandomOldGame() {
   const resultLength = await prisma.oldGame.count()
-  const id = getRandomNumber(0, resultLength)
+  const id = getRandomNumber(1, resultLength)
 
   return await prisma.oldGame.findUnique({
     where: { id }

@@ -12,7 +12,7 @@ export async function getNbaTeam(id: number) {
 
 export async function getRandomNbaTeam() {
   const resultLength = await prisma.nbaTeam.count()
-  const id = getRandomNumber(0, resultLength)
+  const id = getRandomNumber(1, resultLength)
 
   return await prisma.nbaTeam.findUnique({
     where: { id }

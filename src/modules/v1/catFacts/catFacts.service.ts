@@ -12,7 +12,7 @@ export async function getCatFact(id: number) {
 
 export async function getRandomCatFact() {
   const resultLength = await prisma.catFact.count()
-  const id = getRandomNumber(0, resultLength)
+  const id = getRandomNumber(1, resultLength)
 
   return await prisma.catFact.findUnique({
     where: { id }
