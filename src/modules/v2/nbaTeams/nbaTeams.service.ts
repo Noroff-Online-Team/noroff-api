@@ -1,10 +1,7 @@
 import { prisma, getRandomNumber } from "@/utils"
 
 export async function getNbaTeams() {
-  const [data, meta] = await prisma.nbaTeam.paginate().withPages({
-    limit: 100,
-    includePageCount: true
-  })
+  const [data, meta] = await prisma.nbaTeam.paginate().withPages()
 
   return { data, meta }
 }
@@ -15,8 +12,7 @@ export async function getNbaTeam(id: number) {
       where: { id }
     })
     .withPages({
-      limit: 1,
-      includePageCount: true
+      limit: 1
     })
 
   return { data: data[0], meta }
@@ -31,8 +27,7 @@ export async function getRandomNbaTeam() {
       where: { id }
     })
     .withPages({
-      limit: 1,
-      includePageCount: true
+      limit: 1
     })
 
   return { data: data[0], meta }
