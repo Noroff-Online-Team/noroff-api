@@ -9,4 +9,5 @@ export default async function (fastify: FastifyInstance) {
   fastify.register(import("./onlineShop/onlineShop.route"), { prefix: "online-shop" })
   fastify.register(import("./quotes/quotes.route"), { prefix: "quotes" })
   fastify.register(import("./rainyDays/rainyDays.route"), { prefix: "rainy-days" })
+  fastify.register(import("./squareEyes/squareEyes.route"), { prefix: "square-eyes" })
 }
