@@ -10,4 +10,5 @@ export default async function (fastify: FastifyInstance) {
   fastify.register(import("./quotes/quotes.route"), { prefix: "quotes" })
   fastify.register(import("./rainyDays/rainyDays.route"), { prefix: "rainy-days" })
   fastify.register(import("./squareEyes/squareEyes.route"), { prefix: "square-eyes" })
+  fastify.register(import("./gameHub/gameHub.route"), { prefix: "gamehub" })
 }
