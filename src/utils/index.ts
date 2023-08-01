@@ -1,3 +1,3 @@
 export { default as getRandomNumber } from "./getRandomNumber"
-export { default as prisma } from "./prisma"
+export { prisma, db } from "./prisma"
 export * from "./hash"
