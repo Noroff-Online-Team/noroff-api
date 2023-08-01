@@ -1,13 +1,13 @@
-import { prisma } from "@/utils"
+import { db } from "@/utils"
 
 export async function getSquareEyesProducts() {
-  const [data, meta] = await prisma.squareEyesProduct.paginate().withPages()
+  const [data, meta] = await db.squareEyesProduct.paginate().withPages()
 
   return { data, meta }
 }
 
 export async function getSquareEyesProduct(id: string) {
-  const [data, meta] = await prisma.squareEyesProduct
+  const [data, meta] = await db.squareEyesProduct
     .paginate({
       where: { id }
     })

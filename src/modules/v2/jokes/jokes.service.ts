@@ -1,13 +1,13 @@
-import { prisma, getRandomNumber } from "@/utils"
+import { db, getRandomNumber } from "@/utils"
 
 export async function getJokes() {
-  const [data, meta] = await prisma.joke.paginate().withPages()
+  const [data, meta] = await db.joke.paginate().withPages()
 
   return { data, meta }
 }
 
 export async function getJoke(id: number) {
-  const [data, meta] = await prisma.joke
+  const [data, meta] = await db.joke
     .paginate({
       where: { id }
     })
@@ -19,10 +19,10 @@ export async function getJoke(id: number) {
 }
 
 export async function getRandomJoke() {
-  const resultLength = await prisma.joke.count()
+  const resultLength = await db.joke.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await prisma.joke
+  const [data, meta] = await db.joke
     .paginate({
       where: { id }
     })

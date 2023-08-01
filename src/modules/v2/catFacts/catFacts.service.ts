@@ -1,13 +1,13 @@
-import { prisma, getRandomNumber } from "@/utils"
+import { db, getRandomNumber } from "@/utils"
 
 export async function getCatFacts() {
-  const [data, meta] = await prisma.catFact.paginate().withPages()
+  const [data, meta] = await db.catFact.paginate().withPages()
 
   return { data, meta }
 }
 
 export async function getCatFact(id: number) {
-  const [data, meta] = await prisma.catFact
+  const [data, meta] = await db.catFact
     .paginate({
       where: { id }
     })
@@ -19,10 +19,10 @@ export async function getCatFact(id: number) {
 }
 
 export async function getRandomCatFact() {
-  const resultLength = await prisma.catFact.count()
+  const resultLength = await db.catFact.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await prisma.catFact
+  const [data, meta] = await db.catFact
     .paginate({
       where: { id }
     })

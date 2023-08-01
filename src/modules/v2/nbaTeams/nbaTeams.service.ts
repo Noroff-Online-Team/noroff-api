@@ -1,13 +1,13 @@
-import { prisma, getRandomNumber } from "@/utils"
+import { db, getRandomNumber } from "@/utils"
 
 export async function getNbaTeams() {
-  const [data, meta] = await prisma.nbaTeam.paginate().withPages()
+  const [data, meta] = await db.nbaTeam.paginate().withPages()
 
   return { data, meta }
 }
 
 export async function getNbaTeam(id: number) {
-  const [data, meta] = await prisma.nbaTeam
+  const [data, meta] = await db.nbaTeam
     .paginate({
       where: { id }
     })
@@ -19,10 +19,10 @@ export async function getNbaTeam(id: number) {
 }
 
 export async function getRandomNbaTeam() {
-  const resultLength = await prisma.nbaTeam.count()
+  const resultLength = await db.nbaTeam.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await prisma.nbaTeam
+  const [data, meta] = await db.nbaTeam
     .paginate({
       where: { id }
     })

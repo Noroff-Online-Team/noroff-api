@@ -1,13 +1,13 @@
-import { prisma } from "@/utils"
+import { db } from "@/utils"
 
 export async function getRainyDaysProducts() {
-  const [data, meta] = await prisma.rainyDaysProduct.paginate().withPages()
+  const [data, meta] = await db.rainyDaysProduct.paginate().withPages()
 
   return { data, meta }
 }
 
 export async function getRainyDaysProduct(id: string) {
-  const [data, meta] = await prisma.rainyDaysProduct
+  const [data, meta] = await db.rainyDaysProduct
     .paginate({
       where: { id }
     })

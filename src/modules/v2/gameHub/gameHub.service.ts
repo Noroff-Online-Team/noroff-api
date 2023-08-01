@@ -1,13 +1,13 @@
-import { prisma } from "@/utils"
+import { db } from "@/utils"
 
 export async function getGameHubProducts() {
-  const [data, meta] = await prisma.gameHubProducts.paginate().withPages()
+  const [data, meta] = await db.gameHubProducts.paginate().withPages()
 
   return { data, meta }
 }
 
 export async function getGameHubProduct(id: string) {
-  const [data, meta] = await prisma.gameHubProducts
+  const [data, meta] = await db.gameHubProducts
     .paginate({
       where: { id }
     })

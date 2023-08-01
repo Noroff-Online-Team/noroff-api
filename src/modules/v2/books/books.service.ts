@@ -1,13 +1,13 @@
-import { prisma, getRandomNumber } from "@/utils"
+import { db, getRandomNumber } from "@/utils"
 
 export async function getBooks() {
-  const [data, meta] = await prisma.book.paginate().withPages()
+  const [data, meta] = await db.book.paginate().withPages()
 
   return { data, meta }
 }
 
 export async function getBook(id: number) {
-  const [data, meta] = await prisma.book
+  const [data, meta] = await db.book
     .paginate({
       where: { id }
     })
@@ -19,10 +19,10 @@ export async function getBook(id: number) {
 }
 
 export async function getRandomBook() {
-  const resultLength = await prisma.book.count()
+  const resultLength = await db.book.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await prisma.book
+  const [data, meta] = await db.book
     .paginate({
       where: { id }
     })

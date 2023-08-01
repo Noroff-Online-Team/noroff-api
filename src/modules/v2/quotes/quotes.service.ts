@@ -1,13 +1,13 @@
-import { prisma, getRandomNumber } from "@/utils"
+import { db, getRandomNumber } from "@/utils"
 
 export async function getQuotes() {
-  const [data, meta] = await prisma.quote.paginate().withPages()
+  const [data, meta] = await db.quote.paginate().withPages()
 
   return { data, meta }
 }
 
 export async function getQuote(id: number) {
-  const [data, meta] = await prisma.quote
+  const [data, meta] = await db.quote
     .paginate({
       where: { id }
     })
@@ -19,10 +19,10 @@ export async function getQuote(id: number) {
 }
 
 export async function getRandomQuote() {
-  const resultLength = await prisma.quote.count()
+  const resultLength = await db.quote.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await prisma.quote
+  const [data, meta] = await db.quote
     .paginate({
       where: { id }
     })

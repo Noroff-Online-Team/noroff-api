@@ -1,13 +1,13 @@
-import { prisma, getRandomNumber } from "@/utils"
+import { db, getRandomNumber } from "@/utils"
 
 export async function getOldGames() {
-  const [data, meta] = await prisma.oldGame.paginate().withPages()
+  const [data, meta] = await db.oldGame.paginate().withPages()
 
   return { data, meta }
 }
 
 export async function getOldGame(id: number) {
-  const [data, meta] = await prisma.oldGame
+  const [data, meta] = await db.oldGame
     .paginate({
       where: { id }
     })
@@ -19,10 +19,10 @@ export async function getOldGame(id: number) {
 }
 
 export async function getRandomOldGame() {
-  const resultLength = await prisma.oldGame.count()
+  const resultLength = await db.oldGame.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await prisma.oldGame
+  const [data, meta] = await db.oldGame
     .paginate({
       where: { id }
     })

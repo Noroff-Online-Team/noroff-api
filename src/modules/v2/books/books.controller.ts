@@ -19,7 +19,7 @@ export async function getBooksHandler() {
       throw error
     }
 
-    throw new InternalServerError("Something went wrong.")
+    throw new InternalServerError(`Something went wrong. ${error}`)
   }
 }
 
