@@ -11,11 +11,13 @@
     "dev": "tsnd --respawn --transpile-only --exit-child -r tsconfig-paths/register src/app.ts",
     "start": "node dist/src/app.js",
     "build": "rimraf dist && tsc -p tsconfig.json && npm run copy-images",
-    "prebuild": "prisma generate",
+    "prebuild": "yarn generate:v1 && yarn generate:v2",
     "copy-images": "copyfiles -u 1 \"src/public/**/*\" dist/src",
     "prepare": "husky install",
     "test": "tap",
-    "test:coverage": "tap --coverage"
+    "test:coverage": "tap --coverage",
+    "generate:v1": "prisma generate --schema prisma/v1/schema.prisma",
+    "generate:v2": "prisma generate --schema prisma/v2/schema.prisma"
   },
   "dependencies": {
     "@fastify/autoload": "^5.7.1",
