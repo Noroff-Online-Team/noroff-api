@@ -1,10 +1,10 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { verifyPassword } from "@/utils/hash"
 import { mediaGuard } from "@/utils/mediaGuard"
-import { CreateProfileInput } from "./auth.schema"
-import { LoginInput } from "./auth.schema"
+import { CreateProfileInput, LoginInput, createProfileBodySchema, loginBodySchema } from "./auth.schema"
 import { createProfile, findProfileByEmail, findProfileByEmailOrName } from "./auth.service"
-import { BadRequest, Unauthorized } from "http-errors"
+import { BadRequest, InternalServerError, Unauthorized, isHttpError } from "http-errors"
+import { ZodError } from "zod"
 
 export async function registerProfileHandler(
   request: FastifyRequest<{
@@ -12,53 +12,77 @@ export async function registerProfileHandler(
   }>,
   reply: FastifyReply
 ) {
-  const body = request.body
+  try {
+    const body = await createProfileBodySchema.parseAsync(request.body)
 
-  const checkProfile = await findProfileByEmailOrName(body.email, body.name)
+    const checkProfile = await findProfileByEmailOrName(body.email, body.name)
 
-  if (checkProfile) {
-    throw new BadRequest("Profile already exists")
+    if (checkProfile) {
+      throw new BadRequest("Profile already exists")
+    }
+
+    await mediaGuard(body.avatar)
+
+    const profile = await createProfile(body)
+
+    return reply.code(201).send(profile)
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
+    }
+
+    if (isHttpError(error)) {
+      throw error
+    }
+
+    throw new InternalServerError("Something went wrong.")
   }
-
-  await mediaGuard(body.avatar)
-
-  const profile = await createProfile(body)
-  return reply.code(201).send(profile)
 }
 
 export async function loginHandler(
   request: FastifyRequest<{
     Body: LoginInput
-  }>,
-  reply: FastifyReply
+  }>
 ) {
-  const body = request.body
+  try {
+    const body = await loginBodySchema.parseAsync(request.body)
 
-  const profile = await findProfileByEmail(body.email)
+    const profile = await findProfileByEmail(body.email)
 
-  if (!profile) {
-    throw new Unauthorized("Invalid email or password")
-  }
+    if (!profile) {
+      throw new Unauthorized("Invalid email or password")
+    }
 
-  // verify password
-  const correctPassword = verifyPassword({
-    candidatePassword: body.password,
-    salt: profile.salt,
-    hash: profile.password
-  })
+    // Compare supplied password with stored password
+    const correctPassword = verifyPassword({
+      candidatePassword: body.password,
+      salt: profile.salt,
+      hash: profile.password
+    })
 
-  if (correctPassword) {
+    if (!correctPassword) {
+      throw new Unauthorized("Invalid email or password")
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, salt, ...rest } = profile
-    // generate access token
-    return reply.code(200).send({
+
+    return {
       name: profile.name,
       email: profile.email,
       avatar: profile.avatar,
       banner: profile.banner,
       accessToken: request.jwt.sign(rest)
-    })
-  }
+    }
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
+    }
 
-  throw new Unauthorized("Invalid email or password")
+    if (isHttpError(error)) {
+      throw error
+    }
+
+    throw new InternalServerError("Something went wrong.")
+  }
 }
