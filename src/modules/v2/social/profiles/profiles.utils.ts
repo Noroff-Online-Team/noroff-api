@@ -8,7 +8,7 @@ import { getProfile } from "./profiles.service"
  * @returns {Promise<boolean>}
  */
 export async function checkIsUserFollowing(follower: string, target: string): Promise<boolean> {
-  type ProfileWithFollowers = Prisma.PromiseReturnType<typeof getProfile> & {
+  type ProfileWithFollowers = Prisma.PromiseReturnType<typeof getProfile>["data"] & {
     followers:
       | Array<{
           name: string
@@ -17,8 +17,8 @@ export async function checkIsUserFollowing(follower: string, target: string): Pr
       | []
   }
 
-  const profile = await getProfile(target, { followers: true })
-  const followerProfile = profile as ProfileWithFollowers | null
+  const { data } = await getProfile(target, { followers: true })
+  const followerProfile = data as ProfileWithFollowers | null
   const isFollowing = followerProfile?.followers.find(f => f.name === follower)
 
   if (!isFollowing) {
