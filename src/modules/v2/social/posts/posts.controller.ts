@@ -8,7 +8,8 @@ import {
   CreatePostBaseSchema,
   emojiSchema,
   postIdParamsSchema,
-  postsQuerySchema
+  postsQuerySchema,
+  authorQuerySchema
 } from "./posts.schema"
 import {
   getPosts,
@@ -30,7 +31,9 @@ export interface SocialPostIncludes {
 }
 
 type PostWithComments = Prisma.PromiseReturnType<typeof getPost> & {
-  comments: Array<SocialPostComment> | []
+  data: {
+    comments: Array<SocialPostComment> | []
+  }
 }
 
 export async function getPostsHandler(
@@ -279,10 +282,12 @@ export async function createCommentHandler(
   request: FastifyRequest<{
     Params: { id: number }
     Body: CreateCommentSchema
+    Querystring: { _author?: boolean }
   }>
 ) {
   try {
     const { id } = await postIdParamsSchema.parseAsync(request.params)
+    const { _author } = await authorQuerySchema.parseAsync(request.query)
     const { name } = request.user as UserProfile
     const { replyToId } = request.body
 
@@ -299,14 +304,18 @@ export async function createCommentHandler(
         throw new NotFound("You can't reply to a comment that does not exist")
       }
 
-      const isRelatedToPost = post.comments?.find(comment => comment.id === replyToId)
+      const isRelatedToPost = post.data.comments?.find(comment => comment.id === replyToId)
 
       if (!isRelatedToPost) {
         throw new BadRequest("Comment is not related to this post")
       }
     }
 
-    const result = await createComment(id, name, request.body)
+    const includes: SocialPostIncludes = {
+      author: Boolean(_author)
+    }
+
+    const result = await createComment(id, name, request.body, includes)
 
     return result
   } catch (error) {

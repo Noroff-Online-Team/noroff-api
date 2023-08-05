@@ -152,23 +152,21 @@ export const createReaction = async (postId: number, symbol: string) => {
   return { data: item }
 }
 
-export const createComment = async (postId: number, owner: string, comment: CreateCommentSchema) => {
+export const createComment = async (
+  postId: number,
+  owner: string,
+  comment: CreateCommentSchema,
+  includes: { author?: boolean }
+) => {
   const data = await db.socialPostComment.create({
     data: {
-      body: comment.body,
-      replyToId: comment.replyToId,
+      ...comment,
       postId,
       created: new Date(),
       owner
     },
-    select: {
-      id: true,
-      body: true,
-      created: true,
-      owner: true,
-      replyToId: true,
-      postId: true,
-      author: true
+    include: {
+      ...includes
     }
   })
 

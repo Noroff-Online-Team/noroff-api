@@ -183,11 +183,9 @@ export const displayPostSchema = z.object({
     .optional()
 })
 
-export const authorQuerySchema = z
-  .object({
-    _author: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean())
-  })
-  .optional()
+export const authorQuerySchema = z.object({
+  _author: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+})
 
 const queryFlagsCore = {
   _author: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
