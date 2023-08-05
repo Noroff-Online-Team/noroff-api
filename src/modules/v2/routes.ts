@@ -14,4 +14,6 @@ export default async function (fastify: FastifyInstance) {
   fastify.register(import("./auth/auth.route"), { prefix: "auth" })
   fastify.register(import("./social/posts/posts.route"), { prefix: "social/posts" })
   fastify.register(import("./social/profiles/profiles.route"), { prefix: "social/profiles" })
+  fastify.register(import("./auction/listings/listings.route"), { prefix: "auction/listings" })
+  fastify.register(import("./auction/profiles/profiles.route"), { prefix: "auction/profiles" })
 }
