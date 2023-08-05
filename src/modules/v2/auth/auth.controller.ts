@@ -25,7 +25,7 @@ export async function registerProfileHandler(
 
     const profile = await createProfile(body)
 
-    return reply.code(201).send(profile)
+    reply.code(201).send(profile)
   } catch (error) {
     if (error instanceof ZodError) {
       throw new BadRequest(error.message)

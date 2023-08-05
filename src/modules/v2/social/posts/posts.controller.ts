@@ -181,7 +181,7 @@ export async function deletePostHandler(
 
     await deletePost(id)
 
-    return reply.code(204)
+    reply.code(204)
   } catch (error) {
     if (error instanceof ZodError) {
       throw new BadRequest(error.message)
@@ -353,7 +353,7 @@ export async function deleteCommentHandler(
 
     await deletePost(id)
 
-    return reply.code(204)
+    reply.code(204)
   } catch (error) {
     if (error instanceof ZodError) {
       throw new BadRequest(error.message)
