@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { sortAndPaginationSchema } from "@/utils/sortAndPaginationSchema"
+import { profileCore } from "../../auth/auth.schema"
 
 const tagsAndMedia = {
   tags: z.union([
@@ -126,14 +127,7 @@ export const displayCommentSchema = z.object({
   postId: z.number().int().nullish(),
   owner: z.string(),
   created: z.date(),
-  author: z
-    .object({
-      name: z.string(),
-      email: z.string().email(),
-      avatar: z.string().nullable(),
-      banner: z.string().nullable()
-    })
-    .optional()
+  author: z.object(profileCore).optional()
 })
 
 const comments = {
@@ -167,14 +161,7 @@ export const displayPostSchema = z.object({
   ...comments,
   ...postMeta,
   ...postId,
-  author: z
-    .object({
-      name: z.string(),
-      email: z.string().email(),
-      avatar: z.string().nullable(),
-      banner: z.string().nullable()
-    })
-    .optional(),
+  author: z.object(profileCore).optional(),
   _count: z
     .object({
       comments: z.number().int().optional(),

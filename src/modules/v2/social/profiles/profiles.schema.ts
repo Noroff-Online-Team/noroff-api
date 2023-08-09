@@ -16,20 +16,8 @@ export const profileNameSchema = z.object({
 })
 
 const profileFollows = {
-  followers: z
-    .object({
-      name: z.string(),
-      avatar: z.string().url().nullable().or(z.literal(""))
-    })
-    .array()
-    .optional(),
-  following: z
-    .object({
-      name: z.string(),
-      avatar: z.string().url().nullable().or(z.literal(""))
-    })
-    .array()
-    .optional()
+  followers: z.object(profileCore).array().optional(),
+  following: z.object(profileCore).array().optional()
 }
 
 export const displayProfileSchema = z.object({
