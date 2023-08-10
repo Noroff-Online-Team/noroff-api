@@ -14,8 +14,6 @@
     "prebuild": "yarn generate:v1 && yarn generate:v2",
     "copy-images": "copyfiles -u 1 \"src/public/**/*\" dist/src",
     "prepare": "husky install",
-    "test": "tap",
-    "test:coverage": "tap --coverage",
     "generate:v1": "prisma generate --schema prisma/v1/schema.prisma",
     "generate:v2": "prisma generate --schema prisma/v2/schema.prisma"
   },
@@ -35,7 +33,6 @@
     "node-schedule": "^2.1.0",
     "prisma-extension-pagination": "^0.5.0-next.1",
     "statuses": "^2.0.1",
-    "tap": "^16.3.7",
     "zod": "^3.21.4",
     "zod-to-json-schema": "^3.18.1"
   },
@@ -44,7 +41,6 @@
     "@types/node": "^18.11.9",
     "@types/node-schedule": "^2.1.0",
     "@types/statuses": "^2.0.0",
-    "@types/tap": "^15.0.8",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
     "copyfiles": "^2.4.1",
@@ -65,14 +61,6 @@
     "./src/**/*.ts": [
       "prettier --write",
       "eslint --cache --fix"
-    ]
-  },
-  "tap": {
-    "coverage": false,
-    "reporter": "spec",
-    "node-arg": [
-      "--require=tsconfig-paths/register",
-      "--require=ts-node/register"
     ]
   }
 }
