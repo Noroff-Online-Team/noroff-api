@@ -165,8 +165,8 @@ model SocialPost {
   tags      String[]
   media     String?
   owner     String
-  created   DateTime
-  updated   DateTime
+  created   DateTime             @default(now())
+  updated   DateTime             @updatedAt
   reactions SocialPostReaction[]
   comments  SocialPostComment[]
 }
@@ -201,7 +201,7 @@ model AuctionListing {
   media       String[]
   tags        String[]
   created     DateTime     @default(now())
-  updated     DateTime     @default(now())
+  updated     DateTime     @updatedAt
   endsAt      DateTime
   seller      UserProfile  @relation(fields: [sellerName], references: [name], onDelete: Cascade)
   sellerName  String
@@ -228,7 +228,7 @@ model HolidazeVenue {
   maxGuests   Int
   rating      Float                 @default(0)
   created     DateTime              @default(now())
-  updated     DateTime              @default(now())
+  updated     DateTime              @updatedAt
   meta        HolidazeVenueMeta     @relation(fields: [metaId], references: [id], onDelete: Cascade)
   metaId      String                @unique
   owner       UserProfile           @relation(fields: [ownerName], references: [name], onDelete: Cascade)
@@ -265,7 +265,7 @@ model HolidazeBooking {
   dateTo       DateTime
   guests       Int
   created      DateTime      @default(now())
-  updated      DateTime      @default(now())
+  updated      DateTime      @updatedAt
   venue        HolidazeVenue @relation(fields: [venueId], references: [id], onDelete: Cascade)
   venueId      String
   customer     UserProfile   @relation(fields: [customerName], references: [name], onDelete: Cascade)
