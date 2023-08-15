@@ -68,9 +68,7 @@ export const createPost = async (createPostData: CreatePostSchema, includes: Soc
 
   const data = await db.socialPost.create({
     data: {
-      ...createPostData,
-      created: new Date(),
-      updated: new Date()
+      ...createPostData
     },
     include: {
       ...includes,
@@ -96,8 +94,7 @@ export const updatePost = async (
 
   const data = await db.socialPost.update({
     data: {
-      ...updatePostData,
-      updated: new Date()
+      ...updatePostData
     },
     where: { id },
     include: {

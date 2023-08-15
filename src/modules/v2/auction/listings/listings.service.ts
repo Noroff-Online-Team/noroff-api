@@ -68,9 +68,7 @@ export async function createListing(data: CreateListingSchema, seller: string, i
       ...data,
       sellerName: seller,
       media: data.media || [],
-      tags: data.tags || [],
-      created: new Date(),
-      updated: new Date()
+      tags: data.tags || []
     },
     include: {
       ...includes,
@@ -94,8 +92,7 @@ export async function updateListing(id: string, data: UpdateListingSchema, inclu
       ...data,
       title: data.title || undefined,
       media: data.media || undefined,
-      tags: data.tags || undefined,
-      updated: new Date()
+      tags: data.tags || undefined
     },
     include: {
       ...includes,

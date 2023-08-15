@@ -56,9 +56,7 @@ export async function createBooking(
 
   const data = await db.holidazeBooking.create({
     data: {
-      ...createData,
-      created: new Date(),
-      updated: new Date()
+      ...createData
     },
     include: {
       ...includes,
@@ -79,8 +77,7 @@ export async function updateBooking(
   const data = await db.holidazeBooking.update({
     where: { id },
     data: {
-      ...updateData,
-      updated: new Date()
+      ...updateData
     },
     include: {
       ...includes,

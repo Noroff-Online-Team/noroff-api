@@ -67,8 +67,6 @@ export async function createVenue(
     data: {
       ...rest,
       media: createData.media || DEFAULT_MEDIA,
-      created: new Date(),
-      updated: new Date(),
       ownerName,
       metaId: venueMeta.id,
       locationId: venueLocation.id
@@ -91,7 +89,6 @@ export async function updateVenue(id: string, updateData: UpdateVenueSchema, inc
     data: {
       ...rest,
       media: updateData.media || DEFAULT_MEDIA,
-      updated: new Date(),
       meta: {
         update: {
           ...meta
