@@ -51,6 +51,7 @@ export const profileCore = {
     .email()
     .regex(/^[\w\-.]+@(stud\.)?noroff\.no$/, "Only stud.noroff.no emails are allowed to register")
     .trim(),
+  bio: z.string().max(160, "Bio cannot be greater than 160 characters").trim().nullish(),
   ...profileMedia
 }
 
