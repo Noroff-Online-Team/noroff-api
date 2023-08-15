@@ -68,11 +68,13 @@ export async function loginHandler(
     const { password, salt, ...rest } = profile
 
     return {
-      name: profile.name,
-      email: profile.email,
-      avatar: profile.avatar,
-      banner: profile.banner,
-      accessToken: request.jwt.sign(rest)
+      data: {
+        name: profile.name,
+        email: profile.email,
+        avatar: profile.avatar,
+        banner: profile.banner,
+        accessToken: request.jwt.sign(rest)
+      }
     }
   } catch (error) {
     if (error instanceof ZodError) {
