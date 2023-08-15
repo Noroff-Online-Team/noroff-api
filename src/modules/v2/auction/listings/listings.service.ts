@@ -147,8 +147,7 @@ export async function createListingBid(id: string, bidderName: string, amount: n
     data: {
       listingId: id,
       bidderName,
-      amount,
-      created: new Date()
+      amount
     }
   })
 

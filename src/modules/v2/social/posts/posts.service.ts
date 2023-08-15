@@ -159,7 +159,6 @@ export const createComment = async (
     data: {
       ...comment,
       postId,
-      created: new Date(),
       owner
     },
     include: {
