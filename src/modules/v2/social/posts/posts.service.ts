@@ -153,7 +153,7 @@ export const createComment = async (
   postId: number,
   owner: string,
   comment: CreateCommentSchema,
-  includes: { author?: boolean }
+  includes: { author?: boolean } = {}
 ) => {
   const data = await db.socialPostComment.create({
     data: {
