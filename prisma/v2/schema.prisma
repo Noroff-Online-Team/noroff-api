@@ -137,6 +137,7 @@ model UserProfile {
   email        String              @unique
   avatar       String?
   banner       String?
+  bio          String?
   password     String
   salt         String
   // Social
