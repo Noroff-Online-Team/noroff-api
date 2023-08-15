@@ -187,7 +187,7 @@ model SocialPostComment {
   body      String
   author    UserProfile         @relation(fields: [owner], references: [name], onDelete: Cascade)
   owner     String
-  created   DateTime
+  created   DateTime            @default(now())
   replyTo   SocialPostComment?  @relation("Replies", fields: [replyToId], references: [id])
   replies   SocialPostComment[] @relation("Replies")
   replyToId Int?
