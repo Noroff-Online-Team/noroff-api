@@ -70,6 +70,12 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
       limit: 1
     })
 
+  // Return undefined for data if no post was found, allowing for a simple truthiness check in the controller.
+  // Not doing this, will return an empty object for data, which is truthy.
+  if (!data.length) {
+    return { data: undefined, meta }
+  }
+
   const post = data[0]
   const enrichedPost: DisplaySocialPost = { ...post }
 
