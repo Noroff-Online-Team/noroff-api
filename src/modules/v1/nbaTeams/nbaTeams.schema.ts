@@ -2,6 +2,7 @@ import { z } from "zod"
 
 export const nbaTeamResponseSchema = z.object({
   id: z.number().int(),
+  abbreviation: z.string(),
   city: z.string(),
   conference: z.string(),
   division: z.string(),
