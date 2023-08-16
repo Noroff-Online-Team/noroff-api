@@ -81,9 +81,15 @@ const postMeta = {
 }
 
 export const reactionSchema = z.object({
+  postId: z.number().int(),
   symbol: z.string(),
-  count: z.number().int(),
-  postId: z.number().int()
+  reactions: z
+    .object({
+      symbol: z.string(),
+      count: z.number().int()
+    })
+    .array()
+    .optional()
 })
 
 export const reactionParamsSchema = z.object({
@@ -98,10 +104,6 @@ export const reactionParamsSchema = z.object({
     .int("ID must be an integer")
     .positive("ID must be a positive integer")
 })
-
-const reactions = {
-  reactions: reactionSchema.array().optional()
-}
 
 const commentCore = {
   body: z
@@ -156,11 +158,17 @@ export const createPostSchema = z.object({
 })
 
 export const displayPostSchema = z.object({
+  ...postId,
   ...postCore,
-  ...reactions,
   ...comments,
   ...postMeta,
-  ...postId,
+  reactions: z
+    .object({
+      symbol: z.string(),
+      count: z.number().int()
+    })
+    .array()
+    .optional(),
   author: z.object(profileCore).optional(),
   _count: z
     .object({
@@ -195,3 +203,5 @@ export type CreatePostSchema = z.infer<typeof createPostSchema>
 export type CreatePostBaseSchema = z.infer<typeof createPostBaseSchema>
 
 export type CreateCommentSchema = z.infer<typeof createCommentSchema>
+
+export type DisplaySocialPost = z.infer<typeof displayPostSchema>

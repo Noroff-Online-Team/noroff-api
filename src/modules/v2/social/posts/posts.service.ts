@@ -1,7 +1,7 @@
 import { SocialPost } from "@prisma-api-v2/client"
 import { db } from "@/utils"
 import { SocialPostIncludes } from "./posts.controller"
-import { CreateCommentSchema, CreatePostBaseSchema, CreatePostSchema } from "./posts.schema"
+import { CreateCommentSchema, CreatePostBaseSchema, CreatePostSchema, DisplaySocialPost } from "./posts.schema"
 
 export async function getPosts(
   sort: keyof SocialPost = "created",
@@ -36,7 +36,17 @@ export async function getPosts(
       page: page
     })
 
-  return { data, meta }
+  const enrichedData = await Promise.all(
+    data.map(async post => {
+      const enrichedPost: DisplaySocialPost = { ...post }
+      if (includes.reactions) {
+        enrichedPost.reactions = await fetchReactionCounts(post.id)
+      }
+      return enrichedPost
+    })
+  )
+
+  return { data: enrichedData, meta }
 }
 
 export async function getPost(id: number, includes: SocialPostIncludes = {}) {
@@ -60,7 +70,14 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  const post = data[0]
+  const enrichedPost: DisplaySocialPost = { ...post }
+
+  if (includes.reactions) {
+    enrichedPost.reactions = await fetchReactionCounts(post.id)
+  }
+
+  return { data: enrichedPost, meta }
 }
 
 export const createPost = async (createPostData: CreatePostSchema, includes: SocialPostIncludes = {}) => {
@@ -118,35 +135,89 @@ export const deletePost = async (id: number) => {
   })
 }
 
-export const createReaction = async (postId: number, symbol: string) => {
-  const query = {
-    postId_symbol: {
+async function fetchReactionCounts(postId: number) {
+  const reactionCounts = await db.socialPostReaction.groupBy({
+    by: ["symbol"],
+    where: { postId },
+    _count: {
+      symbol: true
+    }
+  })
+
+  return reactionCounts.map(r => ({
+    symbol: r.symbol,
+    count: r._count.symbol
+  }))
+}
+
+export const createOrDeleteReaction = async (postId: number, symbol: string, owner: string) => {
+  const userReactionQuery = {
+    postId_symbol_owner: {
       postId,
-      symbol
+      symbol,
+      owner
     }
   }
 
-  let item = await db.socialPostReaction.findUnique({
-    where: query
+  const userReaction = await db.socialPostReaction.findUnique({
+    where: userReactionQuery
   })
 
-  if (item) {
-    item.count += 1
-    item = await db.socialPostReaction.update({
-      data: item,
-      where: query
-    })
+  let reactionDetails
+
+  if (userReaction) {
+    // If the user has already reacted with this symbol
+    if (userReaction.count === 1) {
+      // If the count is 1, delete the reaction entry
+      reactionDetails = await db.socialPostReaction.delete({ where: userReactionQuery })
+    } else {
+      // Otherwise, decrement the count
+      reactionDetails = await db.socialPostReaction.update({
+        where: userReactionQuery,
+        data: {
+          count: {
+            decrement: 1
+          }
+        }
+      })
+    }
   } else {
-    item = await db.socialPostReaction.create({
-      data: {
-        postId,
-        count: 1,
-        symbol
-      }
+    // If the user hasn't reacted with this symbol
+    const existingReaction = await db.socialPostReaction.findUnique({
+      where: userReactionQuery
     })
+
+    if (existingReaction) {
+      // If a reaction entry exists for the post and symbol, increment the count
+      reactionDetails = await db.socialPostReaction.update({
+        where: userReactionQuery,
+        data: {
+          count: {
+            increment: 1
+          }
+        }
+      })
+    } else {
+      // If no reaction entry exists for the post and symbol, create a new entry with a count of 1
+      reactionDetails = await db.socialPostReaction.create({
+        data: {
+          postId,
+          owner,
+          symbol,
+          count: 1
+        }
+      })
+    }
   }
 
-  return { data: item }
+  const reactions = await fetchReactionCounts(postId)
+
+  return {
+    data: {
+      ...reactionDetails,
+      reactions
+    }
+  }
 }
 
 export const createComment = async (

@@ -16,7 +16,7 @@ import {
   getPost,
   createPost,
   updatePost,
-  createReaction,
+  createOrDeleteReaction,
   deletePost,
   createComment,
   getComment,
@@ -169,13 +169,13 @@ export async function deletePostHandler(
     const { id } = await postIdParamsSchema.parseAsync(request.params)
     const { name } = request.user as UserProfile
 
-    const post = await getPost(id)
+    const post = await getPost(id, { author: true })
 
     if (!post.data) {
       throw new NotFound("Post not found")
     }
 
-    if (name.toLowerCase() !== post.data.owner.toLowerCase()) {
+    if (name.toLowerCase() !== post.data.author?.name.toLowerCase()) {
       throw new Forbidden("You do not have permission to delete this post")
     }
 
@@ -220,13 +220,13 @@ export async function updatePostHandler(
 
     await mediaGuard(media)
 
-    const post = await getPost(id)
+    const post = await getPost(id, { author: true })
 
     if (!post.data) {
       throw new NotFound("Post not found")
     }
 
-    if (name.toLowerCase() !== post.data.owner.toLowerCase()) {
+    if (name.toLowerCase() !== post.data.author?.name.toLowerCase()) {
       throw new Forbidden("You do not have permission to edit this post")
     }
 
@@ -246,7 +246,7 @@ export async function updatePostHandler(
   }
 }
 
-export async function createReactionHandler(
+export async function createOrDeleteReactionHandler(
   request: FastifyRequest<{
     Params: { id: number; symbol: string }
   }>
@@ -255,6 +255,7 @@ export async function createReactionHandler(
     const { id } = await postIdParamsSchema.parseAsync(request.params)
     const { symbol } = request.params
     await emojiSchema.parseAsync(symbol)
+    const { name } = request.user as UserProfile
 
     const post = await getPost(id)
 
@@ -262,7 +263,7 @@ export async function createReactionHandler(
       throw new NotFound("Post not found")
     }
 
-    const result = await createReaction(id, symbol)
+    const result = await createOrDeleteReaction(id, symbol, name)
 
     return result
   } catch (error) {

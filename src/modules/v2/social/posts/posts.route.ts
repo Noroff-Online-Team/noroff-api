@@ -19,7 +19,7 @@ import {
   getPostHandler,
   createPostHandler,
   updatePostHandler,
-  createReactionHandler,
+  createOrDeleteReactionHandler,
   deletePostHandler,
   createCommentHandler,
   getPostsOfFollowedUsersHandler
@@ -137,7 +137,7 @@ async function postsRoutes(server: FastifyInstance) {
         }
       }
     },
-    createReactionHandler
+    createOrDeleteReactionHandler
   )
 
   server.post(
