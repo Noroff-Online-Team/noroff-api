@@ -11,11 +11,12 @@
     "dev": "tsnd --respawn --transpile-only --exit-child -r tsconfig-paths/register src/app.ts",
     "start": "node dist/src/app.js",
     "build": "rimraf dist && tsc -p tsconfig.json && npm run copy-images",
-    "prebuild": "yarn generate:v1 && yarn generate:v2",
+    "prebuild": "yarn db:generate",
     "copy-images": "copyfiles -u 1 \"src/public/**/*\" dist/src",
     "prepare": "husky install",
     "generate:v1": "prisma generate --schema prisma/v1/schema.prisma",
     "generate:v2": "prisma generate --schema prisma/v2/schema.prisma",
+    "db:generate": "yarn generate:v1 && yarn generate:v2",
     "seed:v2": "prisma db seed"
   },
   "dependencies": {
@@ -41,6 +42,7 @@
     "zod-to-json-schema": "^3.18.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@types/http-errors": "^1.8.2",
     "@types/node": "^18.11.9",
     "@types/node-schedule": "^2.1.0",
