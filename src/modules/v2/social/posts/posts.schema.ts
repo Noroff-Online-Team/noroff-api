@@ -80,9 +80,7 @@ const postMeta = {
   updated: z.date()
 }
 
-export const reactionSchema = z.object({
-  postId: z.number().int(),
-  symbol: z.string(),
+const reactions = {
   reactions: z
     .object({
       symbol: z.string(),
@@ -90,6 +88,12 @@ export const reactionSchema = z.object({
     })
     .array()
     .optional()
+}
+
+export const reactionSchema = z.object({
+  postId: z.number().int(),
+  symbol: z.string(),
+  ...reactions
 })
 
 export const reactionParamsSchema = z.object({
@@ -162,13 +166,7 @@ export const displayPostSchema = z.object({
   ...postCore,
   ...comments,
   ...postMeta,
-  reactions: z
-    .object({
-      symbol: z.string(),
-      count: z.number().int()
-    })
-    .array()
-    .optional(),
+  ...reactions,
   author: z.object(profileCore).optional(),
   _count: z
     .object({
