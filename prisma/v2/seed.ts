@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker"
 import type { UserProfile } from "@prisma-api-v2/client"
 import { createProfile } from "../../src/modules/v2/auth/auth.service"
-import { createPost, createComment, createReaction } from "../../src/modules/v2/social/posts/posts.service"
+import { createPost, createComment, createOrDeleteReaction } from "../../src/modules/v2/social/posts/posts.service"
 import { createListing, createListingBid } from "../../src/modules/v2/auction/listings/listings.service"
 import { createVenue } from "../../src/modules/v2/holidaze/venues/venues.service"
 import { createBooking } from "../../src/modules/v2/holidaze/bookings/booking.service"
@@ -82,8 +82,8 @@ async function createSampleSocialPost(userOne: UserProfile, userTwo: UserProfile
   })
 
   // Add reactions to post
-  await createReaction(post.id, "😂")
-  await createReaction(post.id, "😎")
+  await createOrDeleteReaction(post.id, "😂", userTwo.name)
+  await createOrDeleteReaction(post.id, "😎", userTwo.name)
 
   // Create comment
   const { data: postComment } = await createComment(post.id, userTwo.name, { body: "Haha, good one!" })
