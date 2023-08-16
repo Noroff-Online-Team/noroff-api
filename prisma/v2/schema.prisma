@@ -132,9 +132,9 @@ model SquareEyesProduct {
 
 // User Profile
 model UserProfile {
-  id           Int                 @id @default(autoincrement())
-  name         String              @unique
-  email        String              @unique
+  id           Int                  @id @default(autoincrement())
+  name         String               @unique
+  email        String               @unique
   avatar       String?
   banner       String?
   bio          String?
@@ -143,15 +143,16 @@ model UserProfile {
   // Social
   posts        SocialPost[]
   comments     SocialPostComment[]
-  followers    UserProfile[]       @relation("Follows")
-  following    UserProfile[]       @relation("Follows")
+  reactions    SocialPostReaction[]
+  followers    UserProfile[]        @relation("Follows")
+  following    UserProfile[]        @relation("Follows")
   // Auction House
-  credits      Int                 @default(1000)
+  credits      Int                  @default(1000)
   listings     AuctionListing[]
   bids         AuctionBid[]
   wins         String[]
   // Holidaze
-  venueManager Boolean             @default(false)
+  venueManager Boolean              @default(false)
   venues       HolidazeVenue[]
   bookings     HolidazeBooking[]
 }
@@ -172,12 +173,14 @@ model SocialPost {
 }
 
 model SocialPostReaction {
-  symbol String
-  post   SocialPost @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId Int
-  count  Int
+  symbol  String
+  count   Int         @default(1)
+  post    SocialPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId  Int
+  reactor UserProfile @relation(fields: [owner], references: [name], onDelete: Cascade)
+  owner   String
 
-  @@id([postId, symbol])
+  @@id([postId, symbol, owner])
 }
 
 model SocialPostComment {
