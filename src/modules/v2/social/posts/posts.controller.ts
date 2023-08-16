@@ -1,6 +1,6 @@
-import { Prisma, SocialPost, UserProfile, SocialPostComment } from "@prisma-api-v2/client"
+import { SocialPost, UserProfile } from "@prisma-api-v2/client"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { mediaGuard } from "@/utils/mediaGuard"
+import { mediaGuard } from "@/utils"
 import { NotFound, Forbidden, InternalServerError, BadRequest, isHttpError } from "http-errors"
 
 import {
@@ -28,12 +28,6 @@ export interface SocialPostIncludes {
   author?: boolean
   reactions?: boolean
   comments?: boolean
-}
-
-type PostWithComments = Prisma.PromiseReturnType<typeof getPost> & {
-  data: {
-    comments: Array<SocialPostComment> | []
-  }
 }
 
 export async function getPostsHandler(
@@ -292,7 +286,7 @@ export async function createCommentHandler(
     const { name } = request.user as UserProfile
     const { replyToId } = request.body
 
-    const post = (await getPost(id, { comments: true })) as PostWithComments
+    const post = await getPost(id, { comments: true })
 
     if (!post.data) {
       throw new NotFound("Post not found")
@@ -328,43 +322,7 @@ export async function createCommentHandler(
       throw error
     }
 
-    throw new InternalServerError("Something went wrong.")
-  }
-}
-
-export async function deleteCommentHandler(
-  request: FastifyRequest<{
-    Params: { id: number }
-  }>,
-  reply: FastifyReply
-) {
-  try {
-    const { id } = await postIdParamsSchema.parseAsync(request.params)
-    const { name } = request.user as UserProfile
-
-    const comment = await getComment(id)
-
-    if (!comment) {
-      throw new NotFound("Comment not found")
-    }
-
-    if (name.toLowerCase() !== comment.owner.toLowerCase()) {
-      throw new Forbidden("You do not have permission to delete this comment")
-    }
-
-    await deletePost(id)
-
-    reply.code(204)
-  } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw new InternalServerError("Something went wrong." + error)
   }
 }
 
