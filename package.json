@@ -27,6 +27,7 @@
     "@fastify/static": "^6.5.0",
     "@fastify/swagger": "^7.5.1",
     "@prisma/client": "^5.0.0",
+    "@types/qs": "^6.9.7",
     "axios": "^0.27.2",
     "fastify": "^4.8.1",
     "fastify-plugin": "^4.5.0",
@@ -34,6 +35,7 @@
     "http-errors": "^2.0.0",
     "node-schedule": "^2.1.0",
     "prisma-extension-pagination": "^0.5.0-next.1",
+    "qs": "^6.11.2",
     "statuses": "^2.0.1",
     "zod": "^3.21.4",
     "zod-to-json-schema": "^3.18.1"
