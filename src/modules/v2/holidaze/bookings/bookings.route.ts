@@ -59,7 +59,7 @@ async function bookingsRoutes(server: FastifyInstance) {
         tags: ["holidaze-bookings"],
         security: [{ bearerAuth: [] }],
         querystring: queryFlagsSchema,
-        body: createBookingSchema.omit({ customerName: true }),
+        body: createBookingSchema,
         response: {
           201: createResponseSchema(displayBookingSchema)
         }
