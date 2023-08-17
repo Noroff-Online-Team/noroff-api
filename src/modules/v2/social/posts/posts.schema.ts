@@ -2,6 +2,25 @@ import { z } from "zod"
 import { sortAndPaginationSchema } from "@/utils/sortAndPaginationSchema"
 import { profileCore } from "../../auth/auth.schema"
 
+const mediaCore = {
+  media: z
+    .object({
+      url: z
+        .string({
+          invalid_type_error: "Image URL must be a string"
+        })
+        .url("Image URL must be valid URL"),
+      alt: z
+        .string({
+          invalid_type_error: "Image alt text must be a string"
+        })
+        .max(120, "Image alt text cannot be greater than 140 characters")
+    })
+    .nullish()
+}
+
+export const mediaSchema = z.object(mediaCore)
+
 const tagsAndMedia = {
   tags: z.union([
     z
@@ -13,13 +32,7 @@ const tagsAndMedia = {
       .max(8, "You cannot have more than 8 tags"),
     z.undefined()
   ]),
-  media: z
-    .string({
-      invalid_type_error: "Image must be a string"
-    })
-    .url("Image must be valid URL")
-    .nullish()
-    .or(z.literal(""))
+  ...mediaCore
 }
 
 export const postCore = {
@@ -203,3 +216,5 @@ export type CreatePostBaseSchema = z.infer<typeof createPostBaseSchema>
 export type CreateCommentSchema = z.infer<typeof createCommentSchema>
 
 export type DisplaySocialPost = z.infer<typeof displayPostSchema>
+
+export type Media = z.infer<typeof mediaSchema>

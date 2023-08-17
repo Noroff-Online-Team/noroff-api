@@ -9,7 +9,8 @@ import {
   emojiSchema,
   postIdParamsSchema,
   postsQuerySchema,
-  authorQuerySchema
+  authorQuerySchema,
+  mediaSchema
 } from "./posts.schema"
 import {
   getPosts,
@@ -125,8 +126,9 @@ export async function createPostHandler(
   }>
 ) {
   try {
+    await mediaSchema.parseAsync(request.body)
     const { name } = request.user as UserProfile
-    const { media } = request.body as SocialPost
+    const { media } = request.body
     const { _author, _reactions, _comments } = request.query
 
     const includes: SocialPostIncludes = {
@@ -135,7 +137,9 @@ export async function createPostHandler(
       comments: Boolean(_comments)
     }
 
-    await mediaGuard(media)
+    if (media?.url) {
+      await mediaGuard(media.url)
+    }
 
     const post = await createPost({ ...request.body, owner: name }, includes)
 
@@ -212,7 +216,9 @@ export async function updatePostHandler(
       comments: Boolean(_comments)
     }
 
-    await mediaGuard(media)
+    if (media?.url) {
+      await mediaGuard(media.url)
+    }
 
     const post = await getPost(id, { author: true })
 

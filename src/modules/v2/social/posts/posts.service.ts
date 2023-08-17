@@ -1,7 +1,7 @@
 import { SocialPost } from "@prisma-api-v2/client"
 import { db } from "@/utils"
 import { SocialPostIncludes } from "./posts.controller"
-import { CreateCommentSchema, CreatePostBaseSchema, CreatePostSchema, DisplaySocialPost } from "./posts.schema"
+import { CreateCommentSchema, CreatePostBaseSchema, CreatePostSchema, DisplaySocialPost, Media } from "./posts.schema"
 
 export async function getPosts(
   sort: keyof SocialPost = "created",
@@ -23,6 +23,7 @@ export async function getPosts(
       include: {
         ...includes,
         ...withCommentAuthor,
+        media: true,
         _count: {
           select: {
             comments: true,
@@ -38,7 +39,11 @@ export async function getPosts(
 
   const enrichedData = await Promise.all(
     data.map(async post => {
-      const enrichedPost: DisplaySocialPost = { ...post }
+      const transformedMedia: Media["media"] = {
+        url: post.media?.url || "",
+        alt: post.media?.alt || ""
+      }
+      const enrichedPost: DisplaySocialPost = { ...post, media: transformedMedia }
       if (includes.reactions) {
         enrichedPost.reactions = await fetchReactionCounts(post.id)
       }
@@ -58,6 +63,7 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
       include: {
         ...includes,
         ...withCommentAuthor,
+        media: true,
         _count: {
           select: {
             comments: true,
@@ -77,7 +83,11 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
   }
 
   const post = data[0]
-  const enrichedPost: DisplaySocialPost = { ...post }
+  const transformedMedia: Media["media"] = {
+    url: post.media?.url || "",
+    alt: post.media?.alt || ""
+  }
+  const enrichedPost: DisplaySocialPost = { ...post, media: transformedMedia }
 
   if (includes.reactions) {
     enrichedPost.reactions = await fetchReactionCounts(post.id)
@@ -87,15 +97,19 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
 }
 
 export const createPost = async (createPostData: CreatePostSchema, includes: SocialPostIncludes = {}) => {
+  const { media, ...restData } = createPostData
   const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withMedia = media?.url ? { media: true } : {}
 
   const data = await db.socialPost.create({
     data: {
-      ...createPostData
+      ...restData,
+      media: media?.url ? { create: media } : undefined
     },
     include: {
       ...includes,
       ...withCommentAuthor,
+      ...withMedia,
       _count: {
         select: {
           comments: true,
@@ -113,16 +127,20 @@ export const updatePost = async (
   updatePostData: CreatePostBaseSchema,
   includes: SocialPostIncludes = {}
 ) => {
+  const { media, ...restData } = updatePostData
   const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withMedia = media?.url ? { media: true } : {}
 
   const data = await db.socialPost.update({
     data: {
-      ...updatePostData
+      ...restData,
+      media: media?.url ? { create: media } : undefined
     },
     where: { id },
     include: {
       ...includes,
       ...withCommentAuthor,
+      ...withMedia,
       _count: {
         select: {
           comments: true,
@@ -286,6 +304,7 @@ export const getPostsOfFollowedUsers = async (
       include: {
         ...includes,
         ...withCommentAuthor,
+        media: true,
         _count: {
           select: {
             comments: true,
