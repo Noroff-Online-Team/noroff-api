@@ -1,4 +1,4 @@
-import { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/client"
+import { AuctionBid, AuctionListing, AuctionProfile } from "@prisma-api-v1/client"
 import { prisma } from "@/utils"
 import { AuctionListingIncludes } from "../listings/listings.controller"
 import { AuctionProfileIncludes } from "./profiles.controller"

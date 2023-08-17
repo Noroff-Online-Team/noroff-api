@@ -1,4 +1,4 @@
-import { Profile, Post } from "@prisma/client"
+import { Profile, Post } from "@prisma-api-v1/client"
 import { prisma } from "@/utils"
 import { ProfileIncludes } from "./profiles.controller"
 import { ProfileMediaSchema } from "./profiles.schema"

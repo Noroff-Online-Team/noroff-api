@@ -1,5 +1,5 @@
 import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
-import { HolidazeVenue } from "@prisma/client"
+import { HolidazeVenue } from "@prisma-api-v1/client"
 import { prisma } from "@/utils"
 import { HolidazeVenueIncludes } from "./venues.controller"
 

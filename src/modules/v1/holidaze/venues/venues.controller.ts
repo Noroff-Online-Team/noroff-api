@@ -1,4 +1,4 @@
-import { HolidazeProfile, HolidazeVenue } from "@prisma/client"
+import { HolidazeProfile, HolidazeVenue } from "@prisma-api-v1/client"
 import { FastifyRequest, FastifyReply } from "fastify"
 import { BadRequest, NotFound, Forbidden } from "http-errors"
 import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"

@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@prisma-api-v1/client"
 import { FollowSchema } from "./profiles.schema"
 import { getProfile } from "./profiles.service"
 

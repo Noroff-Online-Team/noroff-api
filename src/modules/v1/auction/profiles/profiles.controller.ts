@@ -1,4 +1,4 @@
-import { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/client"
+import { AuctionBid, AuctionListing, AuctionProfile } from "@prisma-api-v1/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@/utils/mediaGuard"
 import { ProfileMediaSchema } from "./profiles.schema"

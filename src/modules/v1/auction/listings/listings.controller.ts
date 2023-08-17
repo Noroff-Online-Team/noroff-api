@@ -1,5 +1,5 @@
 import { getProfile } from "./../profiles/profiles.service"
-import { AuctionBid, AuctionListing, AuctionProfile, Prisma } from "@prisma/client"
+import { AuctionBid, AuctionListing, AuctionProfile, Prisma } from "@prisma-api-v1/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@/utils/mediaGuard"
 import { NotFound, BadRequest, Forbidden } from "http-errors"

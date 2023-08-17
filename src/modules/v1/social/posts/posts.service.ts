@@ -1,4 +1,4 @@
-import { Post } from "@prisma/client"
+import { Post } from "@prisma-api-v1/client"
 import { prisma } from "@/utils"
 import { PostIncludes } from "./posts.controller"
 import { CreateCommentSchema, CreatePostBaseSchema, CreatePostSchema } from "./posts.schema"

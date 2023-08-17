@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify"
-import { HolidazeBooking, HolidazeProfile } from "@prisma/client"
+import { HolidazeBooking, HolidazeProfile } from "@prisma-api-v1/client"
 import { BadRequest, NotFound, Forbidden } from "http-errors"
 import { getBookings, getBooking, createBooking, deleteBooking, updateBooking } from "./booking.service"
 import { CreateBookingSchema, UpdateBookingSchema } from "./bookings.schema"

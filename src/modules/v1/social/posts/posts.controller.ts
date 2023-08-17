@@ -1,4 +1,4 @@
-import { Prisma, Post, Profile, Comment } from "@prisma/client"
+import { Prisma, Post, Profile, Comment } from "@prisma-api-v1/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@/utils/mediaGuard"
 import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"

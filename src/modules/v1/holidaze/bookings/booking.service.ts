@@ -1,4 +1,4 @@
-import { HolidazeBooking } from "@prisma/client"
+import { HolidazeBooking } from "@prisma-api-v1/client"
 import { prisma } from "@/utils"
 import { HolidazeBookingIncludes } from "./bookings.controller"
 import { CreateBookingSchema, UpdateBookingSchema } from "./bookings.schema"
