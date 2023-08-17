@@ -87,7 +87,7 @@ export const createVenueSchema = z.object({
         .string({
           invalid_type_error: "Image alt text must be a string"
         })
-        .max(120, "Image alt text cannot be greater than 140 characters")
+        .max(120, "Image alt text cannot be greater than 120 characters")
     })
     .array()
     .max(8, "You cannot have more than 8 images")
@@ -200,7 +200,7 @@ const updateVenueCore = {
         .string({
           invalid_type_error: "Image alt text must be a string"
         })
-        .max(120, "Image alt text cannot be greater than 140 characters")
+        .max(120, "Image alt text cannot be greater than 120 characters")
     })
     .array()
     .max(8, "You cannot have more than 8 images")
