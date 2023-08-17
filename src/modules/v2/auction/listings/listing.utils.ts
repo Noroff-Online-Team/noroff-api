@@ -1,5 +1,5 @@
 import schedule from "node-schedule"
-import { prisma } from "@/utils"
+import { db } from "@/utils"
 import { getListing } from "./listings.service"
 import { ListingWithBids } from "./listings.controller"
 
@@ -10,12 +10,12 @@ import { ListingWithBids } from "./listings.controller"
  * @param max maximum amount of credits that is allowed
  */
 export async function awardCreditsOrCap(name: string, increment: number, max = 1_000_000) {
-  const user = await prisma.auctionProfile.findUnique({
+  const user = await db.userProfile.findUnique({
     where: { name }
   })
 
   if (user && user.credits + increment <= max) {
-    await prisma.auctionProfile.update({
+    await db.userProfile.update({
       where: { name },
       data: { credits: { increment } }
     })
@@ -38,7 +38,7 @@ export async function scheduleCreditsTransfer(listingId: string, endsAt: Date): 
       const [winner, ...losers] = listing.data.bids.sort((a, b) => b.amount - a.amount)
 
       // Add listing id to winner wins
-      await prisma.auctionProfile.update({
+      await db.userProfile.update({
         where: { name: winner.bidderName },
         data: {
           wins: { push: listingId }
