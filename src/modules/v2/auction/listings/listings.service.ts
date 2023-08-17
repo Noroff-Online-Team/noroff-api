@@ -24,6 +24,7 @@ export async function getListings(
       },
       include: {
         ...includes,
+        media: true,
         _count: {
           select: {
             bids: true
@@ -48,6 +49,7 @@ export async function getListing(id: string, includes: AuctionListingIncludes = 
       where: { id },
       include: {
         ...includes,
+        media: true,
         _count: {
           select: {
             bids: true
@@ -67,11 +69,12 @@ export async function createListing(data: CreateListingSchema, seller: string, i
     data: {
       ...data,
       sellerName: seller,
-      media: data.media || [],
-      tags: data.tags || []
+      tags: data.tags || [],
+      media: data.media ? { create: data.media } : undefined
     },
     include: {
       ...includes,
+      media: true,
       _count: {
         select: {
           bids: true
@@ -85,17 +88,27 @@ export async function createListing(data: CreateListingSchema, seller: string, i
   return { data: listing }
 }
 
-export async function updateListing(id: string, data: UpdateListingSchema, includes: AuctionListingIncludes = {}) {
-  const updatedListing = await db.auctionListing.update({
+export async function updateListing(
+  id: string,
+  updateData: UpdateListingSchema,
+  includes: AuctionListingIncludes = {}
+) {
+  const data = await db.auctionListing.update({
     where: { id },
     data: {
-      ...data,
-      title: data.title || undefined,
-      media: data.media || undefined,
-      tags: data.tags || undefined
+      ...updateData,
+      title: updateData.title || undefined,
+      tags: updateData.tags || undefined,
+      media: updateData.media
+        ? {
+            deleteMany: {}, // delete all media first
+            create: updateData.media // then create new media
+          }
+        : undefined
     },
     include: {
       ...includes,
+      media: true,
       _count: {
         select: {
           bids: true
@@ -104,7 +117,7 @@ export async function updateListing(id: string, data: UpdateListingSchema, inclu
     }
   })
 
-  return { data: updatedListing }
+  return { data }
 }
 
 export async function refundCredits(id: string) {

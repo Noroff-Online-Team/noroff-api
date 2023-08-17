@@ -13,11 +13,37 @@ const bidCore = {
   created: z.date()
 }
 
+export const mediaProperties = {
+  url: z.string().url(),
+  alt: z.string()
+}
+
+const mediaCore = {
+  media: z
+    .object({
+      url: z
+        .string({
+          invalid_type_error: "Image URL must be a string"
+        })
+        .url("Image URL must be valid URL"),
+      alt: z
+        .string({
+          invalid_type_error: "Image alt text must be a string"
+        })
+        .max(120, "Image alt text cannot be greater than 140 characters")
+    })
+    .array()
+    .max(8, "You cannot have more than 8 images")
+    .nullish()
+}
+
+export const mediaSchema = z.object(mediaCore)
+
 export const listingCore = {
   ...listingId,
   title: z.string(),
   description: z.string().nullish(),
-  media: z.string().array().nullish(),
+  media: z.object(mediaProperties).array().nullish(),
   tags: z.string().array().nullish(),
   created: z.date(),
   updated: z.date(),
@@ -50,14 +76,19 @@ const tagsAndMedia = {
     z.undefined()
   ]),
   media: z
-    .string({
-      invalid_type_error: "Image must be a string"
+    .object({
+      url: z
+        .string({
+          invalid_type_error: "Image URL must be a string"
+        })
+        .url("Image URL must be valid URL"),
+      alt: z.string({
+        invalid_type_error: "Image alt text must be a string"
+      })
     })
-    .url("Image must be valid URL")
     .array()
     .max(8, "You cannot have more than 8 images")
     .nullish()
-    .or(z.literal(""))
 }
 
 export const createListingSchema = z.object({

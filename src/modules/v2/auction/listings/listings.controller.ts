@@ -10,7 +10,8 @@ import {
   UpdateListingSchema,
   queryFlagsSchema,
   listingIdParamsSchema,
-  bidBodySchema
+  bidBodySchema,
+  mediaSchema
 } from "./listings.schema"
 import {
   getListings,
@@ -126,7 +127,7 @@ export async function createListingHandler(
 ) {
   try {
     const { name } = request.user as UserProfile
-    const { media } = request.body
+    const { media } = await mediaSchema.parseAsync(request.body)
     const { _bids, _seller } = await queryFlagsSchema.parseAsync(request.query)
 
     const includes: AuctionListingIncludes = {
@@ -135,8 +136,8 @@ export async function createListingHandler(
     }
 
     if (media) {
-      for (const url of media) {
-        await mediaGuard(url)
+      for (const image of media) {
+        await mediaGuard(image.url)
       }
     }
 
@@ -169,8 +170,8 @@ export async function updateListingHandler(
   try {
     const { id } = await listingIdParamsSchema.parseAsync(request.params)
     const { _bids, _seller } = await queryFlagsSchema.parseAsync(request.query)
+    const { media } = await mediaSchema.parseAsync(request.body)
     const { name } = request.user as UserProfile
-    const { media } = request.body
 
     const includes: AuctionListingIncludes = {
       bids: Boolean(_bids),
@@ -188,8 +189,8 @@ export async function updateListingHandler(
     }
 
     if (media) {
-      for (const url of media) {
-        await mediaGuard(url)
+      for (const image of media) {
+        await mediaGuard(image.url)
       }
     }
 
