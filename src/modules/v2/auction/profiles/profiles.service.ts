@@ -11,10 +11,13 @@ export async function getProfiles(
   page = 1,
   includes: AuctionProfileIncludes = {}
 ) {
+  const includeListings = includes.listings ? { listings: { include: { media: true } } } : {}
+
   const [data, meta] = await db.userProfile
     .paginate({
       include: {
         ...includes,
+        ...includeListings,
         _count: {
           select: {
             listings: true
@@ -34,11 +37,14 @@ export async function getProfiles(
 }
 
 export async function getProfile(name: string, includes: AuctionProfileIncludes = {}) {
+  const includeListings = includes.listings ? { listings: { include: { media: true } } } : {}
+
   const [data, meta] = await db.userProfile
     .paginate({
       where: { name },
       include: {
         ...includes,
+        ...includeListings,
         _count: {
           select: {
             listings: true
@@ -87,6 +93,7 @@ export async function getProfileListings(
       },
       include: {
         ...includes,
+        media: true,
         _count: {
           select: {
             bids: true
