@@ -130,6 +130,19 @@ model SquareEyesProduct {
   favorite        Boolean
 }
 
+// Media
+model Media {
+  id               String          @id @default(uuid())
+  url              String
+  alt              String?
+  socialPost       SocialPost?     @relation(fields: [socialPostId], references: [id])
+  socialPostId     Int?            @unique
+  auctionListing   AuctionListing? @relation(fields: [auctionListingId], references: [id])
+  auctionListingId String?
+  holidazeVenue    HolidazeVenue?  @relation(fields: [holidazeVenueId], references: [id])
+  holidazeVenueId  String?
+}
+
 // User Profile
 model UserProfile {
   id           Int                  @id @default(autoincrement())
@@ -164,12 +177,13 @@ model SocialPost {
   body      String?
   author    UserProfile          @relation(fields: [owner], references: [name], onDelete: Cascade)
   tags      String[]
-  media     String?
+  media     Media?
   owner     String
   created   DateTime             @default(now())
   updated   DateTime             @updatedAt
   reactions SocialPostReaction[]
   comments  SocialPostComment[]
+  mediaId   String?
 }
 
 model SocialPostReaction {
@@ -201,7 +215,7 @@ model AuctionListing {
   id          String       @id @default(uuid())
   title       String
   description String?
-  media       String[]
+  media       Media[]
   tags        String[]
   created     DateTime     @default(now())
   updated     DateTime     @updatedAt
@@ -226,7 +240,7 @@ model HolidazeVenue {
   id          String                @id @default(uuid())
   name        String
   description String
-  media       String[]              @default(["https://source.unsplash.com/1600x900/?hotel"])
+  media       Media[]
   price       Float
   maxGuests   Int
   rating      Float                 @default(0)
