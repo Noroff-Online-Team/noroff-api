@@ -129,8 +129,8 @@ export async function createVenueHandler(
     }
 
     if (media) {
-      for (const url of media) {
-        await mediaGuard(url)
+      for (const image of media) {
+        await mediaGuard(image.url)
       }
     }
 
@@ -188,8 +188,8 @@ export async function updateVenueHandler(
     }
 
     if (media) {
-      for (const url of media) {
-        await mediaGuard(url)
+      for (const image of media) {
+        await mediaGuard(image.url)
       }
     }
 
