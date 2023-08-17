@@ -1,9 +1,14 @@
-import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
+import { createVenueSchema, CreateVenueSchema, updateVenueSchema, UpdateVenueSchema } from "./venues.schema"
 import { HolidazeVenue } from "@prisma-api-v2/client"
 import { db } from "@/utils"
 import { HolidazeVenueIncludes } from "./venues.controller"
 
-const DEFAULT_MEDIA = ["https://source.unsplash.com/1600x900/?hotel"]
+const DEFAULT_MEDIA = [
+  {
+    url: "https://images.unsplash.com/photo-1629140727571-9b5c6f6267b4?crop=entropy&fit=crop&h=900&q=80&w=1600",
+    alt: "A hotel room with a bed, chair and table"
+  }
+]
 
 export async function getVenues(
   sort: keyof HolidazeVenue = "name",
@@ -53,7 +58,7 @@ export async function createVenue(
   createData: CreateVenueSchema,
   includes: HolidazeVenueIncludes = {}
 ) {
-  const { meta, location, ...rest } = createData
+  const { meta, location, media, ...rest } = await createVenueSchema.parseAsync(createData)
 
   const venueMeta = await db.holidazeVenueMeta.create({
     data: { ...meta }
@@ -66,7 +71,7 @@ export async function createVenue(
   const data = await db.holidazeVenue.create({
     data: {
       ...rest,
-      media: createData.media || DEFAULT_MEDIA,
+      media: media ? { createMany: { data: media } } : { createMany: { data: DEFAULT_MEDIA } },
       ownerName,
       metaId: venueMeta.id,
       locationId: venueLocation.id
@@ -82,13 +87,15 @@ export async function createVenue(
 }
 
 export async function updateVenue(id: string, updateData: UpdateVenueSchema, includes: HolidazeVenueIncludes = {}) {
-  const { meta, location, ...rest } = updateData
+  const { meta, location, media, ...rest } = await updateVenueSchema.parseAsync(updateData)
 
   const data = await db.holidazeVenue.update({
     where: { id },
     data: {
       ...rest,
-      media: updateData.media || DEFAULT_MEDIA,
+      media: media
+        ? { deleteMany: {}, createMany: { data: media } }
+        : { deleteMany: {}, createMany: { data: DEFAULT_MEDIA } },
       meta: {
         update: {
           ...meta

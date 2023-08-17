@@ -6,6 +6,11 @@ const venueId = {
   id: z.string().uuid()
 }
 
+const mediaProperties = {
+  url: z.string().url(),
+  alt: z.string()
+}
+
 export const venueIdSchema = z.object(venueId)
 
 const venueMeta = {
@@ -29,7 +34,7 @@ export const venueCore = {
   ...venueId,
   name: z.string(),
   description: z.string().nullish(),
-  media: z.string().array().nullish(),
+  media: z.object(mediaProperties).array().nullish(),
   price: z.number(),
   maxGuests: z.number().int(),
   rating: z.number().nullish(),
@@ -72,13 +77,20 @@ export const createVenueSchema = z.object({
     required_error: "Description is required"
   }),
   media: z
-    .string({
-      invalid_type_error: "Media must be a string"
+    .object({
+      url: z
+        .string({
+          invalid_type_error: "Image URL must be a string"
+        })
+        .url("Image URL must be valid URL"),
+      alt: z
+        .string({
+          invalid_type_error: "Image alt text must be a string"
+        })
+        .max(120, "Image alt text cannot be greater than 140 characters")
     })
-    .url("Media must be a valid URL")
     .array()
     .max(8, "You cannot have more than 8 images")
-    .or(z.literal(""))
     .optional(),
   price: z
     .number({
@@ -178,13 +190,20 @@ const updateVenueCore = {
     })
     .optional(),
   media: z
-    .string({
-      invalid_type_error: "Media must be a string"
+    .object({
+      url: z
+        .string({
+          invalid_type_error: "Image URL must be a string"
+        })
+        .url("Image URL must be valid URL"),
+      alt: z
+        .string({
+          invalid_type_error: "Image alt text must be a string"
+        })
+        .max(120, "Image alt text cannot be greater than 140 characters")
     })
-    .url("Media must be a valid URL")
     .array()
     .max(8, "You cannot have more than 8 images")
-    .or(z.literal(""))
     .optional(),
   price: z
     .number({
