@@ -25,7 +25,8 @@ export async function getVenues(
       include: {
         ...includes,
         meta: true,
-        location: true
+        location: true,
+        media: true
       }
     })
     .withPages({
@@ -43,7 +44,8 @@ export async function getVenue(id: string, includes: HolidazeVenueIncludes = {})
       include: {
         ...includes,
         meta: true,
-        location: true
+        location: true,
+        media: true
       }
     })
     .withPages({
