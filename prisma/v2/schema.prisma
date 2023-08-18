@@ -141,6 +141,10 @@ model Media {
   auctionListingId String?
   holidazeVenue    HolidazeVenue?  @relation(fields: [holidazeVenueId], references: [id])
   holidazeVenueId  String?
+  userAvatar       UserProfile?    @relation("AvatarMedia", fields: [userAvatarId], references: [id])
+  userAvatarId     Int?            @unique
+  userBanner       UserProfile?    @relation("BannerMedia", fields: [userBannerId], references: [id])
+  userBannerId     Int?            @unique
 }
 
 // User Profile
@@ -148,8 +152,8 @@ model UserProfile {
   id           Int                  @id @default(autoincrement())
   name         String               @unique
   email        String               @unique
-  avatar       String?
-  banner       String?
+  avatar       Media?               @relation("AvatarMedia")
+  banner       Media?               @relation("BannerMedia")
   bio          String?
   password     String
   salt         String
