@@ -17,11 +17,16 @@ export async function registerProfileHandler(
 
     const checkProfile = await findProfileByEmailOrName(body.email, body.name)
 
-    if (checkProfile) {
+    if (checkProfile.data) {
       throw new BadRequest("Profile already exists")
     }
 
-    await mediaGuard(body.avatar)
+    if (body.avatar?.url) {
+      await mediaGuard(body.avatar.url)
+    }
+    if (body.banner?.url) {
+      await mediaGuard(body.banner.url)
+    }
 
     const profile = await createProfile(body)
 
@@ -49,15 +54,15 @@ export async function loginHandler(
 
     const profile = await findProfileByEmail(body.email)
 
-    if (!profile) {
+    if (!profile.data) {
       throw new Unauthorized("Invalid email or password")
     }
 
     // Compare supplied password with stored password
     const correctPassword = verifyPassword({
       candidatePassword: body.password,
-      salt: profile.salt,
-      hash: profile.password
+      salt: profile.data.salt,
+      hash: profile.data.password
     })
 
     if (!correctPassword) {
@@ -65,14 +70,14 @@ export async function loginHandler(
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, salt, ...rest } = profile
+    const { password, salt, ...rest } = profile.data
 
     return {
       data: {
-        name: profile.name,
-        email: profile.email,
-        avatar: profile.avatar,
-        banner: profile.banner,
+        name: profile.data.name,
+        email: profile.data.email,
+        avatar: profile.data.avatar,
+        banner: profile.data.banner,
         accessToken: request.jwt.sign(rest)
       }
     }

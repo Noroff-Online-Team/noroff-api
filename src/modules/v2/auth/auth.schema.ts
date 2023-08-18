@@ -1,5 +1,25 @@
 import { z } from "zod"
 
+export const mediaProperties = {
+  url: z.string().url(),
+  alt: z.string().optional().default("")
+}
+
+export const mediaPropertiesWithErrors = {
+  url: z
+    .string({
+      invalid_type_error: "Image URL must be a string"
+    })
+    .url("Image URL must be valid URL"),
+  alt: z
+    .string({
+      invalid_type_error: "Image alt text must be a string"
+    })
+    .max(120, "Image alt text cannot be greater than 120 characters")
+    .optional()
+    .default("")
+}
+
 export const loginBodySchema = z.object({
   email: z
     .string({
@@ -16,26 +36,14 @@ export const loginBodySchema = z.object({
 export const loginResponseSchema = z.object({
   name: z.string(),
   email: z.string().email(),
-  avatar: z.string().url().nullable().or(z.literal("")),
-  banner: z.string().url().nullable().or(z.literal("")),
+  avatar: z.object(mediaProperties).optional(),
+  banner: z.object(mediaProperties).optional(),
   accessToken: z.string()
 })
 
 export const profileMedia = {
-  avatar: z
-    .string({
-      invalid_type_error: "Avatar must be a string"
-    })
-    .url("Avatar must be valid URL")
-    .nullish()
-    .or(z.literal("")),
-  banner: z
-    .string({
-      invalid_type_error: "Banner must be a string"
-    })
-    .url("Banner must be valid URL")
-    .nullish()
-    .or(z.literal(""))
+  avatar: z.object(mediaPropertiesWithErrors).optional(),
+  banner: z.object(mediaPropertiesWithErrors).optional()
 }
 
 export const profileCore = {
