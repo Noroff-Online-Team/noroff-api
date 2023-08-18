@@ -77,7 +77,10 @@ async function createSampleSocialPost(userOne: UserProfile, userTwo: UserProfile
     title: getRandomSocialPostTitle(),
     body: getRandomSocialPostBody(),
     tags: getRandomSocialPostTags(),
-    media: faker.image.url(),
+    media: {
+      url: faker.image.url(),
+      alt: faker.lorem.sentence()
+    },
     owner: userOne.name
   })
 
@@ -97,7 +100,16 @@ async function createSampleAuctionListings(userOne: UserProfile, userTwo: UserPr
     {
       title: faker.commerce.product(),
       description: faker.commerce.productDescription(),
-      media: [`${faker.image.url()}`, `${faker.image.url()}`],
+      media: [
+        {
+          url: `${faker.image.url()}`,
+          alt: faker.lorem.sentence()
+        },
+        {
+          url: `${faker.image.url()}`,
+          alt: faker.lorem.sentence()
+        }
+      ],
       endsAt: faker.date.future()
     },
     userOne.name
@@ -117,7 +129,16 @@ async function createSampleHolidazeData(userOne: UserProfile, userTwo: UserProfi
   const { data: venue } = await createVenue(userOne.name, {
     name: `${faker.word.adjective()} ${faker.commerce.productMaterial()}`,
     description: faker.lorem.sentence(),
-    media: [`${faker.image.url()}`, `${faker.image.url()}`],
+    media: [
+      {
+        url: `${faker.image.url()}`,
+        alt: faker.lorem.sentence()
+      },
+      {
+        url: `${faker.image.url()}`,
+        alt: faker.lorem.sentence()
+      }
+    ],
     price: faker.number.float({ min: 100, max: 1000 }),
     maxGuests: faker.number.int({ min: 2, max: 10 }),
     rating: faker.number.float({ min: 0.5, max: 5, precision: 0.5 }),
