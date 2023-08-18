@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { profileCore } from "../../auth/auth.schema"
 import { venueCore } from "../venues/venues.schema"
 import { sortAndPaginationSchema } from "@/utils/sortAndPaginationSchema"
 
@@ -16,13 +17,7 @@ export const bookingCore = {
   created: z.date(),
   updated: z.date(),
   venue: z.object(venueCore).omit({ bookings: true }).optional(),
-  customer: z
-    .object({
-      name: z.string(),
-      email: z.string(),
-      avatar: z.string().url().nullish().or(z.literal(""))
-    })
-    .optional()
+  customer: z.object(profileCore).optional()
 }
 
 export const displayBookingSchema = z.object(bookingCore)

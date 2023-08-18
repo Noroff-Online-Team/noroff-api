@@ -1,14 +1,9 @@
 import { z } from "zod"
 import { sortAndPaginationSchema } from "@/utils/sortAndPaginationSchema"
-import { profileCore } from "../../auth/auth.schema"
+import { mediaProperties, mediaPropertiesWithErrors, profileCore } from "../../auth/auth.schema"
 
 const venueId = {
   id: z.string().uuid()
-}
-
-const mediaProperties = {
-  url: z.string().url(),
-  alt: z.string()
 }
 
 export const venueIdSchema = z.object(venueId)
@@ -76,22 +71,7 @@ export const createVenueSchema = z.object({
     invalid_type_error: "Description must be a string",
     required_error: "Description is required"
   }),
-  media: z
-    .object({
-      url: z
-        .string({
-          invalid_type_error: "Image URL must be a string"
-        })
-        .url("Image URL must be valid URL"),
-      alt: z
-        .string({
-          invalid_type_error: "Image alt text must be a string"
-        })
-        .max(120, "Image alt text cannot be greater than 120 characters")
-    })
-    .array()
-    .max(8, "You cannot have more than 8 images")
-    .optional(),
+  media: z.object(mediaPropertiesWithErrors).array().max(8, "You cannot have more than 8 images").optional(),
   price: z
     .number({
       invalid_type_error: "Price must be a number",
@@ -189,22 +169,7 @@ const updateVenueCore = {
       invalid_type_error: "Description must be a string"
     })
     .optional(),
-  media: z
-    .object({
-      url: z
-        .string({
-          invalid_type_error: "Image URL must be a string"
-        })
-        .url("Image URL must be valid URL"),
-      alt: z
-        .string({
-          invalid_type_error: "Image alt text must be a string"
-        })
-        .max(120, "Image alt text cannot be greater than 120 characters")
-    })
-    .array()
-    .max(8, "You cannot have more than 8 images")
-    .optional(),
+  media: z.object(mediaPropertiesWithErrors).array().max(8, "You cannot have more than 8 images").optional(),
   price: z
     .number({
       invalid_type_error: "Price must be a number"

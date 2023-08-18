@@ -1,22 +1,9 @@
 import { z } from "zod"
 import { sortAndPaginationSchema } from "@/utils/sortAndPaginationSchema"
-import { profileCore } from "../../auth/auth.schema"
+import { mediaPropertiesWithErrors, profileCore } from "../../auth/auth.schema"
 
 const mediaCore = {
-  media: z
-    .object({
-      url: z
-        .string({
-          invalid_type_error: "Image URL must be a string"
-        })
-        .url("Image URL must be valid URL"),
-      alt: z
-        .string({
-          invalid_type_error: "Image alt text must be a string"
-        })
-        .max(120, "Image alt text cannot be greater than 120 characters")
-    })
-    .nullish()
+  media: z.object(mediaPropertiesWithErrors).nullish()
 }
 
 export const mediaSchema = z.object(mediaCore)

@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { sortAndPaginationSchema } from "@/utils/sortAndPaginationSchema"
-import { profileCore, profileMedia } from "../../auth/auth.schema"
+import { mediaProperties, profileCore, profileMedia } from "../../auth/auth.schema"
 
 export const profileMediaSchema = z.object(profileMedia)
 
@@ -49,13 +49,7 @@ export const displayProfileSchema = z.object({
       id: z.string().uuid(),
       title: z.string(),
       description: z.string().nullish(),
-      media: z
-        .object({
-          url: z.string().url(),
-          alt: z.string()
-        })
-        .array()
-        .nullish(),
+      media: z.object(mediaProperties).array().nullish(),
       tags: z.string().array().nullish(),
       created: z.date(),
       updated: z.date(),

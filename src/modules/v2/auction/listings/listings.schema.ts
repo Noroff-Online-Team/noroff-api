@@ -1,6 +1,7 @@
 import { z } from "zod"
 import { displayProfileSchema } from "../profiles/profiles.schema"
 import { sortAndPaginationSchema } from "@/utils/sortAndPaginationSchema"
+import { mediaProperties, mediaPropertiesWithErrors } from "../../auth/auth.schema"
 
 const listingId = {
   id: z.string().uuid()
@@ -13,28 +14,8 @@ const bidCore = {
   created: z.date()
 }
 
-export const mediaProperties = {
-  url: z.string().url(),
-  alt: z.string()
-}
-
 const mediaCore = {
-  media: z
-    .object({
-      url: z
-        .string({
-          invalid_type_error: "Image URL must be a string"
-        })
-        .url("Image URL must be valid URL"),
-      alt: z
-        .string({
-          invalid_type_error: "Image alt text must be a string"
-        })
-        .max(120, "Image alt text cannot be greater than 120 characters")
-    })
-    .array()
-    .max(8, "You cannot have more than 8 images")
-    .nullish()
+  media: z.object(mediaPropertiesWithErrors).array().max(8, "You cannot have more than 8 images").nullish()
 }
 
 export const mediaSchema = z.object(mediaCore)
@@ -75,22 +56,7 @@ const tagsAndMedia = {
       .max(8, "You cannot have more than 8 tags"),
     z.undefined()
   ]),
-  media: z
-    .object({
-      url: z
-        .string({
-          invalid_type_error: "Image URL must be a string"
-        })
-        .url("Image URL must be valid URL"),
-      alt: z
-        .string({
-          invalid_type_error: "Image alt text must be a string"
-        })
-        .max(120, "Image alt text cannot be greater than 120 characters")
-    })
-    .array()
-    .max(8, "You cannot have more than 8 images")
-    .nullish()
+  media: z.object(mediaPropertiesWithErrors).array().max(8, "You cannot have more than 8 images").nullish()
 }
 
 export const createListingSchema = z.object({
