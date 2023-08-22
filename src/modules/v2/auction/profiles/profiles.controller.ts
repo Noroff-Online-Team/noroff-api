@@ -115,8 +115,12 @@ export async function updateProfileMediaHandler(
       throw new BadRequest("No profile with this name")
     }
 
-    await mediaGuard(avatar)
-    await mediaGuard(banner)
+    if (avatar?.url) {
+      await mediaGuard(avatar.url)
+    }
+    if (banner?.url) {
+      await mediaGuard(banner.url)
+    }
 
     const profile = await updateProfileMedia(profileToUpdate, { avatar, banner })
 

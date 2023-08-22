@@ -120,8 +120,12 @@ export async function updateProfileHandler(
       throw new NotFound("No profile with this name")
     }
 
-    await mediaGuard(avatar)
-    await mediaGuard(banner)
+    if (avatar?.url) {
+      await mediaGuard(avatar.url)
+    }
+    if (banner?.url) {
+      await mediaGuard(banner.url)
+    }
 
     const updatedProfile = await updateProfile(profileToUpdate, { venueManager, banner, avatar })
 
