@@ -154,7 +154,7 @@ enum ApiKeyStatus {
 }
 
 model ApiKey {
-  id        String       @id @default(uuid())
+  id        Int          @id @default(autoincrement())
   name      String?      @default("API Key")
   key       String       @unique @default(uuid())
   revokedAt DateTime?
