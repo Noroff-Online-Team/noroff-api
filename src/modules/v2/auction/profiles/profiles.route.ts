@@ -3,7 +3,7 @@ import { FastifyInstance } from "fastify"
 import {
   displayProfileSchema,
   profilesQuerySchema,
-  profileMediaSchema,
+  updateProfileSchema,
   profileNameSchema,
   queryFlagsSchema,
   profileCreditsSchema
@@ -61,7 +61,7 @@ async function profilesRoutes(server: FastifyInstance) {
         tags: ["auction-profiles"],
         security: [{ bearerAuth: [] }],
         params: profileNameSchema,
-        body: profileMediaSchema,
+        body: updateProfileSchema,
         response: {
           200: createResponseSchema(displayProfileSchema.omit({ listings: true }))
         }

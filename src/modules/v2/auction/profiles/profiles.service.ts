@@ -2,7 +2,7 @@ import { AuctionBid, AuctionListing, UserProfile } from "@prisma-api-v2/client"
 import { db } from "@/utils"
 import { AuctionListingIncludes } from "../listings/listings.controller"
 import { AuctionProfileIncludes } from "./profiles.controller"
-import { ProfileMediaSchema } from "./profiles.schema"
+import { UpdateProfileSchema } from "./profiles.schema"
 
 export async function getProfiles(
   sort: keyof UserProfile = "name",
@@ -59,10 +59,14 @@ export async function getProfile(name: string, includes: AuctionProfileIncludes 
   return { data: data[0], meta }
 }
 
-export async function updateProfileMedia(name: string, { avatar, banner }: ProfileMediaSchema) {
+export const updateProfile = async (name: string, { avatar, banner }: UpdateProfileSchema) => {
   const data = await db.userProfile.update({
     where: { name },
-    data: { avatar, banner }
+    data: {
+      avatar: avatar ? { delete: {}, create: avatar } : undefined,
+      banner: banner ? { delete: {}, create: banner } : undefined
+    },
+    include: { avatar: true, banner: true }
   })
 
   return { data }

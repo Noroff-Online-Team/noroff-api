@@ -2,15 +2,15 @@ import { AuctionBid, AuctionListing, UserProfile } from "@prisma-api-v2/client"
 import { FastifyRequest } from "fastify"
 import { mediaGuard } from "@/utils/mediaGuard"
 import {
-  profileMediaSchema,
-  ProfileMediaSchema,
+  updateProfileSchema,
+  UpdateProfileSchema,
   profileNameSchema,
   profilesQuerySchema,
   queryFlagsSchema
 } from "./profiles.schema"
 import { NotFound, BadRequest, Forbidden, InternalServerError, isHttpError } from "http-errors"
 
-import { getProfiles, getProfile, updateProfileMedia, getProfileListings, getProfileBids } from "./profiles.service"
+import { getProfiles, getProfile, updateProfile, getProfileListings, getProfileBids } from "./profiles.service"
 
 import { AuctionListingIncludes } from "../listings/listings.controller"
 import { ZodError } from "zod"
@@ -97,11 +97,11 @@ export async function getProfileHandler(
 export async function updateProfileMediaHandler(
   request: FastifyRequest<{
     Params: { name: string }
-    Body: ProfileMediaSchema
+    Body: UpdateProfileSchema
   }>
 ) {
   try {
-    const { avatar, banner } = await profileMediaSchema.parseAsync(request.body)
+    const { avatar, banner } = await updateProfileSchema.parseAsync(request.body)
     const { name: profileToUpdate } = await profileNameSchema.parseAsync(request.params)
     const { name: requesterProfile } = request.user as UserProfile
 
@@ -122,7 +122,7 @@ export async function updateProfileMediaHandler(
       await mediaGuard(banner.url)
     }
 
-    const profile = await updateProfileMedia(profileToUpdate, { avatar, banner })
+    const profile = await updateProfile(profileToUpdate, { avatar, banner })
 
     return profile
   } catch (error) {

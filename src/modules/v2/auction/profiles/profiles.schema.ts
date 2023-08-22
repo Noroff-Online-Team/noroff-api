@@ -2,7 +2,7 @@ import { z } from "zod"
 import { sortAndPaginationSchema } from "@/utils/sortAndPaginationSchema"
 import { mediaProperties, profileCore, profileMedia } from "../../auth/auth.schema"
 
-export const profileMediaSchema = z.object(profileMedia)
+export const updateProfileSchema = z.object(profileMedia)
 
 const profileCredits = {
   credits: z
@@ -73,4 +73,4 @@ export const queryFlagsSchema = z.object(queryFlagsCore)
 
 export const profilesQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore)
 
-export type ProfileMediaSchema = z.infer<typeof profileMediaSchema>
+export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>
