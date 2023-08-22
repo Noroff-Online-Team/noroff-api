@@ -1,20 +1,20 @@
 import { UserProfile, SocialPost } from "@prisma-api-v2/client"
 import { FastifyRequest } from "fastify"
 import { mediaGuard } from "@/utils/mediaGuard"
-import { ProfileMediaSchema } from "./profiles.schema"
+import { UpdateProfileSchema } from "./profiles.schema"
 import { SocialPostIncludes } from "../posts/posts.controller"
 import { isHttpError, NotFound, BadRequest, InternalServerError } from "http-errors"
 
 import {
   getProfiles,
   getProfile,
-  updateProfileMedia,
+  updateProfile,
   followProfile,
   unfollowProfile,
   getProfilePosts
 } from "./profiles.service"
 import { checkIsUserFollowing } from "./profiles.utils"
-import { profilesQuerySchema, profileNameSchema, queryFlagsSchema, profileMediaSchema } from "./profiles.schema"
+import { profilesQuerySchema, profileNameSchema, queryFlagsSchema, updateProfileSchema } from "./profiles.schema"
 import { ZodError } from "zod"
 
 export interface ProfileIncludes {
@@ -110,14 +110,14 @@ export async function getProfileHandler(
   }
 }
 
-export async function updateProfileMediaHandler(
+export async function updateProfileHandler(
   request: FastifyRequest<{
     Params: { name: string }
-    Body: ProfileMediaSchema
+    Body: UpdateProfileSchema
   }>
 ) {
   try {
-    const { avatar, banner } = profileMediaSchema.parse(request.body)
+    const { avatar, banner } = updateProfileSchema.parse(request.body)
     const { name: profileToUpdate } = profileNameSchema.parse(request.params)
     const { name: requesterProfile } = request.user as UserProfile
 
@@ -138,7 +138,7 @@ export async function updateProfileMediaHandler(
       await mediaGuard(banner.url)
     }
 
-    const profile = await updateProfileMedia(profileToUpdate, { avatar, banner })
+    const profile = await updateProfile(profileToUpdate, { avatar, banner })
 
     return profile
   } catch (error) {

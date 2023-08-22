@@ -1,7 +1,7 @@
 import { UserProfile, SocialPost } from "@prisma-api-v2/client"
 import { db } from "@/utils"
 import { ProfileIncludes } from "./profiles.controller"
-import { ProfileMediaSchema } from "./profiles.schema"
+import { UpdateProfileSchema } from "./profiles.schema"
 import { SocialPostIncludes } from "../posts/posts.controller"
 
 export async function getProfiles(
@@ -57,13 +57,14 @@ export const getProfile = async (name: string, includes: ProfileIncludes = {}) =
   return { data: data[0], meta }
 }
 
-export const updateProfileMedia = async (name: string, { avatar, banner }: ProfileMediaSchema) => {
+export const updateProfile = async (name: string, { avatar, banner }: UpdateProfileSchema) => {
   const data = await db.userProfile.update({
     where: { name },
     data: {
-      avatar,
-      banner
-    }
+      avatar: avatar ? { delete: {}, create: avatar } : undefined,
+      banner: banner ? { delete: {}, create: banner } : undefined
+    },
+    include: { avatar: true, banner: true }
   })
 
   return { data }

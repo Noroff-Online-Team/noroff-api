@@ -3,14 +3,14 @@ import { FastifyInstance } from "fastify"
 import {
   displayProfileSchema,
   profilesQuerySchema,
-  profileMediaSchema,
+  updateProfileSchema,
   profileNameSchema,
   queryFlagsSchema
 } from "./profiles.schema"
 import {
   getProfilesHandler,
   getProfileHandler,
-  updateProfileMediaHandler,
+  updateProfileHandler,
   followProfileHandler,
   unfollowProfileHandler,
   getProfilePostsHandler
@@ -53,20 +53,20 @@ async function profilesRoutes(server: FastifyInstance) {
   )
 
   server.put(
-    "/:name/media",
+    "/:name",
     {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
         params: profileNameSchema,
-        body: profileMediaSchema,
+        body: updateProfileSchema,
         response: {
           200: createResponseSchema(displayProfileSchema)
         }
       }
     },
-    updateProfileMediaHandler
+    updateProfileHandler
   )
 
   server.put(
