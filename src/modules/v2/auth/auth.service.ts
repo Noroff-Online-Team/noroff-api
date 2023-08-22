@@ -55,9 +55,12 @@ export const findProfileByEmailOrName = async (email: string, name: string) => {
   return { data }
 }
 
-export const createApiKey = async (name: string) => {
+export const createApiKey = async (userName: string, apiKeyName?: string) => {
   const data = await db.apiKey.create({
-    data: { user: { connect: { name } } }
+    data: {
+      name: apiKeyName,
+      user: { connect: { name: userName } }
+    }
   })
 
   return { data }
