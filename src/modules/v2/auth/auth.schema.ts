@@ -80,12 +80,14 @@ export const createProfileResponseSchema = z.object({
 
 export const profileMediaSchema = z.object(profileMedia)
 
-export const createApiKeySchema = z.object({
-  name: z
-    .string({ invalid_type_error: "Name must be a string" })
-    .max(32, "Name cannot be greater than 32 characters")
-    .optional()
-})
+export const createApiKeySchema = z
+  .object({
+    name: z
+      .string({ invalid_type_error: "Name must be a string" })
+      .max(32, "Name cannot be greater than 32 characters")
+      .optional()
+  })
+  .nullish()
 
 export const createApiKeyResponseSchema = z.object({
   name: z.string(),
