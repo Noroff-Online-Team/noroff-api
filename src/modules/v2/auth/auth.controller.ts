@@ -1,8 +1,15 @@
+import { UserProfile } from "@prisma-api-v2/client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { verifyPassword } from "@/utils/hash"
 import { mediaGuard } from "@/utils/mediaGuard"
-import { CreateProfileInput, LoginInput, createProfileBodySchema, loginBodySchema } from "./auth.schema"
-import { createProfile, findProfileByEmail, findProfileByEmailOrName } from "./auth.service"
+import {
+  CreateProfileInput,
+  LoginInput,
+  createProfileBodySchema,
+  loginBodySchema,
+  CreateAPIKeyInput
+} from "./auth.schema"
+import { createProfile, findProfileByEmail, findProfileByEmailOrName, createApiKey } from "./auth.service"
 import { BadRequest, InternalServerError, Unauthorized, isHttpError } from "http-errors"
 import { ZodError } from "zod"
 
@@ -81,6 +88,31 @@ export async function loginHandler(
         accessToken: request.jwt.sign(rest)
       }
     }
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
+    }
+
+    if (isHttpError(error)) {
+      throw error
+    }
+
+    throw new InternalServerError("Something went wrong.")
+  }
+}
+
+export async function createApiKeyHandler(
+  request: FastifyRequest<{
+    Body: CreateAPIKeyInput
+  }>,
+  reply: FastifyReply
+) {
+  try {
+    const { name } = request.user as UserProfile
+
+    const apiKey = await createApiKey(name)
+
+    reply.code(201).send(apiKey)
   } catch (error) {
     if (error instanceof ZodError) {
       throw new BadRequest(error.message)

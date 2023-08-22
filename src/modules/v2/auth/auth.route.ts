@@ -1,7 +1,13 @@
 import { FastifyInstance } from "fastify"
-import { loginHandler, registerProfileHandler } from "./auth.controller"
-import { loginBodySchema, loginResponseSchema } from "./auth.schema"
-import { createProfileBodySchema, createProfileResponseSchema } from "./auth.schema"
+import { loginHandler, registerProfileHandler, createApiKeyHandler } from "./auth.controller"
+import {
+  loginBodySchema,
+  loginResponseSchema,
+  createProfileBodySchema,
+  createProfileResponseSchema,
+  createApiKeyResponseSchema,
+  createApiKeySchema
+} from "./auth.schema"
 import { createResponseSchema } from "@/utils/createResponseSchema"
 
 async function authRoutes(server: FastifyInstance) {
@@ -31,6 +37,21 @@ async function authRoutes(server: FastifyInstance) {
       }
     },
     loginHandler
+  )
+
+  server.post(
+    "/create-api-key",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["auth"],
+        body: createApiKeySchema,
+        response: {
+          201: createResponseSchema(createApiKeyResponseSchema)
+        }
+      }
+    },
+    createApiKeyHandler
   )
 }
 

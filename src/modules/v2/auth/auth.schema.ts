@@ -80,5 +80,19 @@ export const createProfileResponseSchema = z.object({
 
 export const profileMediaSchema = z.object(profileMedia)
 
+export const createApiKeySchema = z.object({
+  name: z
+    .string({ invalid_type_error: "Name must be a string" })
+    .max(32, "Name cannot be greater than 32 characters")
+    .optional()
+})
+
+export const createApiKeyResponseSchema = z.object({
+  name: z.string(),
+  status: z.string(),
+  key: z.string().uuid()
+})
+
 export type LoginInput = z.infer<typeof loginBodySchema>
 export type CreateProfileInput = z.infer<typeof createProfileBodySchema>
+export type CreateAPIKeyInput = z.infer<typeof createApiKeySchema>
