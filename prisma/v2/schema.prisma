@@ -147,6 +147,25 @@ model Media {
   userBannerId     Int?            @unique
 }
 
+// User API Key
+enum ApiKeyStatus {
+  ACTIVE
+  REVOKED
+}
+
+model ApiKey {
+  id        String       @id @default(uuid())
+  name      String?      @default("API Key")
+  key       String       @unique @default(uuid())
+  expiresAt DateTime?
+  revokedAt DateTime?
+  status    ApiKeyStatus @default(ACTIVE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  userId    Int
+  user      UserProfile  @relation(fields: [userId], references: [id])
+}
+
 // User Profile
 model UserProfile {
   id           Int                  @id @default(autoincrement())
@@ -172,6 +191,7 @@ model UserProfile {
   venueManager Boolean              @default(false)
   venues       HolidazeVenue[]
   bookings     HolidazeBooking[]
+  apiKeys      ApiKey[]
 }
 
 // Social
