@@ -157,7 +157,6 @@ model ApiKey {
   id        String       @id @default(uuid())
   name      String?      @default("API Key")
   key       String       @unique @default(uuid())
-  expiresAt DateTime?
   revokedAt DateTime?
   status    ApiKeyStatus @default(ACTIVE)
   createdAt DateTime     @default(now())
