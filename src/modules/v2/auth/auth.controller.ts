@@ -7,7 +7,8 @@ import {
   LoginInput,
   createProfileBodySchema,
   loginBodySchema,
-  CreateAPIKeyInput
+  CreateAPIKeyInput,
+  createApiKeySchema
 } from "./auth.schema"
 import { createProfile, findProfileByEmail, findProfileByEmailOrName, createApiKey } from "./auth.service"
 import { BadRequest, InternalServerError, Unauthorized, isHttpError } from "http-errors"
@@ -108,9 +109,10 @@ export async function createApiKeyHandler(
   reply: FastifyReply
 ) {
   try {
-    const { name } = request.user as UserProfile
+    await createApiKeySchema.parseAsync(request.body)
+    const { name: userName } = request.user as UserProfile
 
-    const apiKey = await createApiKey(name)
+    const apiKey = await createApiKey(userName, request.body?.name)
 
     reply.code(201).send(apiKey)
   } catch (error) {
