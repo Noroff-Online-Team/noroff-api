@@ -23,7 +23,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
         security: [{ bearerAuth: [] }],
@@ -39,7 +39,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/:name",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
         security: [{ bearerAuth: [] }],
@@ -56,7 +56,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.put(
     "/:name/media",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
         security: [{ bearerAuth: [] }],
@@ -73,7 +73,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/:name/listings",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
         security: [{ bearerAuth: [] }],
@@ -90,7 +90,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/:name/bids",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
         security: [{ bearerAuth: [] }],
@@ -107,7 +107,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/:name/credits",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
         security: [{ bearerAuth: [] }],

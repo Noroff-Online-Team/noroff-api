@@ -8,7 +8,7 @@ async function quotesRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["quotes"],
         security: [{ bearerAuth: [] }],
@@ -23,7 +23,7 @@ async function quotesRoutes(server: FastifyInstance) {
   server.get(
     "/random",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["quotes"],
         security: [{ bearerAuth: [] }],
@@ -38,7 +38,7 @@ async function quotesRoutes(server: FastifyInstance) {
   server.get(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["quotes"],
         security: [{ bearerAuth: [] }],

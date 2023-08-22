@@ -50,7 +50,7 @@ async function venuesRoutes(server: FastifyInstance) {
   server.post(
     "/",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-venues"],
         security: [{ bearerAuth: [] }],
@@ -67,7 +67,7 @@ async function venuesRoutes(server: FastifyInstance) {
   server.put(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-venues"],
         security: [{ bearerAuth: [] }],
@@ -85,7 +85,7 @@ async function venuesRoutes(server: FastifyInstance) {
   server.delete(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-venues"],
         security: [{ bearerAuth: [] }],

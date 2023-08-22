@@ -52,7 +52,7 @@ async function listingsRoutes(server: FastifyInstance) {
   server.post(
     "/",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-listings"],
         security: [{ bearerAuth: [] }],
@@ -68,7 +68,7 @@ async function listingsRoutes(server: FastifyInstance) {
   server.put(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-listings"],
         security: [{ bearerAuth: [] }],
@@ -86,7 +86,7 @@ async function listingsRoutes(server: FastifyInstance) {
   server.delete(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-listings"],
         security: [{ bearerAuth: [] }],
@@ -99,7 +99,7 @@ async function listingsRoutes(server: FastifyInstance) {
   server.post(
     "/:id/bids",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-listings"],
         security: [{ bearerAuth: [] }],

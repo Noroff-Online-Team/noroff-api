@@ -21,7 +21,7 @@ async function bookingsRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-bookings"],
         security: [{ bearerAuth: [] }],
@@ -37,7 +37,7 @@ async function bookingsRoutes(server: FastifyInstance) {
   server.get(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-bookings"],
         security: [{ bearerAuth: [] }],
@@ -54,7 +54,7 @@ async function bookingsRoutes(server: FastifyInstance) {
   server.post(
     "/",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-bookings"],
         security: [{ bearerAuth: [] }],
@@ -71,7 +71,7 @@ async function bookingsRoutes(server: FastifyInstance) {
   server.put(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-bookings"],
         security: [{ bearerAuth: [] }],
@@ -89,7 +89,7 @@ async function bookingsRoutes(server: FastifyInstance) {
   server.delete(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-bookings"],
         security: [{ bearerAuth: [] }],

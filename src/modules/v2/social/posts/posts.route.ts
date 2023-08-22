@@ -29,7 +29,7 @@ async function postsRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
@@ -45,7 +45,7 @@ async function postsRoutes(server: FastifyInstance) {
   server.get(
     "/following",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
@@ -61,7 +61,7 @@ async function postsRoutes(server: FastifyInstance) {
   server.post(
     "/",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
@@ -78,7 +78,7 @@ async function postsRoutes(server: FastifyInstance) {
   server.put(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
@@ -96,7 +96,7 @@ async function postsRoutes(server: FastifyInstance) {
   server.delete(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         params: postIdParamsSchema,
         tags: ["social-posts"],
@@ -109,7 +109,7 @@ async function postsRoutes(server: FastifyInstance) {
   server.get(
     "/:id",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
@@ -126,7 +126,7 @@ async function postsRoutes(server: FastifyInstance) {
   server.put(
     "/:id/react/:symbol",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
@@ -143,7 +143,7 @@ async function postsRoutes(server: FastifyInstance) {
   server.post(
     "/:id/comment",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
         security: [{ bearerAuth: [] }],

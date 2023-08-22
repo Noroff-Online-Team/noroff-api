@@ -23,7 +23,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-profiles"],
         security: [{ bearerAuth: [] }],
@@ -39,7 +39,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/:name",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-profiles"],
         security: [{ bearerAuth: [] }],
@@ -56,7 +56,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.put(
     "/:name",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-profiles"],
         security: [{ bearerAuth: [] }],
@@ -70,27 +70,10 @@ async function profilesRoutes(server: FastifyInstance) {
     updateProfileHandler
   )
 
-  // server.put(
-  //   "/:name/media",
-  //   {
-  //     preHandler: [server.authenticate],
-  //     schema: {
-  //       tags: ["holidaze-profiles"],
-  //       security: [{ bearerAuth: [] }],
-  //       params: profileNameSchema,
-  //       body: updateProfileSchema,
-  //       response: {
-  //         200: createResponseSchema(displayProfileSchema)
-  //       }
-  //     }
-  //   },
-  //   updateProfileMediaHandler
-  // )
-
   server.get(
     "/:name/venues",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-profiles"],
         security: [{ bearerAuth: [] }],
@@ -107,7 +90,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/:name/bookings",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-profiles"],
         security: [{ bearerAuth: [] }],

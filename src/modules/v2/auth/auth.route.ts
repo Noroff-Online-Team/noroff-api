@@ -42,7 +42,7 @@ async function authRoutes(server: FastifyInstance) {
   server.post(
     "/create-api-key",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate],
       schema: {
         tags: ["auth"],
         body: createApiKeySchema,

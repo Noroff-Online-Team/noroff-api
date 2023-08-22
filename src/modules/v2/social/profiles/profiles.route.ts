@@ -22,7 +22,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
@@ -38,7 +38,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/:name",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
@@ -55,7 +55,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.put(
     "/:name/media",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
@@ -72,7 +72,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.put(
     "/:name/follow",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
@@ -85,7 +85,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.put(
     "/:name/unfollow",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
@@ -98,7 +98,7 @@ async function profilesRoutes(server: FastifyInstance) {
   server.get(
     "/:name/posts",
     {
-      preHandler: [server.authenticate],
+      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
