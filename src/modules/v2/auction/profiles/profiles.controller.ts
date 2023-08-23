@@ -94,7 +94,7 @@ export async function getProfileHandler(
   }
 }
 
-export async function updateProfileMediaHandler(
+export async function updateProfileHandler(
   request: FastifyRequest<{
     Params: { name: string }
     Body: UpdateProfileSchema

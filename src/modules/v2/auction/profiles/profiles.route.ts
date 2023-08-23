@@ -11,7 +11,7 @@ import {
 import {
   getProfilesHandler,
   getProfileHandler,
-  updateProfileMediaHandler,
+  updateProfileHandler,
   getProfileListingsHandler,
   getProfileCreditsHandler,
   getProfileBidsHandler
@@ -54,7 +54,7 @@ async function profilesRoutes(server: FastifyInstance) {
   )
 
   server.put(
-    "/:name/media",
+    "/:name",
     {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
@@ -67,7 +67,7 @@ async function profilesRoutes(server: FastifyInstance) {
         }
       }
     },
-    updateProfileMediaHandler
+    updateProfileHandler
   )
 
   server.get(
