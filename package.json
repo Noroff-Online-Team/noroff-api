@@ -35,7 +35,7 @@
     "fastify-type-provider-zod": "^1.1.7",
     "http-errors": "^2.0.0",
     "node-schedule": "^2.1.0",
-    "prisma-extension-pagination": "^0.5.0-next.1",
+    "prisma-extension-pagination": "^0.5.0",
     "qs": "^6.11.2",
     "statuses": "^2.0.1",
     "zod": "^3.21.4",
