@@ -48,12 +48,16 @@ export const profileMedia = {
 
 export const profileCore = {
   name: z
-    .string()
+    .string({
+      required_error: "Name is required",
+      invalid_type_error: "Name must be a string"
+    })
     .regex(/^[\w]+$/, "Name can only use a-Z, 0-9, and _")
     .max(20, "Name cannot be greater than 20 characters")
     .trim(),
   email: z
     .string({
+      required_error: "Email is required",
       invalid_type_error: "Email must be a string"
     })
     .email()
