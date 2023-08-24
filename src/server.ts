@@ -55,3 +55,5 @@ function buildServer() {
 }
 
 export default buildServer
+
+export type ServerType = ReturnType<typeof buildServer>
