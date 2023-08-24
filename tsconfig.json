@@ -12,6 +12,7 @@
     "baseUrl": "src",
     "strict": true,
     "typeRoots": ["types"],
+    "types": ["@types/jest"],
     "paths": {
       "@/*": ["./*"]
     }
