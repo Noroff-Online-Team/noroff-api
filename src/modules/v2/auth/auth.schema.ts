@@ -36,6 +36,7 @@ export const loginBodySchema = z.object({
 export const loginResponseSchema = z.object({
   name: z.string(),
   email: z.string().email(),
+  bio: z.string().optional(),
   avatar: z.object(mediaProperties).optional(),
   banner: z.object(mediaProperties).optional(),
   accessToken: z.string()

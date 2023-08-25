@@ -84,6 +84,7 @@ export async function loginHandler(
       data: {
         name: profile.data.name,
         email: profile.data.email,
+        bio: profile.data.bio,
         avatar: profile.data.avatar,
         banner: profile.data.banner,
         accessToken: request.jwt.sign(rest)
