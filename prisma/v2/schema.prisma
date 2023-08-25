@@ -81,7 +81,7 @@ model OnlineShopReview {
   rating      Float
   description String
   productId   String
-  product     OnlineShopProduct @relation(fields: [productId], references: [id])
+  product     OnlineShopProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 // E-commerce
@@ -135,15 +135,15 @@ model Media {
   id               String          @id @default(uuid())
   url              String
   alt              String?
-  socialPost       SocialPost?     @relation(fields: [socialPostId], references: [id])
+  socialPost       SocialPost?     @relation(fields: [socialPostId], references: [id], onDelete: Cascade)
   socialPostId     Int?            @unique
-  auctionListing   AuctionListing? @relation(fields: [auctionListingId], references: [id])
+  auctionListing   AuctionListing? @relation(fields: [auctionListingId], references: [id], onDelete: Cascade)
   auctionListingId String?
-  holidazeVenue    HolidazeVenue?  @relation(fields: [holidazeVenueId], references: [id])
+  holidazeVenue    HolidazeVenue?  @relation(fields: [holidazeVenueId], references: [id], onDelete: Cascade)
   holidazeVenueId  String?
-  userAvatar       UserProfile?    @relation("AvatarMedia", fields: [userAvatarId], references: [id])
+  userAvatar       UserProfile?    @relation("AvatarMedia", fields: [userAvatarId], references: [id], onDelete: Cascade)
   userAvatarId     Int?            @unique
-  userBanner       UserProfile?    @relation("BannerMedia", fields: [userBannerId], references: [id])
+  userBanner       UserProfile?    @relation("BannerMedia", fields: [userBannerId], references: [id], onDelete: Cascade)
   userBannerId     Int?            @unique
 }
 
@@ -162,7 +162,7 @@ model ApiKey {
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
   userId    Int
-  user      UserProfile  @relation(fields: [userId], references: [id])
+  user      UserProfile  @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // User Profile
