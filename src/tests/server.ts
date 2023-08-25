@@ -2,8 +2,9 @@ import buildServer, { type ServerType } from "@/server"
 
 export let server: ServerType
 
-beforeAll(() => {
+beforeAll(async () => {
   server = buildServer()
+  await server.ready()
 })
 
 afterAll(async () => {
