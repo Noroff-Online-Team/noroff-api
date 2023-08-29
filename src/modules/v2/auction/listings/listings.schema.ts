@@ -3,10 +3,6 @@ import { displayProfileSchema } from "../profiles/profiles.schema"
 import { sortAndPaginationSchema } from "@/utils/sortAndPaginationSchema"
 import { mediaProperties, mediaPropertiesWithErrors } from "../../auth/auth.schema"
 
-const listingId = {
-  id: z.string().uuid()
-}
-
 const bidCore = {
   id: z.string().uuid(),
   amount: z.number(),
@@ -21,7 +17,7 @@ const mediaCore = {
 export const mediaSchema = z.object(mediaCore)
 
 export const listingCore = {
-  ...listingId,
+  id: z.string().uuid(),
   title: z.string(),
   description: z.string().nullish(),
   media: z.object(mediaProperties).array().nullish(),
@@ -127,7 +123,16 @@ const queryFlagsCore = {
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
-export const listingIdParamsSchema = z.object(listingId)
+export const listingIdParamsSchema = z.object({
+  id: z
+    .string({
+      required_error: "ID is required",
+      invalid_type_error: "ID must be a string"
+    })
+    .uuid({
+      message: "ID must be a valid UUID"
+    })
+})
 
 export const listingQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
   _tag: z.string({ invalid_type_error: "Tag must be a string" }).optional(),
