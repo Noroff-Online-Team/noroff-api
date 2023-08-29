@@ -142,7 +142,7 @@ describe("[GET] /v2/quotes", () => {
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      message: "API key required"
+      message: "No API key header was found"
     })
   })
 
@@ -162,10 +162,7 @@ describe("[GET] /v2/quotes", () => {
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      name: "FastifyError",
-      code: "FST_JWT_NO_AUTHORIZATION_IN_HEADER",
-      message: "No Authorization was found in request.headers",
-      statusCode: 401
+      message: "No authorization header was found"
     })
   })
 })

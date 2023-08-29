@@ -66,10 +66,7 @@ describe("[POST] /v2/auth/create-api-key", () => {
     expect(res.meta).not.toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors).toContainEqual({
-      name: "FastifyError",
-      code: "FST_JWT_NO_AUTHORIZATION_IN_HEADER",
-      message: "No Authorization was found in request.headers",
-      statusCode: 401
+      message: "No authorization header was found"
     })
     expect(res.status).toBe("Unauthorized")
   })

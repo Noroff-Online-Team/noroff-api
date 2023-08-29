@@ -11,7 +11,7 @@ export default fp(async fastify => {
 
       // If the API key is missing, return an error
       if (!apiKey) {
-        throw new Unauthorized("API key required")
+        throw new Unauthorized("No API key header was found")
       }
 
       // If the API key is an array, return an error
