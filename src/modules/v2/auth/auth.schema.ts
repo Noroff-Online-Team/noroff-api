@@ -8,6 +8,7 @@ export const mediaProperties = {
 export const mediaPropertiesWithErrors = {
   url: z
     .string({
+      required_error: "Image URL is required",
       invalid_type_error: "Image URL must be a string"
     })
     .url("Image URL must be valid URL"),
