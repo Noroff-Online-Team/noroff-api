@@ -94,6 +94,33 @@ describe("[POST] /v2/auction/listings/:id/bids", () => {
     expect(res.data).toHaveProperty("id")
   })
 
+  it("should subtract the bid amount from the user's credits", async () => {
+    const response = await server.inject({
+      url: "/api/v2/auction/listings/1d685931-37fd-442d-a68d-8f4ca38a1fb4/bids",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        amount: 10
+      }
+    })
+
+    const userResponse = await server.inject({
+      url: `/api/v2/auction/profiles/${BIDDER_USER_NAME}`,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      }
+    })
+    const userData = await userResponse.json()
+
+    expect(response.statusCode).toEqual(200)
+    expect(userData.data.credits).toEqual(990)
+  })
+
   it("should return status code 400 when trying to bid on a listing that has already ended", async () => {
     const response = await server.inject({
       url: "/api/v2/auction/listings/f2d2bc7d-d302-4275-98c1-0bac73cf1407/bids",
