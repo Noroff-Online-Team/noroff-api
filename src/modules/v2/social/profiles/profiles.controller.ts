@@ -128,7 +128,7 @@ export async function updateProfileHandler(
     const profileExists = await getProfile(profileToUpdate)
 
     if (!profileExists.data) {
-      throw new BadRequest("No profile with this name")
+      throw new NotFound("No profile with this name")
     }
 
     if (avatar?.url) {
@@ -170,7 +170,7 @@ export async function followProfileHandler(
     const profileExists = await getProfile(target)
 
     if (!profileExists.data) {
-      throw new BadRequest("No profile with this name")
+      throw new NotFound("No profile with this name")
     }
 
     const isFollowing = await checkIsUserFollowing(follower, target)
@@ -211,7 +211,7 @@ export async function unfollowProfileHandler(
     const profileExists = await getProfile(target)
 
     if (!profileExists.data) {
-      throw new BadRequest("No profile with this name")
+      throw new NotFound("No profile with this name")
     }
 
     const isFollowing = await checkIsUserFollowing(follower, target)

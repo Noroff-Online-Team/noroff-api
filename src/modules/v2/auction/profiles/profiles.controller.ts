@@ -112,7 +112,7 @@ export async function updateProfileHandler(
     const profileExists = await getProfile(profileToUpdate)
 
     if (!profileExists.data) {
-      throw new BadRequest("No profile with this name")
+      throw new NotFound("No profile with this name")
     }
 
     if (avatar?.url) {
