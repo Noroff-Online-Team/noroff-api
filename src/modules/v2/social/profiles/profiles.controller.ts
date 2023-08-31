@@ -121,14 +121,14 @@ export async function updateProfileHandler(
     const { name: profileToUpdate } = profileNameSchema.parse(request.params)
     const { name: requesterProfile } = request.user as UserProfile
 
-    if (requesterProfile.toLowerCase() !== profileToUpdate.toLowerCase()) {
-      throw new BadRequest("You can't update another user's profile")
-    }
-
     const profileExists = await getProfile(profileToUpdate)
 
     if (!profileExists.data) {
       throw new NotFound("No profile with this name")
+    }
+
+    if (requesterProfile.toLowerCase() !== profileToUpdate.toLowerCase()) {
+      throw new BadRequest("You can't update another user's profile")
     }
 
     if (avatar?.url) {
