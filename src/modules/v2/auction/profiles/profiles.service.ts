@@ -18,6 +18,8 @@ export async function getProfiles(
       include: {
         ...includes,
         ...includeListings,
+        avatar: true,
+        banner: true,
         _count: {
           select: {
             listings: true
@@ -45,6 +47,8 @@ export async function getProfile(name: string, includes: AuctionProfileIncludes 
       include: {
         ...includes,
         ...includeListings,
+        avatar: true,
+        banner: true,
         _count: {
           select: {
             listings: true
