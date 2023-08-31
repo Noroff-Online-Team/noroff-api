@@ -18,6 +18,8 @@ export async function getProfiles(
       },
       include: {
         ...includes,
+        avatar: true,
+        banner: true,
         _count: {
           select: {
             posts: true,
@@ -41,6 +43,8 @@ export const getProfile = async (name: string, includes: ProfileIncludes = {}) =
       where: { name },
       include: {
         ...includes,
+        avatar: true,
+        banner: true,
         _count: {
           select: {
             posts: true,
@@ -82,19 +86,17 @@ export const followProfile = async (target: string, follower: string) => {
         }
       }
     },
-    select: {
-      name: true,
-      avatar: true,
+    include: {
       followers: {
-        select: {
-          name: true,
-          avatar: true
+        include: {
+          avatar: true,
+          banner: true
         }
       },
       following: {
-        select: {
-          name: true,
-          avatar: true
+        include: {
+          avatar: true,
+          banner: true
         }
       }
     }
@@ -115,19 +117,17 @@ export const unfollowProfile = async (target: string, follower: string) => {
         }
       }
     },
-    select: {
-      name: true,
-      avatar: true,
+    include: {
       followers: {
-        select: {
-          name: true,
-          avatar: true
+        include: {
+          avatar: true,
+          banner: true
         }
       },
       following: {
-        select: {
-          name: true,
-          avatar: true
+        include: {
+          avatar: true,
+          banner: true
         }
       }
     }

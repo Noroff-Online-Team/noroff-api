@@ -20,6 +20,8 @@ const profileFollows = {
   following: z.object(profileCore).array().optional()
 }
 
+export const followUnfollowProfileSchema = z.object(profileFollows)
+
 export const displayProfileSchema = z.object({
   ...profileCore,
   ...profileFollows,
