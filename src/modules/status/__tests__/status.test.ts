@@ -1,4 +1,4 @@
-import { server } from "@/tests/server"
+import { server } from "@/test-utils"
 
 describe("Status", () => {
   it("should return 200 OK", async () => {

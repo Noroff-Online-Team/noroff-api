@@ -1,4 +1,4 @@
-import { server } from "@/tests/server"
+import { server } from "@/test-utils"
 import { db } from "@/utils"
 
 beforeEach(async () => {

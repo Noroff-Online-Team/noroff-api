@@ -1,9 +1,5 @@
-import { server } from "@/tests/server"
+import { server, getAuthCredentials } from "@/test-utils"
 import { db } from "@/utils"
-
-const TEST_USER_NAME = "test_user"
-const TEST_USER_EMAIL = "test_user@noroff.no"
-const TEST_USER_PASSWORD = "password"
 
 const updateData = {
   title: "Blue chair",
@@ -21,32 +17,10 @@ let BEARER_TOKEN = ""
 let API_KEY = ""
 
 beforeEach(async () => {
-  // Register user
-  await server.inject({
-    url: "/api/v2/auth/register",
-    method: "POST",
-    payload: { name: TEST_USER_NAME, email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD }
-  })
-
-  // Login user
-  const user = await server.inject({
-    url: "/api/v2/auth/login",
-    method: "POST",
-    payload: { email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD }
-  })
-  const bearerToken = user.json().data.accessToken
-
-  // Create API key
-  const apiKey = await server.inject({
-    url: "/api/v2/auth/create-api-key",
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${bearerToken}`
-    }
-  })
+  const { bearerToken, apiKey, name } = await getAuthCredentials()
 
   BEARER_TOKEN = bearerToken
-  API_KEY = apiKey.json().data.key
+  API_KEY = apiKey
 
   await db.auctionListing.create({
     data: {
@@ -63,7 +37,7 @@ beforeEach(async () => {
       },
       tags: ["chair", "blue", "furniture"],
       endsAt: new Date(new Date().setMonth(new Date().getMonth() + 1)),
-      sellerName: "test_user"
+      sellerName: name
     }
   })
 })

@@ -1,48 +1,17 @@
-import { server } from "@/tests/server"
+import { server, registerUser, getAuthCredentials } from "@/test-utils"
 import { db } from "@/utils"
-
-const TEST_USER_NAME = "test_user"
-const TEST_USER_EMAIL = "test_user@noroff.no"
-const TEST_USER_PASSWORD = "password"
-const TEST_USER_TWO_NAME = "test_user_two"
-const TEST_USER_TWO_EMAIL = "test_user_two@noroff.no"
-const TEST_USER_TWO_PASSWORD = "password"
 
 let BEARER_TOKEN = ""
 let API_KEY = ""
 
 beforeEach(async () => {
-  // Register users
-  await server.inject({
-    url: "/api/v2/auth/register",
-    method: "POST",
-    payload: { name: TEST_USER_NAME, email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD }
-  })
-  await server.inject({
-    url: "/api/v2/auth/register",
-    method: "POST",
-    payload: { name: TEST_USER_TWO_NAME, email: TEST_USER_TWO_EMAIL, password: TEST_USER_TWO_PASSWORD }
-  })
-
-  // Login user
-  const user = await server.inject({
-    url: "/api/v2/auth/login",
-    method: "POST",
-    payload: { email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD }
-  })
-  const bearerToken = user.json().data.accessToken
-
-  // Create API key
-  const apiKey = await server.inject({
-    url: "/api/v2/auth/create-api-key",
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${bearerToken}`
-    }
-  })
+  // Register user
+  await registerUser()
+  // Register second user
+  const { bearerToken, apiKey } = await getAuthCredentials({ name: "test_user_two", email: "test_user_two@noroff.no" })
 
   BEARER_TOKEN = bearerToken
-  API_KEY = apiKey.json().data.key
+  API_KEY = apiKey
 })
 
 afterEach(async () => {

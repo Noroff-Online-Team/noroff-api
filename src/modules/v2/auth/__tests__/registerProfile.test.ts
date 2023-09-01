@@ -1,4 +1,4 @@
-import { server } from "@/tests/server"
+import { server } from "@/test-utils"
 import { db } from "@/utils"
 
 const TEST_USER_NAME = "test_user"

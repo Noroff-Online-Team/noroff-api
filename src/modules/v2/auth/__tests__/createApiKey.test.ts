@@ -1,4 +1,4 @@
-import { server } from "@/tests/server"
+import { server, registerUser } from "@/test-utils"
 import { db } from "@/utils"
 
 const TEST_USER_NAME = "test_user"
@@ -6,11 +6,7 @@ const TEST_USER_EMAIL = "test_user@noroff.no"
 const TEST_USER_PASSWORD = "password"
 
 beforeEach(async () => {
-  await server.inject({
-    url: "/api/v2/auth/register",
-    method: "POST",
-    payload: { name: TEST_USER_NAME, email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD }
-  })
+  await registerUser({ name: TEST_USER_NAME, email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD })
 })
 
 afterEach(async () => {

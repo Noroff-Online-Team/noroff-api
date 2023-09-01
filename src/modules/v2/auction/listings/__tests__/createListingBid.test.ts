@@ -1,50 +1,19 @@
-import { server } from "@/tests/server"
+import { server, registerUser, getAuthCredentials } from "@/test-utils"
 import { db } from "@/utils"
 
-const TEST_USER_NAME = "test_user"
-const TEST_USER_EMAIL = "test_user@noroff.no"
-const TEST_USER_PASSWORD = "password"
 const BIDDER_USER_NAME = "bidder_user"
 const BIDDER_USER_EMAIL = "bidder_user@noroff.no"
-const BIDDER_USER_PASSWORD = "password"
-
 let BEARER_TOKEN = ""
 let API_KEY = ""
 
 beforeEach(async () => {
   // Register user
-  await server.inject({
-    url: "/api/v2/auth/register",
-    method: "POST",
-    payload: { name: TEST_USER_NAME, email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD }
-  })
+  const { name } = await registerUser()
+  // Register second user
+  const { bearerToken, apiKey } = await getAuthCredentials({ name: BIDDER_USER_NAME, email: BIDDER_USER_EMAIL })
 
-  // Register bidder user
-  await server.inject({
-    url: "/api/v2/auth/register",
-    method: "POST",
-    payload: { name: BIDDER_USER_NAME, email: BIDDER_USER_EMAIL, password: BIDDER_USER_PASSWORD }
-  })
-
-  // Login bidder user
-  const bidderUser = await server.inject({
-    url: "/api/v2/auth/login",
-    method: "POST",
-    payload: { email: BIDDER_USER_EMAIL, password: BIDDER_USER_PASSWORD }
-  })
-  const bidderBearerToken = bidderUser.json().data.accessToken
-
-  // Create bidder API key
-  const apiKey = await server.inject({
-    url: "/api/v2/auth/create-api-key",
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${bidderBearerToken}`
-    }
-  })
-
-  BEARER_TOKEN = bidderBearerToken
-  API_KEY = apiKey.json().data.key
+  BEARER_TOKEN = bearerToken
+  API_KEY = apiKey
 
   // Create listing to bid on
   await db.auctionListing.create({
@@ -52,7 +21,7 @@ beforeEach(async () => {
       id: "1d685931-37fd-442d-a68d-8f4ca38a1fb4",
       title: "Red chair",
       endsAt: new Date(new Date().setMonth(new Date().getMonth() + 2)),
-      sellerName: "test_user"
+      sellerName: name
     }
   })
   // Create a listing that has already ended
@@ -61,7 +30,7 @@ beforeEach(async () => {
       id: "f2d2bc7d-d302-4275-98c1-0bac73cf1407",
       title: "Orange chair",
       endsAt: new Date(new Date().setMinutes(new Date().getMinutes() - 1)),
-      sellerName: "test_user"
+      sellerName: name
     }
   })
 })

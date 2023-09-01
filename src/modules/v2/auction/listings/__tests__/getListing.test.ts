@@ -1,17 +1,9 @@
-import { server } from "@/tests/server"
+import { server, registerUser } from "@/test-utils"
 import { db } from "@/utils"
-
-const TEST_USER_NAME = "test_user"
-const TEST_USER_EMAIL = "test_user@noroff.no"
-const TEST_USER_PASSWORD = "password"
 
 beforeEach(async () => {
   // Register user
-  await server.inject({
-    url: "/api/v2/auth/register",
-    method: "POST",
-    payload: { name: TEST_USER_NAME, email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD }
-  })
+  const { name } = await registerUser()
 
   // createMany doesn't support creating relations, so instead we create two products separately.
   await db.auctionListing.create({
@@ -29,7 +21,7 @@ beforeEach(async () => {
       },
       tags: ["chair", "blue", "furniture"],
       endsAt: new Date(new Date().setMonth(new Date().getMonth() + 2)),
-      sellerName: "test_user"
+      sellerName: name
     }
   })
   await db.auctionListing.create({
@@ -53,7 +45,7 @@ beforeEach(async () => {
       },
       tags: ["table", "chair", "furniture"],
       endsAt: new Date(new Date().setMonth(new Date().getMonth() + 2)),
-      sellerName: "test_user"
+      sellerName: name
     }
   })
 })
