@@ -1,14 +1,16 @@
 import { server, registerUser } from "@/test-utils"
 import { db } from "@/utils"
 
+const LISTING_ID = "5231496a-0351-4a2a-a876-c036410e0cbc"
+
 beforeEach(async () => {
   // Register user
   const { name } = await registerUser()
 
-  // createMany doesn't support creating relations, so instead we create two products separately.
+  // Create listing
   await db.auctionListing.create({
     data: {
-      id: "5231496a-0351-4a2a-a876-c036410e0cbc",
+      id: LISTING_ID,
       title: "Blue chair",
       description: "Selling a blue chair",
       media: {
@@ -20,30 +22,6 @@ beforeEach(async () => {
         ]
       },
       tags: ["chair", "blue", "furniture"],
-      endsAt: new Date(new Date().setMonth(new Date().getMonth() + 2)),
-      sellerName: name
-    }
-  })
-  await db.auctionListing.create({
-    data: {
-      id: "c9953c48-0e2d-4d29-8bd9-18e26cc364fc",
-      title: "Dinner table with 2 chairs",
-      description: "Selling a dinner table with 2 chairs",
-      media: {
-        createMany: {
-          data: [
-            {
-              url: "https://images.unsplash.com/photo-1620395458832-6436796c2d4c?fit=crop&fm=jpg&h=800&w=800",
-              alt: "A table with two chairs and a vase with flowers on it"
-            },
-            {
-              url: "https://images.unsplash.com/photo-1605543667606-52b0f1ee1b72?fit=crop&fm=jpg&h=800&w=800",
-              alt: "A laptop computer sitting on top of a wooden desk with a chair behind it"
-            }
-          ]
-        }
-      },
-      tags: ["table", "chair", "furniture"],
       endsAt: new Date(new Date().setMonth(new Date().getMonth() + 2)),
       sellerName: name
     }
@@ -62,14 +40,14 @@ afterEach(async () => {
 describe("[GET] /v2/auction/listings/:id", () => {
   it("should return single listing based on id", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbc",
+      url: `/api/v2/auction/listings/${LISTING_ID}`,
       method: "GET"
     })
     const res = await response.json()
 
     expect(response.statusCode).toBe(200)
     expect(res.data).toBeDefined()
-    expect(res.data.id).toBe("5231496a-0351-4a2a-a876-c036410e0cbc")
+    expect(res.data.id).toBe(LISTING_ID)
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
       isFirstPage: true,
@@ -84,7 +62,7 @@ describe("[GET] /v2/auction/listings/:id", () => {
 
   it("should return single listings with bids", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbc?_bids=true",
+      url: `/api/v2/auction/listings/${LISTING_ID}?_bids=true`,
       method: "GET"
     })
     const res = await response.json()
@@ -106,7 +84,7 @@ describe("[GET] /v2/auction/listings/:id", () => {
 
   it("should return single listing with seller", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbc?_seller=true",
+      url: `/api/v2/auction/listings/${LISTING_ID}?_seller=true`,
       method: "GET"
     })
     const res = await response.json()

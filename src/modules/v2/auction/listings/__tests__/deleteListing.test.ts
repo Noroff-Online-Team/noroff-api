@@ -1,6 +1,7 @@
 import { server, getAuthCredentials } from "@/test-utils"
 import { db } from "@/utils"
 
+const LISTING_ID = "5231496a-0351-4a2a-a876-c036410e0cbc"
 let BEARER_TOKEN = ""
 let API_KEY = ""
 
@@ -12,7 +13,7 @@ beforeEach(async () => {
 
   await db.auctionListing.create({
     data: {
-      id: "5231496a-0351-4a2a-a876-c036410e0cbc",
+      id: LISTING_ID,
       title: "Blue chair",
       endsAt: new Date(new Date().setMonth(new Date().getMonth() + 2)),
       sellerName: name
@@ -31,7 +32,7 @@ afterEach(async () => {
 describe("[DELETE] /v2/auction/listings/:id", () => {
   it("should return 204 when successfully deleted a listing", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbc",
+      url: `/api/v2/auction/listings/${LISTING_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -44,7 +45,7 @@ describe("[DELETE] /v2/auction/listings/:id", () => {
 
   it("should throw 401 error when attempting to delete without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbc",
+      url: `/api/v2/auction/listings/${LISTING_ID}c`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -64,7 +65,7 @@ describe("[DELETE] /v2/auction/listings/:id", () => {
 
   it("should throw 401 error when attempting to delete without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbc",
+      url: `/api/v2/auction/listings/${LISTING_ID}`,
       method: "DELETE",
       headers: {
         "X-Noroff-API-Key": API_KEY

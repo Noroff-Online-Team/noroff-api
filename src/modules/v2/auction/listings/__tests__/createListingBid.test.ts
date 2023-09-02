@@ -1,6 +1,8 @@
 import { server, registerUser, getAuthCredentials } from "@/test-utils"
 import { db } from "@/utils"
 
+const LISTING_ID = "1d685931-37fd-442d-a68d-8f4ca38a1fb4"
+const EXPIRED_LISTING_ID = "f2d2bc7d-d302-4275-98c1-0bac73cf1407"
 const BIDDER_USER_NAME = "bidder_user"
 const BIDDER_USER_EMAIL = "bidder_user@noroff.no"
 let BEARER_TOKEN = ""
@@ -18,7 +20,7 @@ beforeEach(async () => {
   // Create listing to bid on
   await db.auctionListing.create({
     data: {
-      id: "1d685931-37fd-442d-a68d-8f4ca38a1fb4",
+      id: LISTING_ID,
       title: "Red chair",
       endsAt: new Date(new Date().setMonth(new Date().getMonth() + 2)),
       sellerName: name
@@ -27,7 +29,7 @@ beforeEach(async () => {
   // Create a listing that has already ended
   await db.auctionListing.create({
     data: {
-      id: "f2d2bc7d-d302-4275-98c1-0bac73cf1407",
+      id: EXPIRED_LISTING_ID,
       title: "Orange chair",
       endsAt: new Date(new Date().setMinutes(new Date().getMinutes() - 1)),
       sellerName: name
@@ -47,7 +49,7 @@ afterEach(async () => {
 describe("[POST] /v2/auction/listings/:id/bids", () => {
   it("should return status code 201 when successfully created a bid", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/1d685931-37fd-442d-a68d-8f4ca38a1fb4/bids",
+      url: `/api/v2/auction/listings/${LISTING_ID}/bids`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -65,7 +67,7 @@ describe("[POST] /v2/auction/listings/:id/bids", () => {
 
   it("should subtract the bid amount from the user's credits", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/1d685931-37fd-442d-a68d-8f4ca38a1fb4/bids",
+      url: `/api/v2/auction/listings/${LISTING_ID}/bids`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -92,7 +94,7 @@ describe("[POST] /v2/auction/listings/:id/bids", () => {
 
   it("should return status code 400 when trying to bid on a listing that has already ended", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/f2d2bc7d-d302-4275-98c1-0bac73cf1407/bids",
+      url: `/api/v2/auction/listings/${EXPIRED_LISTING_ID}/bids`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

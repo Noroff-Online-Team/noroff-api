@@ -13,6 +13,7 @@ const updateData = {
   tags: ["chair", "blue", "furniture"]
 }
 
+const LISTING_ID = "5231496a-0351-4a2a-a876-c036410e0cbc"
 let BEARER_TOKEN = ""
 let API_KEY = ""
 
@@ -24,7 +25,7 @@ beforeEach(async () => {
 
   await db.auctionListing.create({
     data: {
-      id: "5231496a-0351-4a2a-a876-c036410e0cbc",
+      id: LISTING_ID,
       title: "Blue chair",
       description: "Selling a blue chair",
       media: {
@@ -53,8 +54,21 @@ afterEach(async () => {
 
 describe("[PUT] /v2/auction/listings/:id", () => {
   it("should return 201 when successfully updated a listing", async () => {
+    const initialResponse = await server.inject({
+      url: `/api/v2/auction/listings/${LISTING_ID}`,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      }
+    })
+    const initialRes = await initialResponse.json()
+
+    expect(initialResponse.statusCode).toEqual(200)
+    expect(initialRes.data.title).toBe("Blue chair")
+
     const response = await server.inject({
-      url: "/api/v2/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbc",
+      url: `/api/v2/auction/listings/${LISTING_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -86,7 +100,7 @@ describe("[PUT] /v2/auction/listings/:id", () => {
 
   it("should throw zod errors if no data was provided", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbc",
+      url: `/api/v2/auction/listings/${LISTING_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -110,7 +124,7 @@ describe("[PUT] /v2/auction/listings/:id", () => {
 
   it("should throw 401 error when attempting to update without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbc",
+      url: `/api/v2/auction/listings/${LISTING_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -134,7 +148,7 @@ describe("[PUT] /v2/auction/listings/:id", () => {
 
   it("should throw 401 error when attempting to update without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbc",
+      url: `/api/v2/auction/listings/${LISTING_ID}`,
       method: "PUT",
       headers: {
         "X-Noroff-API-Key": API_KEY
