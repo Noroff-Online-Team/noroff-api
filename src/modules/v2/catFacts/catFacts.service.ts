@@ -1,7 +1,22 @@
+import { CatFact } from "@prisma-api-v2/client"
 import { db, getRandomNumber } from "@/utils"
 
-export async function getCatFacts() {
-  const [data, meta] = await db.catFact.paginate().withPages()
+export async function getCatFacts(
+  sort: keyof CatFact = "id",
+  sortOrder: "asc" | "desc" = "asc",
+  limit = 100,
+  page = 1
+) {
+  const [data, meta] = await db.catFact
+    .paginate({
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
 
   return { data, meta }
 }
