@@ -19,6 +19,7 @@ export async function getAuthCredentials(user: User = {}): Promise<{
   apiKey: string
   name: string
   email: string
+  password: string
 }> {
   const { name = TEST_USER_NAME, email = TEST_USER_EMAIL, password = TEST_USER_PASSWORD } = user
 
@@ -39,7 +40,7 @@ export async function getAuthCredentials(user: User = {}): Promise<{
     })
     const apiKey = apiKeyResponse.json().data.key
 
-    return { bearerToken, apiKey, name, email }
+    return { bearerToken, apiKey, name, email, password }
   } catch (error) {
     console.error("Error obtaining credentials:", error)
     throw error
@@ -50,21 +51,17 @@ export async function getAuthCredentials(user: User = {}): Promise<{
  * Register user. Uses default user credentials if none are provided.
  * @returns Registered user's name and email
  */
-export async function registerUser(user: User = {}): Promise<{ name: string; email: string }> {
+export async function registerUser(user: User = {}): Promise<{ name: string; email: string; password: string }> {
   const { name = TEST_USER_NAME, email = TEST_USER_EMAIL, password = TEST_USER_PASSWORD } = user
 
   try {
-    const response = await server.inject({
+    await server.inject({
       url: "/api/v2/auth/register",
       method: "POST",
       payload: { name, email, password }
     })
-    const userData = await response.json()
 
-    return {
-      name: userData.data.name,
-      email: userData.data.email
-    }
+    return { name, email, password }
   } catch (error) {
     console.error("Error registering user:", error)
     throw error
