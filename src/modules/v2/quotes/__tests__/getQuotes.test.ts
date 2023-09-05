@@ -1,14 +1,15 @@
-import { server } from "@/test-utils"
+import { server, getAuthCredentials } from "@/test-utils"
 import { db } from "@/utils"
-
-const TEST_USER_NAME = "test_user"
-const TEST_USER_EMAIL = "test_user@noroff.no"
-const TEST_USER_PASSWORD = "password"
 
 let BEARER_TOKEN = ""
 let API_KEY = ""
 
 beforeEach(async () => {
+  const { bearerToken, apiKey } = await getAuthCredentials()
+
+  BEARER_TOKEN = bearerToken
+  API_KEY = apiKey
+
   await db.$executeRaw`ALTER SEQUENCE "Quote_id_seq" RESTART WITH 1;`
   await db.quote.createMany({
     data: [
@@ -31,33 +32,6 @@ beforeEach(async () => {
       }
     ]
   })
-
-  // Register user
-  await server.inject({
-    url: "/api/v2/auth/register",
-    method: "POST",
-    payload: { name: TEST_USER_NAME, email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD }
-  })
-
-  // Login user
-  const user = await server.inject({
-    url: "/api/v2/auth/login",
-    method: "POST",
-    payload: { email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD }
-  })
-  const bearerToken = user.json().data.accessToken
-
-  // Create API key
-  const apiKey = await server.inject({
-    url: "/api/v2/auth/create-api-key",
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${bearerToken}`
-    }
-  })
-
-  BEARER_TOKEN = bearerToken
-  API_KEY = apiKey.json().data.key
 })
 
 afterEach(async () => {
@@ -98,8 +72,37 @@ describe("[GET] /v2/quotes", () => {
     })
   })
 
-  // TODO: Need to implement support for pagination.
-  it.skip("should return all quotes with pagination", async () => {
+  it("should return all books with sort", async () => {
+    const response = await server.inject({
+      url: "/api/v2/quotes?sort=author&sortOrder=desc",
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(200)
+    expect(res.data).toBeDefined()
+    expect(res.data).toHaveLength(2)
+    expect(res.data[0].id).toBeDefined()
+    expect(res.data[0].author).toBe("Parker Palmer")
+    expect(res.data[1].id).toBeDefined()
+    expect(res.data[1].author).toBe("Confucius")
+    expect(res.meta).toBeDefined()
+    expect(res.meta).toStrictEqual({
+      isFirstPage: true,
+      isLastPage: true,
+      currentPage: 1,
+      previousPage: null,
+      nextPage: null,
+      pageCount: 1,
+      totalCount: 2
+    })
+  })
+
+  it("should return all quotes with pagination", async () => {
     const response = await server.inject({
       url: "/api/v2/quotes?page=1&limit=1",
       method: "GET",
@@ -117,10 +120,10 @@ describe("[GET] /v2/quotes", () => {
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
       isFirstPage: true,
-      isLastPage: true,
+      isLastPage: false,
       currentPage: 1,
       previousPage: null,
-      nextPage: null,
+      nextPage: 2,
       pageCount: 2,
       totalCount: 2
     })
