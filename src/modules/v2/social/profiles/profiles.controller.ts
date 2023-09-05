@@ -3,7 +3,7 @@ import { FastifyRequest } from "fastify"
 import { mediaGuard } from "@/utils/mediaGuard"
 import { UpdateProfileSchema } from "./profiles.schema"
 import { SocialPostIncludes } from "../posts/posts.controller"
-import { isHttpError, NotFound, BadRequest, InternalServerError } from "http-errors"
+import { isHttpError, NotFound, BadRequest, Forbidden, InternalServerError } from "http-errors"
 
 import {
   getProfiles,
@@ -128,7 +128,7 @@ export async function updateProfileHandler(
     }
 
     if (requesterProfile.toLowerCase() !== profileToUpdate.toLowerCase()) {
-      throw new BadRequest("You can't update another user's profile")
+      throw new Forbidden("You do not have permission to update this profile")
     }
 
     if (avatar?.url) {

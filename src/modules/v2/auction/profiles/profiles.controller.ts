@@ -112,7 +112,7 @@ export async function updateProfileHandler(
     }
 
     if (requesterProfile.toLowerCase() !== profileToUpdate.toLowerCase()) {
-      throw new BadRequest("You can't update another user's profile")
+      throw new Forbidden("You do not have permission to update this profile")
     }
 
     if (avatar?.url) {

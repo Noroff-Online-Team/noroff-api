@@ -113,7 +113,7 @@ describe("[PUT] /v2/auction/profiles/:id", () => {
     })
   })
 
-  it("should throw 400 error when attempting to update another user's profile", async () => {
+  it("should throw 403 error when attempting to update another user's profile", async () => {
     await server.inject({
       url: "/api/v2/auth/register",
       method: "POST",
@@ -133,13 +133,13 @@ describe("[PUT] /v2/auction/profiles/:id", () => {
     })
     const res = await response.json()
 
-    expect(response.statusCode).toBe(400)
+    expect(response.statusCode).toBe(403)
     expect(res.data).not.toBeDefined()
     expect(res.meta).not.toBeDefined()
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      message: "You can't update another user's profile"
+      message: "You do not have permission to update this profile"
     })
   })
 
