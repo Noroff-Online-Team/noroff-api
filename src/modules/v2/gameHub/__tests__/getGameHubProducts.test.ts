@@ -45,7 +45,7 @@ afterEach(async () => {
 })
 
 describe("[GET] /v2/gamehub", () => {
-  it("should return all game hub products", async () => {
+  it("should return all gamehub products", async () => {
     const response = await server.inject({
       url: "/api/v2/gamehub",
       method: "GET"
@@ -69,8 +69,33 @@ describe("[GET] /v2/gamehub", () => {
     })
   })
 
-  // TODO: Need to implement support for pagination.
-  it.skip("should return all gamehub products with pagination", async () => {
+  it("should return all gamehub products with sort", async () => {
+    const response = await server.inject({
+      url: "/api/v2/gamehub?sort=title&sortOrder=desc",
+      method: "GET"
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(200)
+    expect(res.data).toBeDefined()
+    expect(res.data).toHaveLength(2)
+    expect(res.data[0].id).toBeDefined()
+    expect(res.data[0].title).toBe("Super Duper")
+    expect(res.data[1].id).toBeDefined()
+    expect(res.data[1].title).toBe("Ping Pong Championship")
+    expect(res.meta).toBeDefined()
+    expect(res.meta).toStrictEqual({
+      isFirstPage: true,
+      isLastPage: true,
+      currentPage: 1,
+      previousPage: null,
+      nextPage: null,
+      pageCount: 1,
+      totalCount: 2
+    })
+  })
+
+  it("should return all gamehub products with pagination", async () => {
     const response = await server.inject({
       url: "/api/v2/gamehub?page=1&limit=1",
       method: "GET"
@@ -84,10 +109,10 @@ describe("[GET] /v2/gamehub", () => {
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
       isFirstPage: true,
-      isLastPage: true,
+      isLastPage: false,
       currentPage: 1,
       previousPage: null,
-      nextPage: null,
+      nextPage: 2,
       pageCount: 2,
       totalCount: 2
     })

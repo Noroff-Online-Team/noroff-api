@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
 import { gameHubSchema, gameHubParamsSchema } from "./gameHub.schema"
-import { createResponseSchema } from "@/utils/createResponseSchema"
+import { createResponseSchema, sortAndPaginationSchema } from "@/utils"
 import { getGameHubProductsHandler, getGameHubProductHandler } from "./gameHub.controller"
 
 async function gameHubRoutes(server: FastifyInstance) {
@@ -10,6 +10,7 @@ async function gameHubRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["e-com"],
+        querystring: sortAndPaginationSchema,
         response: {
           200: createResponseSchema(gameHubSchema.array())
         }
