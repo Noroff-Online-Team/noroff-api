@@ -1,13 +1,31 @@
 import { FastifyRequest } from "fastify"
-import { NotFound, BadRequest, InternalServerError } from "http-errors"
+import { OnlineShopProduct } from "@prisma-api-v2/client"
+import { isHttpError, NotFound, BadRequest, InternalServerError } from "http-errors"
 import { ZodError } from "zod"
 import { onlineShopParamsSchema } from "./onlineShop.schema"
+import { sortAndPaginationSchema } from "@/utils"
 
 import { getOnlineShopProducts, getOnlineShopProduct } from "./onlineShop.service"
 
-export async function getOnlineShopProductsHandler() {
+export async function getOnlineShopProductsHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      limit?: number
+      page?: number
+      sort?: keyof OnlineShopProduct
+      sortOrder?: "asc" | "desc"
+    }
+  }>
+) {
   try {
-    const products = await getOnlineShopProducts()
+    await sortAndPaginationSchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page } = request.query
+
+    if (limit && limit > 100) {
+      throw new BadRequest("Limit cannot be greater than 100")
+    }
+
+    const products = await getOnlineShopProducts(sort, sortOrder, limit, page)
 
     if (!products.data.length) {
       throw new NotFound("Couldn't find any products.")
@@ -15,7 +33,11 @@ export async function getOnlineShopProductsHandler() {
 
     return products
   } catch (error) {
-    if (error instanceof NotFound) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
+    }
+
+    if (isHttpError(error)) {
       throw error
     }
 
@@ -44,7 +66,7 @@ export async function getOnlineShopProductHandler(
       throw new BadRequest(error.message)
     }
 
-    if (error instanceof NotFound) {
+    if (isHttpError(error)) {
       throw error
     }
 

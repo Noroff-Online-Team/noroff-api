@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
 import { onlineShopSchema, onlineShopParamsSchema } from "./onlineShop.schema"
-import { createResponseSchema } from "@/utils/createResponseSchema"
+import { createResponseSchema, sortAndPaginationSchema } from "@/utils"
 import { getOnlineShopProductsHandler, getOnlineShopProductHandler } from "./onlineShop.controller"
 
 async function onlineShopRoutes(server: FastifyInstance) {
@@ -10,6 +10,7 @@ async function onlineShopRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["online-shop"],
+        querystring: sortAndPaginationSchema,
         response: {
           200: createResponseSchema(onlineShopSchema.array())
         }
