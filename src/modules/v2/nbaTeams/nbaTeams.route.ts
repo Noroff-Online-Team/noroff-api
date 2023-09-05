@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
 import { nbaTeamSchema, nbaTeamParamsSchema } from "./nbaTeams.schema"
-import { createResponseSchema } from "@/utils/createResponseSchema"
+import { createResponseSchema, sortAndPaginationSchema } from "@/utils"
 import { getNbaTeamsHandler, getNbaTeamHandler, getRandomNbaTeamHandler } from "./nbaTeams.controller"
 
 async function nbaTeamRoutes(server: FastifyInstance) {
@@ -10,6 +10,7 @@ async function nbaTeamRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["nba-teams"],
+        querystring: sortAndPaginationSchema,
         response: {
           200: createResponseSchema(nbaTeamSchema.array())
         }
