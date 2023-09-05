@@ -1,7 +1,22 @@
+import { SquareEyesProduct } from "@prisma-api-v2/client"
 import { db } from "@/utils"
 
-export async function getSquareEyesProducts() {
-  const [data, meta] = await db.squareEyesProduct.paginate().withPages()
+export async function getSquareEyesProducts(
+  sort: keyof SquareEyesProduct = "id",
+  sortOrder: "asc" | "desc" = "asc",
+  limit = 100,
+  page = 1
+) {
+  const [data, meta] = await db.squareEyesProduct
+    .paginate({
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
 
   return { data, meta }
 }
