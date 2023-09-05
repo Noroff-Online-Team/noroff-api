@@ -53,8 +53,33 @@ describe("[GET] /v2/jokes", () => {
     })
   })
 
-  // TODO: Need to implement support for pagination.
-  it.skip("should return all jokes with pagination", async () => {
+  it("should return all books with sort", async () => {
+    const response = await server.inject({
+      url: "/api/v2/jokes?sort=setup&sortOrder=desc",
+      method: "GET"
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(200)
+    expect(res.data).toBeDefined()
+    expect(res.data).toHaveLength(2)
+    expect(res.data[0].id).toBeDefined()
+    expect(res.data[0].setup).toBe("What did the fish say when it hit the wall?")
+    expect(res.data[1].id).toBeDefined()
+    expect(res.data[1].setup).toBe("How do you make a tissue dance?")
+    expect(res.meta).toBeDefined()
+    expect(res.meta).toStrictEqual({
+      isFirstPage: true,
+      isLastPage: true,
+      currentPage: 1,
+      previousPage: null,
+      nextPage: null,
+      pageCount: 1,
+      totalCount: 2
+    })
+  })
+
+  it("should return all jokes with pagination", async () => {
     const response = await server.inject({
       url: "/api/v2/jokes?page=1&limit=1",
       method: "GET"
@@ -69,10 +94,10 @@ describe("[GET] /v2/jokes", () => {
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
       isFirstPage: true,
-      isLastPage: true,
+      isLastPage: false,
       currentPage: 1,
       previousPage: null,
-      nextPage: null,
+      nextPage: 2,
       pageCount: 2,
       totalCount: 2
     })
