@@ -66,10 +66,15 @@ export async function getProfile(name: string, includes: HolidazeProfileIncludes
   return { data: data[0], meta }
 }
 
-export async function updateProfile(name: string, updateData: UpdateProfileSchema) {
+export async function updateProfile(name: string, { avatar, banner, ...updateData }: UpdateProfileSchema) {
   const data = await db.userProfile.update({
     where: { name },
-    data: { ...updateData }
+    data: {
+      ...updateData,
+      avatar: avatar ? { delete: {}, create: avatar } : undefined,
+      banner: banner ? { delete: {}, create: banner } : undefined
+    },
+    include: { avatar: true, banner: true }
   })
 
   return { data }
