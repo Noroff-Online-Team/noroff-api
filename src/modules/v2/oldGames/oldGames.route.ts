@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
 import { oldGameSchema, oldGameParamsSchema } from "./oldGames.schema"
-import { createResponseSchema } from "@/utils/createResponseSchema"
+import { createResponseSchema, sortAndPaginationSchema } from "@/utils"
 import { getOldGamesHandler, getOldGameHandler, getRandomOldGameHandler } from "./oldGames.controller"
 
 async function oldGameRoutes(server: FastifyInstance) {
@@ -10,6 +10,7 @@ async function oldGameRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["old-games"],
+        querystring: sortAndPaginationSchema,
         response: {
           200: createResponseSchema(oldGameSchema.array())
         }

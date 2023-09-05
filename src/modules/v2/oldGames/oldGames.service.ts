@@ -1,7 +1,22 @@
+import { OldGame } from "@prisma-api-v2/client"
 import { db, getRandomNumber } from "@/utils"
 
-export async function getOldGames() {
-  const [data, meta] = await db.oldGame.paginate().withPages()
+export async function getOldGames(
+  sort: keyof OldGame = "id",
+  sortOrder: "asc" | "desc" = "asc",
+  limit = 100,
+  page = 1
+) {
+  const [data, meta] = await db.oldGame
+    .paginate({
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
 
   return { data, meta }
 }
