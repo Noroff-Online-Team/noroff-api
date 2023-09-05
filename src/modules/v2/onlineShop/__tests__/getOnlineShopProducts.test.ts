@@ -2,10 +2,8 @@ import { server } from "@/test-utils"
 import { db } from "@/utils"
 
 beforeEach(async () => {
-  // createMany doesn't support creating relations, so instead we create two products separately.
   await db.onlineShopProduct.create({
     data: {
-      id: "98660fe4-a14d-4882-9bdf-6de07eac5587",
       title: "Vanilla Perfume",
       description: "Women's perfume that smells a warm and sweet, with nuances of wood and jasmine.",
       price: 2599.99,
@@ -24,10 +22,8 @@ beforeEach(async () => {
       }
     }
   })
-
   await db.onlineShopProduct.create({
     data: {
-      id: "d5991e95-eb59-49d1-8c6b-e399cab2ea8e",
       title: "Toy car",
       description: "A die-cast model of a toy car, perfect for displaying on your shelf.",
       price: 499.95,

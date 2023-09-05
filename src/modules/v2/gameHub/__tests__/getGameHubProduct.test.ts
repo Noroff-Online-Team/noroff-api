@@ -1,11 +1,13 @@
 import { server } from "@/test-utils"
 import { db } from "@/utils"
 
+const PRODUCT_ID = "ded6041a-622f-4fb4-81e4-96fcfdad4dff"
+
 beforeEach(async () => {
   await db.gameHubProducts.createMany({
     data: [
       {
-        id: "ded6041a-622f-4fb4-81e4-96fcfdad4dff",
+        id: PRODUCT_ID,
         title: "Ping Pong Championship",
         description:
           "Enter the world of Ping Pong Championship and compete against the world's best to become the ultimate champion in this exciting game.",
@@ -20,7 +22,6 @@ beforeEach(async () => {
         favorite: true
       },
       {
-        id: "2ace4e1d-cad7-4d35-8d59-6c9ac3e3eaf8",
         title: "Super Duper",
         description: "Celebrate some of the world's supe duper Superheroes with augmented reality.",
         genre: "Adventure",
@@ -47,14 +48,14 @@ afterEach(async () => {
 describe("[GET] /v2/gamehub/:id", () => {
   it("should return single gamehub product based on id", async () => {
     const response = await server.inject({
-      url: "/api/v2/gamehub/ded6041a-622f-4fb4-81e4-96fcfdad4dff",
+      url: `/api/v2/gamehub/${PRODUCT_ID}`,
       method: "GET"
     })
     const res = await response.json()
 
     expect(response.statusCode).toBe(200)
     expect(res.data).toBeDefined()
-    expect(res.data.id).toBeDefined()
+    expect(res.data.id).toBe(PRODUCT_ID)
     expect(res.data.title).toBe("Ping Pong Championship")
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({

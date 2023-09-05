@@ -1,11 +1,13 @@
 import { server } from "@/test-utils"
 import { db } from "@/utils"
 
+const PRODUCT_ID = "07a7655a-7927-421b-ba6a-b6742d5a75b8"
+
 beforeEach(async () => {
   await db.rainyDaysProduct.createMany({
     data: [
       {
-        id: "07a7655a-7927-421b-ba6a-b6742d5a75b8",
+        id: PRODUCT_ID,
         title: "Rainy Days Thunderbolt Jacket",
         description:
           "The Women's Rainy Days Thunderbolt jacket is a sleek and stylish waterproof jacket perfect for any outdoor adventure.",
@@ -20,7 +22,6 @@ beforeEach(async () => {
         favorite: false
       },
       {
-        id: "298d6c5f-5445-4581-9ff5-be921f4ce37c",
         title: "Rainy Days Habita Jacket",
         description:
           "The Women's Rainy Days Habita jacket is a relaxed fit with breathable material that is a packable answer to uncertain weather.",
@@ -48,14 +49,14 @@ afterEach(async () => {
 describe("[GET] /v2/rainy-days/:id", () => {
   it("should return single rainy days product and review based on id", async () => {
     const response = await server.inject({
-      url: "/api/v2/rainy-days/07a7655a-7927-421b-ba6a-b6742d5a75b8",
+      url: `/api/v2/rainy-days/${PRODUCT_ID}`,
       method: "GET"
     })
     const res = await response.json()
 
     expect(response.statusCode).toBe(200)
     expect(res.data).toBeDefined()
-    expect(res.data.id).toBeDefined()
+    expect(res.data.id).toBe(PRODUCT_ID)
     expect(res.data.title).toBe("Rainy Days Thunderbolt Jacket")
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({

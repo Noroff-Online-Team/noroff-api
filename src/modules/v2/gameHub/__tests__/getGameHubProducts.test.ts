@@ -5,7 +5,6 @@ beforeEach(async () => {
   await db.gameHubProducts.createMany({
     data: [
       {
-        id: "ded6041a-622f-4fb4-81e4-96fcfdad4dff",
         title: "Ping Pong Championship",
         description:
           "Enter the world of Ping Pong Championship and compete against the world's best to become the ultimate champion in this exciting game.",
@@ -20,7 +19,6 @@ beforeEach(async () => {
         favorite: true
       },
       {
-        id: "2ace4e1d-cad7-4d35-8d59-6c9ac3e3eaf8",
         title: "Super Duper",
         description: "Celebrate some of the world's supe duper Superheroes with augmented reality.",
         genre: "Adventure",

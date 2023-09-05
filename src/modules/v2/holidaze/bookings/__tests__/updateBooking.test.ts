@@ -54,7 +54,7 @@ afterEach(async () => {
 })
 
 describe("[PUT] /v2/holidaze/bookings/:id", () => {
-  it("should return 201 when successfully updated a listing", async () => {
+  it("should return 200 when successfully updated a listing", async () => {
     const initialResponse = await server.inject({
       url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
       method: "GET",

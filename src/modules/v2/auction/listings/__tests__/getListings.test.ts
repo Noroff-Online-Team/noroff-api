@@ -1,13 +1,15 @@
 import { server, registerUser } from "@/test-utils"
 import { db } from "@/utils"
 
+const TAG_LISTING_ID = "5231496a-0351-4a2a-a876-c036410e0cbc"
+const ACTIVE_LISTING_ID = "c9953c48-0e2d-4d29-8bd9-18e26cc364fc"
+
 beforeEach(async () => {
   const { name } = await registerUser()
 
-  // createMany doesn't support creating relations, so instead we create two products separately.
   await db.auctionListing.create({
     data: {
-      id: "5231496a-0351-4a2a-a876-c036410e0cbc",
+      id: TAG_LISTING_ID,
       title: "Blue chair",
       description: "Selling a blue chair",
       media: {
@@ -25,7 +27,7 @@ beforeEach(async () => {
   })
   await db.auctionListing.create({
     data: {
-      id: "c9953c48-0e2d-4d29-8bd9-18e26cc364fc",
+      id: ACTIVE_LISTING_ID,
       title: "Dinner table with 2 chairs",
       description: "Selling a dinner table with 2 chairs",
       media: {
@@ -114,7 +116,7 @@ describe("[GET] /v2/auction/listings", () => {
     expect(response.statusCode).toBe(200)
     expect(res.data).toBeDefined()
     expect(res.data).toHaveLength(1)
-    expect(res.data[0].id).toBe("5231496a-0351-4a2a-a876-c036410e0cbc")
+    expect(res.data[0].id).toBe(TAG_LISTING_ID)
     expect(res.data[0].title).toBe("Blue chair")
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
@@ -138,7 +140,7 @@ describe("[GET] /v2/auction/listings", () => {
     expect(response.statusCode).toBe(200)
     expect(res.data).toBeDefined()
     expect(res.data).toHaveLength(1)
-    expect(res.data[0].id).toBe("c9953c48-0e2d-4d29-8bd9-18e26cc364fc")
+    expect(res.data[0].id).toBe(ACTIVE_LISTING_ID)
     expect(res.data[0].title).toBe("Dinner table with 2 chairs")
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({

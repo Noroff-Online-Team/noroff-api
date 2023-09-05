@@ -1,4 +1,4 @@
-import { server, getAuthCredentials } from "@/test-utils"
+import { server, registerUser, getAuthCredentials } from "@/test-utils"
 import { db } from "@/utils"
 
 let TEST_USER_NAME = ""
@@ -63,11 +63,7 @@ describe("[GET] /v2/auction/profiles/:id/credits", () => {
   })
 
   it("should throw 400 error when attempting to access another user's credits", async () => {
-    await server.inject({
-      url: "/api/v2/auth/register",
-      method: "POST",
-      payload: { name: "test_user_two", email: "test_user_two@noroff.no", password: "password" }
-    })
+    await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
 
     const response = await server.inject({
       url: `/api/v2/auction/profiles/test_user_two/credits`,

@@ -1,6 +1,7 @@
 import { server, getAuthCredentials } from "@/test-utils"
 import { db } from "@/utils"
 
+const LISTING_ID = "c040dce9-585b-4cfa-99a8-29533f4a3382"
 let TEST_USER_NAME = ""
 let BEARER_TOKEN = ""
 let API_KEY = ""
@@ -12,10 +13,9 @@ beforeEach(async () => {
   API_KEY = apiKey
   TEST_USER_NAME = name
 
-  // Create a listing
   await db.auctionListing.create({
     data: {
-      id: "c040dce9-585b-4cfa-99a8-29533f4a3382",
+      id: LISTING_ID,
       title: "Dinner table with 2 chairs",
       description: "Selling a dinner table with 2 chairs",
       media: {
@@ -58,7 +58,7 @@ describe("[GET] /v2/auction/profiles/:id/listings", () => {
 
     expect(response.statusCode).toBe(200)
     expect(res.data).toBeDefined()
-    expect(res.data[0].id).toBe("c040dce9-585b-4cfa-99a8-29533f4a3382")
+    expect(res.data[0].id).toBe(LISTING_ID)
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
       isFirstPage: true,
@@ -84,7 +84,7 @@ describe("[GET] /v2/auction/profiles/:id/listings", () => {
 
     expect(response.statusCode).toBe(200)
     expect(res.data).toBeDefined()
-    expect(res.data[0].id).toBe("c040dce9-585b-4cfa-99a8-29533f4a3382")
+    expect(res.data[0].id).toBe(LISTING_ID)
     expect(res.data[0].seller).toBeDefined()
     expect(res.data[0].bids).toBeDefined()
     expect(res.meta).toBeDefined()
@@ -112,7 +112,7 @@ describe("[GET] /v2/auction/profiles/:id/listings", () => {
 
     expect(response.statusCode).toBe(200)
     expect(res.data).toBeDefined()
-    expect(res.data[0].id).toBe("c040dce9-585b-4cfa-99a8-29533f4a3382")
+    expect(res.data[0].id).toBe(LISTING_ID)
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
       isFirstPage: true,
@@ -174,7 +174,7 @@ describe("[GET] /v2/auction/profiles/:id/listings", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}`,
+      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/listings`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -194,7 +194,7 @@ describe("[GET] /v2/auction/profiles/:id/listings", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}`,
+      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/listings`,
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

@@ -1,11 +1,13 @@
 import { server } from "@/test-utils"
 import { db } from "@/utils"
 
+const PRODUCT_ID = "04fd79ad-2612-4dab-b2ee-1320c4e5ccd1"
+
 beforeEach(async () => {
   await db.squareEyesProduct.createMany({
     data: [
       {
-        id: "04fd79ad-2612-4dab-b2ee-1320c4e5ccd1",
+        id: PRODUCT_ID,
         title: "The Mandalorian",
         description:
           "The travels of a lone bounty hunter in the outer reaches of the galaxy, far from the authority of the New Republic.",
@@ -20,7 +22,6 @@ beforeEach(async () => {
         favorite: true
       },
       {
-        id: "352ba432-5b5d-4ccc-9aba-f2704c500cf3",
         title: "Hobbs & Shaw",
         description:
           "Lawman Luke Hobbs (Dwayne 'The Rock' Johnson) and outcast Deckard Shaw (Jason Statham) form an unlikely alliance when a cyber-genetically enhanced villain threatens the future of humanity.",
@@ -48,7 +49,7 @@ afterEach(async () => {
 describe("[GET] /v2/square-eyes/:id", () => {
   it("should return single square eyes product and review based on id", async () => {
     const response = await server.inject({
-      url: "/api/v2/square-eyes/04fd79ad-2612-4dab-b2ee-1320c4e5ccd1",
+      url: `/api/v2/square-eyes/${PRODUCT_ID}`,
       method: "GET"
     })
     const res = await response.json()

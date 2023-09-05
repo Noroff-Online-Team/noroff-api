@@ -1,11 +1,13 @@
 import { server } from "@/test-utils"
 import { db } from "@/utils"
 
+const PRODUCT_ID = "98660fe4-a14d-4882-9bdf-6de07eac5587"
+
 beforeEach(async () => {
   // createMany doesn't support creating relations, so instead we create two products separately.
   await db.onlineShopProduct.create({
     data: {
-      id: "98660fe4-a14d-4882-9bdf-6de07eac5587",
+      id: PRODUCT_ID,
       title: "Vanilla Perfume",
       description: "Women's perfume that smells a warm and sweet, with nuances of wood and jasmine.",
       price: 2599.99,
@@ -27,7 +29,6 @@ beforeEach(async () => {
 
   await db.onlineShopProduct.create({
     data: {
-      id: "d5991e95-eb59-49d1-8c6b-e399cab2ea8e",
       title: "Toy car",
       description: "A die-cast model of a toy car, perfect for displaying on your shelf.",
       price: 499.95,
@@ -48,17 +49,18 @@ afterEach(async () => {
 })
 
 describe("[GET] /v2/online-shop/:id", () => {
-  it("should return single online shop product and review based on id", async () => {
+  it("should return single online shop product with reviews based on id", async () => {
     const response = await server.inject({
-      url: "/api/v2/online-shop/98660fe4-a14d-4882-9bdf-6de07eac5587",
+      url: `/api/v2/online-shop/${PRODUCT_ID}`,
       method: "GET"
     })
     const res = await response.json()
 
     expect(response.statusCode).toBe(200)
     expect(res.data).toBeDefined()
-    expect(res.data.id).toBeDefined()
+    expect(res.data.id).toBe(PRODUCT_ID)
     expect(res.data.title).toBe("Vanilla Perfume")
+    expect(res.data.reviews).toBeDefined()
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
       isFirstPage: true,

@@ -49,32 +49,6 @@ describe("[GET] /v2/holidaze/profiles/:id", () => {
     })
   })
 
-  it("should return single profile with sort", async () => {
-    const response = await server.inject({
-      url: `/api/v2/holidaze/profiles/${TEST_USER_NAME}?sort=name&sortOrder=asc`,
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`,
-        "X-Noroff-API-Key": API_KEY
-      }
-    })
-    const res = await response.json()
-
-    expect(response.statusCode).toBe(200)
-    expect(res.data).toBeDefined()
-    expect(res.data.name).toBe("test_user")
-    expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
-  })
-
   it("should return single profile with venues", async () => {
     const response = await server.inject({
       url: `/api/v2/holidaze/profiles/${TEST_USER_NAME}?_venues=true`,

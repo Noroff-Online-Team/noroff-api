@@ -1,4 +1,4 @@
-import { server, getAuthCredentials } from "@/test-utils"
+import { server, registerUser, getAuthCredentials } from "@/test-utils"
 import { db } from "@/utils"
 
 const updateData = {
@@ -114,11 +114,7 @@ describe("[PUT] /v2/auction/profiles/:id", () => {
   })
 
   it("should throw 403 error when attempting to update another user's profile", async () => {
-    await server.inject({
-      url: "/api/v2/auth/register",
-      method: "POST",
-      payload: { name: "test_user_two", email: "test_user_two@noroff.no", password: "password" }
-    })
+    await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
 
     const response = await server.inject({
       url: `/api/v2/auction/profiles/test_user_two`,

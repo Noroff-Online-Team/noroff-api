@@ -1,6 +1,7 @@
 import { server, registerUser, getAuthCredentials } from "@/test-utils"
 import { db } from "@/utils"
 
+const LISTING_ID = "db66a67e-3bb4-4286-a0e3-f4380a07c53d"
 let TEST_USER_NAME = ""
 let BEARER_TOKEN = ""
 let API_KEY = ""
@@ -18,7 +19,7 @@ beforeEach(async () => {
   // Create a listing
   await db.auctionListing.create({
     data: {
-      id: "db66a67e-3bb4-4286-a0e3-f4380a07c53d",
+      id: LISTING_ID,
       title: "Dinner table with 2 chairs",
       endsAt: new Date(new Date().setMonth(new Date().getMonth() + 2)),
       sellerName: userTwoName
@@ -39,7 +40,7 @@ describe("[GET] /v2/auction/profiles/:id/bids", () => {
   it("should return profile bids based on name", async () => {
     await db.auctionBid.create({
       data: {
-        listingId: "db66a67e-3bb4-4286-a0e3-f4380a07c53d",
+        listingId: LISTING_ID,
         amount: 10,
         bidderName: "test_user"
       }

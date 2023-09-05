@@ -50,7 +50,7 @@ afterEach(async () => {
 })
 
 describe("[GET] /v2/holidaze/profiles/:id/bookings", () => {
-  it("should return venues belonging to profile", async () => {
+  it("should return bookings belonging to profile", async () => {
     const response = await server.inject({
       url: `/api/v2/holidaze/profiles/${TEST_USER_NAME}/bookings`,
       method: "GET",
@@ -76,7 +76,7 @@ describe("[GET] /v2/holidaze/profiles/:id/bookings", () => {
     })
   })
 
-  it("should return venues with venue and customer profile", async () => {
+  it("should return bookings with venue and customer profile", async () => {
     const response = await server.inject({
       url: `/api/v2/holidaze/profiles/${TEST_USER_NAME}/bookings?_venue=true&_customer=true`,
       method: "GET",
@@ -104,7 +104,7 @@ describe("[GET] /v2/holidaze/profiles/:id/bookings", () => {
     })
   })
 
-  it("should throw 404 error when attempting to access profile that does not exist", async () => {
+  it("should throw 404 error when attempting to access bookings for profile that does not exist", async () => {
     const response = await server.inject({
       url: `/api/v2/holidaze/profiles/does_not_exist/bookings`,
       method: "GET",

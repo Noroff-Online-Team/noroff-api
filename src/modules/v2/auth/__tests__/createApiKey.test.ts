@@ -1,12 +1,13 @@
 import { server, registerUser } from "@/test-utils"
 import { db } from "@/utils"
 
-const TEST_USER_NAME = "test_user"
-const TEST_USER_EMAIL = "test_user@noroff.no"
-const TEST_USER_PASSWORD = "password"
+let TEST_USER_EMAIL = ""
+let TEST_USER_PASSWORD = ""
 
 beforeEach(async () => {
-  await registerUser({ name: TEST_USER_NAME, email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD })
+  const { email, password } = await registerUser()
+  TEST_USER_EMAIL = email
+  TEST_USER_PASSWORD = password
 })
 
 afterEach(async () => {

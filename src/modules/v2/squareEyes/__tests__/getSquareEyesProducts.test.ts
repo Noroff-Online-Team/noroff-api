@@ -5,7 +5,6 @@ beforeEach(async () => {
   await db.squareEyesProduct.createMany({
     data: [
       {
-        id: "04fd79ad-2612-4dab-b2ee-1320c4e5ccd1",
         title: "The Mandalorian",
         description:
           "The travels of a lone bounty hunter in the outer reaches of the galaxy, far from the authority of the New Republic.",
@@ -20,7 +19,6 @@ beforeEach(async () => {
         favorite: true
       },
       {
-        id: "352ba432-5b5d-4ccc-9aba-f2704c500cf3",
         title: "Hobbs & Shaw",
         description:
           "Lawman Luke Hobbs (Dwayne 'The Rock' Johnson) and outcast Deckard Shaw (Jason Statham) form an unlikely alliance when a cyber-genetically enhanced villain threatens the future of humanity.",

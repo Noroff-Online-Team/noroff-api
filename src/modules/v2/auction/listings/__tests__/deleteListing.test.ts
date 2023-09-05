@@ -45,7 +45,7 @@ describe("[DELETE] /v2/auction/listings/:id", () => {
 
   it("should throw 401 error when attempting to delete without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/${LISTING_ID}c`,
+      url: `/api/v2/auction/listings/${LISTING_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`

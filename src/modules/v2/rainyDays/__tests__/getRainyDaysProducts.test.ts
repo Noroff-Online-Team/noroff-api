@@ -5,7 +5,6 @@ beforeEach(async () => {
   await db.rainyDaysProduct.createMany({
     data: [
       {
-        id: "07a7655a-7927-421b-ba6a-b6742d5a75b8",
         title: "Rainy Days Thunderbolt Jacket",
         description:
           "The Women's Rainy Days Thunderbolt jacket is a sleek and stylish waterproof jacket perfect for any outdoor adventure.",
@@ -20,7 +19,6 @@ beforeEach(async () => {
         favorite: false
       },
       {
-        id: "298d6c5f-5445-4581-9ff5-be921f4ce37c",
         title: "Rainy Days Habita Jacket",
         description:
           "The Women's Rainy Days Habita jacket is a relaxed fit with breathable material that is a packable answer to uncertain weather.",
