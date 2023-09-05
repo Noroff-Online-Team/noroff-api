@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
 import { rainyDaysSchema, rainyDaysParamsSchema } from "./rainyDays.schema"
-import { createResponseSchema } from "@/utils/createResponseSchema"
+import { createResponseSchema, sortAndPaginationSchema } from "@/utils"
 import { getRainyDaysProductsHandler, getRainyDaysProductHandler } from "./rainyDays.controller"
 
 async function rainyDaysRoutes(server: FastifyInstance) {
@@ -10,6 +10,7 @@ async function rainyDaysRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["e-com"],
+        querystring: sortAndPaginationSchema,
         response: {
           200: createResponseSchema(rainyDaysSchema.array())
         }

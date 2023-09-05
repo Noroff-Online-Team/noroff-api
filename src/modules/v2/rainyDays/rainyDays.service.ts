@@ -1,7 +1,22 @@
+import { RainyDaysProduct } from "@prisma-api-v2/client"
 import { db } from "@/utils"
 
-export async function getRainyDaysProducts() {
-  const [data, meta] = await db.rainyDaysProduct.paginate().withPages()
+export async function getRainyDaysProducts(
+  sort: keyof RainyDaysProduct = "id",
+  sortOrder: "asc" | "desc" = "asc",
+  limit = 100,
+  page = 1
+) {
+  const [data, meta] = await db.rainyDaysProduct
+    .paginate({
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
 
   return { data, meta }
 }
