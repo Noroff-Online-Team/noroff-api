@@ -88,6 +88,7 @@ export async function getProfileListings(
 ) {
   const whereTag = tag ? { tags: { has: tag } } : {}
   const whereActive = active ? { endsAt: { gte: new Date() } } : {}
+  const withProfileMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
 
   const [data, meta] = await db.auctionListing
     .paginate({
@@ -101,6 +102,7 @@ export async function getProfileListings(
       },
       include: {
         ...includes,
+        ...withProfileMedia,
         media: true,
         _count: {
           select: {

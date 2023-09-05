@@ -144,7 +144,9 @@ export const getProfilePosts = async (
   page = 1,
   includes: SocialPostIncludes = {}
 ) => {
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    : {}
 
   const [data, meta] = await db.socialPost
     .paginate({

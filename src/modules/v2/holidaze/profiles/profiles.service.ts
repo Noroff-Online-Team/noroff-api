@@ -88,6 +88,8 @@ export async function getProfileVenues(
   page = 1,
   includes: HolidazeVenueIncludes = {}
 ) {
+  const withProfileMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+
   const [data, meta] = await db.holidazeVenue
     .paginate({
       where: { ownerName: name },
@@ -96,6 +98,7 @@ export async function getProfileVenues(
       },
       include: {
         ...includes,
+        ...withProfileMedia,
         meta: true,
         location: true,
         _count: {
@@ -122,6 +125,7 @@ export async function getProfileBookings(
   includes: HolidazeBookingIncludes = {}
 ) {
   const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
+  const withProfileMedia = includes.customer ? { customer: { include: { avatar: true, banner: true } } } : {}
 
   const [data, meta] = await db.holidazeBooking
     .paginate({
@@ -131,7 +135,8 @@ export async function getProfileBookings(
       },
       include: {
         ...includes,
-        ...venueMetaAndLocation
+        ...venueMetaAndLocation,
+        ...withProfileMedia
       }
     })
     .withPages({
