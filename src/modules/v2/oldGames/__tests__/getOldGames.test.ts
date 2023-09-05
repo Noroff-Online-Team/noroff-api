@@ -61,7 +61,7 @@ describe("[GET] /v2/old-games", () => {
     })
   })
 
-  it("should return all books with sort", async () => {
+  it("should return all old games with sort", async () => {
     const response = await server.inject({
       url: "/api/v2/old-games?sort=name&sortOrder=desc",
       method: "GET"

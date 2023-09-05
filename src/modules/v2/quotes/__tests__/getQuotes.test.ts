@@ -44,7 +44,7 @@ afterEach(async () => {
 })
 
 describe("[GET] /v2/quotes", () => {
-  it("should return all old quotes", async () => {
+  it("should return all quotes", async () => {
     const response = await server.inject({
       url: "/api/v2/quotes",
       method: "GET",
@@ -72,7 +72,7 @@ describe("[GET] /v2/quotes", () => {
     })
   })
 
-  it("should return all books with sort", async () => {
+  it("should return all quotes with sort", async () => {
     const response = await server.inject({
       url: "/api/v2/quotes?sort=author&sortOrder=desc",
       method: "GET",

@@ -59,7 +59,7 @@ describe("[GET] /v2/nba-teams", () => {
     })
   })
 
-  it("should return all books with sort", async () => {
+  it("should return all NBA teams with sort", async () => {
     const response = await server.inject({
       url: "/api/v2/nba-teams?sort=city&sortOrder=desc",
       method: "GET"

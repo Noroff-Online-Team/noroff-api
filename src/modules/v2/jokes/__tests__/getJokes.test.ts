@@ -53,7 +53,7 @@ describe("[GET] /v2/jokes", () => {
     })
   })
 
-  it("should return all books with sort", async () => {
+  it("should return all jokes with sort", async () => {
     const response = await server.inject({
       url: "/api/v2/jokes?sort=setup&sortOrder=desc",
       method: "GET"
