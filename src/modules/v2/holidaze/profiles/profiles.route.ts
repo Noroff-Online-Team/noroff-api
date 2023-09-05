@@ -95,7 +95,7 @@ async function profilesRoutes(server: FastifyInstance) {
         tags: ["holidaze-profiles"],
         security: [{ bearerAuth: [] }],
         params: profileNameSchema,
-        querystring: bookingsQuerySchema.omit({ _customer: true }),
+        querystring: bookingsQuerySchema,
         response: {
           200: createResponseSchema(displayBookingSchema.array())
         }
