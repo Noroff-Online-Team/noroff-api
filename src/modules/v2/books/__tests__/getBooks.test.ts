@@ -65,8 +65,7 @@ describe("[GET] /v2/books", () => {
     })
   })
 
-  // TODO: Need to implement support for pagination.
-  it.skip("should return all books with pagination", async () => {
+  it("should return all books with pagination", async () => {
     const response = await server.inject({
       url: "/api/v2/books?page=1&limit=1",
       method: "GET"
@@ -81,10 +80,10 @@ describe("[GET] /v2/books", () => {
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
       isFirstPage: true,
-      isLastPage: true,
+      isLastPage: false,
       currentPage: 1,
       previousPage: null,
-      nextPage: null,
+      nextPage: 2,
       pageCount: 2,
       totalCount: 2
     })
