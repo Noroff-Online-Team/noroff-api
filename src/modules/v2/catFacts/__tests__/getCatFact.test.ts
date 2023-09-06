@@ -58,7 +58,9 @@ describe("[GET] /v2/cat-facts/:id", () => {
     expect(res.meta).not.toBeDefined()
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
-    expect(res.errors[0].message).toBe("No cat fact with such ID")
+    expect(res.errors[0]).toStrictEqual({
+      message: "No cat fact with such ID"
+    })
   })
 
   it("should throw zod error if id is not a number", async () => {
@@ -73,6 +75,8 @@ describe("[GET] /v2/cat-facts/:id", () => {
     expect(res.meta).not.toBeDefined()
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
-    expect(res.errors[0].message).toBe("ID must be a number")
+    expect(res.errors[0]).toStrictEqual({
+      message: "ID must be a number"
+    })
   })
 })

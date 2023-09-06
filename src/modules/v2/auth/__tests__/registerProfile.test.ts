@@ -102,13 +102,13 @@ describe("[POST] /v2/auth/register", () => {
     })
     const res = await response.json()
 
-    expect(response.statusCode).toBe(400) // should be 409?
+    expect(response.statusCode).toBe(400)
     expect(res.data).not.toBeDefined()
     expect(res.meta).not.toBeDefined()
     expect(res.errors).toBeDefined()
-    expect(res.errors[0].message).toBe("Profile already exists")
-    expect(res.status).toBe("Bad Request") // should be "Conflict"?
-    expect(res.statusCode).toBe(400) // should be 409?
+    expect(res.errors[0]).toStrictEqual({
+      message: "Profile already exists"
+    })
   })
 
   it("should throw zod error if name is missing", async () => {

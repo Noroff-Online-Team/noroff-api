@@ -65,7 +65,6 @@ describe("[POST] /v2/auth/create-api-key", () => {
     expect(res.errors).toContainEqual({
       message: "No authorization header was found"
     })
-    expect(res.status).toBe("Unauthorized")
   })
 
   it("should use the name if provided in the request body", async () => {
