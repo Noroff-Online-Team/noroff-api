@@ -80,7 +80,9 @@ describe("[GET] /v2/jokes/:id", () => {
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      message: "ID must be a number"
+      code: "invalid_type",
+      message: "ID must be a number",
+      path: ["id"]
     })
   })
 })

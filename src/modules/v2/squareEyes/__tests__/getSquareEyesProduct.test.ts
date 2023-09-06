@@ -100,7 +100,9 @@ describe("[GET] /v2/square-eyes/:id", () => {
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      message: "ID must be a valid UUID"
+      code: "invalid_string",
+      message: "ID must be a valid UUID",
+      path: ["id"]
     })
   })
 })
