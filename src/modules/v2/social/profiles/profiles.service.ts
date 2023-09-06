@@ -142,15 +142,20 @@ export const getProfilePosts = async (
   sortOrder: "asc" | "desc" = "desc",
   limit = 100,
   page = 1,
-  includes: SocialPostIncludes = {}
+  includes: SocialPostIncludes = {},
+  tag: string | undefined
 ) => {
+  const whereTag = tag ? { tags: { has: tag } } : {}
   const withCommentAuthor = includes.comments
     ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
     : {}
 
   const [data, meta] = await db.socialPost
     .paginate({
-      where: { owner: name },
+      where: {
+        owner: name,
+        ...whereTag
+      },
       orderBy: {
         [sort]: sortOrder
       },

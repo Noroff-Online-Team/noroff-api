@@ -43,6 +43,10 @@ const queryFlagsCore = {
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
-export const profilesQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore)
+export const profilesQuerySchema = sortAndPaginationSchema
+  .extend({
+    _tag: z.string({ invalid_type_error: "Tag must be a string" }).optional()
+  })
+  .extend(queryFlagsCore)
 
 export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>
