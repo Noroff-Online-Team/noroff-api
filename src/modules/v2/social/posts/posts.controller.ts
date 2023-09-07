@@ -123,7 +123,8 @@ export async function createPostHandler(
       _reactions?: boolean
       _comments?: boolean
     }
-  }>
+  }>,
+  reply: FastifyReply
 ) {
   try {
     await mediaSchema.parseAsync(request.body)
@@ -143,7 +144,7 @@ export async function createPostHandler(
 
     const post = await createPost({ ...request.body, owner: name }, includes)
 
-    return post
+    reply.code(201).send(post)
   } catch (error) {
     if (error instanceof ZodError) {
       throw new BadRequest(error.message)
@@ -284,7 +285,8 @@ export async function createCommentHandler(
     Params: { id: number }
     Body: CreateCommentSchema
     Querystring: { _author?: boolean }
-  }>
+  }>,
+  reply: FastifyReply
 ) {
   try {
     const { id } = await postIdParamsSchema.parseAsync(request.params)
@@ -318,7 +320,7 @@ export async function createCommentHandler(
 
     const result = await createComment(id, name, request.body, includes)
 
-    return result
+    reply.code(201).send(result)
   } catch (error) {
     if (error instanceof ZodError) {
       throw new BadRequest(error.message)

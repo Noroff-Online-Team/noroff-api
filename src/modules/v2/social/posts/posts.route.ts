@@ -68,7 +68,7 @@ async function postsRoutes(server: FastifyInstance) {
         querystring: queryFlagsSchema,
         body: createPostBaseSchema,
         response: {
-          200: createResponseSchema(displayPostSchema)
+          201: createResponseSchema(displayPostSchema)
         }
       }
     },
@@ -151,7 +151,7 @@ async function postsRoutes(server: FastifyInstance) {
         params: postIdParamsSchema,
         body: createCommentSchema,
         response: {
-          200: createResponseSchema(displayCommentSchema)
+          201: createResponseSchema(displayCommentSchema)
         }
       }
     },
