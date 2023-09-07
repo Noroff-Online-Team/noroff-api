@@ -61,7 +61,7 @@ describe("[POST] /v2/auction/listings/:id/bids", () => {
     })
     const res = await response.json()
 
-    expect(response.statusCode).toEqual(200)
+    expect(response.statusCode).toEqual(201)
     expect(res.data).toHaveProperty("id")
   })
 
@@ -78,6 +78,8 @@ describe("[POST] /v2/auction/listings/:id/bids", () => {
       }
     })
 
+    expect(response.statusCode).toEqual(201)
+
     const userResponse = await server.inject({
       url: `/api/v2/auction/profiles/${BIDDER_USER_NAME}`,
       method: "GET",
@@ -88,7 +90,6 @@ describe("[POST] /v2/auction/listings/:id/bids", () => {
     })
     const userData = await userResponse.json()
 
-    expect(response.statusCode).toEqual(200)
     expect(userData.data.credits).toEqual(990)
   })
 

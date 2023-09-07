@@ -254,7 +254,8 @@ export async function createListingBidHandler(
       _seller?: boolean
       _bids?: boolean
     }
-  }>
+  }>,
+  reply: FastifyReply
 ) {
   try {
     const { id } = await listingIdParamsSchema.parseAsync(request.params)
@@ -295,7 +296,7 @@ export async function createListingBidHandler(
 
     const updatedListing = await getListing(id, includes)
 
-    return updatedListing
+    reply.code(201).send(updatedListing)
   } catch (error) {
     if (error instanceof ZodError) {
       throw new BadRequest(error.message)
