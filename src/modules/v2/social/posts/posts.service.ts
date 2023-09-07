@@ -40,15 +40,22 @@ export async function getPosts(
     })
 
   const enrichedData = await Promise.all(
-    data.map(async post => {
-      const transformedMedia: Media["media"] = {
-        url: post.media?.url || "",
-        alt: post.media?.alt || ""
+    data.map(async (post): Promise<DisplaySocialPost> => {
+      let transformedMedia: Media["media"] | null = null
+
+      if (post.media?.url) {
+        transformedMedia = {
+          url: post.media.url,
+          alt: post.media.alt || ""
+        }
       }
+
       const enrichedPost: DisplaySocialPost = { ...post, media: transformedMedia }
+
       if (includes.reactions) {
         enrichedPost.reactions = await fetchReactionCounts(post.id)
       }
+
       return enrichedPost
     })
   )
@@ -81,16 +88,20 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
     })
 
   // Return undefined for data if no post was found, allowing for a simple truthiness check in the controller.
-  // Not doing this, will return an empty object for data, which is truthy.
   if (!data.length) {
     return { data: undefined, meta }
   }
 
   const post = data[0]
-  const transformedMedia: Media["media"] = {
-    url: post.media?.url || "",
-    alt: post.media?.alt || ""
+  let transformedMedia: Media["media"] | null = null
+
+  if (post.media?.url) {
+    transformedMedia = {
+      url: post.media.url,
+      alt: post.media.alt || ""
+    }
   }
+
   const enrichedPost: DisplaySocialPost = { ...post, media: transformedMedia }
 
   if (includes.reactions) {
