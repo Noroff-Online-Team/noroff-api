@@ -65,7 +65,7 @@ describe("[DELETE] /v2/holidaze/venues/:id", () => {
     expect(response.statusCode).toEqual(204)
   })
 
-  it("should throw 404 error id venue does not exist", async () => {
+  it("should throw 404 error if venue does not exist", async () => {
     const response = await server.inject({
       url: "/api/v2/holidaze/venues/857be398-8c34-4be9-8729-8b46837ac3c5",
       method: "DELETE",
