@@ -1,5 +1,10 @@
 import { server, getAuthCredentials } from "@/test-utils"
+import { scheduleCreditsTransfer } from "../listing.utils"
 import { db } from "@/utils"
+
+jest.mock("../listing.utils.ts", () => ({
+  scheduleCreditsTransfer: jest.fn()
+}))
 
 const createData = {
   title: "Blue chair",
@@ -17,6 +22,7 @@ let BEARER_TOKEN = ""
 let API_KEY = ""
 
 beforeEach(async () => {
+  jest.clearAllMocks()
   const { bearerToken, apiKey } = await getAuthCredentials()
 
   BEARER_TOKEN = bearerToken
@@ -61,6 +67,7 @@ describe("[POST] /v2/auction/listings", () => {
     })
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({})
+    expect(scheduleCreditsTransfer).toHaveBeenCalledWith(expect.any(String), expect.any(Date))
   })
 
   it("should throw zod errors if data is invalid", async () => {
