@@ -22,7 +22,7 @@
     "docker:down": "docker-compose -f ./docker-compose.tests.yml down",
     "common:test": "yarn docker:up && dotenv -e .env.test -- yarn prisma migrate deploy --schema prisma/v2/schema.prisma && dotenv -e .env.test -- jest --runInBand",
     "test:dev": "yarn common:test --verbose --watch",
-    "test": "yarn common:test && yarn docker:down"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "@fastify/autoload": "^5.7.1",
