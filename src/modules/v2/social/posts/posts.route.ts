@@ -130,7 +130,6 @@ async function postsRoutes(server: FastifyInstance) {
       schema: {
         tags: ["social-posts"],
         security: [{ bearerAuth: [] }],
-        querystring: queryFlagsSchema,
         params: reactionParamsSchema,
         response: {
           200: createResponseSchema(reactionSchema)
