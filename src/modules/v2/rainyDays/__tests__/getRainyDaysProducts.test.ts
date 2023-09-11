@@ -2,37 +2,47 @@ import { server } from "@/test-utils"
 import { db } from "@/utils"
 
 beforeEach(async () => {
-  await db.rainyDaysProduct.createMany({
-    data: [
-      {
-        title: "Rainy Days Thunderbolt Jacket",
-        description:
-          "The Women's Rainy Days Thunderbolt jacket is a sleek and stylish waterproof jacket perfect for any outdoor adventure.",
-        gender: "Female",
-        sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-        baseColor: "Black",
-        price: 139.99,
-        discountedPrice: 139.99,
-        onSale: false,
-        image: "https://static.cloud.noroff.dev/public/rainy-days/9-thunderbolt-jacket.jpg",
-        tags: ["jacket", "womens"],
-        favorite: false
+  await db.rainyDaysProduct.create({
+    data: {
+      title: "Rainy Days Thunderbolt Jacket",
+      description:
+        "The Women's Rainy Days Thunderbolt jacket is a sleek and stylish waterproof jacket perfect for any outdoor adventure.",
+      gender: "Female",
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+      baseColor: "Black",
+      price: 139.99,
+      discountedPrice: 139.99,
+      onSale: false,
+      image: {
+        create: {
+          url: "https://static.cloud.noroff.dev/public/rainy-days/9-thunderbolt-jacket.jpg",
+          alt: ""
+        }
       },
-      {
-        title: "Rainy Days Habita Jacket",
-        description:
-          "The Women's Rainy Days Habita jacket is a relaxed fit with breathable material that is a packable answer to uncertain weather.",
-        gender: "Female",
-        sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-        baseColor: "Black",
-        price: 129.99,
-        discountedPrice: 129.99,
-        onSale: false,
-        image: "https://static.cloud.noroff.dev/public/rainy-days/3-habita-jacket.jpg",
-        tags: ["jacket", "womens"],
-        favorite: true
-      }
-    ]
+      tags: ["jacket", "womens"],
+      favorite: false
+    }
+  })
+  await db.rainyDaysProduct.create({
+    data: {
+      title: "Rainy Days Habita Jacket",
+      description:
+        "The Women's Rainy Days Habita jacket is a relaxed fit with breathable material that is a packable answer to uncertain weather.",
+      gender: "Female",
+      sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+      baseColor: "Black",
+      price: 129.99,
+      discountedPrice: 129.99,
+      onSale: false,
+      image: {
+        create: {
+          url: "https://static.cloud.noroff.dev/public/rainy-days/3-habita-jacket.jpg",
+          alt: ""
+        }
+      },
+      tags: ["jacket", "womens"],
+      favorite: true
+    }
   })
 })
 

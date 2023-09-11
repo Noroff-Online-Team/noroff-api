@@ -11,6 +11,9 @@ export async function getRainyDaysProducts(
     .paginate({
       orderBy: {
         [sort]: sortOrder
+      },
+      include: {
+        image: true
       }
     })
     .withPages({
@@ -24,7 +27,10 @@ export async function getRainyDaysProducts(
 export async function getRainyDaysProduct(id: string) {
   const [data, meta] = await db.rainyDaysProduct
     .paginate({
-      where: { id }
+      where: { id },
+      include: {
+        image: true
+      }
     })
     .withPages({
       limit: 1
