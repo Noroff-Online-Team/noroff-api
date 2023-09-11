@@ -16,7 +16,7 @@ model Book {
   genre       String
   description String
   isbn        String @unique
-  image       String
+  image       Media?
   published   String
   publisher   String
 }
@@ -27,7 +27,7 @@ model OldGame {
   name        String
   description String
   released    String
-  image       String
+  image       Media?
   genre       String[]
 }
 
@@ -69,7 +69,7 @@ model OnlineShopProduct {
   description     String
   price           Float
   discountedPrice Float
-  imageUrl        String
+  image           Media?
   rating          Float
   reviews         OnlineShopReview[]
   tags            String[]
@@ -95,7 +95,7 @@ model RainyDaysProduct {
   price           Float
   discountedPrice Float
   onSale          Boolean
-  image           String
+  image           Media?
   tags            String[]
   favorite        Boolean
 }
@@ -110,7 +110,7 @@ model GameHubProducts {
   price           Float
   discountedPrice Float
   onSale          Boolean
-  image           String
+  image           Media?
   tags            String[]
   favorite        Boolean
 }
@@ -125,26 +125,39 @@ model SquareEyesProduct {
   price           Float
   discountedPrice Float
   onSale          Boolean
-  image           String
+  image           Media?
   tags            String[]
   favorite        Boolean
 }
 
 // Media
 model Media {
-  id               String          @id @default(uuid())
-  url              String
-  alt              String?
-  socialPost       SocialPost?     @relation(fields: [socialPostId], references: [id], onDelete: Cascade)
-  socialPostId     Int?            @unique
-  auctionListing   AuctionListing? @relation(fields: [auctionListingId], references: [id], onDelete: Cascade)
-  auctionListingId String?
-  holidazeVenue    HolidazeVenue?  @relation(fields: [holidazeVenueId], references: [id], onDelete: Cascade)
-  holidazeVenueId  String?
-  userAvatar       UserProfile?    @relation("AvatarMedia", fields: [userAvatarId], references: [id], onDelete: Cascade)
-  userAvatarId     Int?            @unique
-  userBanner       UserProfile?    @relation("BannerMedia", fields: [userBannerId], references: [id], onDelete: Cascade)
-  userBannerId     Int?            @unique
+  id                  String             @id @default(uuid())
+  url                 String
+  alt                 String?
+  // Relations
+  socialPost          SocialPost?        @relation(fields: [socialPostId], references: [id], onDelete: Cascade)
+  socialPostId        Int?               @unique
+  auctionListing      AuctionListing?    @relation(fields: [auctionListingId], references: [id], onDelete: Cascade)
+  auctionListingId    String?
+  holidazeVenue       HolidazeVenue?     @relation(fields: [holidazeVenueId], references: [id], onDelete: Cascade)
+  holidazeVenueId     String?
+  userAvatar          UserProfile?       @relation("AvatarMedia", fields: [userAvatarId], references: [id], onDelete: Cascade)
+  userAvatarId        Int?               @unique
+  userBanner          UserProfile?       @relation("BannerMedia", fields: [userBannerId], references: [id], onDelete: Cascade)
+  userBannerId        Int?               @unique
+  book                Book?              @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId              Int?               @unique
+  oldGame             OldGame?           @relation(fields: [oldGameId], references: [id], onDelete: Cascade)
+  oldGameId           Int?               @unique
+  onlineShopProduct   OnlineShopProduct? @relation(fields: [onlineShopProductId], references: [id], onDelete: Cascade)
+  onlineShopProductId String?            @unique
+  rainyDaysProduct    RainyDaysProduct?  @relation(fields: [rainyDaysProductId], references: [id], onDelete: Cascade)
+  rainyDaysProductId  String?            @unique
+  gameHubProduct      GameHubProducts?   @relation(fields: [gameHubProductId], references: [id], onDelete: Cascade)
+  gameHubProductId    String?            @unique
+  squareEyesProduct   SquareEyesProduct? @relation(fields: [squareEyesProductId], references: [id], onDelete: Cascade)
+  squareEyesProductId String?            @unique
 }
 
 // User API Key
