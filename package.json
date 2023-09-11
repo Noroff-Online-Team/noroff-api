@@ -19,8 +19,7 @@
     "seed:v2": "prisma db seed",
     "docker:up": "docker-compose -f ./docker-compose.tests.yml up -d",
     "docker:down": "docker-compose -f ./docker-compose.tests.yml down",
-    "common:test": "yarn docker:up && dotenv -e .env.test -- yarn prisma migrate deploy --schema prisma/v2/schema.prisma && dotenv -e .env.test -- jest --runInBand",
-    "test:dev": "yarn common:test --verbose --watch",
+    "test:dev": "./src/test-utils/scripts/run-integration.sh",
     "test": "jest --runInBand"
   },
   "dependencies": {
