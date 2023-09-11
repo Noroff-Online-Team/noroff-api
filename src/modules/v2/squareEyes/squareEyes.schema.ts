@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { mediaProperties } from "../auth/auth.schema"
 
 export const squareEyesSchema = z.object({
   id: z.string().uuid(),
@@ -10,7 +11,7 @@ export const squareEyesSchema = z.object({
   price: z.number(),
   discountedPrice: z.number(),
   onSale: z.boolean(),
-  image: z.string(),
+  image: z.object(mediaProperties),
   tags: z.array(z.string()),
   favorite: z.boolean()
 })

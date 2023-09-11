@@ -11,6 +11,9 @@ export async function getSquareEyesProducts(
     .paginate({
       orderBy: {
         [sort]: sortOrder
+      },
+      include: {
+        image: true
       }
     })
     .withPages({
@@ -24,7 +27,10 @@ export async function getSquareEyesProducts(
 export async function getSquareEyesProduct(id: string) {
   const [data, meta] = await db.squareEyesProduct
     .paginate({
-      where: { id }
+      where: { id },
+      include: {
+        image: true
+      }
     })
     .withPages({
       limit: 1

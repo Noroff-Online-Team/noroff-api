@@ -4,38 +4,48 @@ import { db } from "@/utils"
 const PRODUCT_ID = "04fd79ad-2612-4dab-b2ee-1320c4e5ccd1"
 
 beforeEach(async () => {
-  await db.squareEyesProduct.createMany({
-    data: [
-      {
-        id: PRODUCT_ID,
-        title: "The Mandalorian",
-        description:
-          "The travels of a lone bounty hunter in the outer reaches of the galaxy, far from the authority of the New Republic.",
-        genre: "Action",
-        rating: "8.8",
-        released: "2019",
-        price: 124.99,
-        discountedPrice: 124.99,
-        onSale: false,
-        image: "https://static.cloud.noroff.dev/public/square-eyes/10-mandalorian.jpg",
-        tags: ["gamehub", "game"],
-        favorite: true
+  await db.squareEyesProduct.create({
+    data: {
+      id: PRODUCT_ID,
+      title: "The Mandalorian",
+      description:
+        "The travels of a lone bounty hunter in the outer reaches of the galaxy, far from the authority of the New Republic.",
+      genre: "Action",
+      rating: "8.8",
+      released: "2019",
+      price: 124.99,
+      discountedPrice: 124.99,
+      onSale: false,
+      image: {
+        create: {
+          url: "https://static.cloud.noroff.dev/public/square-eyes/10-mandalorian.jpg",
+          alt: ""
+        }
       },
-      {
-        title: "Hobbs & Shaw",
-        description:
-          "Lawman Luke Hobbs (Dwayne 'The Rock' Johnson) and outcast Deckard Shaw (Jason Statham) form an unlikely alliance when a cyber-genetically enhanced villain threatens the future of humanity.",
-        genre: "Action",
-        rating: "6.5",
-        released: "2019",
-        price: 129.99,
-        discountedPrice: 119.99,
-        onSale: true,
-        image: "https://static.cloud.noroff.dev/public/square-eyes/0-hobbs-and-shaw.jpg",
-        tags: ["gamehub", "game"],
-        favorite: true
-      }
-    ]
+      tags: ["gamehub", "game"],
+      favorite: true
+    }
+  })
+  await db.squareEyesProduct.create({
+    data: {
+      title: "Hobbs & Shaw",
+      description:
+        "Lawman Luke Hobbs (Dwayne 'The Rock' Johnson) and outcast Deckard Shaw (Jason Statham) form an unlikely alliance when a cyber-genetically enhanced villain threatens the future of humanity.",
+      genre: "Action",
+      rating: "6.5",
+      released: "2019",
+      price: 129.99,
+      discountedPrice: 119.99,
+      onSale: true,
+      image: {
+        create: {
+          url: "https://static.cloud.noroff.dev/public/square-eyes/0-hobbs-and-shaw.jpg",
+          alt: ""
+        }
+      },
+      tags: ["gamehub", "game"],
+      favorite: true
+    }
   })
 })
 
