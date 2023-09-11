@@ -289,13 +289,13 @@ model HolidazeVenueMeta {
 
 model HolidazeVenueLocation {
   id        String         @id @default(uuid())
-  address   String         @default("Unknown")
-  city      String         @default("Unknown")
-  zip       String         @default("Unknown")
-  country   String         @default("Unknown")
-  continent String         @default("Unknown")
-  lat       Float          @default(0)
-  lng       Float          @default(0)
+  address   String?
+  city      String?
+  zip       String?
+  country   String?
+  continent String?
+  lat       Float?
+  lng       Float?
   venue     HolidazeVenue?
 }
 
