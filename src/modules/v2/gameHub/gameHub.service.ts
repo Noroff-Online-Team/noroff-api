@@ -11,6 +11,9 @@ export async function getGameHubProducts(
     .paginate({
       orderBy: {
         [sort]: sortOrder
+      },
+      include: {
+        image: true
       }
     })
     .withPages({
@@ -24,7 +27,10 @@ export async function getGameHubProducts(
 export async function getGameHubProduct(id: string) {
   const [data, meta] = await db.gameHubProducts
     .paginate({
-      where: { id }
+      where: { id },
+      include: {
+        image: true
+      }
     })
     .withPages({
       limit: 1
