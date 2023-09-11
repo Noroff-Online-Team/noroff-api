@@ -11,6 +11,9 @@ export async function getOldGames(
     .paginate({
       orderBy: {
         [sort]: sortOrder
+      },
+      include: {
+        image: true
       }
     })
     .withPages({
@@ -24,7 +27,10 @@ export async function getOldGames(
 export async function getOldGame(id: number) {
   const [data, meta] = await db.oldGame
     .paginate({
-      where: { id }
+      where: { id },
+      include: {
+        image: true
+      }
     })
     .withPages({
       limit: 1
@@ -39,7 +45,10 @@ export async function getRandomOldGame() {
 
   const [data, meta] = await db.oldGame
     .paginate({
-      where: { id }
+      where: { id },
+      include: {
+        image: true
+      }
     })
     .withPages({
       limit: 1
