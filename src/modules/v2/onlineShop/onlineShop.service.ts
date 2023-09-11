@@ -13,7 +13,8 @@ export async function getOnlineShopProducts(
         [sort]: sortOrder
       },
       include: {
-        reviews: true
+        reviews: true,
+        image: true
       }
     })
     .withPages({
@@ -29,7 +30,8 @@ export async function getOnlineShopProduct(id: string) {
     .paginate({
       where: { id },
       include: {
-        reviews: true
+        reviews: true,
+        image: true
       }
     })
     .withPages({

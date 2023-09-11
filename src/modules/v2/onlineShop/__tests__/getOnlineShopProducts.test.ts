@@ -8,7 +8,12 @@ beforeEach(async () => {
       description: "Women's perfume that smells a warm and sweet, with nuances of wood and jasmine.",
       price: 2599.99,
       discountedPrice: 2079.99,
-      imageUrl: "https://static.cloud.noroff.dev/public/online-shop/1-perfume-white.jpg",
+      image: {
+        create: {
+          url: "https://static.cloud.noroff.dev/public/online-shop/1-perfume-white.jpg",
+          alt: ""
+        }
+      },
       rating: 5,
       tags: ["perfume", "beauty"],
       reviews: {
@@ -28,7 +33,12 @@ beforeEach(async () => {
       description: "A die-cast model of a toy car, perfect for displaying on your shelf.",
       price: 499.95,
       discountedPrice: 449.95,
-      imageUrl: "https://static.cloud.noroff.dev/public/online-shop/12-toy-car.jpg",
+      image: {
+        create: {
+          url: "https://static.cloud.noroff.dev/public/online-shop/12-toy-car.jpg",
+          alt: ""
+        }
+      },
       rating: 0,
       tags: ["toy"]
     }

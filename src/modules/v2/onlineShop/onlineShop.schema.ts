@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { mediaProperties } from "../auth/auth.schema"
 
 export const onlineShopSchema = z.object({
   id: z.string().uuid(),
@@ -6,7 +7,7 @@ export const onlineShopSchema = z.object({
   description: z.string(),
   price: z.number(),
   discountedPrice: z.number(),
-  imageUrl: z.string(),
+  image: z.object(mediaProperties),
   rating: z.number(),
   tags: z.array(z.string()),
   reviews: z
