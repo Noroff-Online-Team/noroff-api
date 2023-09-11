@@ -62,7 +62,8 @@ export const venueCore = {
       dateTo: z.date(),
       guests: z.number().int(),
       created: z.date(),
-      updated: z.date()
+      updated: z.date(),
+      customer: z.object(profileCore)
     })
     .array()
     .optional()

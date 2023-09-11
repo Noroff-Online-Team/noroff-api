@@ -1,4 +1,4 @@
-import { createVenueSchema, CreateVenueSchema, updateVenueSchema, UpdateVenueSchema } from "./venues.schema"
+import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
 import { HolidazeVenue } from "@prisma-api-v2/client"
 import { db } from "@/utils"
 import { HolidazeVenueIncludes } from "./venues.controller"
@@ -17,6 +17,11 @@ export async function getVenues(
   page = 1,
   includes: HolidazeVenueIncludes = {}
 ) {
+  const withOwnerMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+  const withBookingCustomer = includes.bookings
+    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    : {}
+
   const [data, meta] = await db.holidazeVenue
     .paginate({
       orderBy: {
@@ -24,6 +29,8 @@ export async function getVenues(
       },
       include: {
         ...includes,
+        ...withOwnerMedia,
+        ...withBookingCustomer,
         meta: true,
         location: true,
         media: true
@@ -38,11 +45,18 @@ export async function getVenues(
 }
 
 export async function getVenue(id: string, includes: HolidazeVenueIncludes = {}) {
+  const withOwnerMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+  const withBookingCustomer = includes.bookings
+    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    : {}
+
   const [data, meta] = await db.holidazeVenue
     .paginate({
       where: { id },
       include: {
         ...includes,
+        ...withOwnerMedia,
+        ...withBookingCustomer,
         meta: true,
         location: true,
         media: true
@@ -60,7 +74,11 @@ export async function createVenue(
   createData: CreateVenueSchema,
   includes: HolidazeVenueIncludes = {}
 ) {
-  const { meta, location, media, ...rest } = await createVenueSchema.parseAsync(createData)
+  const { meta, location, media, ...rest } = createData
+  const withOwnerMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+  const withBookingCustomer = includes.bookings
+    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    : {}
 
   const venueMeta = await db.holidazeVenueMeta.create({
     data: { ...meta }
@@ -80,6 +98,8 @@ export async function createVenue(
     },
     include: {
       ...includes,
+      ...withOwnerMedia,
+      ...withBookingCustomer,
       meta: true,
       location: true
     }
@@ -89,7 +109,11 @@ export async function createVenue(
 }
 
 export async function updateVenue(id: string, updateData: UpdateVenueSchema, includes: HolidazeVenueIncludes = {}) {
-  const { meta, location, media, ...rest } = await updateVenueSchema.parseAsync(updateData)
+  const { meta, location, media, ...rest } = updateData
+  const withOwnerMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+  const withBookingCustomer = includes.bookings
+    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    : {}
 
   const data = await db.holidazeVenue.update({
     where: { id },
@@ -111,6 +135,8 @@ export async function updateVenue(id: string, updateData: UpdateVenueSchema, inc
     },
     include: {
       ...includes,
+      ...withOwnerMedia,
+      ...withBookingCustomer,
       meta: true,
       location: true
     }
