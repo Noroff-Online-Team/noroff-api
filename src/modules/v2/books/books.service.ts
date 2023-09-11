@@ -6,6 +6,9 @@ export async function getBooks(sort: keyof Book = "id", sortOrder: "asc" | "desc
     .paginate({
       orderBy: {
         [sort]: sortOrder
+      },
+      include: {
+        image: true
       }
     })
     .withPages({
@@ -19,7 +22,10 @@ export async function getBooks(sort: keyof Book = "id", sortOrder: "asc" | "desc
 export async function getBook(id: number) {
   const [data, meta] = await db.book
     .paginate({
-      where: { id }
+      where: { id },
+      include: {
+        image: true
+      }
     })
     .withPages({
       limit: 1
@@ -34,7 +40,10 @@ export async function getRandomBook() {
 
   const [data, meta] = await db.book
     .paginate({
-      where: { id }
+      where: { id },
+      include: {
+        image: true
+      }
     })
     .withPages({
       limit: 1

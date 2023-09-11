@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { mediaProperties } from "../auth/auth.schema"
 
 export const bookSchema = z.object({
   id: z.number().int(),
@@ -7,7 +8,7 @@ export const bookSchema = z.object({
   genre: z.string(),
   description: z.string(),
   isbn: z.string(),
-  image: z.string(),
+  image: z.object(mediaProperties),
   published: z.string(),
   publisher: z.string()
 })
