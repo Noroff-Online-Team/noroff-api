@@ -18,6 +18,8 @@ export async function getProfiles(
       },
       include: {
         ...includes,
+        avatar: true,
+        banner: true,
         _count: {
           select: {
             posts: true,
@@ -41,6 +43,8 @@ export const getProfile = async (name: string, includes: ProfileIncludes = {}) =
       where: { name },
       include: {
         ...includes,
+        avatar: true,
+        banner: true,
         _count: {
           select: {
             posts: true,
@@ -82,19 +86,17 @@ export const followProfile = async (target: string, follower: string) => {
         }
       }
     },
-    select: {
-      name: true,
-      avatar: true,
+    include: {
       followers: {
-        select: {
-          name: true,
-          avatar: true
+        include: {
+          avatar: true,
+          banner: true
         }
       },
       following: {
-        select: {
-          name: true,
-          avatar: true
+        include: {
+          avatar: true,
+          banner: true
         }
       }
     }
@@ -115,19 +117,17 @@ export const unfollowProfile = async (target: string, follower: string) => {
         }
       }
     },
-    select: {
-      name: true,
-      avatar: true,
+    include: {
       followers: {
-        select: {
-          name: true,
-          avatar: true
+        include: {
+          avatar: true,
+          banner: true
         }
       },
       following: {
-        select: {
-          name: true,
-          avatar: true
+        include: {
+          avatar: true,
+          banner: true
         }
       }
     }
@@ -142,13 +142,20 @@ export const getProfilePosts = async (
   sortOrder: "asc" | "desc" = "desc",
   limit = 100,
   page = 1,
-  includes: SocialPostIncludes = {}
+  includes: SocialPostIncludes = {},
+  tag: string | undefined
 ) => {
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const whereTag = tag ? { tags: { has: tag } } : {}
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    : {}
 
   const [data, meta] = await db.socialPost
     .paginate({
-      where: { owner: name },
+      where: {
+        owner: name,
+        ...whereTag
+      },
       orderBy: {
         [sort]: sortOrder
       },

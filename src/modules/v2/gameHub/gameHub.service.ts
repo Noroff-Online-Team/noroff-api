@@ -1,7 +1,22 @@
+import { GameHubProducts } from "@prisma-api-v2/client"
 import { db } from "@/utils"
 
-export async function getGameHubProducts() {
-  const [data, meta] = await db.gameHubProducts.paginate().withPages()
+export async function getGameHubProducts(
+  sort: keyof GameHubProducts = "id",
+  sortOrder: "asc" | "desc" = "asc",
+  limit = 100,
+  page = 1
+) {
+  const [data, meta] = await db.gameHubProducts
+    .paginate({
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
 
   return { data, meta }
 }

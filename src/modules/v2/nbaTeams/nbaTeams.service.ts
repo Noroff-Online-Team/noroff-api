@@ -1,7 +1,22 @@
+import { NbaTeam } from "@prisma-api-v2/client"
 import { db, getRandomNumber } from "@/utils"
 
-export async function getNbaTeams() {
-  const [data, meta] = await db.nbaTeam.paginate().withPages()
+export async function getNbaTeams(
+  sort: keyof NbaTeam = "id",
+  sortOrder: "asc" | "desc" = "asc",
+  limit = 100,
+  page = 1
+) {
+  const [data, meta] = await db.nbaTeam
+    .paginate({
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
 
   return { data, meta }
 }

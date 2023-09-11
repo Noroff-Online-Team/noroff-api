@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
 import { catFactSchema, catFactParamsSchema } from "./catFacts.schema"
-import { createResponseSchema } from "@/utils/createResponseSchema"
+import { createResponseSchema, sortAndPaginationSchema } from "@/utils"
 import { getCatFactsHandler, getCatFactHandler, getRandomCatFactHandler } from "./catFacts.controller"
 
 async function catFactsRoutes(server: FastifyInstance) {
@@ -10,6 +10,7 @@ async function catFactsRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["cat-facts"],
+        querystring: sortAndPaginationSchema,
         response: {
           200: createResponseSchema(catFactSchema.array())
         }

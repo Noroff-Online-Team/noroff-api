@@ -1,13 +1,31 @@
 import { FastifyRequest } from "fastify"
+import { NbaTeam } from "@prisma-api-v2/client"
 import { NotFound, BadRequest, InternalServerError } from "http-errors"
 import { ZodError } from "zod"
 import { nbaTeamParamsSchema } from "./nbaTeams.schema"
+import { sortAndPaginationSchema } from "@/utils"
 
 import { getNbaTeams, getNbaTeam, getRandomNbaTeam } from "./nbaTeams.service"
 
-export async function getNbaTeamsHandler() {
+export async function getNbaTeamsHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      limit?: number
+      page?: number
+      sort?: keyof NbaTeam
+      sortOrder?: "asc" | "desc"
+    }
+  }>
+) {
   try {
-    const nbaTeams = await getNbaTeams()
+    await sortAndPaginationSchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page } = request.query
+
+    if (limit && limit > 100) {
+      throw new BadRequest("Limit cannot be greater than 100")
+    }
+
+    const nbaTeams = await getNbaTeams(sort, sortOrder, limit, page)
 
     if (!nbaTeams.data.length) {
       throw new NotFound("Couldn't find any NBA teams.")

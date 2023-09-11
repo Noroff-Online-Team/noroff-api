@@ -1,13 +1,31 @@
 import { FastifyRequest } from "fastify"
+import { Quote } from "@prisma-api-v2/client"
 import { NotFound, BadRequest, InternalServerError } from "http-errors"
 import { ZodError } from "zod"
 import { quoteParamsSchema } from "./quotes.schema"
+import { sortAndPaginationSchema } from "@/utils"
 
 import { getQuotes, getQuote, getRandomQuote } from "./quotes.service"
 
-export async function getQuotesHandler() {
+export async function getQuotesHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      limit?: number
+      page?: number
+      sort?: keyof Quote
+      sortOrder?: "asc" | "desc"
+    }
+  }>
+) {
   try {
-    const quotes = await getQuotes()
+    await sortAndPaginationSchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page } = request.query
+
+    if (limit && limit > 100) {
+      throw new BadRequest("Limit cannot be greater than 100")
+    }
+
+    const quotes = await getQuotes(sort, sortOrder, limit, page)
 
     if (!quotes.data.length) {
       throw new NotFound("Couldn't find any quotes.")

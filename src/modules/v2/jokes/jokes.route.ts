@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
 import { jokeSchema, jokeParamsSchema } from "./jokes.schema"
-import { createResponseSchema } from "@/utils/createResponseSchema"
+import { createResponseSchema, sortAndPaginationSchema } from "@/utils"
 import { getJokesHandler, getJokeHandler, getRandomJokeHandler } from "./jokes.controller"
 
 async function jokeRoutes(server: FastifyInstance) {
@@ -10,6 +10,7 @@ async function jokeRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["jokes"],
+        querystring: sortAndPaginationSchema,
         response: {
           200: createResponseSchema(jokeSchema.array())
         }

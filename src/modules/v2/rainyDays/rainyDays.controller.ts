@@ -1,13 +1,31 @@
 import { FastifyRequest } from "fastify"
-import { NotFound, BadRequest, InternalServerError } from "http-errors"
+import { RainyDaysProduct } from "@prisma-api-v2/client"
+import { isHttpError, NotFound, BadRequest, InternalServerError } from "http-errors"
 import { ZodError } from "zod"
 import { rainyDaysParamsSchema } from "./rainyDays.schema"
+import { sortAndPaginationSchema } from "@/utils"
 
 import { getRainyDaysProducts, getRainyDaysProduct } from "./rainyDays.service"
 
-export async function getRainyDaysProductsHandler() {
+export async function getRainyDaysProductsHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      limit?: number
+      page?: number
+      sort?: keyof RainyDaysProduct
+      sortOrder?: "asc" | "desc"
+    }
+  }>
+) {
   try {
-    const products = await getRainyDaysProducts()
+    await sortAndPaginationSchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page } = request.query
+
+    if (limit && limit > 100) {
+      throw new BadRequest("Limit cannot be greater than 100")
+    }
+
+    const products = await getRainyDaysProducts(sort, sortOrder, limit, page)
 
     if (!products.data.length) {
       throw new NotFound("Couldn't find any products.")
@@ -15,7 +33,11 @@ export async function getRainyDaysProductsHandler() {
 
     return products
   } catch (error) {
-    if (error instanceof NotFound) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
+    }
+
+    if (isHttpError(error)) {
       throw error
     }
 
@@ -44,7 +66,7 @@ export async function getRainyDaysProductHandler(
       throw new BadRequest(error.message)
     }
 
-    if (error instanceof NotFound) {
+    if (isHttpError(error)) {
       throw error
     }
 

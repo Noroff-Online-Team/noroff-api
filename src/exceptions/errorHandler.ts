@@ -22,6 +22,18 @@ export default async function (error: FastifyError, request: FastifyRequest, rep
     errors = parsedErrors
   }
 
+  if (error.code === "FST_JWT_NO_AUTHORIZATION_IN_HEADER") {
+    reply.code(statusCode).send({
+      errors: [
+        {
+          message: "No authorization header was found"
+        }
+      ],
+      status: statuses(statusCode),
+      statusCode
+    })
+  }
+
   reply.code(statusCode).send({
     errors,
     status: statuses(statusCode),

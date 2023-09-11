@@ -1,13 +1,31 @@
 import { FastifyRequest } from "fastify"
+import { GameHubProducts } from "@prisma-api-v2/client"
 import { NotFound, BadRequest, InternalServerError } from "http-errors"
 import { ZodError } from "zod"
 import { gameHubParamsSchema } from "./gameHub.schema"
+import { sortAndPaginationSchema } from "@/utils"
 
 import { getGameHubProducts, getGameHubProduct } from "./gameHub.service"
 
-export async function getGameHubProductsHandler() {
+export async function getGameHubProductsHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      limit?: number
+      page?: number
+      sort?: keyof GameHubProducts
+      sortOrder?: "asc" | "desc"
+    }
+  }>
+) {
   try {
-    const products = await getGameHubProducts()
+    await sortAndPaginationSchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page } = request.query
+
+    if (limit && limit > 100) {
+      throw new BadRequest("Limit cannot be greater than 100")
+    }
+
+    const products = await getGameHubProducts(sort, sortOrder, limit, page)
 
     if (!products.data.length) {
       throw new NotFound("Couldn't find any products.")

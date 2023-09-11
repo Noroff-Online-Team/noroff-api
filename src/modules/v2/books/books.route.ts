@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
 import { bookSchema, bookParamsSchema } from "./books.schema"
-import { createResponseSchema } from "@/utils/createResponseSchema"
+import { createResponseSchema, sortAndPaginationSchema } from "@/utils"
 import { getBooksHandler, getBookHandler, getRandomBookHandler } from "./books.controller"
 
 async function bookRoutes(server: FastifyInstance) {
@@ -10,6 +10,7 @@ async function bookRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["books"],
+        querystring: sortAndPaginationSchema,
         response: {
           200: createResponseSchema(bookSchema.array())
         }

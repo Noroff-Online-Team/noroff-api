@@ -9,16 +9,14 @@ const mediaCore = {
 export const mediaSchema = z.object(mediaCore)
 
 const tagsAndMedia = {
-  tags: z.union([
-    z
-      .string({
-        invalid_type_error: "Tags must be an array of strings"
-      })
-      .max(24, "Tags cannot be greater than 24 characters")
-      .array()
-      .max(8, "You cannot have more than 8 tags"),
-    z.undefined()
-  ]),
+  tags: z
+    .string({
+      invalid_type_error: "Tags must be an array of strings"
+    })
+    .max(24, "Tags cannot be greater than 24 characters")
+    .array()
+    .max(8, "You cannot have more than 8 tags")
+    .optional(),
   ...mediaCore
 }
 

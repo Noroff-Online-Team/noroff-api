@@ -1,13 +1,31 @@
 import { FastifyRequest } from "fastify"
-import { NotFound, BadRequest, InternalServerError } from "http-errors"
+import { Book } from "@prisma-api-v2/client"
+import { isHttpError, NotFound, BadRequest, InternalServerError } from "http-errors"
 import { ZodError } from "zod"
 import { bookParamsSchema } from "./books.schema"
+import { sortAndPaginationSchema } from "@/utils"
 
 import { getBooks, getBook, getRandomBook } from "./books.service"
 
-export async function getBooksHandler() {
+export async function getBooksHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      limit?: number
+      page?: number
+      sort?: keyof Book
+      sortOrder?: "asc" | "desc"
+    }
+  }>
+) {
   try {
-    const books = await getBooks()
+    await sortAndPaginationSchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page } = request.query
+
+    if (limit && limit > 100) {
+      throw new BadRequest("Limit cannot be greater than 100")
+    }
+
+    const books = await getBooks(sort, sortOrder, limit, page)
 
     if (!books.data.length) {
       throw new NotFound("Couldn't find any books.")
@@ -15,7 +33,11 @@ export async function getBooksHandler() {
 
     return books
   } catch (error) {
-    if (error instanceof NotFound) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
+    }
+
+    if (isHttpError(error)) {
       throw error
     }
 
@@ -44,7 +66,7 @@ export async function getBookHandler(
       throw new BadRequest(error.message)
     }
 
-    if (error instanceof NotFound) {
+    if (isHttpError(error)) {
       throw error
     }
 
@@ -62,7 +84,7 @@ export async function getRandomBookHandler() {
 
     return book
   } catch (error) {
-    if (error instanceof NotFound) {
+    if (isHttpError(error)) {
       throw error
     }
 

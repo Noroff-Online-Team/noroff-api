@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
 import { squareEyesSchema, squareEyesParamsSchema } from "./squareEyes.schema"
-import { createResponseSchema } from "@/utils/createResponseSchema"
+import { createResponseSchema, sortAndPaginationSchema } from "@/utils"
 import { getSquareEyesProductsHandler, getSquareEyesProductHandler } from "./squareEyes.controller"
 
 async function squareEyesRoutes(server: FastifyInstance) {
@@ -10,6 +10,7 @@ async function squareEyesRoutes(server: FastifyInstance) {
     {
       schema: {
         tags: ["e-com"],
+        querystring: sortAndPaginationSchema,
         response: {
           200: createResponseSchema(squareEyesSchema.array())
         }

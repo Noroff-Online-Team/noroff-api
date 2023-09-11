@@ -1,7 +1,17 @@
+import { Quote } from "@prisma-api-v2/client"
 import { db, getRandomNumber } from "@/utils"
 
-export async function getQuotes() {
-  const [data, meta] = await db.quote.paginate().withPages()
+export async function getQuotes(sort: keyof Quote = "id", sortOrder: "asc" | "desc" = "asc", limit = 100, page = 1) {
+  const [data, meta] = await db.quote
+    .paginate({
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
 
   return { data, meta }
 }

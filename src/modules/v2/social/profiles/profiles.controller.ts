@@ -3,7 +3,7 @@ import { FastifyRequest } from "fastify"
 import { mediaGuard } from "@/utils/mediaGuard"
 import { UpdateProfileSchema } from "./profiles.schema"
 import { SocialPostIncludes } from "../posts/posts.controller"
-import { isHttpError, NotFound, BadRequest, InternalServerError } from "http-errors"
+import { isHttpError, NotFound, BadRequest, Forbidden, InternalServerError } from "http-errors"
 
 import {
   getProfiles,
@@ -121,14 +121,14 @@ export async function updateProfileHandler(
     const { name: profileToUpdate } = profileNameSchema.parse(request.params)
     const { name: requesterProfile } = request.user as UserProfile
 
-    if (requesterProfile.toLowerCase() !== profileToUpdate.toLowerCase()) {
-      throw new BadRequest("You can't update another user's profile")
-    }
-
     const profileExists = await getProfile(profileToUpdate)
 
     if (!profileExists.data) {
-      throw new BadRequest("No profile with this name")
+      throw new NotFound("No profile with this name")
+    }
+
+    if (requesterProfile.toLowerCase() !== profileToUpdate.toLowerCase()) {
+      throw new Forbidden("You do not have permission to update this profile")
     }
 
     if (avatar?.url) {
@@ -170,7 +170,7 @@ export async function followProfileHandler(
     const profileExists = await getProfile(target)
 
     if (!profileExists.data) {
-      throw new BadRequest("No profile with this name")
+      throw new NotFound("No profile with this name")
     }
 
     const isFollowing = await checkIsUserFollowing(follower, target)
@@ -211,7 +211,7 @@ export async function unfollowProfileHandler(
     const profileExists = await getProfile(target)
 
     if (!profileExists.data) {
-      throw new BadRequest("No profile with this name")
+      throw new NotFound("No profile with this name")
     }
 
     const isFollowing = await checkIsUserFollowing(follower, target)
@@ -245,6 +245,7 @@ export async function getProfilePostsHandler(
       _author?: boolean
       _reactions?: boolean
       _comments?: boolean
+      _tag?: string
       sort?: keyof SocialPost
       sortOrder?: "asc" | "desc"
     }
@@ -253,7 +254,7 @@ export async function getProfilePostsHandler(
   try {
     await profilesQuerySchema.parseAsync(request.query)
     const { name } = profileNameSchema.parse(request.params)
-    const { sort, sortOrder, limit, page, _author, _reactions, _comments } = request.query
+    const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } = request.query
 
     if (limit && limit > 100) {
       throw new BadRequest("Limit cannot be greater than 100")
@@ -271,7 +272,7 @@ export async function getProfilePostsHandler(
       comments: Boolean(_comments)
     }
 
-    const posts = await getProfilePosts(name, sort, sortOrder, limit, page, includes)
+    const posts = await getProfilePosts(name, sort, sortOrder, limit, page, includes, _tag)
 
     return posts
   } catch (error) {

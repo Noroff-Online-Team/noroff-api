@@ -11,7 +11,9 @@ export async function getPosts(
   includes: SocialPostIncludes = {},
   tag: string | undefined
 ) {
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    : {}
   const whereTag = tag ? { tags: { has: tag } } : {}
 
   const [data, meta] = await db.socialPost
@@ -38,15 +40,22 @@ export async function getPosts(
     })
 
   const enrichedData = await Promise.all(
-    data.map(async post => {
-      const transformedMedia: Media["media"] = {
-        url: post.media?.url || "",
-        alt: post.media?.alt || ""
+    data.map(async (post): Promise<DisplaySocialPost> => {
+      let transformedMedia: Media["media"] | null = null
+
+      if (post.media?.url) {
+        transformedMedia = {
+          url: post.media.url,
+          alt: post.media.alt || ""
+        }
       }
+
       const enrichedPost: DisplaySocialPost = { ...post, media: transformedMedia }
+
       if (includes.reactions) {
         enrichedPost.reactions = await fetchReactionCounts(post.id)
       }
+
       return enrichedPost
     })
   )
@@ -55,7 +64,9 @@ export async function getPosts(
 }
 
 export async function getPost(id: number, includes: SocialPostIncludes = {}) {
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    : {}
 
   const [data, meta] = await db.socialPost
     .paginate({
@@ -77,16 +88,20 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
     })
 
   // Return undefined for data if no post was found, allowing for a simple truthiness check in the controller.
-  // Not doing this, will return an empty object for data, which is truthy.
   if (!data.length) {
     return { data: undefined, meta }
   }
 
   const post = data[0]
-  const transformedMedia: Media["media"] = {
-    url: post.media?.url || "",
-    alt: post.media?.alt || ""
+  let transformedMedia: Media["media"] | null = null
+
+  if (post.media?.url) {
+    transformedMedia = {
+      url: post.media.url,
+      alt: post.media.alt || ""
+    }
   }
+
   const enrichedPost: DisplaySocialPost = { ...post, media: transformedMedia }
 
   if (includes.reactions) {
@@ -98,7 +113,9 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
 
 export const createPost = async (createPostData: CreatePostSchema, includes: SocialPostIncludes = {}) => {
   const { media, ...restData } = createPostData
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    : {}
   const withMedia = media?.url ? { media: true } : {}
 
   const data = await db.socialPost.create({
@@ -128,7 +145,9 @@ export const updatePost = async (
   includes: SocialPostIncludes = {}
 ) => {
   const { media, ...restData } = updatePostData
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    : {}
   const withMedia = media?.url ? { media: true } : {}
 
   const data = await db.socialPost.update({
@@ -250,6 +269,8 @@ export const createComment = async (
   comment: CreateCommentSchema,
   includes: { author?: boolean } = {}
 ) => {
+  const withAuthor = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
+
   const data = await db.socialPostComment.create({
     data: {
       ...comment,
@@ -257,7 +278,7 @@ export const createComment = async (
       owner
     },
     include: {
-      ...includes
+      ...withAuthor
     }
   })
 
@@ -285,8 +306,11 @@ export const getPostsOfFollowedUsers = async (
   includes: SocialPostIncludes = {},
   tag: string | undefined
 ) => {
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    : {}
   const whereTag = tag ? { tags: { has: tag } } : {}
+  const withProfileMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
 
   const [data, meta] = await db.socialPost
     .paginate({
@@ -304,6 +328,7 @@ export const getPostsOfFollowedUsers = async (
       include: {
         ...includes,
         ...withCommentAuthor,
+        ...withProfileMedia,
         media: true,
         _count: {
           select: {

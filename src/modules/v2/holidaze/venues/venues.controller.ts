@@ -106,7 +106,8 @@ export async function createVenueHandler(
       _owner?: boolean
       _bookings?: boolean
     }
-  }>
+  }>,
+  reply: FastifyReply
 ) {
   try {
     const { name } = request.user as UserProfile
@@ -136,7 +137,7 @@ export async function createVenueHandler(
 
     const venue = await createVenue(name, request.body, includes)
 
-    return venue
+    reply.code(201).send(venue)
   } catch (error) {
     if (error instanceof ZodError) {
       throw new BadRequest(error.message)

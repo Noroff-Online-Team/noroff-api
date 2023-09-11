@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
 import { quoteSchema, quoteParamsSchema } from "./quotes.schema"
-import { createResponseSchema } from "@/utils/createResponseSchema"
+import { createResponseSchema, sortAndPaginationSchema } from "@/utils"
 import { getQuotesHandler, getQuoteHandler, getRandomQuoteHandler } from "./quotes.controller"
 
 async function quotesRoutes(server: FastifyInstance) {
@@ -12,6 +12,7 @@ async function quotesRoutes(server: FastifyInstance) {
       schema: {
         tags: ["quotes"],
         security: [{ bearerAuth: [] }],
+        querystring: sortAndPaginationSchema,
         response: {
           200: createResponseSchema(quoteSchema.array())
         }

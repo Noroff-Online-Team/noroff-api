@@ -110,14 +110,14 @@ export async function updateProfileHandler(
     const { name: profileToUpdate } = await profileNameSchema.parseAsync(request.params)
     const { name: requesterProfile } = request.user as UserProfile
 
-    if (profileToUpdate.toLowerCase() !== requesterProfile.toLowerCase()) {
-      throw new Forbidden("You do not have permission to update this profile")
-    }
-
     const profile = await getProfile(profileToUpdate)
 
     if (!profile.data) {
       throw new NotFound("No profile with this name")
+    }
+
+    if (profileToUpdate.toLowerCase() !== requesterProfile.toLowerCase()) {
+      throw new Forbidden("You do not have permission to update this profile")
     }
 
     if (avatar?.url) {

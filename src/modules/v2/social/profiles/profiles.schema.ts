@@ -20,6 +20,8 @@ const profileFollows = {
   following: z.object(profileCore).array().optional()
 }
 
+export const followUnfollowProfileSchema = z.object(profileFollows)
+
 export const displayProfileSchema = z.object({
   ...profileCore,
   ...profileFollows,
@@ -41,6 +43,10 @@ const queryFlagsCore = {
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
-export const profilesQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore)
+export const profilesQuerySchema = sortAndPaginationSchema
+  .extend({
+    _tag: z.string({ invalid_type_error: "Tag must be a string" }).optional()
+  })
+  .extend(queryFlagsCore)
 
 export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>

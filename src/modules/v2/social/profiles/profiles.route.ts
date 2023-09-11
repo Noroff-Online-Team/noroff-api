@@ -5,7 +5,8 @@ import {
   profilesQuerySchema,
   updateProfileSchema,
   profileNameSchema,
-  queryFlagsSchema
+  queryFlagsSchema,
+  followUnfollowProfileSchema
 } from "./profiles.schema"
 import {
   getProfilesHandler,
@@ -76,7 +77,10 @@ async function profilesRoutes(server: FastifyInstance) {
       schema: {
         tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
-        params: profileNameSchema
+        params: profileNameSchema,
+        response: {
+          200: createResponseSchema(followUnfollowProfileSchema)
+        }
       }
     },
     followProfileHandler
@@ -89,7 +93,10 @@ async function profilesRoutes(server: FastifyInstance) {
       schema: {
         tags: ["social-profiles"],
         security: [{ bearerAuth: [] }],
-        params: profileNameSchema
+        params: profileNameSchema,
+        response: {
+          200: createResponseSchema(followUnfollowProfileSchema)
+        }
       }
     },
     unfollowProfileHandler

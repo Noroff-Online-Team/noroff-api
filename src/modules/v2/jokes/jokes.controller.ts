@@ -1,13 +1,31 @@
 import { FastifyRequest } from "fastify"
+import { Joke } from "@prisma-api-v2/client"
 import { NotFound, BadRequest, InternalServerError } from "http-errors"
 import { ZodError } from "zod"
 import { jokeParamsSchema } from "./jokes.schema"
+import { sortAndPaginationSchema } from "@/utils"
 
 import { getJokes, getJoke, getRandomJoke } from "./jokes.service"
 
-export async function getJokesHandler() {
+export async function getJokesHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      limit?: number
+      page?: number
+      sort?: keyof Joke
+      sortOrder?: "asc" | "desc"
+    }
+  }>
+) {
   try {
-    const jokes = await getJokes()
+    await sortAndPaginationSchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page } = request.query
+
+    if (limit && limit > 100) {
+      throw new BadRequest("Limit cannot be greater than 100")
+    }
+
+    const jokes = await getJokes(sort, sortOrder, limit, page)
 
     if (!jokes.data.length) {
       throw new NotFound("Couldn't find any jokes.")
