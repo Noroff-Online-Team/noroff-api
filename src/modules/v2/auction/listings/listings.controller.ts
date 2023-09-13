@@ -11,7 +11,8 @@ import {
   queryFlagsSchema,
   listingIdParamsSchema,
   bidBodySchema,
-  mediaSchema
+  mediaSchema,
+  searchQuerySchema
 } from "./listings.schema"
 import {
   getListings,
@@ -19,7 +20,8 @@ import {
   createListing,
   updateListing,
   deleteListing,
-  createListingBid
+  createListingBid,
+  searchListings
 } from "./listings.service"
 import { ZodError } from "zod"
 
@@ -304,6 +306,40 @@ export async function createListingBidHandler(
 
     if (isHttpError(error)) {
       throw error
+    }
+
+    throw new InternalServerError("Something went wrong.")
+  }
+}
+
+export async function searchListingsHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      sort?: keyof AuctionListing
+      sortOrder?: "asc" | "desc"
+      limit?: number
+      page?: number
+      _seller?: boolean
+      _bids?: boolean
+      q: string
+    }
+  }>
+) {
+  try {
+    await searchQuerySchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page, _seller, _bids, q } = request.query
+
+    const includes: AuctionListingIncludes = {
+      bids: Boolean(_bids),
+      seller: Boolean(_seller)
+    }
+
+    const results = await searchListings(sort, sortOrder, limit, page, q, includes)
+
+    return results
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
     }
 
     throw new InternalServerError("Something went wrong.")

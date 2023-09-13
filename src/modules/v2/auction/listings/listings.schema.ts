@@ -147,6 +147,12 @@ export const bidBodySchema = z.object({
     .positive("Amount must be a positive number")
 })
 
+export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
+  q: z
+    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
+    .nonempty("Query cannot be empty")
+})
+
 export type CreateListingSchema = z.infer<typeof createListingSchema>
 
 export type UpdateListingSchema = z.infer<typeof updateListingSchema>

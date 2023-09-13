@@ -6,7 +6,8 @@ import {
   createListingHandler,
   updateListingHandler,
   deleteListingHandler,
-  createListingBidHandler
+  createListingBidHandler,
+  searchListingsHandler
 } from "./listings.controller"
 import {
   listingQuerySchema,
@@ -15,7 +16,8 @@ import {
   listingIdParamsSchema,
   createListingSchema,
   updateListingSchema,
-  bidBodySchema
+  bidBodySchema,
+  searchQuerySchema
 } from "./listings.schema"
 import { createResponseSchema } from "@/utils/createResponseSchema"
 
@@ -47,6 +49,20 @@ async function listingsRoutes(server: FastifyInstance) {
       }
     },
     getListingHandler
+  )
+
+  server.get(
+    "/search",
+    {
+      schema: {
+        tags: ["auction-listings"],
+        querystring: searchQuerySchema,
+        response: {
+          200: createResponseSchema(listingResponseSchema.array())
+        }
+      }
+    },
+    searchListingsHandler
   )
 
   server.post(

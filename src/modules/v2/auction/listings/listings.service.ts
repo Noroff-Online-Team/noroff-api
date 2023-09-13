@@ -99,12 +99,7 @@ export async function updateListing(
       ...updateData,
       title: updateData.title || undefined,
       tags: updateData.tags || undefined,
-      media: updateData.media
-        ? {
-            deleteMany: {}, // delete all media first
-            create: updateData.media // then create new media
-          }
-        : undefined
+      media: updateData.media ? { deleteMany: {}, create: updateData.media } : undefined
     },
     include: {
       ...includes,
@@ -165,4 +160,41 @@ export async function createListingBid(id: string, bidderName: string, amount: n
   })
 
   return { data }
+}
+
+export async function searchListings(
+  sort: keyof AuctionListing = "title",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  page = 1,
+  query: string,
+  includes: AuctionListingIncludes = {}
+) {
+  const [data, meta] = await db.auctionListing
+    .paginate({
+      where: {
+        OR: [
+          { title: { contains: query, mode: "insensitive" } },
+          { description: { contains: query, mode: "insensitive" } }
+        ]
+      },
+      include: {
+        ...includes,
+        media: true,
+        _count: {
+          select: {
+            bids: true
+          }
+        }
+      },
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
+
+  return { data, meta }
 }
