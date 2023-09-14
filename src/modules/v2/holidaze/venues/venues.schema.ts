@@ -66,7 +66,12 @@ export const venueCore = {
       customer: z.object(profileCore)
     })
     .array()
-    .optional()
+    .optional(),
+  _count: z
+    .object({
+      bookings: z.number().int().optional()
+    })
+    .nullish()
 }
 
 export const displayVenueSchema = z.object(venueCore)

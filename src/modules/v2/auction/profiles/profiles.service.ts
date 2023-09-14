@@ -177,7 +177,7 @@ export async function searchProfiles(
         banner: true,
         _count: {
           select: {
-            bids: true
+            listings: true
           }
         }
       },

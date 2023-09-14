@@ -33,7 +33,12 @@ export async function getVenues(
         ...withBookingCustomer,
         meta: true,
         location: true,
-        media: true
+        media: true,
+        _count: {
+          select: {
+            bookings: true
+          }
+        }
       }
     })
     .withPages({
@@ -59,7 +64,12 @@ export async function getVenue(id: string, includes: HolidazeVenueIncludes = {})
         ...withBookingCustomer,
         meta: true,
         location: true,
-        media: true
+        media: true,
+        _count: {
+          select: {
+            bookings: true
+          }
+        }
       }
     })
     .withPages({
@@ -138,7 +148,12 @@ export async function updateVenue(id: string, updateData: UpdateVenueSchema, inc
       ...withOwnerMedia,
       ...withBookingCustomer,
       meta: true,
-      location: true
+      location: true,
+      _count: {
+        select: {
+          bookings: true
+        }
+      }
     }
   })
 
@@ -178,7 +193,12 @@ export async function searchVenues(
         ...withBookingCustomer,
         meta: true,
         location: true,
-        media: true
+        media: true,
+        _count: {
+          select: {
+            bookings: true
+          }
+        }
       },
       orderBy: {
         [sort]: sortOrder
