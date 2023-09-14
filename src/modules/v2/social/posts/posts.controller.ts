@@ -10,7 +10,8 @@ import {
   postIdParamsSchema,
   postsQuerySchema,
   authorQuerySchema,
-  mediaSchema
+  mediaSchema,
+  searchQuerySchema
 } from "./posts.schema"
 import {
   getPosts,
@@ -21,7 +22,8 @@ import {
   deletePost,
   createComment,
   getComment,
-  getPostsOfFollowedUsers
+  getPostsOfFollowedUsers,
+  searchPosts
 } from "./posts.service"
 import { ZodError } from "zod"
 
@@ -375,5 +377,41 @@ export async function getPostsOfFollowedUsersHandler(
     }
 
     throw new InternalServerError("Something went wrong.")
+  }
+}
+
+export async function searchPostsHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      sort?: keyof SocialPost
+      sortOrder?: "asc" | "desc"
+      limit?: number
+      page?: number
+      _author?: boolean
+      _reactions?: boolean
+      _comments?: boolean
+      q: string
+    }
+  }>
+) {
+  try {
+    await searchQuerySchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page, _author, _reactions, _comments, q } = request.query
+
+    const includes: SocialPostIncludes = {
+      author: Boolean(_author),
+      reactions: Boolean(_reactions),
+      comments: Boolean(_comments)
+    }
+
+    const results = await searchPosts(sort, sortOrder, limit, page, q, includes)
+
+    return results
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
+    }
+
+    throw new InternalServerError("Something went wrong." + error)
   }
 }

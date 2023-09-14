@@ -345,3 +345,43 @@ export const getPostsOfFollowedUsers = async (
 
   return { data, meta }
 }
+
+export const searchPosts = async (
+  sort: keyof SocialPost = "created",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  page = 1,
+  query: string,
+  includes: SocialPostIncludes = {}
+) => {
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    : {}
+
+  const [data, meta] = await db.socialPost
+    .paginate({
+      where: {
+        OR: [{ title: { contains: query, mode: "insensitive" } }, { body: { contains: query, mode: "insensitive" } }]
+      },
+      include: {
+        ...includes,
+        ...withCommentAuthor,
+        media: true,
+        _count: {
+          select: {
+            comments: true,
+            reactions: true
+          }
+        }
+      },
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
+
+  return { data, meta }
+}
