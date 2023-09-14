@@ -57,7 +57,7 @@ describe("[GET] /v2/auction/listings/search", () => {
 
   it("should return listings with pagination and sort", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/search?q=chair&sort=endsAt&sortOrder=desc&limit=1&page=1`,
+      url: `/api/v2/auction/listings/search?q=chair&sort=title&sortOrder=desc&limit=1&page=1`,
       method: "GET"
     })
     const res = await response.json()
