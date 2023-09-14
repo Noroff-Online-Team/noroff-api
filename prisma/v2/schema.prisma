@@ -188,6 +188,8 @@ model UserProfile {
   bio          String?
   password     String
   salt         String
+  created      DateTime             @default(now())
+  updated      DateTime             @updatedAt
   // Social
   posts        SocialPost[]
   comments     SocialPostComment[]
