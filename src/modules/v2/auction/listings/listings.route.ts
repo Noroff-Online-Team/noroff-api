@@ -123,7 +123,7 @@ async function listingsRoutes(server: FastifyInstance) {
         querystring: queryFlagsSchema,
         body: bidBodySchema,
         response: {
-          200: createResponseSchema(listingResponseSchema)
+          201: createResponseSchema(listingResponseSchema)
         }
       }
     },
