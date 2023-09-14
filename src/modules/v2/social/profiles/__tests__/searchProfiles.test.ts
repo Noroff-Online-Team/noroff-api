@@ -1,9 +1,15 @@
-import { server, registerUser } from "@/test-utils"
+import { server, registerUser, getAuthCredentials } from "@/test-utils"
 import { db } from "@/utils"
 
+let BEARER_TOKEN = ""
+let API_KEY = ""
+
 beforeEach(async () => {
-  await registerUser()
+  const { bearerToken, apiKey } = await getAuthCredentials()
   await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
+
+  BEARER_TOKEN = bearerToken
+  API_KEY = apiKey
 })
 
 afterEach(async () => {
@@ -18,7 +24,11 @@ describe("[GET] /v2/social/profiles/search", () => {
   it("should return profiles that contain query in either name or bio", async () => {
     const response = await server.inject({
       url: `/api/v2/social/profiles/search?q=two`,
-      method: "GET"
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      }
     })
     const res = await response.json()
 
@@ -30,7 +40,11 @@ describe("[GET] /v2/social/profiles/search", () => {
   it("should return empty array if no profiles match query", async () => {
     const response = await server.inject({
       url: `/api/v2/social/profiles/search?q=random`,
-      method: "GET"
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      }
     })
     const res = await response.json()
 
@@ -41,7 +55,11 @@ describe("[GET] /v2/social/profiles/search", () => {
   it("should return profiles with pagination and sort", async () => {
     const response = await server.inject({
       url: `/api/v2/social/profiles/search?q=user&sort=name&sortOrder=desc&limit=1&page=1`,
-      method: "GET"
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      }
     })
     const res = await response.json()
 
@@ -62,7 +80,11 @@ describe("[GET] /v2/social/profiles/search", () => {
   it("should throw zod error if query param is missing", async () => {
     const response = await server.inject({
       url: `/api/v2/social/profiles/search`,
-      method: "GET"
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      }
     })
     const res = await response.json()
 
@@ -79,7 +101,11 @@ describe("[GET] /v2/social/profiles/search", () => {
   it("should throw zod error if query param is empty", async () => {
     const response = await server.inject({
       url: `/api/v2/social/profiles/search?q=`,
-      method: "GET"
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      }
     })
     const res = await response.json()
 
@@ -90,6 +116,46 @@ describe("[GET] /v2/social/profiles/search", () => {
       code: "too_small",
       message: "Query cannot be empty",
       path: ["q"]
+    })
+  })
+
+  it("should throw 401 error when attempting to access without API key", async () => {
+    const response = await server.inject({
+      url: `/api/v2/social/profiles/search?q=two`,
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(401)
+    expect(res.data).not.toBeDefined()
+    expect(res.meta).not.toBeDefined()
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toHaveLength(1)
+    expect(res.errors[0]).toStrictEqual({
+      message: "No API key header was found"
+    })
+  })
+
+  it("should throw 401 error when attempting to access without Bearer token", async () => {
+    const response = await server.inject({
+      url: `/api/v2/social/profiles/search?q=two`,
+      method: "PUT",
+      headers: {
+        "X-Noroff-API-Key": API_KEY
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(401)
+    expect(res.data).not.toBeDefined()
+    expect(res.meta).not.toBeDefined()
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toHaveLength(1)
+    expect(res.errors[0]).toStrictEqual({
+      message: "No authorization header was found"
     })
   })
 })
