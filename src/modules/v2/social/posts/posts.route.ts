@@ -12,7 +12,8 @@ import {
   reactionParamsSchema,
   createCommentSchema,
   displayCommentSchema,
-  authorQuerySchema
+  authorQuerySchema,
+  searchQuerySchema
 } from "./posts.schema"
 import {
   getPostsHandler,
@@ -22,7 +23,8 @@ import {
   createOrDeleteReactionHandler,
   deletePostHandler,
   createCommentHandler,
-  getPostsOfFollowedUsersHandler
+  getPostsOfFollowedUsersHandler,
+  searchPostsHandler
 } from "./posts.controller"
 
 async function postsRoutes(server: FastifyInstance) {
@@ -56,6 +58,21 @@ async function postsRoutes(server: FastifyInstance) {
       }
     },
     getPostsOfFollowedUsersHandler
+  )
+
+  server.get(
+    "/search",
+    {
+      onRequest: [server.authenticate, server.apiKey],
+      schema: {
+        tags: ["social-posts"],
+        querystring: searchQuerySchema,
+        response: {
+          200: createResponseSchema(displayPostSchema.array())
+        }
+      }
+    },
+    searchPostsHandler
   )
 
   server.post(

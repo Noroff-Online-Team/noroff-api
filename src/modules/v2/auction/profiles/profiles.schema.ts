@@ -69,6 +69,12 @@ const queryFlagsCore = {
   _listings: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
 }
 
+export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
+  q: z
+    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
+    .nonempty("Query cannot be empty")
+})
+
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
 export const profilesQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore)

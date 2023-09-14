@@ -6,14 +6,16 @@ import {
   venueIdSchema,
   queryFlagsSchema,
   createVenueSchema,
-  updateVenueSchema
+  updateVenueSchema,
+  searchQuerySchema
 } from "./venues.schema"
 import {
   getVenuesHandler,
   getVenueHandler,
   createVenueHandler,
   deleteVenueHandler,
-  updateVenueHandler
+  updateVenueHandler,
+  searchVenuesHandler
 } from "./venues.controller"
 import { createResponseSchema } from "@/utils/createResponseSchema"
 
@@ -45,6 +47,20 @@ async function venuesRoutes(server: FastifyInstance) {
       }
     },
     getVenueHandler
+  )
+
+  server.get(
+    "/search",
+    {
+      schema: {
+        tags: ["holidaze-venues"],
+        querystring: searchQuerySchema,
+        response: {
+          200: createResponseSchema(displayVenueSchema.array())
+        }
+      }
+    },
+    searchVenuesHandler
   )
 
   server.post(

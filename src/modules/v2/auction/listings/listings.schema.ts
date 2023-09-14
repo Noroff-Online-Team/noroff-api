@@ -1,12 +1,12 @@
 import { z } from "zod"
 import { displayProfileSchema } from "../profiles/profiles.schema"
 import { sortAndPaginationSchema } from "@/utils/sortAndPaginationSchema"
-import { mediaProperties, mediaPropertiesWithErrors } from "../../auth/auth.schema"
+import { mediaProperties, mediaPropertiesWithErrors, profileCore } from "../../auth/auth.schema"
 
 const bidCore = {
   id: z.string().uuid(),
   amount: z.number(),
-  bidderName: z.string(),
+  bidder: z.object(profileCore),
   created: z.date()
 }
 
@@ -145,6 +145,12 @@ export const bidBodySchema = z.object({
     })
     .int()
     .positive("Amount must be a positive number")
+})
+
+export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
+  q: z
+    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
+    .nonempty("Query cannot be empty")
 })
 
 export type CreateListingSchema = z.infer<typeof createListingSchema>

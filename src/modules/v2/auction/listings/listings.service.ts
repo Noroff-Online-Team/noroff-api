@@ -15,6 +15,10 @@ export async function getListings(
 ) {
   const whereTag = tag ? { tags: { has: tag } } : {}
   const whereActive = active ? { endsAt: { gte: new Date() } } : {}
+  const withSellerMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+  const withBidderMedia = includes.bids
+    ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } }
+    : {}
 
   const [data, meta] = await db.auctionListing
     .paginate({
@@ -24,6 +28,8 @@ export async function getListings(
       },
       include: {
         ...includes,
+        ...withSellerMedia,
+        ...withBidderMedia,
         media: true,
         _count: {
           select: {
@@ -44,11 +50,18 @@ export async function getListings(
 }
 
 export async function getListing(id: string, includes: AuctionListingIncludes = {}) {
+  const withSellerMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+  const withBidderMedia = includes.bids
+    ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } }
+    : {}
+
   const [data, meta] = await db.auctionListing
     .paginate({
       where: { id },
       include: {
         ...includes,
+        ...withSellerMedia,
+        ...withBidderMedia,
         media: true,
         _count: {
           select: {
@@ -65,6 +78,11 @@ export async function getListing(id: string, includes: AuctionListingIncludes = 
 }
 
 export async function createListing(data: CreateListingSchema, seller: string, includes: AuctionListingIncludes = {}) {
+  const withSellerMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+  const withBidderMedia = includes.bids
+    ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } }
+    : {}
+
   const listing = await db.auctionListing.create({
     data: {
       ...data,
@@ -74,6 +92,8 @@ export async function createListing(data: CreateListingSchema, seller: string, i
     },
     include: {
       ...includes,
+      ...withSellerMedia,
+      ...withBidderMedia,
       media: true,
       _count: {
         select: {
@@ -93,21 +113,23 @@ export async function updateListing(
   updateData: UpdateListingSchema,
   includes: AuctionListingIncludes = {}
 ) {
+  const withSellerMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+  const withBidderMedia = includes.bids
+    ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } }
+    : {}
+
   const data = await db.auctionListing.update({
     where: { id },
     data: {
       ...updateData,
       title: updateData.title || undefined,
       tags: updateData.tags || undefined,
-      media: updateData.media
-        ? {
-            deleteMany: {}, // delete all media first
-            create: updateData.media // then create new media
-          }
-        : undefined
+      media: updateData.media ? { deleteMany: {}, create: updateData.media } : undefined
     },
     include: {
       ...includes,
+      ...withSellerMedia,
+      ...withBidderMedia,
       media: true,
       _count: {
         select: {
@@ -165,4 +187,48 @@ export async function createListingBid(id: string, bidderName: string, amount: n
   })
 
   return { data }
+}
+
+export async function searchListings(
+  sort: keyof AuctionListing = "title",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  page = 1,
+  query: string,
+  includes: AuctionListingIncludes = {}
+) {
+  const withSellerMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+  const withBidderMedia = includes.bids
+    ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } }
+    : {}
+
+  const [data, meta] = await db.auctionListing
+    .paginate({
+      where: {
+        OR: [
+          { title: { contains: query, mode: "insensitive" } },
+          { description: { contains: query, mode: "insensitive" } }
+        ]
+      },
+      include: {
+        ...includes,
+        ...withSellerMedia,
+        ...withBidderMedia,
+        media: true,
+        _count: {
+          select: {
+            bids: true
+          }
+        }
+      },
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
+
+  return { data, meta }
 }

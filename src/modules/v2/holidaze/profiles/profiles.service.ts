@@ -13,6 +13,9 @@ export async function getProfiles(
   includes: HolidazeProfileIncludes = {}
 ) {
   const venueMetaAndLocation = includes.venues ? { venues: { include: { meta: true, location: true } } } : {}
+  const includeVenueIfBookings = includes.bookings
+    ? { bookings: { include: { venue: { include: { meta: true, location: true } } } } }
+    : {}
 
   const [data, meta] = await db.userProfile
     .paginate({
@@ -22,6 +25,7 @@ export async function getProfiles(
       include: {
         ...includes,
         ...venueMetaAndLocation,
+        ...includeVenueIfBookings,
         _count: {
           select: {
             venues: true,
@@ -89,6 +93,9 @@ export async function getProfileVenues(
   includes: HolidazeVenueIncludes = {}
 ) {
   const withProfileMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+  const withBookings = includes.bookings
+    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    : {}
 
   const [data, meta] = await db.holidazeVenue
     .paginate({
@@ -99,6 +106,7 @@ export async function getProfileVenues(
       include: {
         ...includes,
         ...withProfileMedia,
+        ...withBookings,
         meta: true,
         location: true,
         _count: {
@@ -137,6 +145,49 @@ export async function getProfileBookings(
         ...includes,
         ...venueMetaAndLocation,
         ...withProfileMedia
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
+
+  return { data, meta }
+}
+
+export async function searchProfiles(
+  sort: keyof UserProfile = "name",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  page = 1,
+  query: string,
+  includes: HolidazeProfileIncludes = {}
+) {
+  const venueMetaAndLocation = includes.venues ? { venues: { include: { meta: true, location: true } } } : {}
+  const includeVenueIfBookings = includes.bookings
+    ? { bookings: { include: { venue: { include: { meta: true, location: true } } } } }
+    : {}
+
+  const [data, meta] = await db.userProfile
+    .paginate({
+      where: {
+        OR: [{ name: { contains: query, mode: "insensitive" } }, { bio: { contains: query, mode: "insensitive" } }]
+      },
+      include: {
+        ...includes,
+        ...venueMetaAndLocation,
+        ...includeVenueIfBookings,
+        avatar: true,
+        banner: true,
+        _count: {
+          select: {
+            venues: true,
+            bookings: true
+          }
+        }
+      },
+      orderBy: {
+        [sort]: sortOrder
       }
     })
     .withPages({

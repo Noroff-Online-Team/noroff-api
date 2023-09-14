@@ -192,6 +192,12 @@ export const postsQuerySchema = sortAndPaginationSchema
   })
   .extend(queryFlagsCore)
 
+export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
+  q: z
+    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
+    .nonempty("Query cannot be empty")
+})
+
 export const emojiSchema = z.string().emoji("Must be a valid emoji")
 
 export type CreatePostSchema = z.infer<typeof createPostSchema>

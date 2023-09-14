@@ -11,6 +11,10 @@ export async function getProfiles(
   page = 1,
   includes: ProfileIncludes = {}
 ) {
+  const withFollowersMedia = includes.followers ? { followers: { include: { avatar: true, banner: true } } } : {}
+  const withFollowingMedia = includes.following ? { following: { include: { avatar: true, banner: true } } } : {}
+  const withPostMedia = includes.posts ? { posts: { include: { media: true } } } : {}
+
   const [data, meta] = await db.userProfile
     .paginate({
       orderBy: {
@@ -18,6 +22,9 @@ export async function getProfiles(
       },
       include: {
         ...includes,
+        ...withFollowersMedia,
+        ...withFollowingMedia,
+        ...withPostMedia,
         avatar: true,
         banner: true,
         _count: {
@@ -38,11 +45,18 @@ export async function getProfiles(
 }
 
 export const getProfile = async (name: string, includes: ProfileIncludes = {}) => {
+  const withFollowersMedia = includes.followers ? { followers: { include: { avatar: true, banner: true } } } : {}
+  const withFollowingMedia = includes.following ? { following: { include: { avatar: true, banner: true } } } : {}
+  const withPostMedia = includes.posts ? { posts: { include: { media: true } } } : {}
+
   const [data, meta] = await db.userProfile
     .paginate({
       where: { name },
       include: {
         ...includes,
+        ...withFollowersMedia,
+        ...withFollowingMedia,
+        ...withPostMedia,
         avatar: true,
         banner: true,
         _count: {
@@ -146,6 +160,7 @@ export const getProfilePosts = async (
   tag: string | undefined
 ) => {
   const whereTag = tag ? { tags: { has: tag } } : {}
+  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
   const withCommentAuthor = includes.comments
     ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
     : {}
@@ -162,6 +177,7 @@ export const getProfilePosts = async (
       include: {
         ...includes,
         ...withCommentAuthor,
+        ...withAuthorMedia,
         _count: {
           select: {
             comments: true,
@@ -173,6 +189,50 @@ export const getProfilePosts = async (
     .withPages({
       limit: limit,
       page: page
+    })
+
+  return { data, meta }
+}
+
+export async function searchProfiles(
+  sort: keyof UserProfile = "name",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  page = 1,
+  query: string,
+  includes: ProfileIncludes = {}
+) {
+  const withFollowersMedia = includes.followers ? { followers: { include: { avatar: true, banner: true } } } : {}
+  const withFollowingMedia = includes.following ? { following: { include: { avatar: true, banner: true } } } : {}
+  const withPostMedia = includes.posts ? { posts: { include: { media: true } } } : {}
+
+  const [data, meta] = await db.userProfile
+    .paginate({
+      where: {
+        OR: [{ name: { contains: query, mode: "insensitive" } }, { bio: { contains: query, mode: "insensitive" } }]
+      },
+      include: {
+        ...includes,
+        ...withFollowersMedia,
+        ...withFollowingMedia,
+        ...withPostMedia,
+        avatar: true,
+        banner: true,
+        _count: {
+          select: {
+            posts: true,
+            followers: true,
+            following: true
+          }
+        }
+      },
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
     })
 
   return { data, meta }

@@ -15,6 +15,7 @@ export async function getPosts(
     ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
     : {}
   const whereTag = tag ? { tags: { has: tag } } : {}
+  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
 
   const [data, meta] = await db.socialPost
     .paginate({
@@ -25,6 +26,7 @@ export async function getPosts(
       include: {
         ...includes,
         ...withCommentAuthor,
+        ...withAuthorMedia,
         media: true,
         _count: {
           select: {
@@ -67,6 +69,7 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
   const withCommentAuthor = includes.comments
     ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
     : {}
+  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
 
   const [data, meta] = await db.socialPost
     .paginate({
@@ -74,6 +77,7 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
       include: {
         ...includes,
         ...withCommentAuthor,
+        ...withAuthorMedia,
         media: true,
         _count: {
           select: {
@@ -117,6 +121,7 @@ export const createPost = async (createPostData: CreatePostSchema, includes: Soc
     ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
     : {}
   const withMedia = media?.url ? { media: true } : {}
+  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
 
   const data = await db.socialPost.create({
     data: {
@@ -127,6 +132,7 @@ export const createPost = async (createPostData: CreatePostSchema, includes: Soc
       ...includes,
       ...withCommentAuthor,
       ...withMedia,
+      ...withAuthorMedia,
       _count: {
         select: {
           comments: true,
@@ -310,7 +316,7 @@ export const getPostsOfFollowedUsers = async (
     ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
     : {}
   const whereTag = tag ? { tags: { has: tag } } : {}
-  const withProfileMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
+  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
 
   const [data, meta] = await db.socialPost
     .paginate({
@@ -328,7 +334,7 @@ export const getPostsOfFollowedUsers = async (
       include: {
         ...includes,
         ...withCommentAuthor,
-        ...withProfileMedia,
+        ...withAuthorMedia,
         media: true,
         _count: {
           select: {
@@ -341,6 +347,48 @@ export const getPostsOfFollowedUsers = async (
     .withPages({
       limit: limit,
       page: page
+    })
+
+  return { data, meta }
+}
+
+export const searchPosts = async (
+  sort: keyof SocialPost = "created",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  page = 1,
+  query: string,
+  includes: SocialPostIncludes = {}
+) => {
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    : {}
+  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
+
+  const [data, meta] = await db.socialPost
+    .paginate({
+      where: {
+        OR: [{ title: { contains: query, mode: "insensitive" } }, { body: { contains: query, mode: "insensitive" } }]
+      },
+      include: {
+        ...includes,
+        ...withCommentAuthor,
+        ...withAuthorMedia,
+        media: true,
+        _count: {
+          select: {
+            comments: true,
+            reactions: true
+          }
+        }
+      },
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
     })
 
   return { data, meta }

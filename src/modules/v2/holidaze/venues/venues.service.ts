@@ -33,7 +33,12 @@ export async function getVenues(
         ...withBookingCustomer,
         meta: true,
         location: true,
-        media: true
+        media: true,
+        _count: {
+          select: {
+            bookings: true
+          }
+        }
       }
     })
     .withPages({
@@ -59,7 +64,12 @@ export async function getVenue(id: string, includes: HolidazeVenueIncludes = {})
         ...withBookingCustomer,
         meta: true,
         location: true,
-        media: true
+        media: true,
+        _count: {
+          select: {
+            bookings: true
+          }
+        }
       }
     })
     .withPages({
@@ -138,7 +148,12 @@ export async function updateVenue(id: string, updateData: UpdateVenueSchema, inc
       ...withOwnerMedia,
       ...withBookingCustomer,
       meta: true,
-      location: true
+      location: true,
+      _count: {
+        select: {
+          bookings: true
+        }
+      }
     }
   })
 
@@ -149,4 +164,50 @@ export async function deleteVenue(id: string) {
   return await db.holidazeVenue.delete({
     where: { id }
   })
+}
+
+export async function searchVenues(
+  sort: keyof HolidazeVenue = "name",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  page = 1,
+  query: string,
+  includes: HolidazeVenueIncludes = {}
+) {
+  const withOwnerMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+  const withBookingCustomer = includes.bookings
+    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    : {}
+
+  const [data, meta] = await db.holidazeVenue
+    .paginate({
+      where: {
+        OR: [
+          { name: { contains: query, mode: "insensitive" } },
+          { description: { contains: query, mode: "insensitive" } }
+        ]
+      },
+      include: {
+        ...includes,
+        ...withOwnerMedia,
+        ...withBookingCustomer,
+        meta: true,
+        location: true,
+        media: true,
+        _count: {
+          select: {
+            bookings: true
+          }
+        }
+      },
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
+
+  return { data, meta }
 }

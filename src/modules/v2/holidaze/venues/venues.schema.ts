@@ -66,7 +66,12 @@ export const venueCore = {
       customer: z.object(profileCore)
     })
     .array()
-    .optional()
+    .optional(),
+  _count: z
+    .object({
+      bookings: z.number().int().optional()
+    })
+    .nullish()
 }
 
 export const displayVenueSchema = z.object(venueCore)
@@ -155,6 +160,12 @@ const updateVenueCore = {
 export const updateVenueSchema = z
   .object(updateVenueCore)
   .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
+
+export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
+  q: z
+    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
+    .nonempty("Query cannot be empty")
+})
 
 export type CreateVenueSchema = z.infer<typeof createVenueSchema>
 
