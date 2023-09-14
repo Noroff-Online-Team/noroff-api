@@ -6,11 +6,19 @@ import {
   UpdateProfileSchema,
   profileNameSchema,
   profilesQuerySchema,
-  queryFlagsSchema
+  queryFlagsSchema,
+  searchQuerySchema
 } from "./profiles.schema"
 import { NotFound, BadRequest, Forbidden, InternalServerError, isHttpError } from "http-errors"
 
-import { getProfiles, getProfile, updateProfile, getProfileListings, getProfileBids } from "./profiles.service"
+import {
+  getProfiles,
+  getProfile,
+  updateProfile,
+  getProfileListings,
+  getProfileBids,
+  searchProfiles
+} from "./profiles.service"
 
 import { AuctionListingIncludes } from "../listings/listings.controller"
 import { ZodError } from "zod"
@@ -270,5 +278,37 @@ export async function getProfileBidsHandler(
     }
 
     throw new InternalServerError("Something went wrong.")
+  }
+}
+
+export async function searchProfilesHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      sort?: keyof UserProfile
+      sortOrder?: "asc" | "desc"
+      limit?: number
+      page?: number
+      _listings?: boolean
+      q: string
+    }
+  }>
+) {
+  try {
+    await searchQuerySchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page, _listings, q } = request.query
+
+    const includes: AuctionProfileIncludes = {
+      listings: Boolean(_listings)
+    }
+
+    const results = await searchProfiles(sort, sortOrder, limit, page, q, includes)
+
+    return results
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
+    }
+
+    throw new InternalServerError("Something went wrong." + error)
   }
 }
