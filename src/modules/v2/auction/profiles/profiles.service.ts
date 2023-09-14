@@ -147,7 +147,13 @@ export async function getProfileBids(
         [sort]: sortOrder
       },
       include: {
-        ...includes
+        ...includes,
+        bidder: {
+          include: {
+            avatar: true,
+            banner: true
+          }
+        }
       }
     })
     .withPages({
