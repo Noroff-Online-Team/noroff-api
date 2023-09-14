@@ -49,4 +49,10 @@ export const profilesQuerySchema = sortAndPaginationSchema
   })
   .extend(queryFlagsCore)
 
+export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
+  q: z
+    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
+    .nonempty("Query cannot be empty")
+})
+
 export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>

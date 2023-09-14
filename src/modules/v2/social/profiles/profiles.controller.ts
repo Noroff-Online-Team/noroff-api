@@ -1,7 +1,7 @@
 import { UserProfile, SocialPost } from "@prisma-api-v2/client"
 import { FastifyRequest } from "fastify"
 import { mediaGuard } from "@/utils/mediaGuard"
-import { UpdateProfileSchema } from "./profiles.schema"
+import { searchQuerySchema, UpdateProfileSchema } from "./profiles.schema"
 import { SocialPostIncludes } from "../posts/posts.controller"
 import { isHttpError, NotFound, BadRequest, Forbidden, InternalServerError } from "http-errors"
 
@@ -11,7 +11,8 @@ import {
   updateProfile,
   followProfile,
   unfollowProfile,
-  getProfilePosts
+  getProfilePosts,
+  searchProfiles
 } from "./profiles.service"
 import { checkIsUserFollowing } from "./profiles.utils"
 import { profilesQuerySchema, profileNameSchema, queryFlagsSchema, updateProfileSchema } from "./profiles.schema"
@@ -285,5 +286,41 @@ export async function getProfilePostsHandler(
     }
 
     throw new InternalServerError("Something went wrong.")
+  }
+}
+
+export async function searchProfilesHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      sort?: keyof UserProfile
+      sortOrder?: "asc" | "desc"
+      limit?: number
+      page?: number
+      _followers?: boolean
+      _following?: boolean
+      _posts?: boolean
+      q: string
+    }
+  }>
+) {
+  try {
+    await searchQuerySchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page, _posts, _followers, _following, q } = request.query
+
+    const includes: ProfileIncludes = {
+      posts: Boolean(_posts),
+      followers: Boolean(_followers),
+      following: Boolean(_following)
+    }
+
+    const results = await searchProfiles(sort, sortOrder, limit, page, q, includes)
+
+    return results
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
+    }
+
+    throw new InternalServerError("Something went wrong." + error)
   }
 }
