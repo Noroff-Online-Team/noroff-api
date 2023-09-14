@@ -156,6 +156,12 @@ export const updateVenueSchema = z
   .object(updateVenueCore)
   .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
 
+export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
+  q: z
+    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
+    .nonempty("Query cannot be empty")
+})
+
 export type CreateVenueSchema = z.infer<typeof createVenueSchema>
 
 export type UpdateVenueSchema = z.infer<typeof updateVenueSchema>

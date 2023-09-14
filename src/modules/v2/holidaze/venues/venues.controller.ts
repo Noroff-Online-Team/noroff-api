@@ -5,13 +5,14 @@ import {
   createVenueSchema,
   CreateVenueSchema,
   queryFlagsSchema,
+  searchQuerySchema,
   updateVenueSchema,
   UpdateVenueSchema,
   venueIdSchema,
   venuesQuerySchema
 } from "./venues.schema"
 import { getProfile } from "../profiles/profiles.service"
-import { getVenues, getVenue, createVenue, deleteVenue, updateVenue } from "./venues.service"
+import { getVenues, getVenue, createVenue, deleteVenue, updateVenue, searchVenues } from "./venues.service"
 import { mediaGuard } from "@/utils/mediaGuard"
 import { ZodError } from "zod"
 
@@ -246,6 +247,40 @@ export async function deleteVenueHandler(
 
     if (isHttpError(error)) {
       throw error
+    }
+
+    throw new InternalServerError("Something went wrong.")
+  }
+}
+
+export async function searchListingsHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      limit?: number
+      page?: number
+      sort?: keyof HolidazeVenue
+      sortOrder?: "asc" | "desc"
+      _owner?: boolean
+      _bookings?: boolean
+      q: string
+    }
+  }>
+) {
+  try {
+    await searchQuerySchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page, _owner, _bookings, q } = request.query
+
+    const includes: HolidazeVenueIncludes = {
+      owner: Boolean(_owner),
+      bookings: Boolean(_bookings)
+    }
+
+    const results = await searchVenues(sort, sortOrder, limit, page, q, includes)
+
+    return results
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
     }
 
     throw new InternalServerError("Something went wrong.")
