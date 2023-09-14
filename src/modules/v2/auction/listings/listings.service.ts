@@ -178,15 +178,13 @@ export async function createListingBid(id: string, bidderName: string, amount: n
     data: { credits: { decrement: amount } }
   })
 
-  const data = await db.auctionBid.create({
+  await db.auctionBid.create({
     data: {
       listingId: id,
       bidderName,
       amount
     }
   })
-
-  return { data }
 }
 
 export async function searchListings(
