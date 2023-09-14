@@ -44,7 +44,7 @@ describe("[GET] /v2/auction/profiles/search", () => {
       method: "GET"
     })
     const res = await response.json()
-    console.dir(res, { depth: null })
+
     expect(response.statusCode).toEqual(200)
     expect(res.data).toHaveLength(1)
     expect(res.data[0]).toHaveProperty("name", "test_user_two")
