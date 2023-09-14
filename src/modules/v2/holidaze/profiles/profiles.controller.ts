@@ -6,11 +6,19 @@ import {
   profilesQuerySchema,
   profileNameSchema,
   queryFlagsSchema,
-  updateProfileSchema
+  updateProfileSchema,
+  searchQuerySchema
 } from "./profiles.schema"
 import { NotFound, BadRequest, Forbidden, InternalServerError, isHttpError } from "http-errors"
 
-import { getProfiles, getProfile, getProfileVenues, getProfileBookings, updateProfile } from "./profiles.service"
+import {
+  getProfiles,
+  getProfile,
+  getProfileVenues,
+  getProfileBookings,
+  updateProfile,
+  searchProfiles
+} from "./profiles.service"
 import { HolidazeBookingIncludes } from "../bookings/bookings.controller"
 import { HolidazeVenueIncludes } from "../venues/venues.controller"
 import { ZodError } from "zod"
@@ -236,5 +244,39 @@ export async function getProfileBookingsHandler(
     }
 
     throw new InternalServerError("Something went wrong.")
+  }
+}
+
+export async function searchProfilesHandler(
+  request: FastifyRequest<{
+    Querystring: {
+      sort?: keyof UserProfile
+      sortOrder?: "asc" | "desc"
+      limit?: number
+      page?: number
+      _venues?: boolean
+      _bookings?: boolean
+      q: string
+    }
+  }>
+) {
+  try {
+    await searchQuerySchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page, _venues, _bookings, q } = request.query
+
+    const includes: HolidazeProfileIncludes = {
+      venues: Boolean(_venues),
+      bookings: Boolean(_bookings)
+    }
+
+    const results = await searchProfiles(sort, sortOrder, limit, page, q, includes)
+
+    return results
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
+    }
+
+    throw new InternalServerError("Something went wrong." + error)
   }
 }

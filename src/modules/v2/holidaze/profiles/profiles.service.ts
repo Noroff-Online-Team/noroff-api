@@ -146,3 +146,38 @@ export async function getProfileBookings(
 
   return { data, meta }
 }
+
+export async function searchProfiles(
+  sort: keyof UserProfile = "name",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  page = 1,
+  query: string,
+  includes: HolidazeProfileIncludes = {}
+) {
+  const [data, meta] = await db.userProfile
+    .paginate({
+      where: {
+        OR: [{ name: { contains: query, mode: "insensitive" } }, { bio: { contains: query, mode: "insensitive" } }]
+      },
+      include: {
+        ...includes,
+        avatar: true,
+        banner: true,
+        _count: {
+          select: {
+            bids: true
+          }
+        }
+      },
+      orderBy: {
+        [sort]: sortOrder
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
+
+  return { data, meta }
+}

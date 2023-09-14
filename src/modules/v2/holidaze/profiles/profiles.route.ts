@@ -5,14 +5,16 @@ import {
   profilesQuerySchema,
   profileNameSchema,
   queryFlagsSchema,
-  updateProfileSchema
+  updateProfileSchema,
+  searchQuerySchema
 } from "./profiles.schema"
 import {
   getProfilesHandler,
   getProfileHandler,
   updateProfileHandler,
   getProfileVenuesHandler,
-  getProfileBookingsHandler
+  getProfileBookingsHandler,
+  searchProfilesHandler
 } from "./profiles.controller"
 import { createResponseSchema } from "@/utils/createResponseSchema"
 
@@ -51,6 +53,20 @@ async function profilesRoutes(server: FastifyInstance) {
       }
     },
     getProfileHandler
+  )
+
+  server.get(
+    "/search",
+    {
+      schema: {
+        tags: ["auction-listings"],
+        querystring: searchQuerySchema,
+        response: {
+          200: createResponseSchema(displayProfileSchema.array())
+        }
+      }
+    },
+    searchProfilesHandler
   )
 
   server.put(
