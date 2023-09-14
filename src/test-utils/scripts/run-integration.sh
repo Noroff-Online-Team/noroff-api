@@ -12,12 +12,18 @@ DB_USER="postgres"
 # Check if the container exists.
 CONTAINER_EXISTS=$(docker ps -a --filter "name=$POSTGRES_CONTAINER_NAME" --format "{{.Names}}")
 
-# If the container does not exist, create it. Otherwise, skip creation.
+# Check the container's current status
+CONTAINER_STATUS=$(docker inspect -f '{{.State.Status}}' $POSTGRES_CONTAINER_NAME)
+
+# If the container does not exist, create it. Otherwise, check its status.
 if [ -z "$CONTAINER_EXISTS" ]; then
   echo '🟡 - Container does not exist. Creating...'
   yarn docker:up
+elif [ "$CONTAINER_STATUS" != "running" ]; then
+  echo '🟡 - Container exists but is not running. Starting...'
+  docker start $POSTGRES_CONTAINER_NAME
 else
-  echo '🟡 - Container exists. Skipping creation.'
+  echo '🟡 - Container exists and is running. Skipping creation and start.'
 fi
 
 echo '🟡 - Waiting for database to be ready...'
@@ -38,4 +44,4 @@ echo '🟢 - Database is ready!'
 yarn prisma migrate deploy --schema prisma/v2/schema.prisma
 
 # Run tests.
-jest --runInBand --verbose --watch
+jest --runInBand --verbose --watch "$@"
