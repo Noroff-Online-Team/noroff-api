@@ -7,7 +7,8 @@ const jestConfig: JestConfigWithTsJest = {
   setupFilesAfterEnv: ["<rootDir>/src/test-utils/server.ts"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1"
-  }
+  },
+  workerIdleMemoryLimit: "512MB"
 }
 
 export default jestConfig
