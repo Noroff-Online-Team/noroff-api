@@ -253,7 +253,7 @@ export async function deleteVenueHandler(
   }
 }
 
-export async function searchListingsHandler(
+export async function searchVenuesHandler(
   request: FastifyRequest<{
     Querystring: {
       limit?: number

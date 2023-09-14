@@ -59,7 +59,7 @@ async function profilesRoutes(server: FastifyInstance) {
     "/search",
     {
       schema: {
-        tags: ["auction-listings"],
+        tags: ["social-profiles"],
         querystring: searchQuerySchema,
         response: {
           200: createResponseSchema(displayProfileSchema.array())

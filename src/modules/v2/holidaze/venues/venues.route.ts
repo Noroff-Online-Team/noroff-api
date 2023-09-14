@@ -15,7 +15,7 @@ import {
   createVenueHandler,
   deleteVenueHandler,
   updateVenueHandler,
-  searchListingsHandler
+  searchVenuesHandler
 } from "./venues.controller"
 import { createResponseSchema } from "@/utils/createResponseSchema"
 
@@ -53,14 +53,14 @@ async function venuesRoutes(server: FastifyInstance) {
     "/search",
     {
       schema: {
-        tags: ["auction-listings"],
+        tags: ["holidaze-venues"],
         querystring: searchQuerySchema,
         response: {
           200: createResponseSchema(displayVenueSchema.array())
         }
       }
     },
-    searchListingsHandler
+    searchVenuesHandler
   )
 
   server.post(
