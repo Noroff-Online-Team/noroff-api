@@ -111,7 +111,12 @@ export async function createVenue(
       ...withOwnerMedia,
       ...withBookingCustomer,
       meta: true,
-      location: true
+      location: true,
+      _count: {
+        select: {
+          bookings: true
+        }
+      }
     }
   })
 
