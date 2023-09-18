@@ -1,1 +1,1 @@
-# noroff-api
+# Noroff API

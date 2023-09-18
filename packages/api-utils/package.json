@@ -1,0 +1,24 @@
+{
+  "name": "@noroff/api-utils",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Noroff School of Technology and Digital Media <https://noroff.no>",
+  "license": "UNLICENSED",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "src/index.ts"
+  ],
+  "scripts": {
+    "build": "rimraf dist && tsc"
+  },
+  "dependencies": {
+    "http-errors": "^2.0.0",
+    "typescript": "^4.8.2",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/http-errors": "^1.8.2",
+    "rimraf": "^3.0.2"
+  }
+}
