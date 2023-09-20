@@ -42,7 +42,7 @@ function Footer() {
   return (
     <footer className="bg-secondary/50 text-secondary-foreground mt-auto border-t py-6">
       <div className="container flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <p className="flex flex-row items-center text-sm text-muted-foreground transition-colors hover:text-accent-foreground">
+        <p className="flex flex-row items-center text-sm text-muted-foreground transition-colors">
           {new Date().getFullYear()} © Noroff.
         </p>
       </div>
