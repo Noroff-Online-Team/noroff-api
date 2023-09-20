@@ -1,4 +1,12 @@
 {
   "title": "Docs",
-  "pages": ["---Introduction---", "index", "about", "authentication", "pagination-sorting"]
+  "pages": [
+    "---Introduction---",
+    "index",
+    "about",
+    "authentication",
+    "pagination-sorting",
+    "---Endpoints---",
+    "basic-endpoints"
+  ]
 }
