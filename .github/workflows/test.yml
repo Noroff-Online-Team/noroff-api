@@ -1,13 +1,18 @@
-# .github/workflows/test.yaml
-name: Integration tests
+# .github/workflows/v2-tests.yaml
+name: Noroff API tests
+
 on:
   pull_request:
     branches:
       - main
       - v2
+    paths:
+      - "apps/v2/**"
+  workflow_dispatch:
+
 jobs:
-  test:
-    name: Integration tests
+  test-v2:
+    name: Run tests
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -23,15 +28,24 @@ jobs:
         ports:
           - 5432:5432
     env:
-      DATABASE_URL_V2: postgresql://postgres:postgres@localhost:5432/test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
       PORT: ${{ secrets.PORT }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 18.x
-      - run: npm install
-      - run: npx prisma migrate deploy --schema prisma/v2/schema.prisma
-      - run: npm run generate:v1 && npm run generate:v2
-      - run: npm test
+      - name: Install dependencies
+        run: yarn install
+      - name: Build @noroff/api-utils
+        run: yarn build
+        working-directory: packages/api-utils
+      - name: Run Prisma migrations
+        run: yarn prisma migrate deploy
+        working-directory: apps/v2
+      - name: Run tests
+        run: yarn test
+        working-directory: apps/v2

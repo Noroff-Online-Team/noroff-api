@@ -1,0 +1,64 @@
+{
+  "name": "v2",
+  "description": "Noroff API server",
+  "version": "2.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false src/app.ts",
+    "start": "node dist/src/app.js",
+    "build": "rimraf dist && tsc -p tsconfig.json && tscpaths -p tsconfig.json -s ./ -o ./dist",
+    "prebuild": "yarn prisma generate",
+    "postinstall": "yarn prisma generate",
+    "db:seed": "prisma db seed",
+    "docker:up": "docker-compose -f ./docker-compose.tests.yml up -d",
+    "docker:down": "docker-compose -f ./docker-compose.tests.yml down",
+    "test:dev": "./src/test-utils/scripts/run-integration.sh",
+    "test": "jest --runInBand"
+  },
+  "dependencies": {
+    "@fastify/autoload": "^5.7.1",
+    "@fastify/cors": "^8.1.0",
+    "@fastify/formbody": "^7.4.0",
+    "@fastify/jwt": "^6.3.2",
+    "@fastify/rate-limit": "^7.4.0",
+    "@fastify/swagger": "^7.5.1",
+    "@noroff/api-utils": "*",
+    "@prisma/client": "^5.2.0",
+    "dotenv": "^16.3.1",
+    "dotenv-cli": "^7.3.0",
+    "fastify": "^4.8.1",
+    "fastify-plugin": "^4.5.0",
+    "fastify-type-provider-zod": "^1.1.7",
+    "http-errors": "^2.0.0",
+    "jest-mock-extended": "^3.0.5",
+    "node-schedule": "^2.1.0",
+    "prisma-extension-pagination": "^0.5.0",
+    "qs": "^6.11.2",
+    "statuses": "^2.0.1",
+    "zod": "^3.21.4",
+    "zod-to-json-schema": "^3.18.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "@types/http-errors": "^1.8.2",
+    "@types/jest": "^29.5.4",
+    "@types/node-schedule": "^2.1.0",
+    "@types/qs": "^6.9.7",
+    "@types/statuses": "^2.0.0",
+    "jest": "^29.6.3",
+    "prisma": "^5.2.0",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "tscpaths": "^0.0.9",
+    "tsx": "^3.12.10",
+    "typescript": "^4.8.2"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}
