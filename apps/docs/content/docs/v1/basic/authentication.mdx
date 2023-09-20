@@ -1,9 +1,10 @@
 ---
 title: Authentication
-description: Authentication related to basic endpointsI
+description: Authentication related to basic endpoints
 ---
 
 import { Hr } from "@/components/hr"
+import { EndpointDetails } from "@/components/endpoint-details"
 import { Callout } from "@/components/callout"
 
 <Callout variant="info">This authentication is only related to the `/quotes` endpoints.</Callout>
@@ -13,6 +14,8 @@ Some endpoints may require you to be authenticated. This is done by sending an `
 <Hr />
 
 ## Login
+
+<EndpointDetails method="POST" path="/auth/login" />
 
 In order to receive an access token you will need to login. You do not need to
 register an account, you can simply login with any username.
