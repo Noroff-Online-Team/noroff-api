@@ -1,4 +1,4 @@
 {
   "title": "Docs",
-  "pages": ["---Guide---", "index"]
+  "pages": ["---Introduction---", "index", "authentication", "pagination-sorting"]
 }

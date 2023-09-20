@@ -1,16 +1,22 @@
 ---
-title: Hello World
-description: This is a description
+title: About
+description: About the Noroff API
 ---
 
-Hey there! This is v1
+This API has been provided to students for practicing and completing assignments.
 
-## Heading
+All content posted to this API is publicly visible to other students, and your account must use your Noroff email address. Please ensure that the content you post is appropriate for this platform.
 
-<Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-</Cards>
+Unlike a normal API, this API has CORS enabled meaning that you can access the API from `localhost` without encountering CORS errors.
 
-### Heading
+## API version
 
-#### Heading
+The current version of this API is **v1**.
+
+## Base URL
+
+We follow a URL structure of `https://api.noroff.dev/api/<version>/<endpoint>`.
+
+The API base URL for v1 is `https://api.noroff.dev/api/v1`.
+
+Each endpoint should be prefixed with this base URL. For example, the full path for getting all jokes using v1 is `https://api.noroff.dev/api/v1/jokes`.

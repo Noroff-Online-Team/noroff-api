@@ -1,0 +1,31 @@
+---
+title: Authentication
+description: Authentication for the Noroff API
+---
+
+import { Callout } from "@/components/callout"
+
+<Callout>
+  The Noroff API has several authentication endpoints. Which one you should use depends on which endpoints you are
+  trying to access.
+</Callout>
+
+The API will return a `401 Unauthorized` status if you do not provide a valid Authorization token. You can obtain a valid token by registering and logging in to the associated endpoint.
+
+## Basic Endpoints
+
+Some of these endpoints require authentication.
+
+You should use the [Basic Endpoints Authentication](./basic-endpoints/authentication.md) if you are trying to access any of the Basic endpoints that require authentication.
+
+## Social Endpoints
+
+All of these endpoints require authentication.
+
+You should use the [Social Authentication](./social-endpoints/authentication.md) if you are trying to access any of the Social endpoints.
+
+## Auction House Endpoints
+
+All of these endpoints require authentication.
+
+You should use the [Auction House Authentication](./auctionhouse-endpoints/authentication.md) if you are trying to access any of the Auction House endpoints.
