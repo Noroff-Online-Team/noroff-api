@@ -19,13 +19,18 @@ const getEmoji = (variant: string): JSX.Element => {
 
 /**
  * A small, stylized box that can be used to highlight a piece of information.
+ * @param {React.ReactNode} children - The content to be displayed inside the callout.
+ * @param {string} variant - The variant of the callout. Defaults to "default".
+ * @param {boolean} noIcon - Whether or not to display an icon in the callout. Defaults to false.
  */
 export function Callout({
   children,
-  variant = "info"
+  variant = "default",
+  noIcon = false
 }: {
   children: React.ReactNode
   variant?: "default" | "info" | "warning" | "destructive"
+  noIcon?: boolean
 }) {
   /**
    * Determine if the children should be wrapped in a <p> tag.
@@ -36,9 +41,11 @@ export function Callout({
   const shouldWrapInParagraph = typeof children === "string" || Array.isArray(children)
 
   return (
-    <Alert variant={variant}>
-      {getEmoji(variant)}
-      <AlertDescription>{shouldWrapInParagraph ? <p>{children}</p> : children}</AlertDescription>
+    <Alert variant={variant} className="mb-1">
+      {!noIcon && getEmoji(variant)}
+      <AlertDescription className={noIcon ? "[&_p]:-my-1" : undefined}>
+        {shouldWrapInParagraph ? <p>{children}</p> : children}
+      </AlertDescription>
     </Alert>
   )
 }
