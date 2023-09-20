@@ -1,6 +1,6 @@
 import { cn } from "@/utils/cn"
 import { getTree } from "@/utils/source"
-import { LayoutIcon, LibraryIcon } from "lucide-react"
+import { Tally1Icon, Tally2Icon } from "lucide-react"
 import { DocsLayout } from "next-docs-ui/layout"
 import Image from "next/image"
 import type { ReactNode } from "react"
@@ -8,7 +8,7 @@ import type { ReactNode } from "react"
 export default function Layout({ params, children }: { params: { version: string }; children: ReactNode }) {
   const tree = getTree(params.version)
   const [Icon, title, description] =
-    params.version === "v1" ? [LayoutIcon, "Noroff API", "Documentation"] : [LibraryIcon, "Noroff API", "Documentation"]
+    params.version === "v1" ? [Tally1Icon, "Noroff API", "Documentation"] : [Tally2Icon, "Noroff API", "Documentation"]
 
   return (
     <main

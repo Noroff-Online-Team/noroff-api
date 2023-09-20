@@ -1,4 +1,4 @@
-import { LayoutIcon, LibraryIcon, StarIcon } from "lucide-react"
+import { Tally1Icon, Tally2Icon, RocketIcon } from "lucide-react"
 import Link from "next/link"
 
 export default function HomePage() {
@@ -9,7 +9,7 @@ export default function HomePage() {
       </div>
       <div className="container py-20 flex flex-col items-center text-center">
         <div className="bg-gradient-to-b from-blue-300 shadow-md shadow-purple-400/50 rounded-lg mb-6">
-          <StarIcon className="m-px p-3 w-12 h-12 bg-secondary text-foreground rounded-[inherit]" />
+          <RocketIcon className="m-px p-3 w-12 h-12 bg-secondary text-foreground rounded-[inherit]" />
         </div>
         <h1 className="text-2xl font-semibold mb-4 sm:text-4xl">Noroff API</h1>
         <p className="text-muted-foreground max-w-xl sm:text-lg">Noroff API documentation</p>
@@ -20,7 +20,7 @@ export default function HomePage() {
             </i>
             <div className="flex flex-col items-center bg-background rounded-xl h-full bg-gradient-to-t from-purple-400/20 p-6 sm:p-12">
               <div className="border p-3 bg-gradient-to-b from-purple-400/50 border-purple-500 shadow-xl shadow-purple-400/50 mb-6 rounded-xl">
-                <LibraryIcon className="h-9 w-9 text-purple-400 dark:text-purple-200" />
+                <Tally2Icon className="h-9 w-9 text-purple-400 dark:text-purple-200" />
               </div>
               <p className="mb-2 text-xl font-medium">API v2</p>
               <p className="text-muted-foreground">The newest version of the API. You should use this version.</p>
@@ -33,7 +33,7 @@ export default function HomePage() {
             </i>
             <div className="flex flex-col items-center bg-background rounded-xl h-full bg-gradient-to-t from-blue-400/20 p-6 sm:p-12">
               <div className="border p-3 bg-gradient-to-b from-blue-400/50 border-blue-500 shadow-xl shadow-blue-400/50 mb-6 rounded-xl">
-                <LayoutIcon className="h-9 w-9 text-blue-400 dark:text-cyan-200" />
+                <Tally1Icon className="h-9 w-9 text-blue-400 dark:text-cyan-200" />
               </div>
               <p className="mb-2 text-xl font-medium">API v1</p>
               <p className="text-muted-foreground">
