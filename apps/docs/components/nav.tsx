@@ -46,11 +46,11 @@ export function Nav() {
       ]}
     >
       <div className="bg-secondary/50 rounded-md border p-1 text-sm text-muted-foreground max-sm:absolute max-sm:left-[50%] max-sm:translate-x-[-50%]">
-        <Link href="/docs/v1" className={cn(item({ active: version === "v1" }))}>
-          v1
-        </Link>
         <Link href="/docs/v2" className={cn(item({ active: version === "v2" }))}>
           v2
+        </Link>
+        <Link href="/docs/v1" className={cn(item({ active: version === "v1" }))}>
+          v1
         </Link>
       </div>
     </OriginalNav>
