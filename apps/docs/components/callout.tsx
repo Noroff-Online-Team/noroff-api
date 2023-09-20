@@ -19,9 +19,10 @@ const getEmoji = (variant: string): JSX.Element => {
 
 /**
  * A small, stylized box that can be used to highlight a piece of information.
- * @param {React.ReactNode} children - The content to be displayed inside the callout.
- * @param {string} variant - The variant of the callout. Defaults to "default".
- * @param {boolean} noIcon - Whether or not to display an icon in the callout. Defaults to false.
+ * @param {object} props - The props of the component.
+ * @param {React.ReactNode} props.children - The content to be displayed inside the callout.
+ * @param {string} props.variant - The variant of the callout. Defaults to "default".
+ * @param {boolean} props.noIcon - Whether or not to display an icon in the callout. Defaults to false.
  */
 export function Callout({
   children,
