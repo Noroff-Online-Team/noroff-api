@@ -231,7 +231,7 @@ Create a new post. Only the `title` property is required, but we recommend at le
 
 <EndpointDetails method="PUT" path="/social/posts/<id>" />
 
-This endpoint updates an entry based on its id and returns the updated entry.
+Update a post based on its id. This endpoint returns the updated post.
 
 > Please note that the `media` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a 400 error response.
 
@@ -266,7 +266,9 @@ This endpoint updates an entry based on its id and returns the updated entry.
 
 <EndpointDetails method="DELETE" path="/social/posts/<id>" />
 
-This endpoint deletes an entry based on its id and returns nothing.
+Delete a post based on its id.
+
+Returns an empty 204 response on success.
 
 <Hr />
 
@@ -274,7 +276,9 @@ This endpoint deletes an entry based on its id and returns nothing.
 
 <EndpointDetails method="PUT" path="/social/posts/<id>/react/<symbol>" />
 
-React to an entry with a symbol. Returns the symbol, reaction count for that symbol, and the post id.
+React to a post with a symbol.
+
+Returns the symbol, reaction count for that symbol, and the original post id.
 
 The `symbol` parameter should be an actual emoji. For example, to react to a post with a 👍 emoji, you would use the following endpoint: `/social/posts/<id>/react/👍`
 

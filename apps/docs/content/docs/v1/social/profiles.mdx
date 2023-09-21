@@ -94,7 +94,7 @@ Not all of the properties of a post are returned by default. You can use the fol
 
 <EndpointDetails path="/social/profiles" />
 
-This endpoint returns a list of all registered profiles.
+Retrieve all profiles.
 
 ```json title="Response"
 [
@@ -129,7 +129,7 @@ This endpoint returns a list of all registered profiles.
 
 <EndpointDetails path="/social/profiles/<name>" />
 
-This endpoint returns a single registered profile.
+Retrieve a single profile by its id.
 
 ```json title="Response"
 {
@@ -151,7 +151,7 @@ This endpoint returns a single registered profile.
 
 <EndpointDetails path="/social/profiles/<name>/posts" />
 
-This endpoint returns all posts by profile.
+Retrieve all posts made by profile.
 
 The response is the same as the [posts](./posts#all-entries) endpoint, and accepts the same optional query parameters and flags.
 
@@ -185,11 +185,11 @@ The response is the same as the [posts](./posts#all-entries) endpoint, and accep
 
 <EndpointDetails method="PUT" path="/social/profiles/<name>/media" />
 
-This endpoint allows for profile `banner` and `avatar` images to be set. You can use this endpoint to update the profile media, or to set it for the first time.
+Update or set profile `banner` and `avatar` images.
 
 You can send either or both of the properties in the request body.
 
-You can also use this endpoint to remove profile media by setting the `banner` or `avatar` property to `null`.
+Remove profile media by setting the `banner` or `avatar` property to `null`.
 
 > Please note that the `avatar` and `banner` properties must be fully formed URLs that links to live and publicly accessible images. The API will check the provided URLs and if they cannot be accessed publicly you will receive a 400 error response.
 
@@ -221,7 +221,7 @@ You can also use this endpoint to remove profile media by setting the `banner` o
 <EndpointDetails method="PUT" path="/social/profiles/<name>/follow" />
 <EndpointDetails method="PUT" path="/social/profiles/<name>/unfollow" />
 
-This endpoint allows for the current logged in user to follow or unfollow another registered profile.
+Follow or unfollow another profile by its name.
 
 > The request body should be empty.
 
