@@ -9,7 +9,7 @@ import { EndpointDetails } from "@/components/endpoint-details"
 import { TypeTable } from "next-docs-ui/components/type-table"
 
 <Callout variant="warning">
-  These are authenticated endpoints. You can visit [authentication](./authentication) to get an access token.
+  Some of these are authenticated endpoints. You can visit [authentication](./authentication) to get an access token.
 </Callout>
 
 These endpoints allow you to retrieve venues.
@@ -104,6 +104,8 @@ Not all of the properties of a venue are returned by default. You can use the fo
 
 ## All venues
 
+<Callout variant="info">This endpoint does not require authentication.</Callout>
+
 <EndpointDetails path="/holidaze/venues" />
 
 Retrieve all venues.
@@ -171,6 +173,8 @@ Retrieve all venues.
 <Hr />
 
 ## Single venue
+
+<Callout variant="info">This endpoint does not require authentication.</Callout>
 
 <EndpointDetails path="/holidaze/venues/<id>" />
 
