@@ -2,3 +2,239 @@
 title: Profiles
 description: Profiles related to Social
 ---
+
+import { Hr } from "@/components/hr"
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](./authentication) to get an access token.
+</Callout>
+
+These endpoints allow you to manage profiles. They are the users of the social network and are the owners of posts.
+
+This is a paginated and sortable endpoint. You can use the `limit` and `offset` query parameters to paginate the results. You can also use the `sort` and `sortOrder` query parameters to sort the results. Read more about the pagination and sorting features [here](../pagination-sorting).
+
+## The Profile model
+
+<TypeTable
+  type={{
+    name: { type: "string", description: "The unique name of the profile." },
+    email: { type: "string", description: "The email address of the profile." },
+    banner: { type: "string", description: "The URL of the profile banner image." },
+    avatar: { type: "string", description: "The URL of the profile avatar image." },
+    _count: {
+      type: "Object",
+      typeDescription: "{\n  posts: integer;\n  followers: integer;\n  following: integer;\n}",
+      description: "A JSON object containing the number of posts, followers and following for this profile."
+    }
+  }}
+/>
+
+<Hr />
+
+## Query parameters
+
+Not all of the properties of a post are returned by default. You can use the following optional query parameters to include additional properties in the response.
+
+<TypeTable
+  type={{
+    _following: { type: "boolean", default: "false", description: "Include profiles the current user is following." },
+    _followers: {
+      type: "boolean",
+      default: "false",
+      description: "Include profiles that are following the current user."
+    },
+    _posts: { type: "boolean", default: "false", description: "Include posts belonging to the current profile." }
+  }}
+/>
+
+```json title="Example with all optional query parameters"
+{
+  "name": "string",
+  "email": "user@example.com",
+  "banner": "https://url.com/image.jpg",
+  "avatar": "https://url.com/image.jpg",
+  "followers": [
+    {
+      "name": "string",
+      "avatar": "https://url.com/image.jpg"
+    }
+  ],
+  "following": [
+    {
+      "name": "string",
+      "avatar": "https://url.com/image.jpg"
+    }
+  ],
+  "posts": [
+    {
+      "id": 0,
+      "owner": "string",
+      "title": "string",
+      "body": "string",
+      "tags": ["string"],
+      "media": "https://url.com/image.jpg",
+      "created": "2022-09-04T08:08:38.830Z",
+      "updated": "2022-09-04T08:08:38.830Z"
+    }
+  ],
+  "_count": {
+    "posts": 0,
+    "followers": 0,
+    "following": 0
+  }
+}
+```
+
+<Hr />
+
+## All entries
+
+<EndpointDetails path="/social/profiles" />
+
+This endpoint returns a list of all registered profiles.
+
+```json title="Response"
+[
+  {
+    "name": "string",
+    "email": "user@example.com",
+    "banner": "https://url.com/image.jpg",
+    "avatar": "https://url.com/image.jpg",
+    "_count": {
+      "posts": 0,
+      "followers": 0,
+      "following": 0
+    }
+  },
+  {
+    "name": "string",
+    "email": "user@example.com",
+    "banner": "https://url.com/image.jpg",
+    "avatar": "https://url.com/image.jpg",
+    "_count": {
+      "posts": 0,
+      "followers": 0,
+      "following": 0
+    }
+  }
+]
+```
+
+<Hr />
+
+## Single entry
+
+<EndpointDetails path="/social/profiles/<name>" />
+
+This endpoint returns a single registered profile.
+
+```json title="Response"
+{
+  "name": "string",
+  "email": "user@example.com",
+  "banner": "https://url.com/image.jpg",
+  "avatar": "https://url.com/image.jpg",
+  "_count": {
+    "posts": 0,
+    "followers": 0,
+    "following": 0
+  }
+}
+```
+
+<Hr />
+
+## All posts by profile
+
+<EndpointDetails path="/social/profiles/<name>/posts" />
+
+This endpoint returns all posts by profile.
+
+The response is the same as the [posts](./posts#all-entries) endpoint, and accepts the same optional query parameters and flags.
+
+```json title="Response"
+[
+  {
+    "id": 0,
+    "title": "string",
+    "body": "string",
+    "tags": ["string"],
+    "media": "https://url.com/image.jpg",
+    "created": "2022-09-04T08:08:38.830Z",
+    "updated": "2022-09-04T08:08:38.830Z"
+  },
+  {
+    "id": 0,
+    "title": "string",
+    "body": "string",
+    "tags": ["string"],
+    "media": "https://url.com/image.jpg",
+    "created": "2022-09-04T08:08:38.830Z",
+    "updated": "2022-09-04T08:08:38.830Z"
+  }
+  // ...
+]
+```
+
+<Hr />
+
+## Update entry media
+
+<EndpointDetails method="PUT" path="/social/profiles/<name>/media" />
+
+This endpoint allows for profile `banner` and `avatar` images to be set. You can use this endpoint to update the profile media, or to set it for the first time.
+
+You can send either or both of the properties in the request body.
+
+You can also use this endpoint to remove profile media by setting the `banner` or `avatar` property to `null`.
+
+> Please note that the `avatar` and `banner` properties must be fully formed URLs that links to live and publicly accessible images. The API will check the provided URLs and if they cannot be accessed publicly you will receive a 400 error response.
+
+```json title="Request"
+{
+  "banner": "https://url.com/image.jpg",
+  "avatar": "https://url.com/image.jpg"
+}
+```
+
+```json title="Response"
+{
+  "name": "string",
+  "email": "user@example.com",
+  "banner": "https://url.com/image.jpg",
+  "avatar": "https://url.com/image.jpg",
+  "_count": {
+    "posts": 0,
+    "followers": 0,
+    "following": 0
+  }
+},
+```
+
+<Hr />
+
+## Follow & Unfollow Profile
+
+<EndpointDetails method="PUT" path="/social/profiles/<name>/follow" />
+<EndpointDetails method="PUT" path="/social/profiles/<name>/unfollow" />
+
+This endpoint allows for the current logged in user to follow or unfollow another registered profile.
+
+> The request body should be empty.
+
+```json title="Response"
+{
+  "name": "string",
+  "email": "user@example.com",
+  "banner": "https://url.com/image.jpg",
+  "avatar": "https://url.com/image.jpg",
+  "_count": {
+    "posts": 0,
+    "followers": 0,
+    "following": 0
+  }
+},
+```
