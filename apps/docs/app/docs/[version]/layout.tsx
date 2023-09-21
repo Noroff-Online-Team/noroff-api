@@ -33,6 +33,7 @@ export default function Layout({ params, children }: { params: { version: string
         tree={tree}
         nav={{ enabled: false }}
         sidebar={{
+          defaultOpenLevel: 0,
           banner: (
             <div className="relative flex flex-row gap-2 items-center p-2 rounded-lg border bg-card text-card-foreground transition-colors hover:bg-muted/50">
               <p className="absolute right-2 top-2 text-muted-foreground text-xs">
