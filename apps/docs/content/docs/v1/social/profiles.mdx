@@ -25,7 +25,7 @@ This is a paginated and sortable endpoint. You can use the `limit` and `offset` 
     banner: { type: "string", description: "The URL of the profile banner image." },
     avatar: { type: "string", description: "The URL of the profile avatar image." },
     _count: {
-      type: "Object",
+      type: "object",
       typeDescription: "{\n  posts: integer;\n  followers: integer;\n  following: integer;\n}",
       description: "A JSON object containing the number of posts, followers and following for this profile."
     }
