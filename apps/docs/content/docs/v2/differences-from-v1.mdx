@@ -1,0 +1,135 @@
+---
+title: Differences from v1
+---
+
+import { Hr } from "@/components/hr"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+If you are migrating from v1, here are some of the major/breaking changes you should be aware of.
+
+## New response format
+
+The response format has changed.
+
+### V1 vs V2
+
+In v1, the response was a single object or an array of objects.
+
+```json title="v1 - Old response format (Single resource)"
+{
+  "id": 24,
+  "type": "programming",
+  "setup": "A SQL query walks into a bar, walks up to two tables and asks...",
+  "punchline": "'Can I join you?'"
+}
+```
+
+```json title="v1 - Old response format (Multiple resources)"
+[
+  {
+    "id": 24,
+    "type": "programming",
+    "setup": "A SQL query walks into a bar, walks up to two tables and asks...",
+    "punchline": "'Can I join you?'"
+  },
+  {
+    "id": 25,
+    "type": "programming",
+    "setup": "How many programmers does it take to change a lightbulb?",
+    "punchline": "None that's a hardware problem"
+  }
+]
+```
+
+In v2, the response is an object with a `data` property that contains the response object or array of objects, and a new `meta` property that contains pagination metadata about the resources.
+
+```json title="v2 - New response format (Single resource)"
+{
+  "data": {
+    "id": 24,
+    "type": "programming",
+    "setup": "A SQL query walks into a bar, walks up to two tables and asks...",
+    "punchline": "'Can I join you?'"
+  },
+  "meta": {}
+}
+```
+
+```json title="v2 - New response format (Multiple resources)"
+{
+  "data": [
+    {
+      "id": 24,
+      "type": "programming",
+      "setup": "A SQL query walks into a bar, walks up to two tables and asks...",
+      "punchline": "'Can I join you?'"
+    },
+    {
+      "id": 25,
+      "type": "programming",
+      "setup": "How many programmers does it take to change a lightbulb?",
+      "punchline": "None that's a hardware problem"
+    }
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+### Response type
+
+<TypeTable
+  type={{
+    data: { type: "object | array", description: "The response data." },
+    meta: { type: "object", default: "{}", description: "The response metadata." },
+    "meta.isFirstPage": { type: "boolean", description: "Is this the first page of results?" },
+    "meta.isLastPage": { type: "boolean", description: "Is this the last page of results?" },
+    "meta.currentPage": { type: "number", description: "The current page number." },
+    "meta.previousPage": { type: "number?", description: "The previous page number. Null if this is the first page." },
+    "meta.nextPage": { type: "number?", description: "The next page number. Null if this is the last page." },
+    "meta.pageCount": { type: "number", description: "The total number of pages." },
+    "meta.totalCount": { type: "number", description: "The total number of results." }
+  }}
+/>
+
+## Images are now objects
+
+In v1, the `avatar`, `banner`, and `media` properties were strings (or array of strings) that contained the URL of the image.
+
+```json title="v1"
+// Using "avatar" property as an example.
+{
+  "avatar": "https://example.com/avatar.png"
+}
+```
+
+In v2, these properties all share the same new `Media` model. This is an object that contains the URL to the image, as well as an optional `alt` text. If there are multiple images, they are now stored in an array of `Media` objects.
+
+```json title="v2 - New Media model"
+// Using "avatar" property as an example.
+{
+  "avatar": {
+    "url": "https://example.com/avatar.png",
+    "alt": "Alt text"
+  }
+}
+```
+
+### Media type
+
+Using `avatar` as an example. In v1, the `avatar` property was a string. In v2, it is an object. This means that the type of `avatar` has changed from `string` to `object`.
+
+<TypeTable
+  type={{
+    avatar: { type: "object?" },
+    "avatar.url": { type: "string", description: "The URL to the image." },
+    "avatar.alt": { type: "string?", default: '""', description: "The alt text for the image." }
+  }}
+/>
