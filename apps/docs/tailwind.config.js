@@ -50,28 +50,23 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))"
         }
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)"
-      },
       keyframes: {
         "infinite-rotate": {
           from: {
-            transform: "rotateZ(0deg)"
+            transform: "translate(-50%,-50%) rotate(1turn)"
           },
           to: {
-            transform: "rotateZ(360deg)"
+            transform: "translate(-50%,-50%) rotate(0)"
           }
         },
         star: {
           "0%, 100%": {
-            transform: "translateY(0) scale(var(--tw-scale-x))",
+            transform: "translateY(0)",
             opacity: 1
           },
           "50%": {
-            transform: "translateY(40px) scale(var(--tw-scale-x))",
-            opacity: 0.2
+            transform: "translateY(-10px)",
+            opacity: 0.8
           }
         },
         heart: {

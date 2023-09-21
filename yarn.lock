@@ -5408,11 +5408,6 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
-lucide-react@^0.277.0:
-  version "0.277.0"
-  resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.277.0.tgz#82857117f81d16aae4f7b3b6a60009f31bb83aa1"
-  integrity sha512-9epmznme+vW14V9d2rsMeLr3fMnf59lYDUOVUg6s7oVN22Zq8h4B30+3CIdFFV9UXCjPG5ZNKHfO/hf96cl46A==
-
 lucide-react@^0.279.0:
   version "0.279.0"
   resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.279.0.tgz#05cdd709f3cc8b40846abf8929896ec75d684c2d"
@@ -6493,10 +6488,10 @@ next-contentlayer@^0.3.4:
     "@contentlayer/core" "0.3.4"
     "@contentlayer/utils" "0.3.4"
 
-next-docs-ui@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/next-docs-ui/-/next-docs-ui-2.0.3.tgz#fd99d90aa8c21e4602805dc95721b1524b8e778e"
-  integrity sha512-hNG0u/aaHEX/PO34AdQL433uj/sPUjg//ULoHe9nlpY/w0m6PXmBj0iFKok2Yw7ZL/3xD9BAp8EWhsfRqNjJ0w==
+next-docs-ui@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/next-docs-ui/-/next-docs-ui-2.1.0.tgz#1147676509af0b328bec337fd32cd5a54488d18d"
+  integrity sha512-Y8RNt0xrnjW5xILvNY1dEARjjx3ftkkrEQadR4BpjsOxejLEjjYFvgCyeglCaLIcUhDdzqr6h6IImDtpbUEyLg==
   dependencies:
     "@radix-ui/react-accordion" "^1.1.2"
     "@radix-ui/react-collapsible" "^1.0.3"
@@ -6509,16 +6504,16 @@ next-docs-ui@^2.0.3:
     class-variance-authority "^0.7.0"
     clsx "^2.0.0"
     cmdk "^0.2.0"
-    lucide-react "^0.277.0"
-    next-docs-zeta "2.0.3"
+    lucide-react "^0.279.0"
+    next-docs-zeta "2.1.0"
     next-themes "^0.2.1"
     react-medium-image-zoom "^5.1.8"
     tailwind-merge "^1.14.0"
 
-next-docs-zeta@2.0.3, next-docs-zeta@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/next-docs-zeta/-/next-docs-zeta-2.0.3.tgz#2869ae1f75e13af18cd0d294469e0b63c6559bee"
-  integrity sha512-mEo1d5t5csumU1e0HaFPEClst502MDnLqikuYG8c9d2PxbfCzpbEWT5rQiBHeJr5b+LeGFz9LCkPHeB323BvQg==
+next-docs-zeta@2.1.0, next-docs-zeta@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/next-docs-zeta/-/next-docs-zeta-2.1.0.tgz#840f7bba2a5de690b3f28b0aa19da97ea9e4a009"
+  integrity sha512-YUYMP6g9PY3X2DybVuYHKLP0zvUR9c/nNMdCtzT/dwZ3ot3M6zf48wj8ioCkkbQlP6ZOgAcLlu8yxDfaKNR4wA==
   dependencies:
     "@formatjs/intl-localematcher" "^0.4.2"
     flexsearch "0.7.21"
