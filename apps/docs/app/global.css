@@ -65,6 +65,12 @@ article {
   max-width: 800px;
 }
 
+/* Code */
+[data-code-fragment="true"] {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
 /* Landing page cards hover styles */
 .animated-border {
   border-radius: inherit;
