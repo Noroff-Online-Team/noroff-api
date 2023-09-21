@@ -7,6 +7,7 @@ import { Nav as OriginalNav } from "next-docs-ui/components"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
+import { NoroffLogo } from "./noroff-logo"
 
 const item = cva("px-2 py-1 rounded-md transition-colors hover:text-accent-foreground", {
   variants: {
@@ -47,15 +48,10 @@ export function Nav() {
     <OriginalNav
       title={
         <div className="flex flex-row items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-            <path
-              fill="currentColor"
-              d="m6.809 10.55.003 10.157 4.52 5.383c2.484 2.96 4.55 5.414 4.586 5.45.062.062.36-.282 2.848-3.247 1.527-1.824 2.785-3.336 2.793-3.36.015-.042-2.344-2.05-2.434-2.07-.031-.008-.75.82-1.602 1.84l-1.546 1.852-.094-.117-2.992-3.567-2.899-3.445v-6.63c0-5.222.012-6.616.055-6.562.027.04 2.832 3.383 6.23 7.438l6.18 7.367h2.781V.4h-9.281v3.269h6.012l-.004 5.8v5.802l-.106-.133c-.058-.07-2.859-3.414-6.222-7.426L9.523.418 8.164.41 6.804.398l.005 10.153"
-            />
-          </svg>
+          <NoroffLogo />
           <div className="flex-col -space-y-1 hidden sm:flex">
             <span className="font-bold">Noroff API</span>
-            <span className="text-xs font-normal text-gray-500">Documentation</span>
+            <span className="text-xs font-normal text-muted-foreground">Documentation</span>
           </div>
         </div>
       }

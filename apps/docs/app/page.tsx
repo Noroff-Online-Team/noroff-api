@@ -1,5 +1,6 @@
-import { Tally1Icon, Tally2Icon, RocketIcon } from "lucide-react"
+import { Tally1Icon, Tally2Icon } from "lucide-react"
 import Link from "next/link"
+import { NoroffLogo } from "@/components/noroff-logo"
 
 export default function HomePage() {
   return (
@@ -9,7 +10,9 @@ export default function HomePage() {
       </div>
       <div className="container py-20 flex flex-col items-center text-center">
         <div className="bg-gradient-to-b from-blue-300 shadow-md shadow-purple-400/50 rounded-lg mb-6 animate-star">
-          <RocketIcon className="m-px p-3 w-12 h-12 bg-background text-foreground rounded-[inherit]" />
+          <div className="m-px w-12 h-12 bg-background text-foreground rounded-[inherit] flex items-center justify-center">
+            <NoroffLogo />
+          </div>
         </div>
         <h1 className="text-2xl font-bold mb-6 sm:text-5xl">Noroff API</h1>
         <p className="text-muted-foreground max-w-xl sm:text-lg">Noroff API documentation</p>
