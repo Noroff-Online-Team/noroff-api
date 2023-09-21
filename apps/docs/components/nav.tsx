@@ -18,6 +18,7 @@ const item = cva("px-2 py-1 rounded-md transition-colors hover:text-accent-foreg
 export function Nav() {
   const { version } = useParams()
   const [isScrolledDown, setIsScrolledDown] = useState(true)
+  const [swaggerText, setSwaggerText] = useState<string | null>(null)
   const [swaggerUrl, setSwaggerUrl] = useState<string>(
     version === "v1" ? "https://api.noroff.dev/docs" : "https://v2.api.noroff.dev/docs"
   )
@@ -34,6 +35,12 @@ export function Nav() {
 
   useEffect(() => {
     setSwaggerUrl(version === "v1" ? "https://api.noroff.dev/docs" : "https://v2.api.noroff.dev/docs")
+
+    if (version) {
+      setSwaggerText(version === "v1" ? "Swagger v1" : "Swagger v2")
+    } else {
+      setSwaggerText(null)
+    }
   }, [version])
 
   return (
@@ -61,13 +68,17 @@ export function Nav() {
           external: true
         }
       ]}
-      items={[
-        {
-          href: swaggerUrl,
-          children: "Swagger",
-          external: true
-        }
-      ]}
+      items={
+        version
+          ? [
+              {
+                href: swaggerUrl,
+                children: swaggerText,
+                external: true
+              }
+            ]
+          : undefined
+      }
       transparent={!version && isScrolledDown}
     >
       <div className="bg-secondary/50 rounded-md border p-1 text-sm text-muted-foreground max-sm:absolute max-sm:left-[50%] max-sm:translate-x-[-50%]">
