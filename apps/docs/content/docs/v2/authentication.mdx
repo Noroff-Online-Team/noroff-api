@@ -1,0 +1,18 @@
+---
+title: Authentication
+description: Authentication for the Noroff API
+---
+
+To successfully authenticate with the Noroff API you must provide both a valid Authorization token and a valid API Key in the request headers.
+
+You obtain a valid access token by registering a user and logging in. The login endpoint will return a valid access token.
+
+You obtain a valid API Key by sending a `POST` request to `/auth/create-api-key` along with your access token in the `Authorization` header.
+
+## Access Token
+
+Check out the [Login](./auth/login) section for more information on how to create access tokens.
+
+## API Key
+
+Check out the [API Key](./auth/api-key) section for more information on how to create API Keys.
