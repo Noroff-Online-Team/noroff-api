@@ -2,3 +2,199 @@
 title: Bookings
 description: Bookings related to Holidaze
 ---
+
+import { Hr } from "@/components/hr"
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](./authentication) to get an access token.
+</Callout>
+
+This endpoint allows you to create, read, update and delete bookings.
+
+This is a paginated and sortable endpoint. You can use the `limit` and `offset` query parameters to paginate the results. You can also use the `sort` and `sortOrder` query parameters to sort the results. Read more about the pagination and sorting features [here](../pagination-sorting).
+
+## The Booking model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique id of the booking." },
+    dateFrom: { type: "string", description: "The date the booking starts." },
+    dateTo: { type: "string", description: "The date the booking ends." },
+    guests: { type: "integer", description: "The number of guests for the booking." },
+    created: { type: "string", description: "The date the booking was created." },
+    updated: { type: "string", description: "The date the booking was last updated." }
+  }}
+/>
+
+<Hr />
+
+## Query parameters
+
+Not all of the properties of a booking are returned by default. You can use the following optional query parameters to include additional properties in the response.
+
+<TypeTable
+  type={{
+    _customer: { type: "boolean", default: "false", description: "Include customer." },
+    _venue: { type: "boolean", default: "false", description: "Include venue." }
+  }}
+/>
+
+```json title="Example with all optional query parameters"
+{
+  "id": "string",
+  "dateFrom": "string",
+  "dateTo": "string",
+  "guests": 0,
+  "created": "string",
+  "updated": "string",
+  "venue": {
+    "id": "string",
+    "name": "string",
+    "description": "string",
+    "media": ["string"],
+    "price": 0,
+    "maxGuests": 0,
+    "created": "string",
+    "updated": "string",
+    "meta": {
+      "wifi": true,
+      "parking": true,
+      "breakfast": true,
+      "pets": true
+    },
+    "location": {
+      "address": "string",
+      "city": "string",
+      "zip": "string",
+      "country": "string",
+      "continent": "string",
+      "lat": 0,
+      "lng": 0
+    }
+  },
+  "customer": {
+    "name": "string",
+    "email": "user@example.com",
+    "avatar": "https://url.com/image.jpg"
+  }
+}
+```
+
+<Hr />
+
+## All entries
+
+<EndpointDetails path="/holidaze/bookings" />
+
+Retrieve all bookings.
+
+> If you want to get all bookings by a specific profile, you can use the [bookings by profile](./profiles#all-bookings-by-profile) endpoint.
+
+```json title="Response"
+[
+  {
+    "id": "string",
+    "dateFrom": "string",
+    "dateTo": "string",
+    "guests": 0,
+    "created": "string",
+    "updated": "string"
+  },
+  {
+    "id": "string",
+    "dateFrom": "string",
+    "dateTo": "string",
+    "guests": 0,
+    "created": "string",
+    "updated": "string"
+  }
+  // ...
+]
+```
+
+<Hr />
+
+## Single entry
+
+<EndpointDetails path="/holidaze/bookings/<id>" />
+
+Retrieve a single booking based on its id.
+
+```json title="Response"
+{
+  "id": "string",
+  "dateFrom": "string",
+  "dateTo": "string",
+  "guests": 0,
+  "created": "string",
+  "updated": "string"
+}
+```
+
+<Hr />
+
+## Create entry
+
+<EndpointDetails method="POST" path="/holidaze/bookings" />
+
+Create a new booking.
+
+```json title="Request"
+{
+  "dateFrom": "string", // Required - Instance of new Date()
+  "dateTo": "string", // Required - Instance of new Date()
+  "guests": 0, // Required
+  "venueId": "string" // Required - The id of the venue to book
+}
+```
+
+```json title="Response"
+{
+  "id": "string",
+  "dateFrom": "string",
+  "dateTo": "string",
+  "guests": 0,
+  "created": "string",
+  "updated": "string"
+}
+```
+
+<Hr />
+
+## Update entry
+
+<EndpointDetails method="PUT" path="/holidaze/bookings/<id>" />
+
+Updating a booking.
+
+```json title="Request"
+{
+  "dateFrom": "string", // Optional - Instance of new Date()
+  "dateTo": "string", // Optional - Instance of new Date()
+  "guests": 0 // Optional
+}
+```
+
+```json title="Response"
+{
+  "id": "string",
+  "dateFrom": "string",
+  "dateTo": "string",
+  "guests": 0,
+  "created": "string",
+  "updated": "string"
+}
+```
+
+<Hr />
+
+## Delete entry
+
+<EndpointDetails method="DELETE" path="/holidaze/bookings/<id>" />
+
+Delete a booking based on its id.
+
+Returns an empty 204 response on success.
