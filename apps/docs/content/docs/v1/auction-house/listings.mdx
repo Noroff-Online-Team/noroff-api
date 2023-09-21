@@ -2,3 +2,266 @@
 title: Listings
 description: Listings related to Auction House
 ---
+
+import { Hr } from "@/components/hr"
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+<Callout variant="warning">
+  Some of these are authenticated endpoints. You can visit [authentication](./authentication) to get an access token.
+</Callout>
+
+These endpoints allow you to create, read, update, delete listings. Listings are the main content of an auction house. They are created by profiles and can be bid on by other profiles.
+
+This is a paginated and sortable endpoint. You can use the `limit` and `offset` query parameters to paginate the results. You can also use the `sort` and `sortOrder` query parameters to sort the results. Read more about the pagination and sorting features [here](../pagination-sorting).
+
+## The Listing model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique identifier for the listing." },
+    title: { type: "string", description: "The title of the listing." },
+    description: { type: "string", description: "The description of the listing." },
+    tags: { type: "Array<string>", description: "A string array of tags for the listing." },
+    media: { type: "Array<string>", description: "A string array of media URLs for the listing." },
+    created: { type: "string", description: "The date the listing was created." },
+    updated: { type: "string", description: "The date the listing was last updated." },
+    endsAt: { type: "string", description: "The date the listing will end." },
+    _count: {
+      type: "object",
+      typeDescription: "{\n  bids: integer;\n}",
+      description: "A JSON object containing the number of bids for the listing."
+    }
+  }}
+/>
+
+<Hr />
+
+## Query parameters
+
+Not all of the properties of a listing are returned by default. You can use the following optional query parameters to include additional properties in the response.
+
+<TypeTable
+  type={{
+    _seller: { type: "boolean", default: "false", description: "Include seller." },
+    _bids_: { type: "boolean", default: "false", description: "Include bids." }
+  }}
+/>
+
+```json title="Example with all optional query parameters"
+{
+  "id": "string",
+  "title": "string",
+  "description": "string",
+  "tags": ["string"],
+  "media": ["https://url.com/image.jpg"],
+  "created": "2020-01-01T00:00:00.000Z",
+  "updated": "2020-01-01T00:00:00.000Z",
+  "endsAt": "2020-01-01T00:00:00.000Z",
+  "seller": {
+    "name": "string",
+    "email": "user@example.com",
+    "avatar": "https://url.com/image.jpg"
+  },
+  "bids": [
+    {
+      "id": "string",
+      "amount": 0,
+      "bidderName": "string",
+      "created": "2020-01-01T00:00:00.000Z"
+    }
+  ],
+  "_count": {
+    "bids": 0
+  }
+}
+```
+
+<Hr />
+
+## Filtering
+
+You can filter for active listings by using the `_active` query flag.
+
+You can filter based on an entry in the tags array by using the `_tag` query flag. You may only filter by one tag at a time.
+
+<TypeTable
+  type={{
+    _tag: { type: "string", description: "Only listing matching tag." },
+    _active: { type: "boolean", description: "Only active listings." }
+  }}
+/>
+
+An example query filtering for active listings with the `my_tag` tag.
+
+<EndpointDetails path="/auction/listings?_tag=my_tag&_active=true" />
+
+<Hr />
+
+## All entries
+
+<Callout variant="info">This endpoint does not require authentication.</Callout>
+
+<EndpointDetails path="/auction/listings" />
+
+Retrieve all listings.
+
+> If you want to get all listings by a specific profile, you can use the [listings by profile](./profiles#all-listings-by-profile) endpoint.
+
+```json title="Response"
+[
+  {
+    "id": "string",
+    "title": "string",
+    "description": "string",
+    "tags": ["string"],
+    "media": ["https://url.com/image.jpg"],
+    "created": "2020-01-01T00:00:00.000Z",
+    "updated": "2020-01-01T00:00:00.000Z",
+    "endsAt": "2020-01-01T00:00:00.000Z",
+    "_count": {
+      "bids": 0
+    }
+  },
+  {
+    "id": "string",
+    "title": "string",
+    "description": "string",
+    "tags": ["string"],
+    "media": ["https://url.com/image.jpg"],
+    "created": "2020-01-01T00:00:00.000Z",
+    "updated": "2020-01-01T00:00:00.000Z",
+    "endsAt": "2020-01-01T00:00:00.000Z",
+    "_count": {
+      "bids": 0
+    }
+  }
+  // ...
+]
+```
+
+<Hr />
+
+## Single entry
+
+<Callout variant="info">This endpoint does not require authentication.</Callout>
+
+<EndpointDetails path="/auction/listings/<id>" />
+
+Retrieve a single listing by its id.
+
+> Use the `_seller`, and/or `_bids` flags to get more data from this request.
+
+```json title="Response"
+{
+  "id": "string",
+  "title": "string",
+  "description": "string",
+  "tags": ["string"],
+  "media": ["https://url.com/image.jpg"],
+  "created": "2020-01-01T00:00:00.000Z",
+  "updated": "2020-01-01T00:00:00.000Z",
+  "endsAt": "2020-01-01T00:00:00.000Z",
+  "_count": {
+    "bids": 0
+  }
+}
+```
+
+<Hr />
+
+## Create entry
+
+<EndpointDetails method="POST" path="/auction/listings" />
+
+Create a new listing. The `title` and `endsAt` properties are required, but we recommend at least including the `description` and `media` properties as well.
+
+> Please note that listings `media` property must be an array of fully formed URLs that links to live and publicly accessible images. The API will check the provided URLs and if any cannot be accessed publicly you will receive a 400 error response.
+
+```json title="Request"
+{
+  "title": "string", // Required
+  "description": "string", // Optional
+  "tags": ["string"], // Optional
+  "media": ["https://url.com/image.jpg"], // Optional
+  "endsAt": "2020-01-01T00:00:00.000Z" // Required - Instance of new Date()
+}
+```
+
+```json title="Response"
+{
+  "id": "string",
+  "title": "string",
+  "description": "string",
+  "tags": ["string"],
+  "media": ["https://url.com/image.jpg"],
+  "created": "2020-01-01T00:00:00.000Z",
+  "updated": "2020-01-01T00:00:00.000Z",
+  "endsAt": "2020-01-01T00:00:00.000Z",
+  "_count": {
+    "bids": 0
+  }
+}
+```
+
+<Hr />
+
+## Update entry
+
+<EndpointDetails method="PUT" path="/auction/listings/<id>" />
+
+Update a listing.
+
+> Please note that listings `media` property must be an array of fully formed URLs that links to live and publicly accessible images. The API will check the provided URLs and if any cannot be accessed publicly you will receive a 400 error response.
+
+```json title="Request"
+{
+  "title": "string", // Optional
+  "description": "string", // Optional
+  "tags": ["string"], // Optional
+  "media": ["https://url.com/image.jpg"] // Optional
+}
+```
+
+<Hr />
+
+## Delete entry
+
+<EndpointDetails method="DELETE" path="/auction/listings/<id>" />
+
+Delete a listing.
+
+Returns an empty 204 response on success.
+
+<Hr />
+
+## Bid on entry
+
+<EndpointDetails method="POST" path="/auction/listings/<id>/bids" />
+
+Create new bid on a listing.
+
+> When a listing ends, the winning bid amount will be transferred to the seller's credits. All losing bids will be refunded to its original bidder's credits.
+
+```json title="Request"
+{
+  "amount": 0 // Required
+}
+```
+
+```json title="Response"
+{
+  "id": "string",
+  "title": "string",
+  "description": "string",
+  "tags": ["string"],
+  "media": ["https://url.com/image.jpg"],
+  "created": "2020-01-01T00:00:00.000Z",
+  "updated": "2020-01-01T00:00:00.000Z",
+  "endsAt": "2020-01-01T00:00:00.000Z",
+  "_count": {
+    "bids": 0
+  }
+}
+```
