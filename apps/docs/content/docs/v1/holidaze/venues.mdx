@@ -49,9 +49,6 @@ These endpoints support pagination and sorting. Read more about these features [
 
 Not all of the properties of a venue are returned by default. You can use the following optional query parameters to include additional properties in the response.
 
-jsx
-Copy code
-
 <TypeTable
   type={{
     _owner: { type: "boolean", default: "false", description: "Include owner." },
@@ -105,7 +102,7 @@ Copy code
 
 <Hr />
 
-## All entries
+## All venues
 
 <EndpointDetails path="/holidaze/venues" />
 
@@ -173,7 +170,7 @@ Retrieve all venues.
 
 <Hr />
 
-## Single entry
+## Single venue
 
 <EndpointDetails path="/holidaze/venues/<id>" />
 
@@ -210,7 +207,7 @@ Retrieve a single venue based on its id.
 
 <Hr />
 
-## Create entry
+## Create venue
 
 <EndpointDetails method="POST" path="/holidaze/venues" />
 
@@ -273,7 +270,7 @@ Creation a new venue.
 
 <Hr />
 
-## Update entry
+## Update venue
 
 <EndpointDetails method="PUT" path="/holidaze/venues/<id>" />
 
@@ -336,7 +333,7 @@ Updating a venue.
 
 <Hr />
 
-## Delete entry
+## Delete venue
 
 <EndpointDetails method="DELETE" path="/holidaze/venues/<id>" />
 

@@ -114,7 +114,7 @@ An example query filtering for active listings with the `my_tag` tag.
 
 <Hr />
 
-## All entries
+## All posts
 
 <EndpointDetails path="/social/posts" />
 
@@ -156,7 +156,7 @@ Retrieve all posts.
 
 <Hr />
 
-## Single entry
+## Single post
 
 <EndpointDetails path="/social/posts/<id>" />
 
@@ -182,17 +182,17 @@ Retrieve a single post by its id.
 
 <Hr />
 
-## All entries from followed profiles
+## All posts from followed profiles
 
 <EndpointDetails path="/social/posts/following" />
 
 Retrieve all posts from profiles that the authenticated user is following.
 
-The data returned is similar to the [all entries](#all-entries) endpoint and accepts the same optional query flags.
+The data returned is similar to the [all posts](#all-posts) endpoint and accepts the same optional query flags.
 
 <Hr />
 
-## Create entry
+## Create post
 
 <EndpointDetails method="POST" path="/social/posts" />
 
@@ -227,7 +227,7 @@ Create a new post. Only the `title` property is required, but we recommend at le
 
 <Hr />
 
-## Update entry
+## Update post
 
 <EndpointDetails method="PUT" path="/social/posts/<id>" />
 
@@ -262,7 +262,7 @@ Update a post based on its id. This endpoint returns the updated post.
 
 <Hr />
 
-## Delete entry
+## Delete post
 
 <EndpointDetails method="DELETE" path="/social/posts/<id>" />
 
@@ -272,7 +272,7 @@ Returns an empty 204 response on success.
 
 <Hr />
 
-## React to entry
+## React to post
 
 <EndpointDetails method="PUT" path="/social/posts/<id>/react/<symbol>" />
 
@@ -294,7 +294,7 @@ The `symbol` parameter should be an actual emoji. For example, to react to a pos
 
 <Hr />
 
-## Comment on entry
+## Comment on post
 
 <EndpointDetails method="POST" path="/social/posts/<id>/comment" />
 

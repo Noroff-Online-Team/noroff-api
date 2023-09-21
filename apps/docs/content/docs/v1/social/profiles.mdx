@@ -90,7 +90,7 @@ Not all of the properties of a post are returned by default. You can use the fol
 
 <Hr />
 
-## All entries
+## All profiles
 
 <EndpointDetails path="/social/profiles" />
 
@@ -125,7 +125,7 @@ Retrieve all profiles.
 
 <Hr />
 
-## Single entry
+## Single profile
 
 <EndpointDetails path="/social/profiles/<name>" />
 
@@ -153,7 +153,7 @@ Retrieve a single profile by its id.
 
 Retrieve all posts made by profile.
 
-The response is the same as the [posts](./posts#all-entries) endpoint, and accepts the same optional query parameters and flags.
+The response is the same as the [posts](./posts#all-posts) endpoint, and accepts the same optional query parameters and flags.
 
 ```json title="Response"
 [
@@ -181,7 +181,7 @@ The response is the same as the [posts](./posts#all-entries) endpoint, and accep
 
 <Hr />
 
-## Update entry media
+## Update profile media
 
 <EndpointDetails method="PUT" path="/social/profiles/<name>/media" />
 
@@ -216,7 +216,7 @@ Remove profile media by setting the `banner` or `avatar` property to `null`.
 
 <Hr />
 
-## Follow & Unfollow Profile
+## Follow & Unfollow profile
 
 <EndpointDetails method="PUT" path="/social/profiles/<name>/follow" />
 <EndpointDetails method="PUT" path="/social/profiles/<name>/unfollow" />
