@@ -18,7 +18,7 @@ These endpoints allow you to retrieve all books, a single book by its id, or a r
     genre: { type: "string", description: "Genre of the book." },
     description: { type: "string", description: "Description of the book." },
     isbn: { type: "string", description: "ISBN of the book." },
-    image: { type: "string", typeDescription: "Instance of `Media` model.", description: "Image of the book." },
+    image: { type: "object", typeDescription: "Instance of `Media` model.", description: "Image of the book." },
     published: { type: "string", description: "Date of publication of the book." },
     publisher: { type: "string", description: "Publisher of the book." }
   }}

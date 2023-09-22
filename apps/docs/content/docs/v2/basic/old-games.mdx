@@ -17,7 +17,7 @@ These endpoints allow you to retrieve all old games, a single old game by its id
     name: { type: "string", description: "The name of the team." },
     description: { type: "string", description: "The description of the team." },
     released: { type: "string", description: "The year the game was released." },
-    image: { type: "string", typeDescription: "Instance of `Media` model.", description: "The image of the game." },
+    image: { type: "object", typeDescription: "Instance of `Media` model.", description: "Image of the game." },
     genre: { type: "Array<string>", description: "A string array of the genres of the game." }
   }}
 />

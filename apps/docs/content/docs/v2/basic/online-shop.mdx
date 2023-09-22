@@ -18,9 +18,9 @@ These endpoints allow you to retrieve all products, or a single product by its i
     price: { type: "float", description: "The price of the product." },
     discountedPrice: { type: "float", description: "The discounted price of the product." },
     image: {
-      type: "string",
+      type: "object",
       typeDescription: "Instance of `Media` model.",
-      description: "The image url of the product."
+      description: "Image of the product."
     },
     rating: { type: "integer", description: "The rating of the product." },
     tags: { type: "Array<string>", description: "A string array of the tags of the product." },
