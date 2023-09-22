@@ -178,3 +178,25 @@ const data = await response.json()
 In v1, you were required to register and login a user for each of `Social`, `Auction House`, and `Holidaze`.
 
 In v2, these have all been unified into a single authentication system. You can use the same [Register](./auth/register) and [Login](./auth/login) endpoints to register and login a user. No matter which endpoints you are using.
+
+<Hr />
+
+## Pagination Offset replaced by Page
+
+> By default, the Noroff API sets the `limit` query parameter to 100. This is also the max. To get the next 100 results, you need to use pagination.
+
+In v1, the `offset` query parameter was used to paginate results.
+
+```js title="v1 - Example of pagination"
+const response = await fetch(`${NOROFF_API_URL}/social/posts?offset=100`)
+const data = await response.json()
+```
+
+In v2, the `offset` query parameter has been replaced by the `page` query parameter. Instead of providing the number of results to skip, you now provide the page number.
+
+```js title="v2 - Example of pagination"
+const response = await fetch(`${NOROFF_API_URL}/social/posts?page=2`)
+const data = await response.json()
+```
+
+You can read more about pagination on the [Pagination & Sorting](./pagination-sorting) page.
