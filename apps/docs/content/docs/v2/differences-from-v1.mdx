@@ -7,6 +7,8 @@ import { TypeTable } from "next-docs-ui/components/type-table"
 
 If you are migrating from v1, here are some of the major/breaking changes you should be aware of.
 
+<Hr />
+
 ## New response format
 
 The response format has changed.
@@ -99,6 +101,8 @@ In v2, the response is an object with a `data` property that contains the respon
   }}
 />
 
+<Hr />
+
 ## Images are now objects
 
 In v1, the `avatar`, `banner`, and `media` properties were strings (or array of strings) that contained the URL of the image.
@@ -133,3 +137,44 @@ Using `avatar` as an example. In v1, the `avatar` property was a string. In v2, 
     "avatar.alt": { type: "string?", default: '""', description: "The alt text for the image." }
   }}
 />
+
+<Hr />
+
+## Requires API Key
+
+In v1, you could use the autheniticated endpoints by providing a JWT access token in request headers.
+
+```js title="v1 - Example of authorization"
+const options = {
+  headers: {
+    Authorization: `Bearer ${accessToken}`
+  }
+}
+
+const response = await fetch(`${NOROFF_API_URL}/social/posts`, options)
+const data = await response.json()
+```
+
+In v2, in addition to the JWT access token, you must also provide an API key. You can get an API key by using the [API Key](./auth/api-key) endpoint.
+
+The API Key must be sent using `X-Noroff-API-Key` header key.
+
+```js title="v2 - Using access token and API key"
+const options = {
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+    "X-Noroff-API-Key": apiKey
+  }
+}
+
+const response = await fetch(`${NOROFF_API_URL}/social/posts`, options)
+const data = await response.json()
+```
+
+<Hr />
+
+## Unified Authentication
+
+In v1, you were required to register and login a user for each of `Social`, `Auction House`, and `Holidaze`.
+
+In v2, these have all been unified into a single authentication system. You can use the same [Register](./auth/register) and [Login](./auth/login) endpoints to register and login a user. No matter which endpoints you are using.
