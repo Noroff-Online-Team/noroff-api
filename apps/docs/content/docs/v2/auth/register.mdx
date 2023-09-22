@@ -1,13 +1,13 @@
 ---
 title: Register
-description: Register a new user profile.
+description: Register a new user profile
 ---
 
 import { Hr } from "@/components/hr"
 import { EndpointDetails } from "@/components/endpoint-details"
 import { TypeTable } from "next-docs-ui/components/type-table"
 
-## Register
+## Register a new user profile
 
 <EndpointDetails method="POST" path="/auth/register" />
 
@@ -30,7 +30,7 @@ You will need to send all of the required values in your `POST` request body.
 }
 ```
 
-A successful request will return a `201 Created` status code and the newly created user profile.
+A successful response will return a `201 Created` status code and the newly created user profile.
 
 ```json title="Response"
 {
