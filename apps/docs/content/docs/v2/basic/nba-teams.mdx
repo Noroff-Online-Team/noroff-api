@@ -1,0 +1,107 @@
+---
+title: NBA Teams
+---
+
+import { Hr } from "@/components/hr"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+These endpoints allow you to retrieve all NBA teams, a single NBA team by its id, or a random NBA team. The response will be an array of JSON objects if you request all teams, or a single JSON object if you request a single team or a random team.
+
+## The NBA Team model
+
+<TypeTable
+  type={{
+    id: { type: "integer", description: "The id of the team." },
+    city: { type: "string", description: "The city of the team." },
+    conference: { type: "string", description: "The conference of the team." },
+    division: { type: "string", description: "The division of the team." },
+    full_name: { type: "string", description: "The full name of the team." },
+    name: { type: "string", description: "The name of the team." }
+  }}
+/>
+
+<Hr />
+
+## All NBA teams
+
+<EndpointDetails path="/nba-teams" />
+
+Retrieve all NBA teams.
+
+```json filename="Response"
+{
+  "data": [
+    {
+      "id": 1,
+      "city": "Atlanta",
+      "conference": "East",
+      "division": "Southeast",
+      "full_name": "Atlanta Hawks",
+      "name": "Hawks"
+    },
+    {
+      "id": 2,
+      "city": "Boston",
+      "conference": "East",
+      "division": "Atlantic",
+      "full_name": "Boston Celtics",
+      "name": "Celtics"
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Single NBA team
+
+<EndpointDetails path="/nba-teams/<id>" />
+
+Retrieve a single NBA team by its id.
+
+```json filename="Response"
+{
+  "data": {
+    "id": 1,
+    "city": "Atlanta",
+    "conference": "East",
+    "division": "Southeast",
+    "full_name": "Atlanta Hawks",
+    "name": "Hawks"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Random NBA team
+
+<EndpointDetails path="/nba-teams/random" />
+
+Retrieve a random NBA team.
+
+```json filename="Response"
+{
+  "data": {
+    "id": 5,
+    "city": "Chicago",
+    "conference": "East",
+    "division": "Central",
+    "full_name": "Chicago Bulls",
+    "name": "Bulls"
+  },
+  "meta": {}
+}
+```

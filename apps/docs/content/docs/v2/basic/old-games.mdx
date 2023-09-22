@@ -1,0 +1,112 @@
+---
+title: Old Games
+---
+
+import { Hr } from "@/components/hr"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+These endpoints allow you to retrieve all old games, a single old game by its id, or a random old game. The response will be an array of JSON objects if you request all games, or a single JSON object if you request a single game or a random game.
+
+## The Old Game model
+
+<TypeTable
+  type={{
+    id: { type: "integer", description: "The id of the team." },
+    slug: { type: "string", description: "The slug of the team." },
+    name: { type: "string", description: "The name of the team." },
+    description: { type: "string", description: "The description of the team." },
+    released: { type: "string", description: "The year the game was released." },
+    image: { type: "string", typeDescription: "Instance of `Media` model.", description: "The image of the game." },
+    genre: { type: "Array<string>", description: "A string array of the genres of the game." }
+  }}
+/>
+
+<Hr />
+
+## All old games
+
+<EndpointDetails path="/old-games" />
+
+Retrieve all old games.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": 1,
+      "slug": "the-incredible-machine",
+      "name": "The Incredible Machine",
+      "description": "Undoubtedly one of the most unique games ever produced for the PC, The Incredible Machines 1 is a dream come true for anyone who as a child likes to tinker with gadgets and toys. It is a puzzle game par excellence and beyond: you have to use wacky gadgets and tools given for each level to accomplish objectives. Puzzles start out relaxing and get fiendish very quickly, as later levels require not only ingenuity but also precise timing. A true classic.",
+      "released": "1993",
+      "image": "https://static.cloud.noroff.dev/api/old-games/the-incredible-machine.png",
+      "genre": ["Puzzle"]
+    },
+    {
+      "id": 2,
+      "slug": "lemmings",
+      "name": "Lemmings",
+      "description": "Lemmings, one the most famous game in the nineties. You are in charge of a group of lemmings on their way to their home. Inspired from the legend of the dumb lemming running straight in to danger, the lemmings pop from a portal and walk straight until they find an obstacle. The goal is to build a way to the exit with minimum casualties along the way. Of course dangers are everywhere : pitfall, traps, cliffs, etc...   Hopefully, the lemmings are able to make a lot of things, but you have to tell them to do it. Lemmings can make their fellow friends stop and turn around, build bridges, use an umbrella to fall slowly and much more. With a clever use of the often limited number of abilities, you may lead the lemmings to the exit.",
+      "released": "1991",
+      "image": "https://static.cloud.noroff.dev/api/old-games/lemmings.gif",
+      "genre": ["Action", "Puzzle"]
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Single old game
+
+<EndpointDetails path="/old-games/<id>" />
+
+Retrieve a single old game by its id.
+
+```json title="Response"
+{
+  "data": {
+    "id": 1,
+    "slug": "the-incredible-machine",
+    "name": "The Incredible Machine",
+    "description": "Undoubtedly one of the most unique games ever produced for the PC, The Incredible Machines 1 is a dream come true for anyone who as a child likes to tinker with gadgets and toys. It is a puzzle game par excellence and beyond: you have to use wacky gadgets and tools given for each level to accomplish objectives. Puzzles start out relaxing and get fiendish very quickly, as later levels require not only ingenuity but also precise timing. A true classic.",
+    "released": "1993",
+    "image": "https://static.cloud.noroff.dev/api/old-games/the-incredible-machine.png",
+    "genre": ["Puzzle"]
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Random old game
+
+<EndpointDetails path="/old-games/random" />
+
+Retrieve a random old game.
+
+```json title="Response"
+{
+  "data": {
+    "id": 8,
+    "slug": "street-rod-2-the-next-generation",
+    "name": "Street Rod 2: The Next Generation",
+    "description": "A great sequel to Street Rod that improves upon its predecessor in every respect, Street Rod 2 features more and faster cars, more challenging courses, and new customization options that were added based on fans' input from the first game. Obviously following the proven 'if it ain't broke, don't fix it' school of though, California Dreams retains all the fun of Street Rod while adding many options. (Read my review of Street Rod for an overview of gameplay and objective-- both of which remain the same here). In addition to changing engine and transmission, you can now add fuel injector, add muffler mod's, and change the car's gear ratio.",
+    "released": "1991",
+    "image": "https://static.cloud.noroff.dev/api/old-games/street-rod-2-the-next-generation.gif",
+    "genre": ["Racing / Driving", "Simulation"]
+  },
+  "meta": {}
+}
+```
