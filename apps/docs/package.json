@@ -29,7 +29,7 @@
     "contentlayer": "^0.3.4",
     "katex": "^0.16.8",
     "lucide-react": "^0.279.0",
-    "next": "^13.4.19",
+    "next": "^13.5.2",
     "next-contentlayer": "^0.3.4",
     "next-docs-ui": "^2.1.0",
     "next-docs-zeta": "^2.1.0",
