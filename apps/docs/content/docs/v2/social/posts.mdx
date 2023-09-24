@@ -98,9 +98,7 @@ Not all of the properties of a post are returned by default. You can use the fol
     "reactions": [
       {
         "symbol": "string",
-        "count": 0,
-        "postId": 0,
-        "message": "string"
+        "count": 0
       }
     ],
     "comments": [
@@ -349,7 +347,7 @@ Update a post based on its id. This endpoint returns the updated post.
 
 Delete a post based on its id.
 
-Returns an empty 204 response on success.
+Returns an empty `204 No Content` response on success.
 
 <Hr />
 
@@ -357,9 +355,11 @@ Returns an empty 204 response on success.
 
 <EndpointDetails method="PUT" path="/social/posts/<id>/react/<symbol>" />
 
+> This endpoint allows you to toggle reactions. If the authenticated user has already reacted to the post with the provided symbol, the reaction will be removed. Otherwise, the reaction will be added.
+
 React to a post with a symbol.
 
-Returns the symbol, reaction count for that symbol, and the original post id.
+Returns the original post id, the symbol reacted with, and an array of all reactions on the post.
 
 The `symbol` parameter should be an actual emoji. For example, to react to a post with a 👍 emoji, you would use the following endpoint: `/social/posts/<id>/react/👍`
 
@@ -368,9 +368,14 @@ The `symbol` parameter should be an actual emoji. For example, to react to a pos
 ```json title="Response"
 {
   "data": {
+    "postId": 0,
     "symbol": "string",
-    "count": 0,
-    "postId": 0
+    "reactions": [
+      {
+        "symbol": "string",
+        "count": 0
+      }
+    ]
   },
   "meta": {}
 }
@@ -383,6 +388,8 @@ The `symbol` parameter should be an actual emoji. For example, to react to a pos
 <EndpointDetails method="POST" path="/social/posts/<id>/comment" />
 
 This endpoint allows a comment to be made on a post. The optional `replyToId` property can be used to link this comment to an existing comment.
+
+> Please note, when replying to another comment, that the `replyToId` property must be a valid comment id. If the comment exists, but is not associated with the post, you will receive a 400 error response. Should the comment not exist, you will receive a 404 error response.
 
 ```json title="Request"
 {
@@ -399,20 +406,7 @@ This endpoint allows a comment to be made on a post. The optional `replyToId` pr
     "id": 0,
     "postId": 0,
     "owner": "string",
-    "created": "2022-09-04T16:29:07.175Z",
-    "author": {
-      "name": "string",
-      "email": "user@example.com",
-      "bio": "string",
-      "avatar": {
-        "url": "https://url.com/image.jpg",
-        "alt": "string"
-      },
-      "banner": {
-        "url": "https://url.com/image.jpg",
-        "alt": "string"
-      }
-    }
+    "created": "2022-09-04T16:29:07.175Z"
   },
   "meta": {}
 }
