@@ -7,6 +7,28 @@ import { Hr } from "@/components/hr"
 import { EndpointDetails } from "@/components/endpoint-details"
 import { TypeTable } from "next-docs-ui/components/type-table"
 
+## The API Key model
+
+<TypeTable
+  type={{
+    name: {
+      type: "string",
+      default: "API Key",
+      description: "The API Key name. This really only exists for your own reference."
+    },
+    status: {
+      type: "string",
+      default: "ACTIVE",
+      description: "The API Key status. Can be either ACTIVE or REVOKED."
+    },
+    key: {
+      type: "string",
+      typeDescription: "A UUID v4 string.",
+      description: "The API Key."
+    }
+  }}
+/>
+
 ## Create an API Key
 
 <EndpointDetails method="POST" path="/auth/create-api-key" />
@@ -43,7 +65,7 @@ A successful response will return a `201 Created` status code and the newly crea
 <TypeTable
   type={{
     name: {
-      type: "string?",
+      type: "string",
       default: "API Key",
       description: "The API Key name. This really only exists for your own reference."
     }
