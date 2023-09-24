@@ -35,10 +35,8 @@ export default function Layout({ params, children }: { params: { version: string
         sidebar={{
           defaultOpenLevel: 0,
           banner: (
-            <div className="relative flex flex-row gap-2 items-center p-2 rounded-lg border bg-card text-card-foreground transition-colors hover:bg-muted/50">
-              <p className="absolute right-2 top-2 text-muted-foreground text-xs">
-                {params.version === "v1" ? "v1" : "v2"}
-              </p>
+            <div className="relative flex flex-row gap-2 items-center p-2 rounded-lg border bg-card text-card-foreground transition-colors hover:bg-muted/80">
+              <p className="absolute right-2 top-2 text-muted-foreground text-xs">{params.version}</p>
               <Icon className="w-9 h-9 p-1 shrink-0 border rounded-md text-primary bg-background" />
               <div>
                 <p className="font-medium text-sm">{title}</p>
