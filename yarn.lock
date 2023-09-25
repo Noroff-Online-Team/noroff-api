@@ -6488,10 +6488,10 @@ next-contentlayer@^0.3.4:
     "@contentlayer/core" "0.3.4"
     "@contentlayer/utils" "0.3.4"
 
-next-docs-ui@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/next-docs-ui/-/next-docs-ui-2.1.1.tgz#fa6efda450f748b2ef2cbf47152fc2429e725136"
-  integrity sha512-hE0jPZkV7CedWHL8zzKYE1ETw/Da4skMbJ4a/rhEJKGKg/UzWT8YeGNKKoZXwiNGXlMoU+Li8z4JxhYexy6Gxg==
+next-docs-ui@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/next-docs-ui/-/next-docs-ui-2.2.0.tgz#795705652d515d9f179306ed75724c5db20dc3d3"
+  integrity sha512-/XjTr8Wb67nmzUIaQpVrvMd6FgqWNg0zmod0T/QpgVzOU1bgvj5qdXFyIi2tMjMEh2DTHLJIyfSp08V+LQpA0Q==
   dependencies:
     "@radix-ui/react-accordion" "^1.1.2"
     "@radix-ui/react-collapsible" "^1.0.3"
@@ -6505,15 +6505,15 @@ next-docs-ui@^2.1.1:
     clsx "^2.0.0"
     cmdk "^0.2.0"
     lucide-react "^0.279.0"
-    next-docs-zeta "2.1.1"
+    next-docs-zeta "2.2.0"
     next-themes "^0.2.1"
     react-medium-image-zoom "^5.1.8"
     tailwind-merge "^1.14.0"
 
-next-docs-zeta@2.1.1, next-docs-zeta@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/next-docs-zeta/-/next-docs-zeta-2.1.1.tgz#510043d1fad294076faf62edebe4d52efaf7bd05"
-  integrity sha512-/ZCH2L1BeVut4kLePIPUo4xb7vkzKSDWbI/itn4acH+zCNriOzvy7O8bHf7PoiqkLpv4Z0R2W1tePo9+OysDhg==
+next-docs-zeta@2.2.0, next-docs-zeta@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/next-docs-zeta/-/next-docs-zeta-2.2.0.tgz#1ebb5d64869c0000fc1ece9840e3e7773b77e81b"
+  integrity sha512-5CV8Eo5KzmSiBhUwt4958MnNgJ3dDnXcETFIQ7Wm3emo+ELfh6AilbHLErhcYP+pYSPg3HZ+iD4jyhX7vw/B+A==
   dependencies:
     "@formatjs/intl-localematcher" "^0.4.2"
     flexsearch "0.7.21"

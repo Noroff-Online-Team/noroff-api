@@ -3,7 +3,7 @@
 import { cn } from "@/utils/cn"
 import { cva } from "class-variance-authority"
 import { GithubIcon } from "lucide-react"
-import { Nav as OriginalNav } from "next-docs-ui/components"
+import { Nav as OriginalNav } from "next-docs-ui/nav"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -19,7 +19,7 @@ const item = cva("px-2 py-1 rounded-md transition-colors hover:text-accent-foreg
 export function Nav() {
   const { version } = useParams()
   const [isScrolledDown, setIsScrolledDown] = useState(true)
-  const [swaggerText, setSwaggerText] = useState<string | null>(null)
+  const [swaggerText, setSwaggerText] = useState<string | null>(version === "v1" ? "Swagger v1" : "Swagger v2")
   const [swaggerUrl, setSwaggerUrl] = useState<string>(
     version === "v1" ? "https://api.noroff.dev/docs" : "https://v2.api.noroff.dev/docs"
   )
