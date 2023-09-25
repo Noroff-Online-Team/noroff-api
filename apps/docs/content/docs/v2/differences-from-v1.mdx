@@ -19,7 +19,7 @@ In v1, the response was a single object or an array of objects.
 
 ```json title="v1 - Old response format (Single resource)"
 {
-  "id": 24,
+  "id": 1,
   "type": "programming",
   "setup": "A SQL query walks into a bar, walks up to two tables and asks...",
   "punchline": "'Can I join you?'"
@@ -29,13 +29,13 @@ In v1, the response was a single object or an array of objects.
 ```json title="v1 - Old response format (Multiple resources)"
 [
   {
-    "id": 24,
+    "id": 1,
     "type": "programming",
     "setup": "A SQL query walks into a bar, walks up to two tables and asks...",
     "punchline": "'Can I join you?'"
   },
   {
-    "id": 25,
+    "id": 2,
     "type": "programming",
     "setup": "How many programmers does it take to change a lightbulb?",
     "punchline": "None that's a hardware problem"
@@ -43,12 +43,14 @@ In v1, the response was a single object or an array of objects.
 ]
 ```
 
-In v2, the response is an object with a `data` property that contains the response object or array of objects, and a new `meta` property that contains pagination metadata about the resources.
+In v2, the response is an object with a `data` property that contains the response object or array of objects, and a new `meta` property that contains pagination metadata for the resources.
+
+If you're querying a single resource, the response `meta` property will be empty. If you're querying multiple resources, the response `meta` property will contain pagination metadata.
 
 ```json title="v2 - New response format (Single resource)"
 {
   "data": {
-    "id": 24,
+    "id": 1,
     "type": "programming",
     "setup": "A SQL query walks into a bar, walks up to two tables and asks...",
     "punchline": "'Can I join you?'"
@@ -61,13 +63,13 @@ In v2, the response is an object with a `data` property that contains the respon
 {
   "data": [
     {
-      "id": 24,
+      "id": 1,
       "type": "programming",
       "setup": "A SQL query walks into a bar, walks up to two tables and asks...",
       "punchline": "'Can I join you?'"
     },
     {
-      "id": 25,
+      "id": 2,
       "type": "programming",
       "setup": "How many programmers does it take to change a lightbulb?",
       "punchline": "None that's a hardware problem"
