@@ -26,8 +26,8 @@ const inter = Inter({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" style={{ colorScheme: "dark" }} className={clsx(inter.className, "dark")}>
-      <body className="relative flex min-h-screen flex-col">
+    <html lang="en" style={{ colorScheme: "dark" }} className={clsx(inter.className, "dark")} suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col">
         <Provider>
           <Nav />
           {children}
