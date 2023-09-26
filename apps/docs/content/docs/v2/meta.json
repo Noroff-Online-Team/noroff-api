@@ -6,6 +6,7 @@
     "about",
     "authentication",
     "pagination-sorting",
+    "errors",
     "differences-from-v1",
     "---Endpoints---",
     "auth",
