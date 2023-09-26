@@ -9,7 +9,7 @@
     "node": ">=18.17.0"
   },
   "scripts": {
-    "dev": "export NODE_OPTIONS=\"--max_old_space_size=4096 --trace-warnings\" && PORT=3002 next dev",
+    "dev": "PORT=3002 next dev",
     "build": "next build",
     "start": "next start"
   },
