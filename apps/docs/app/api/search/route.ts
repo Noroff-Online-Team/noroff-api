@@ -8,7 +8,6 @@ export const { GET } = createSearchAPI("advanced", {
     title: docs.title,
     content: docs.body.raw,
     url: getPageUrl(docs.slug),
-    structuredData: docs.structuredData,
     tag: docs._raw.flattenedPath.startsWith("docs/v1") ? "v1" : "v2"
   })),
   tag: true
