@@ -274,7 +274,7 @@ The response is the same as the [posts](./posts#all-posts) endpoint, and accepts
 
 <Hr />
 
-## Update profile media
+## Update profile
 
 <EndpointDetails method="PUT" path="/social/profiles/<name>" />
 
@@ -282,7 +282,7 @@ Update or set profile `banner` and `avatar` images.
 
 You can send either or both of the properties in the request body.
 
-> Please note that the `avatar.url` and `banner.url` properties must be fully formed URLs that links to live and publicly accessible images. The API will check the provided URLs and if they cannot be accessed publicly you will receive a 400 error response.
+> Please note that the `avatar.url` and `banner.url` properties must be fully formed URLs that links to live and publicly accessible images. The API will check the provided URLs and if they cannot be accessed publicly you will receive a `400 Bad Request` error response.
 
 ```json title="Request"
 {

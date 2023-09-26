@@ -259,7 +259,7 @@ The data returned is similar to the [all posts](#all-posts) endpoint and accepts
 
 Create a new post. Only the `title` property is required, but we recommend at least including the `body` and `media` properties as well.
 
-> Please note that the `media.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a 400 error response.
+> Please note that the `media.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
 
 ```json title="Request"
 {
@@ -303,7 +303,7 @@ Create a new post. Only the `title` property is required, but we recommend at le
 
 Update a post based on its id. This endpoint returns the updated post.
 
-> Please note that the `media.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a 400 error response.
+> Please note that the `media.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
 
 ```json title="Request"
 {
@@ -389,7 +389,7 @@ The `symbol` parameter should be an actual emoji. For example, to react to a pos
 
 This endpoint allows a comment to be made on a post. The optional `replyToId` property can be used to link this comment to an existing comment.
 
-> Please note, when replying to another comment, that the `replyToId` property must be a valid comment id. If the comment exists, but is not associated with the post, you will receive a 400 error response. Should the comment not exist, you will receive a 404 error response.
+> Please note, when replying to another comment, that the `replyToId` property must be a valid comment id. If the comment exists, but is not associated with the post, you will receive a `400 Bad Request` error response. Should the comment not exist, you will receive a `404 Not Found` error response.
 
 ```json title="Request"
 {
