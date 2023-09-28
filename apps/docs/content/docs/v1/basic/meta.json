@@ -1,0 +1,4 @@
+{
+  "title": "Basic",
+  "pages": ["authentication", "books", "cat-facts", "jokes", "nba-teams", "old-games", "online-shop", "quotes"]
+}

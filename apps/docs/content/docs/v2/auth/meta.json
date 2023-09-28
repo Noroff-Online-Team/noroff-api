@@ -1,0 +1,4 @@
+{
+  "title": "Auth",
+  "pages": ["register", "login", "api-key"]
+}

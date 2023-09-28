@@ -1,0 +1,95 @@
+---
+title: Error Structure
+description: Learn about the structure of errors returned by the API.
+---
+
+import { Hr } from "@/components/hr"
+import { Callout } from "@/components/callout"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+<Callout variant="info">
+  We are using the Auction House endpoints in these examples. The error structure is the same for all endpoints.
+</Callout>
+
+## The error structure
+
+<TypeTable
+  type={{
+    errors: {
+      type: "Array<object>",
+      typeDescription: "Array<{\n  code?: string;\n  message: string;\n  path?: Array<string>\n}>",
+      description: "The errors"
+    },
+    "errors[].code?": {
+      type: "string",
+      description: "The error code. Typically related to validation errors."
+    },
+    "errors[].message": { type: "string", description: "The error message" },
+    "errors[].path?": {
+      type: "Array<string>",
+      description: "The path of the property that caused the error. Typically related to validation errors."
+    },
+    status: { type: "string", description: "The HTTP status" },
+    statusCode: { type: "number", description: "The HTTP status code" }
+  }}
+/>
+
+<Hr />
+
+## Examples
+
+Imagine you're trying to get a listing by its ID, but that listing doesn't exist. You will get the following error:
+
+```json title="Example"
+{
+  "errors": [
+    {
+      "message": "No listing with such ID"
+    }
+  ],
+  "status": "Not Found",
+  "statusCode": 404
+}
+```
+
+In the above example, the `errors` property is an array of errors. In this case, there is only one error. The `status` property is the HTTP status, and the `statusCode` property is the HTTP status code number.
+
+If the error is a validation error, we will return a more detailed error message. For example, if you try to delete an Auction House listing and the ID is not a valid listing ID (UUID), you will get the following error:
+
+```json title="Validation Error Example"
+{
+  "errors": [
+    {
+      "code": "invalid_string",
+      "message": "ID must be a valid UUID",
+      "path": ["id"]
+    }
+  ],
+  "status": "Not Found",
+  "statusCode": 404
+}
+```
+
+In the above example, the `code` property is the error code, the `message` property is the error message, and the `path` property is the path to the property that caused the error. In this case, the `id` property caused the error.
+
+As an example, you will receive the following error if you are not using the [new Media model](./dirrerences-from-v1#new-media-model) when adding images to the listing:
+
+```json title="Validation Error Example"
+{
+  "errors": [
+    {
+      "code": "invalid_type",
+      "message": "Expected array, received string",
+      "path": ["media"]
+    }
+  ],
+  "status": "Bad Request",
+  "statusCode": 400
+}
+```
+
+<Hr />
+
+## Error Codes
+
+For an explanation of the different response codes and what they mean, see [HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).

@@ -1,0 +1,4 @@
+{
+  "title": "Holidaze",
+  "pages": ["authentication", "bookings", "venues", "profiles"]
+}

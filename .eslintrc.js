@@ -12,9 +12,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint", "prettier"],
   rules: {
-    "linebreak-style": [
-      "error",
-      process.platform === "win32" ? "windows" : "unix"
-    ]
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "linebreak-style": ["error", process.platform === "win32" ? "windows" : "unix"]
   }
 }

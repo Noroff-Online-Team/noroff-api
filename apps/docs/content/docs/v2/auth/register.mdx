@@ -1,0 +1,85 @@
+---
+title: Register
+description: Register a new user profile
+---
+
+import { Hr } from "@/components/hr"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+## Register a new user profile
+
+<EndpointDetails method="POST" path="/auth/register" />
+
+You will need to send all of the required values in your `POST` request body.
+
+```json title="Request"
+{
+  "name": "my_username", // Required
+  "email": "first.last@stud.noroff.no", // Required
+  "password": "UzI1NiIsInR5cCI", // Required
+  "bio": "This is my profile bio", // Optional
+  "avatar": {
+    "url": "https://img.service.com/avatar.jpg", // Optional
+    "alt": "My avatar alt text" // Optional
+  },
+  "banner": {
+    "url": "https://img.service.com/banner.jpg", // Optional
+    "alt": "My banner alt text" // Optional
+  }
+}
+```
+
+A successful response will return a `201 Created` status code and the newly created user profile.
+
+```json title="Response"
+{
+  "data": {
+    "id": 1,
+    "name": "my_username",
+    "email": "first.last@stud.noroff.no",
+    "bio": "This is my profile bio",
+    "avatar": {
+      "url": "https://img.service.com/avatar.jpg",
+      "alt": "My avatar alt text"
+    },
+    "banner": {
+      "url": "https://img.service.com/banner.jpg",
+      "alt": "My banner alt text"
+    }
+  },
+  "meta": {}
+}
+```
+
+### Restrictions
+
+- The `name` value must not contain punctuation symbols apart from underscore (`_`).
+- The `email` value must be a valid `stud.noroff.no` email address.
+- The `password` value must be at least 8 characters.
+- If set, the `bio` value must be less than 160 characters.
+- If set, the `avatar.url` value must be a valid and accessible URL.
+- If set, the `avatar.alt` value must be less than 120 characters. Defaults to empty string (`""`). Requires `avatar.url` to be set.
+- If set, the `banner.url` value must be a valid and accessible URL.
+- If set, the `banner.alt` value must be less than 120 characters. Defaults to empty string (`""`). Requires `banner.url` to be set.
+
+### Types
+
+<TypeTable
+  type={{
+    name: { type: "string", description: "The user's name" },
+    email: { type: "string", description: "The user's email address" },
+    password: { type: "string", description: "The user's password" },
+    bio: { type: "string?", description: "The user's profile bio" },
+    avatar: {
+      type: "object?",
+      typeDescription: "{\n  url: string,\n  alt?: string\n}",
+      description: "The user's avatar image"
+    },
+    banner: {
+      type: "object?",
+      typeDescription: "{\n  url: string,\n  alt?: string\n}",
+      description: "The user's banner image"
+    }
+  }}
+/>

@@ -1,0 +1,97 @@
+---
+title: Jokes
+---
+
+import { Hr } from "@/components/hr"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+These endpoints allow you to retrieve all jokes, a single joke by its id, or a random joke. The response will be an array of JSON objects if you request all jokes, or a single JSON object if you request a single joke or a random joke.
+
+## The Joke model
+
+<TypeTable
+  type={{
+    id: { type: "integer", description: "The id of the joke." },
+    type: { type: "string", description: "The type of the joke." },
+    setup: { type: "string", description: "The setup of the joke." },
+    punchline: { type: "string", description: "The punchline of the joke." }
+  }}
+/>
+
+<Hr />
+
+## All jokes
+
+<EndpointDetails path="/jokes" />
+
+Retrieve all jokes.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": 1,
+      "type": "general",
+      "setup": "What did the fish say when it hit the wall?",
+      "punchline": "Dam."
+    },
+    {
+      "id": 2,
+      "type": "general",
+      "setup": "How do you make a tissue dance?",
+      "punchline": "You put a little boogie on it."
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Single joke
+
+<EndpointDetails path="/jokes/<id>" />
+
+Retrieve a single joke by its id.
+
+```json title="Response"
+{
+  "data": {
+    "id": 1,
+    "type": "general",
+    "setup": "What did the fish say when it hit the wall?",
+    "punchline": "Dam."
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Random joke
+
+<EndpointDetails path="/jokes/random" />
+
+Retrieve a random joke.
+
+```json title="Response"
+{
+  "data": {
+    "id": 120,
+    "type": "general",
+    "setup": "How do locomotives know where they're going?",
+    "punchline": "Lots of training"
+  },
+  "meta": {}
+}
+```

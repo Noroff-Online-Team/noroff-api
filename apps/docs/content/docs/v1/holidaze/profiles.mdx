@@ -1,0 +1,300 @@
+---
+title: Profiles
+description: Profiles related to Holidaze
+---
+
+import { Hr } from "@/components/hr"
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](./authentication) to get an access token.
+</Callout>
+
+This endpoint allows you to manage profiles. They are the users of the Holidaze site.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Profile model
+
+<TypeTable
+  type={{
+    name: { type: "string", description: "The unique name of the profile." },
+    email: { type: "string", description: "The email address of the profile." },
+    avatar: { type: "string", description: "The URL of the profile avatar image." },
+    venueManager: { type: "boolean", description: "Whether the profile is a venue manager or not." },
+    _count: {
+      type: "Object",
+      typeDescription: "{\n  bookings: integer;\n  venues: integer;\n}",
+      description: "A JSON object containing the number of bookings and venues for this profile."
+    }
+  }}
+/>
+
+<Hr />
+
+## Query parameters
+
+Not all of the properties of a profile are returned by default. You can use the following optional query parameters to include additional properties in the response.
+
+<TypeTable
+  type={{
+    _bookings: { type: "boolean", default: "false", description: "Include bookings." },
+    _venues: { type: "boolean", default: "false", description: "Include venues." }
+  }}
+/>
+
+```json title="Example with all optional query parameters"
+{
+  "name": "string",
+  "email": "user@example.com",
+  "avatar": "https://url.com/image.jpg",
+  "venueManager": false,
+  "venues": [
+    {
+      "id": "string",
+      "name": "string",
+      "description": "string",
+      "media": ["string"],
+      "price": 0,
+      "maxGuests": 0,
+      "created": "string",
+      "updated": "string",
+      "meta": {
+        "wifi": true,
+        "parking": true,
+        "breakfast": true,
+        "pets": true
+      },
+      "location": {
+        "address": "string",
+        "city": "string",
+        "zip": "string",
+        "country": "string",
+        "continent": "string",
+        "lat": 0,
+        "lng": 0
+      }
+    }
+  ],
+  "bookings": [
+    {
+      "id": "string",
+      "dateFrom": "string",
+      "dateTo": "string",
+      "guests": 0,
+      "created": "string",
+      "updated": "string"
+    }
+  ],
+  "_count": {
+    "venues": 0,
+    "bookings": 0
+  }
+}
+```
+
+<Hr />
+
+## All profiles
+
+<EndpointDetails path="/holidaze/profiles" />
+
+Retrieve all profiles.
+
+```json title="Response"
+[
+  {
+    "name": "string",
+    "email": "user@example.com",
+    "avatar": "https://url.com/image.jpg",
+    "venueManager": false,
+    "_count": {
+      "venues": 0,
+      "bookings": 0
+    }
+  },
+  {
+    "name": "string",
+    "email": "user@example.com",
+    "avatar": "https://url.com/image.jpg",
+    "venueManager": false,
+    "_count": {
+      "venues": 0,
+      "bookings": 0
+    }
+  }
+]
+```
+
+<Hr />
+
+## Single profile
+
+<EndpointDetails path="/holidaze/profiles/<name>" />
+
+Retrieve a single profile by its id.
+
+```json title="Response"
+{
+  "name": "string",
+  "email": "user@example.com",
+  "avatar": "https://url.com/image.jpg",
+  "venueManager": false,
+  "_count": {
+    "venues": 0,
+    "bookings": 0
+  }
+}
+```
+
+<Hr />
+
+## All bookings by profile
+
+<EndpointDetails path="/holidaze/profiles/<name>/bookings" />
+
+Retrieve all bookings made by profile.
+
+The response is the same as the [bookings](./bookings#all-bookings) endpoint, and accepts the same optional query parameters and flags.
+
+```json title="Response"
+[
+  {
+    "id": "string",
+    "dateFrom": "string",
+    "dateTo": "string",
+    "guests": 0,
+    "created": "string",
+    "updated": "string"
+  },
+  {
+    "id": "string",
+    "dateFrom": "string",
+    "dateTo": "string",
+    "guests": 0,
+    "created": "string",
+    "updated": "string"
+  }
+  // ...
+]
+```
+
+<Hr />
+
+## All venues by profile
+
+<EndpointDetails path="/holidaze/profiles/<name>/venues" />
+
+Retrieve all venues made by profile.
+
+The response is the same as the [venues](./venues#all-venues) endpoint, and accepts the same optional query parameters and flags.
+
+```json title="Response"
+[
+  {
+    "id": "string",
+    "name": "string",
+    "description": "string",
+    "media": ["string"],
+    "price": 0,
+    "maxGuests": 0,
+    "created": "string",
+    "updated": "string",
+    "meta": {
+      "wifi": true,
+      "parking": true,
+      "breakfast": true,
+      "pets": true
+    },
+    "location": {
+      "address": "string",
+      "city": "string",
+      "zip": "string",
+      "country": "string",
+      "continent": "string",
+      "lat": 0,
+      "lng": 0
+    }
+  },
+  {
+    "id": "string",
+    "name": "string",
+    "description": "string",
+    "media": ["string"],
+    "price": 0,
+    "maxGuests": 0,
+    "created": "string",
+    "updated": "string",
+    "meta": {
+      "wifi": true,
+      "parking": true,
+      "breakfast": true,
+      "pets": true
+    },
+    "location": {
+      "address": "string",
+      "city": "string",
+      "zip": "string",
+      "country": "string",
+      "continent": "string",
+      "lat": 0,
+      "lng": 0
+    }
+  }
+  // ...
+]
+```
+
+<Hr />
+
+## Update profile
+
+<EndpointDetails method="PUT" path="/holidaze/profiles/<name>" />
+
+This endpoint allows for the profile `venueManager` boolean to be changed.
+
+If you want to update the profile `avatar` image, use the [Update profile media](#update-profile-media) endpoint.
+
+```json title="Request"
+{
+  "venueManager": true
+}
+```
+
+```json title="Response"
+{
+  "name": "string",
+  "email": "user@example.com",
+  "avatar": "https://url.com/image.jpg",
+  "venueManager": true,
+},
+```
+
+<Hr />
+
+## Update profile media
+
+<EndpointDetails method="PUT" path="/holidaze/profiles/<name>/media" />
+
+Update or set profile `avatar` image.
+
+Remove the `avatar` by setting the property to `null`.
+
+> Please note that the `avatar` property must be fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a 400 error response.
+
+```json title="Request"
+{
+  "avatar": "https://url.com/image.jpg"
+}
+```
+
+```json title="Response"
+{
+  "name": "string",
+  "email": "user@example.com",
+  "avatar": "https://url.com/image.jpg",
+  "venueManager": false,
+},
+```

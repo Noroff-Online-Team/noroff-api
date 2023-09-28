@@ -1,0 +1,366 @@
+---
+title: Profiles
+description: Profiles related to Social
+---
+
+import { Hr } from "@/components/hr"
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+
+These endpoints allow you to manage profiles. They are the users of the social network and are the owners of posts.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Profile model
+
+<TypeTable
+  type={{
+    name: { type: "string", description: "The unique name of the profile." },
+    email: { type: "string", description: "The email address of the profile." },
+    bio: { type: "string", description: "The profile bio." },
+    banner: { type: "object", typeDescription: "Instance of `Media` model.", description: "The profile banner image." },
+    avatar: { type: "object", typeDescription: "Instance of `Media` model.", description: "The profile avatar image." },
+    _count: {
+      type: "object",
+      typeDescription: "{\n  posts: integer;\n  followers: integer;\n  following: integer;\n}",
+      description: "A JSON object containing the number of posts, followers and following for this profile."
+    }
+  }}
+/>
+
+<Hr />
+
+## Query parameters
+
+Not all of the properties of a post are returned by default. You can use the following optional query parameters to include additional properties in the response.
+
+<TypeTable
+  type={{
+    _following: { type: "boolean", default: "false", description: "Include profiles the current user is following." },
+    _followers: {
+      type: "boolean",
+      default: "false",
+      description: "Include profiles that are following the current user."
+    },
+    _posts: { type: "boolean", default: "false", description: "Include posts belonging to the current profile." }
+  }}
+/>
+
+```json title="Example with all optional query parameters"
+{
+  "data": {
+    "name": "string",
+    "email": "user@example.com",
+    "bio": "string",
+    "banner": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    },
+    "avatar": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    },
+    "followers": [
+      {
+        "name": "string",
+        "email": "user@example.com",
+        "bio": "string",
+        "avatar": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        },
+        "banner": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        }
+      }
+    ],
+    "following": [
+      {
+        "name": "string",
+        "email": "user@example.com",
+        "bio": "string",
+        "avatar": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        },
+        "banner": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        }
+      }
+    ],
+    "posts": [
+      {
+        "id": 0,
+        "owner": "string",
+        "title": "string",
+        "body": "string",
+        "tags": ["string"],
+        "media": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        },
+        "created": "2022-09-04T08:08:38.830Z",
+        "updated": "2022-09-04T08:08:38.830Z"
+      }
+    ],
+    "_count": {
+      "posts": 0,
+      "followers": 0,
+      "following": 0
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## All profiles
+
+<EndpointDetails path="/social/profiles" />
+
+Retrieve all profiles.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "name": "string",
+      "email": "user@example.com",
+      "bio": "string",
+      "banner": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "avatar": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "_count": {
+        "posts": 0,
+        "followers": 0,
+        "following": 0
+      }
+    },
+    {
+      "name": "string",
+      "email": "user@example.com",
+      "bio": "string",
+      "banner": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "avatar": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "_count": {
+        "posts": 0,
+        "followers": 0,
+        "following": 0
+      }
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Single profile
+
+<EndpointDetails path="/social/profiles/<name>" />
+
+Retrieve a single profile by its id.
+
+```json title="Response"
+{
+  "data": {
+    "name": "string",
+    "email": "user@example.com",
+    "bio": "string",
+    "banner": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    },
+    "avatar": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    },
+    "_count": {
+      "posts": 0,
+      "followers": 0,
+      "following": 0
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## All posts by profile
+
+<EndpointDetails path="/social/profiles/<name>/posts" />
+
+Retrieve all posts made by profile.
+
+The response is the same as the [posts](./posts#all-posts) endpoint, and accepts the same optional query parameters and flags.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": 0,
+      "title": "string",
+      "body": "string",
+      "tags": ["string"],
+      "media": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "created": "2022-09-04T08:08:38.830Z",
+      "updated": "2022-09-04T08:08:38.830Z",
+      "_count": {
+        "comments": 0,
+        "reactions": 0
+      }
+    },
+    {
+      "id": 0,
+      "title": "string",
+      "body": "string",
+      "tags": ["string"],
+      "media": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "created": "2022-09-04T08:08:38.830Z",
+      "updated": "2022-09-04T08:08:38.830Z",
+      "_count": {
+        "comments": 0,
+        "reactions": 0
+      }
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Update profile
+
+<EndpointDetails method="PUT" path="/social/profiles/<name>" />
+
+Update or set profile `banner` and `avatar` images.
+
+You can send either or both of the properties in the request body.
+
+> Please note that the `avatar.url` and `banner.url` properties must be fully formed URLs that links to live and publicly accessible images. The API will check the provided URLs and if they cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+{
+  "banner": {
+    "url": "https://url.com/image.jpg",
+    "alt": "string"
+  },
+  "avatar": {
+    "url": "https://url.com/image.jpg",
+    "alt": "string"
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "name": "string",
+    "email": "user@example.com",
+    "bio": "string",
+    "banner": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    },
+    "avatar": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Follow & Unfollow profile
+
+<EndpointDetails method="PUT" path="/social/profiles/<name>/follow" />
+<EndpointDetails method="PUT" path="/social/profiles/<name>/unfollow" />
+
+Follow or unfollow another profile by its name.
+
+> The request body should be empty.
+
+```json title="Response"
+{
+  "data": {
+    "followers": [
+      {
+        "name": "string",
+        "email": "user@example.com",
+        "bio": "string",
+        "banner": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        },
+        "avatar": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        }
+      }
+    ],
+    "following": [
+      {
+        "name": "string",
+        "email": "user@example.com",
+        "bio": "string",
+        "banner": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        },
+        "avatar": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        }
+      }
+    ]
+  },
+  "meta": {}
+}
+```

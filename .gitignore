@@ -134,3 +134,6 @@ dist
 
 # Turborepo
 .turbo
+
+# Contentlayer
+.contentlayer

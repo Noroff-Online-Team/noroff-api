@@ -1,0 +1,19 @@
+{
+  "title": "Docs",
+  "pages": [
+    "---Introduction---",
+    "index",
+    "about",
+    "authentication",
+    "pagination-sorting",
+    "errors",
+    "differences-from-v1",
+    "---Endpoints---",
+    "auth",
+    "basic",
+    "e-commerce",
+    "social",
+    "auction-house",
+    "holidaze"
+  ]
+}

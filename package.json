@@ -12,9 +12,11 @@
     "dev": "turbo dev --parallel",
     "build:v1": "turbo build --filter=v1...",
     "build:v2": "turbo build --filter=v2...",
+    "build:docs": "turbo build --filter=docs...",
     "build": "turbo build",
     "start:v1": "yarn --cwd apps/v1 start",
     "start:v2": "yarn --cwd apps/v2 start",
+    "start:docs": "yarn --cwd apps/docs start",
     "start": "concurrently \"yarn start:v1\" \"yarn start:v2\"",
     "prepare": "husky install"
   },
