@@ -11,8 +11,12 @@ export async function getBookings(
   includes: HolidazeBookingIncludes = {}
 ) {
   const withCustomerMedia = includes.customer ? { customer: { include: { avatar: true, banner: true } } } : {}
-  const venueMetaAndLocation = includes.venue
-    ? { venue: { include: { meta: true, location: true, owner: { include: { avatar: true, banner: true } } } } }
+  const withVenue = includes.venue
+    ? {
+        venue: {
+          include: { media: true, meta: true, location: true, owner: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const [data, meta] = await db.holidazeBooking
@@ -23,7 +27,7 @@ export async function getBookings(
       include: {
         ...includes,
         ...withCustomerMedia,
-        ...venueMetaAndLocation
+        ...withVenue
       }
     })
     .withPages({
@@ -36,8 +40,12 @@ export async function getBookings(
 
 export async function getBooking(id: string, includes: HolidazeBookingIncludes = {}) {
   const withCustomerMedia = includes.customer ? { customer: { include: { avatar: true, banner: true } } } : {}
-  const venueMetaAndLocation = includes.venue
-    ? { venue: { include: { meta: true, location: true, owner: { include: { avatar: true, banner: true } } } } }
+  const withVenue = includes.venue
+    ? {
+        venue: {
+          include: { media: true, meta: true, location: true, owner: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const [data, meta] = await db.holidazeBooking
@@ -46,7 +54,7 @@ export async function getBooking(id: string, includes: HolidazeBookingIncludes =
       include: {
         ...includes,
         ...withCustomerMedia,
-        ...venueMetaAndLocation
+        ...withVenue
       }
     })
     .withPages({
@@ -61,8 +69,12 @@ export async function createBooking(
   includes: HolidazeBookingIncludes = {}
 ) {
   const withCustomerMedia = includes.customer ? { customer: { include: { avatar: true, banner: true } } } : {}
-  const venueMetaAndLocation = includes.venue
-    ? { venue: { include: { meta: true, location: true, owner: { include: { avatar: true, banner: true } } } } }
+  const withVenue = includes.venue
+    ? {
+        venue: {
+          include: { media: true, meta: true, location: true, owner: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const data = await db.holidazeBooking.create({
@@ -72,7 +84,7 @@ export async function createBooking(
     include: {
       ...includes,
       ...withCustomerMedia,
-      ...venueMetaAndLocation
+      ...withVenue
     }
   })
 
@@ -85,8 +97,12 @@ export async function updateBooking(
   includes: HolidazeBookingIncludes = {}
 ) {
   const withCustomerMedia = includes.customer ? { customer: { include: { avatar: true, banner: true } } } : {}
-  const venueMetaAndLocation = includes.venue
-    ? { venue: { include: { meta: true, location: true, owner: { include: { avatar: true, banner: true } } } } }
+  const withVenue = includes.venue
+    ? {
+        venue: {
+          include: { media: true, meta: true, location: true, owner: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const data = await db.holidazeBooking.update({
@@ -97,7 +113,7 @@ export async function updateBooking(
     include: {
       ...includes,
       ...withCustomerMedia,
-      ...venueMetaAndLocation
+      ...withVenue
     }
   })
 
