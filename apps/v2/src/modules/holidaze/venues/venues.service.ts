@@ -112,6 +112,7 @@ export async function createVenue(
       ...withBookingCustomer,
       meta: true,
       location: true,
+      media: true,
       _count: {
         select: {
           bookings: true
@@ -154,6 +155,7 @@ export async function updateVenue(id: string, updateData: UpdateVenueSchema, inc
       ...withBookingCustomer,
       meta: true,
       location: true,
+      media: true,
       _count: {
         select: {
           bookings: true

@@ -126,6 +126,7 @@ export async function getProfileVenues(
         ...withBookings,
         meta: true,
         location: true,
+        media: true,
         _count: {
           select: {
             bookings: true
