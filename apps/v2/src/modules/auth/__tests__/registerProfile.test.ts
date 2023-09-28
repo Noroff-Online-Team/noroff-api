@@ -28,7 +28,7 @@ describe("[POST] /auth/register", () => {
 
     expect(response.statusCode).toBe(201)
     expect(res.data).toBeDefined()
-    expect(res.data).toHaveProperty("id")
+    expect(res.data).toHaveProperty("name")
     expect(res.data.name).toBe(TEST_USER_NAME)
     expect(res.data.email).toBe(TEST_USER_EMAIL)
     expect(res.data.avatar).toStrictEqual({
@@ -68,7 +68,7 @@ describe("[POST] /auth/register", () => {
 
     expect(response.statusCode).toBe(201)
     expect(res.data).toBeDefined()
-    expect(res.data).toHaveProperty("id")
+    expect(res.data).toHaveProperty("name")
     expect(res.data.name).toBe(TEST_USER_NAME)
     expect(res.data.email).toBe(TEST_USER_EMAIL)
     expect(res.data.avatar).toStrictEqual({

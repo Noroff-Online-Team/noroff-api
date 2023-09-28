@@ -79,10 +79,7 @@ export const createProfileBodySchema = z.object({
     .min(8, "Password must be at least 8 characters")
 })
 
-export const createProfileResponseSchema = z.object({
-  id: z.number(),
-  ...profileCore
-})
+export const createProfileResponseSchema = z.object(profileCore)
 
 export const profileMediaSchema = z.object(profileMedia)
 

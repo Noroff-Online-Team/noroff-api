@@ -61,6 +61,7 @@ describe("[POST] /holidaze/venues", () => {
       description: expect.any(String),
       price: 100,
       maxGuests: 2,
+      media: expect.any(Object),
       meta: expect.any(Object),
       location: expect.any(Object),
       rating: expect.any(Number),
