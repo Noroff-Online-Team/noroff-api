@@ -12,9 +12,11 @@ export async function getProfiles(
   page = 1,
   includes: HolidazeProfileIncludes = {}
 ) {
-  const venueMetaAndLocation = includes.venues ? { venues: { include: { meta: true, location: true } } } : {}
+  const venueMetaAndLocation = includes.venues
+    ? { venues: { include: { media: true, meta: true, location: true } } }
+    : {}
   const includeVenueIfBookings = includes.bookings
-    ? { bookings: { include: { venue: { include: { meta: true, location: true } } } } }
+    ? { bookings: { include: { venue: { include: { media: true, meta: true, location: true } } } } }
     : {}
 
   const [data, meta] = await db.userProfile
@@ -26,6 +28,8 @@ export async function getProfiles(
         ...includes,
         ...venueMetaAndLocation,
         ...includeVenueIfBookings,
+        avatar: true,
+        banner: true,
         _count: {
           select: {
             venues: true,
@@ -43,9 +47,11 @@ export async function getProfiles(
 }
 
 export async function getProfile(name: string, includes: HolidazeProfileIncludes = {}) {
-  const venueMetaAndLocation = includes.venues ? { venues: { include: { meta: true, location: true } } } : {}
+  const venueMetaAndLocation = includes.venues
+    ? { venues: { include: { media: true, meta: true, location: true } } }
+    : {}
   const includeVenueIfBookings = includes.bookings
-    ? { bookings: { include: { venue: { include: { meta: true, location: true } } } } }
+    ? { bookings: { include: { venue: { include: { media: true, meta: true, location: true } } } } }
     : {}
 
   const [data, meta] = await db.userProfile
@@ -55,6 +61,8 @@ export async function getProfile(name: string, includes: HolidazeProfileIncludes
         ...includes,
         ...venueMetaAndLocation,
         ...includeVenueIfBookings,
+        avatar: true,
+        banner: true,
         _count: {
           select: {
             venues: true,
@@ -78,7 +86,16 @@ export async function updateProfile(name: string, { avatar, banner, ...updateDat
       avatar: avatar ? { delete: {}, create: avatar } : undefined,
       banner: banner ? { delete: {}, create: banner } : undefined
     },
-    include: { avatar: true, banner: true }
+    include: {
+      avatar: true,
+      banner: true,
+      _count: {
+        select: {
+          venues: true,
+          bookings: true
+        }
+      }
+    }
   })
 
   return { data }
@@ -132,7 +149,7 @@ export async function getProfileBookings(
   page = 1,
   includes: HolidazeBookingIncludes = {}
 ) {
-  const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
+  const venueMetaAndLocation = includes.venue ? { venue: { include: { media: true, meta: true, location: true } } } : {}
   const withProfileMedia = includes.customer ? { customer: { include: { avatar: true, banner: true } } } : {}
 
   const [data, meta] = await db.holidazeBooking
@@ -163,9 +180,11 @@ export async function searchProfiles(
   query: string,
   includes: HolidazeProfileIncludes = {}
 ) {
-  const venueMetaAndLocation = includes.venues ? { venues: { include: { meta: true, location: true } } } : {}
+  const venueMetaAndLocation = includes.venues
+    ? { venues: { include: { media: true, meta: true, location: true } } }
+    : {}
   const includeVenueIfBookings = includes.bookings
-    ? { bookings: { include: { venue: { include: { meta: true, location: true } } } } }
+    ? { bookings: { include: { venue: { include: { media: true, meta: true, location: true } } } } }
     : {}
 
   const [data, meta] = await db.userProfile
