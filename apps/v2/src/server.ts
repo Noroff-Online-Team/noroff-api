@@ -6,7 +6,6 @@ import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-
 import errorHandler from "./exceptions/errorHandler"
 import notFoundHandler from "./exceptions/notFoundHandler"
 
-import statusRoutes from "./modules/status/status.route"
 import routes from "./modules/routes"
 
 // Main startup
@@ -41,11 +40,8 @@ function buildServer() {
   // Set custom not found handler to match our error format
   server.setNotFoundHandler(notFoundHandler)
 
-  // Register status route
-  server.register(statusRoutes, { prefix: "status" })
-
   // Register all routes
-  server.register(routes, { prefix: "api/v2" })
+  server.register(routes)
 
   return server
 }
