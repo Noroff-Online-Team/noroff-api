@@ -203,6 +203,8 @@ const data = await response.json()
 
 You can read more about pagination on the [Pagination & Sorting](./pagination-sorting) page.
 
+<Hr />
+
 ## New API base URL structure
 
 In v1, we followed a URL structure like this: `https://api.noroff.dev/api/<version>/<endpoint>`.
@@ -212,3 +214,11 @@ In v2, we have changed this to: `https://<version>.api.noroff.dev/<endpoint>`.
 Not only does this make the URLs cleaner, but it also allows us to host the APIs separately. It'll make it easier for us to make changes to the APIs without breaking other versions.
 
 You can read more about the new base URL on the [About](./about) page.
+
+<Hr />
+
+## Post reactions are toggled
+
+In v1 it was impossible to remove a reaction from a post. If you reacted twice to a post with the same symbol, it would only add another reaction.
+
+In v2, you can now toggle reactions. If the authenticated user has already reacted to the post with the provided symbol, the reaction will be removed. Otherwise, the reaction will be added.
