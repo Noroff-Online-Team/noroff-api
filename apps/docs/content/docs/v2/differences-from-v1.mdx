@@ -202,3 +202,13 @@ const data = await response.json()
 ```
 
 You can read more about pagination on the [Pagination & Sorting](./pagination-sorting) page.
+
+## New API base URL structure
+
+In v1, we followed a URL structure like this: `https://api.noroff.dev/api/<version>/<endpoint>`.
+
+In v2, we have changed this to: `https://<version>.api.noroff.dev/<endpoint>`.
+
+Not only does this make the URLs cleaner, but it also allows us to host the APIs separately. It'll make it easier for us to make changes to the APIs without breaking other versions.
+
+You can read more about the new base URL on the [About](./about) page.
