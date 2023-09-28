@@ -48,10 +48,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/books", () => {
+describe("[GET] /books", () => {
   it("should return all books", async () => {
     const response = await server.inject({
-      url: "/api/v2/books",
+      url: "/books",
       method: "GET"
     })
     const res = await response.json()
@@ -77,7 +77,7 @@ describe("[GET] /v2/books", () => {
 
   it("should return all books with sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/books?sort=title&sortOrder=desc",
+      url: "/books?sort=title&sortOrder=desc",
       method: "GET"
     })
     const res = await response.json()
@@ -103,7 +103,7 @@ describe("[GET] /v2/books", () => {
 
   it("should return all books with pagination", async () => {
     const response = await server.inject({
-      url: "/api/v2/books?page=1&limit=1",
+      url: "/books?page=1&limit=1",
       method: "GET"
     })
     const res = await response.json()

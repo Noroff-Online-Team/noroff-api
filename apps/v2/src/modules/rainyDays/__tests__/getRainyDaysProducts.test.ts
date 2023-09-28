@@ -53,10 +53,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/rainy-days", () => {
+describe("[GET] /rainy-days", () => {
   it("should return all rainy days products", async () => {
     const response = await server.inject({
-      url: "/api/v2/rainy-days",
+      url: "/rainy-days",
       method: "GET"
     })
     const res = await response.json()
@@ -80,7 +80,7 @@ describe("[GET] /v2/rainy-days", () => {
 
   it("should return all rainy days products with sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/rainy-days?sort=title&sortOrder=desc",
+      url: "/rainy-days?sort=title&sortOrder=desc",
       method: "GET"
     })
     const res = await response.json()
@@ -106,7 +106,7 @@ describe("[GET] /v2/rainy-days", () => {
 
   it("should return all rainy days products with pagination", async () => {
     const response = await server.inject({
-      url: "/api/v2/rainy-days?page=1&limit=1",
+      url: "/rainy-days?page=1&limit=1",
       method: "GET"
     })
     const res = await response.json()

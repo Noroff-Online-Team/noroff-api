@@ -13,10 +13,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[POST] /v2/auth/register", () => {
+describe("[POST] /auth/register", () => {
   it("should register a user successfully and return user details", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: {
         name: TEST_USER_NAME,
@@ -47,7 +47,7 @@ describe("[POST] /v2/auth/register", () => {
 
   it("should register a user successfully with custom avatar, banner and bio", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: {
         name: TEST_USER_NAME,
@@ -87,12 +87,12 @@ describe("[POST] /v2/auth/register", () => {
 
   it("should throw 409 error if user already exists", async () => {
     await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: { name: TEST_USER_NAME, email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD }
     })
     const response = await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: {
         name: TEST_USER_NAME,
@@ -113,7 +113,7 @@ describe("[POST] /v2/auth/register", () => {
 
   it("should throw zod error if name is missing", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: {
         email: TEST_USER_EMAIL,
@@ -136,7 +136,7 @@ describe("[POST] /v2/auth/register", () => {
 
   it("should throw zod error if name is not a string", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: {
         name: 123,
@@ -160,7 +160,7 @@ describe("[POST] /v2/auth/register", () => {
 
   it("should throw zod error if email is missing", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: {
         name: TEST_USER_NAME,
@@ -183,7 +183,7 @@ describe("[POST] /v2/auth/register", () => {
 
   it("should throw zod error if email is not a string", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: {
         name: TEST_USER_NAME,
@@ -207,7 +207,7 @@ describe("[POST] /v2/auth/register", () => {
 
   it("should throw zod error if password is missing", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: {
         name: TEST_USER_NAME,
@@ -230,7 +230,7 @@ describe("[POST] /v2/auth/register", () => {
 
   it("should throw zod error if password is not a string", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: {
         name: TEST_USER_NAME,
@@ -254,7 +254,7 @@ describe("[POST] /v2/auth/register", () => {
 
   it("should throw zod error if avatar is not a valid image url", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: {
         name: TEST_USER_NAME,

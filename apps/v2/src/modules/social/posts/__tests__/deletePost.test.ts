@@ -39,10 +39,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[DELETE] /v2/social/posts/:id", () => {
+describe("[DELETE] /social/posts/:id", () => {
   it("should return 204 when successfully deleted a post", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -55,7 +55,7 @@ describe("[DELETE] /v2/social/posts/:id", () => {
 
   it("should throw 404 error if post does not exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/3`,
+      url: `/social/posts/3`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -76,7 +76,7 @@ describe("[DELETE] /v2/social/posts/:id", () => {
 
   it("should throw 403 error if user is not the owner of the post", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${SECOND_BEARER_TOKEN}`,
@@ -97,7 +97,7 @@ describe("[DELETE] /v2/social/posts/:id", () => {
 
   it("should throw 401 error when attempting to delete without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -117,7 +117,7 @@ describe("[DELETE] /v2/social/posts/:id", () => {
 
   it("should throw 401 error when attempting to delete without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "DELETE",
       headers: {
         "X-Noroff-API-Key": API_KEY

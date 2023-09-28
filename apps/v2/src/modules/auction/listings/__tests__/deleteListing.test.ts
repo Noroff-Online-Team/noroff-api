@@ -29,10 +29,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[DELETE] /v2/auction/listings/:id", () => {
+describe("[DELETE] /auction/listings/:id", () => {
   it("should return 204 when successfully deleted a listing", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/${LISTING_ID}`,
+      url: `/auction/listings/${LISTING_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -45,7 +45,7 @@ describe("[DELETE] /v2/auction/listings/:id", () => {
 
   it("should throw 401 error when attempting to delete without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/${LISTING_ID}`,
+      url: `/auction/listings/${LISTING_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -65,7 +65,7 @@ describe("[DELETE] /v2/auction/listings/:id", () => {
 
   it("should throw 401 error when attempting to delete without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/${LISTING_ID}`,
+      url: `/auction/listings/${LISTING_ID}`,
       method: "DELETE",
       headers: {
         "X-Noroff-API-Key": API_KEY

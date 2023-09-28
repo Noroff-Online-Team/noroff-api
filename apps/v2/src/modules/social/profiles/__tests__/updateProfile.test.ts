@@ -33,10 +33,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[PUT] /v2/social/profiles/:id", () => {
+describe("[PUT] /social/profiles/:id", () => {
   it("should return 200 when successfully updated a profile", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}`,
+      url: `/social/profiles/${TEST_USER_NAME}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -64,7 +64,7 @@ describe("[PUT] /v2/social/profiles/:id", () => {
 
   it("should revert to default avatar and banner when body is empty", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}`,
+      url: `/social/profiles/${TEST_USER_NAME}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -91,7 +91,7 @@ describe("[PUT] /v2/social/profiles/:id", () => {
 
   it("should throw 404 error when profile does not exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/does_not_exist`,
+      url: `/social/profiles/does_not_exist`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -117,7 +117,7 @@ describe("[PUT] /v2/social/profiles/:id", () => {
     await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
 
     const response = await server.inject({
-      url: `/api/v2/social/profiles/test_user_two`,
+      url: `/social/profiles/test_user_two`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -141,7 +141,7 @@ describe("[PUT] /v2/social/profiles/:id", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}`,
+      url: `/social/profiles/${TEST_USER_NAME}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -164,7 +164,7 @@ describe("[PUT] /v2/social/profiles/:id", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}`,
+      url: `/social/profiles/${TEST_USER_NAME}`,
       method: "PUT",
       headers: {
         "X-Noroff-API-Key": API_KEY

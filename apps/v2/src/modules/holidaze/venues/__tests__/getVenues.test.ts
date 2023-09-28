@@ -38,10 +38,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/holidaze/venues", () => {
+describe("[GET] /holidaze/venues", () => {
   it("should return all venues without Bearer and API Key", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/venues",
+      url: "/holidaze/venues",
       method: "GET"
     })
     const res = await response.json()
@@ -63,7 +63,7 @@ describe("[GET] /v2/holidaze/venues", () => {
 
   it("should return all venues with pagination and sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/venues?page=1&limit=1&sort=name&sortOrder=asc",
+      url: "/holidaze/venues?page=1&limit=1&sort=name&sortOrder=asc",
       method: "GET"
     })
     const res = await response.json()
@@ -85,7 +85,7 @@ describe("[GET] /v2/holidaze/venues", () => {
 
   it("should return all venues with bookings", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/venues?_bookings=true",
+      url: "/holidaze/venues?_bookings=true",
       method: "GET"
     })
     const res = await response.json()
@@ -109,7 +109,7 @@ describe("[GET] /v2/holidaze/venues", () => {
 
   it("should return all bookings with owner", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/venues?_owner=true",
+      url: "/holidaze/venues?_owner=true",
       method: "GET"
     })
     const res = await response.json()

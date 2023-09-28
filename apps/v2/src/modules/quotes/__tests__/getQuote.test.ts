@@ -43,10 +43,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/quotes/:id", () => {
+describe("[GET] /quotes/:id", () => {
   it("should return single quote based on id", async () => {
     const response = await server.inject({
-      url: "/api/v2/quotes/1",
+      url: "/quotes/1",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -59,20 +59,12 @@ describe("[GET] /v2/quotes/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.id).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return 404 if quote not found", async () => {
     const response = await server.inject({
-      url: "/api/v2/quotes/3",
+      url: "/quotes/3",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -93,7 +85,7 @@ describe("[GET] /v2/quotes/:id", () => {
 
   it("should throw zod error if id is not a number", async () => {
     const response = await server.inject({
-      url: "/api/v2/quotes/invalid_id",
+      url: "/quotes/invalid_id",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

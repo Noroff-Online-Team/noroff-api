@@ -29,10 +29,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/social/posts/:id", () => {
+describe("[GET] /social/posts/:id", () => {
   it("should return single post based on id", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -45,20 +45,12 @@ describe("[GET] /v2/social/posts/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.media).toBe(null)
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return single post with author profile, reactions, and comments", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}?_author=true&_reactions=true&_comments=true`,
+      url: `/social/posts/${POST_ID}?_author=true&_reactions=true&_comments=true`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -73,20 +65,12 @@ describe("[GET] /v2/social/posts/:id", () => {
     expect(res.data.reactions).toBeDefined()
     expect(res.data.comments).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -106,7 +90,7 @@ describe("[GET] /v2/social/posts/:id", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

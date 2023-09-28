@@ -44,10 +44,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/old-games/:id", () => {
+describe("[GET] /old-games/:id", () => {
   it("should return single old game based on id", async () => {
     const response = await server.inject({
-      url: "/api/v2/old-games/1",
+      url: "/old-games/1",
       method: "GET"
     })
     const res = await response.json()
@@ -57,20 +57,12 @@ describe("[GET] /v2/old-games/:id", () => {
     expect(res.data.id).toBeDefined()
     expect(res.data.slug).toBe("the-incredible-machine")
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return 404 if old game not found", async () => {
     const response = await server.inject({
-      url: "/api/v2/old-games/3",
+      url: "/old-games/3",
       method: "GET"
     })
     const res = await response.json()
@@ -87,7 +79,7 @@ describe("[GET] /v2/old-games/:id", () => {
 
   it("should throw zod error if id is not a number", async () => {
     const response = await server.inject({
-      url: "/api/v2/old-games/invalid_id",
+      url: "/old-games/invalid_id",
       method: "GET"
     })
     const res = await response.json()

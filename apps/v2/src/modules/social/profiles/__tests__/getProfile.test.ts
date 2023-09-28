@@ -22,10 +22,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/social/profiles/:id", () => {
+describe("[GET] /social/profiles/:id", () => {
   it("should return single profile based on name", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}`,
+      url: `/social/profiles/${TEST_USER_NAME}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -38,20 +38,12 @@ describe("[GET] /v2/social/profiles/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.name).toBe("test_user")
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return single profile with posts", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}?_posts=true`,
+      url: `/social/profiles/${TEST_USER_NAME}?_posts=true`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -66,20 +58,12 @@ describe("[GET] /v2/social/profiles/:id", () => {
     expect(res.data.posts).toBeDefined()
     expect(res.data.posts).toHaveLength(0)
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return single profile with followers and following", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}?_followers=true&_following=true`,
+      url: `/social/profiles/${TEST_USER_NAME}?_followers=true&_following=true`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -94,20 +78,12 @@ describe("[GET] /v2/social/profiles/:id", () => {
     expect(res.data.followers).toBeDefined()
     expect(res.data.following).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should throw 404 error when attempting to access profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/does_not_exist`,
+      url: `/social/profiles/does_not_exist`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -128,7 +104,7 @@ describe("[GET] /v2/social/profiles/:id", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}`,
+      url: `/social/profiles/${TEST_USER_NAME}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -148,7 +124,7 @@ describe("[GET] /v2/social/profiles/:id", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}`,
+      url: `/social/profiles/${TEST_USER_NAME}`,
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

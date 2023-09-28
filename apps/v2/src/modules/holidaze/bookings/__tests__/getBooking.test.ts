@@ -58,10 +58,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/holidaze/bookings/:id", () => {
+describe("[GET] /holidaze/bookings/:id", () => {
   it("should return single booking based on id", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -74,20 +74,12 @@ describe("[GET] /v2/holidaze/bookings/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.id).toBe(BOOKING_ID)
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return single booking with venue", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}?_venue=true`,
+      url: `/holidaze/bookings/${BOOKING_ID}?_venue=true`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -100,20 +92,12 @@ describe("[GET] /v2/holidaze/bookings/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.venue).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return single booking with customer", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}?_customer=true`,
+      url: `/holidaze/bookings/${BOOKING_ID}?_customer=true`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -126,20 +110,12 @@ describe("[GET] /v2/holidaze/bookings/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.customer).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -159,7 +135,7 @@ describe("[GET] /v2/holidaze/bookings/:id", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

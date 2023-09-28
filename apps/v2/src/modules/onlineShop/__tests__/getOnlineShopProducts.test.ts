@@ -53,10 +53,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/online-shop", () => {
+describe("[GET] /online-shop", () => {
   it("should return all online shop products", async () => {
     const response = await server.inject({
-      url: "/api/v2/online-shop",
+      url: "/online-shop",
       method: "GET"
     })
     const res = await response.json()
@@ -80,7 +80,7 @@ describe("[GET] /v2/online-shop", () => {
 
   it("should return all online shop products with sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/online-shop?sort=title&sortOrder=desc",
+      url: "/online-shop?sort=title&sortOrder=desc",
       method: "GET"
     })
     const res = await response.json()
@@ -106,7 +106,7 @@ describe("[GET] /v2/online-shop", () => {
 
   it("should return all online shop products with pagination", async () => {
     const response = await server.inject({
-      url: "/api/v2/online-shop?page=1&limit=1",
+      url: "/online-shop?page=1&limit=1",
       method: "GET"
     })
     const res = await response.json()

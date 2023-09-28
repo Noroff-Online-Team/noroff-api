@@ -18,7 +18,7 @@ beforeEach(async () => {
       onSale: true,
       image: {
         create: {
-          url: "https://api.noroff.dev/images/gamehub/0-ping-pong-championship.jpg",
+          url: "https://static.cloud.noroff.dev/api/gamehub/0-ping-pong-championship.jpg",
           alt: ""
         }
       },
@@ -38,7 +38,7 @@ beforeEach(async () => {
       onSale: false,
       image: {
         create: {
-          url: "https://api.noroff.dev/images/gamehub/1-super-duper.jpg",
+          url: "https://static.cloud.noroff.dev/api/gamehub/1-super-duper.jpg",
           alt: ""
         }
       },
@@ -55,10 +55,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/gamehub/:id", () => {
+describe("[GET] /gamehub/:id", () => {
   it("should return single gamehub product based on id", async () => {
     const response = await server.inject({
-      url: `/api/v2/gamehub/${PRODUCT_ID}`,
+      url: `/gamehub/${PRODUCT_ID}`,
       method: "GET"
     })
     const res = await response.json()
@@ -68,20 +68,12 @@ describe("[GET] /v2/gamehub/:id", () => {
     expect(res.data.id).toBe(PRODUCT_ID)
     expect(res.data.title).toBe("Ping Pong Championship")
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return 404 if gamehub product not found", async () => {
     const response = await server.inject({
-      url: "/api/v2/gamehub/c15cda6e-44d7-11ee-be56-0242ac120002",
+      url: "/gamehub/c15cda6e-44d7-11ee-be56-0242ac120002",
       method: "GET"
     })
     const res = await response.json()
@@ -98,7 +90,7 @@ describe("[GET] /v2/gamehub/:id", () => {
 
   it("should throw zod error if id is not an uuid", async () => {
     const response = await server.inject({
-      url: "/api/v2/gamehub/invalid_id",
+      url: "/gamehub/invalid_id",
       method: "GET"
     })
     const res = await response.json()

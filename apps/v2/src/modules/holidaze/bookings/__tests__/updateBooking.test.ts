@@ -53,10 +53,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[PUT] /v2/holidaze/bookings/:id", () => {
+describe("[PUT] /holidaze/bookings/:id", () => {
   it("should return 200 when successfully updated a listing", async () => {
     const initialResponse = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -69,7 +69,7 @@ describe("[PUT] /v2/holidaze/bookings/:id", () => {
     expect(initialRes.data.guests).toBe(1)
 
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -89,7 +89,7 @@ describe("[PUT] /v2/holidaze/bookings/:id", () => {
 
   it("should throw zod errors if no data was provided", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -113,7 +113,7 @@ describe("[PUT] /v2/holidaze/bookings/:id", () => {
 
   it("should throw 401 error when attempting to update without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -136,7 +136,7 @@ describe("[PUT] /v2/holidaze/bookings/:id", () => {
 
   it("should throw 401 error when attempting to update without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "PUT",
       headers: {
         "X-Noroff-API-Key": API_KEY

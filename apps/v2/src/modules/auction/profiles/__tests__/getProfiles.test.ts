@@ -23,10 +23,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/auction/profiles", () => {
+describe("[GET] /auction/profiles", () => {
   it("should return all profiles", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/profiles",
+      url: "/auction/profiles",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -52,7 +52,7 @@ describe("[GET] /v2/auction/profiles", () => {
 
   it("should return all profiles with pagination and sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/profiles?page=1&limit=1&sort=name&sortOrder=asc",
+      url: "/auction/profiles?page=1&limit=1&sort=name&sortOrder=asc",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -79,7 +79,7 @@ describe("[GET] /v2/auction/profiles", () => {
 
   it("should return all profiles with listings", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/profiles?_listings=true",
+      url: "/auction/profiles?_listings=true",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -107,7 +107,7 @@ describe("[GET] /v2/auction/profiles", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/profiles",
+      url: "/auction/profiles",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -127,7 +127,7 @@ describe("[GET] /v2/auction/profiles", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/profiles",
+      url: "/auction/profiles",
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

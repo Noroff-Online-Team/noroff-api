@@ -32,10 +32,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/nba-teams/random", () => {
+describe("[GET] /nba-teams/random", () => {
   it("should return random NBA team", async () => {
     const response = await server.inject({
-      url: "/api/v2/nba-teams/random",
+      url: "/nba-teams/random",
       method: "GET"
     })
     const res = await response.json()
@@ -46,14 +46,6 @@ describe("[GET] /v2/nba-teams/random", () => {
     expect(res.data.city).toBeDefined()
     expect(res.data.abbreviation).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 })

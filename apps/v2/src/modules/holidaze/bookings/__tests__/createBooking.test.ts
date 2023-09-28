@@ -46,10 +46,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[POST] /v2/holidaze/bookings", () => {
+describe("[POST] /holidaze/bookings", () => {
   it("should return 201 when successfully created a booking", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/bookings",
+      url: "/holidaze/bookings",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -76,7 +76,7 @@ describe("[POST] /v2/holidaze/bookings", () => {
 
   it("should throw zod errors if data is invalid", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/bookings",
+      url: "/holidaze/bookings",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -113,7 +113,7 @@ describe("[POST] /v2/holidaze/bookings", () => {
 
   it("should throw 401 error when attempting to create without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/bookings",
+      url: "/holidaze/bookings",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -136,7 +136,7 @@ describe("[POST] /v2/holidaze/bookings", () => {
 
   it("should throw 401 error when attempting to create without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/bookings",
+      url: "/holidaze/bookings",
       method: "POST",
       headers: {
         "X-Noroff-API-Key": API_KEY

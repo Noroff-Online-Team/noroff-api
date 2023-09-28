@@ -58,10 +58,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/online-shop/:id", () => {
+describe("[GET] /online-shop/:id", () => {
   it("should return single online shop product with reviews based on id", async () => {
     const response = await server.inject({
-      url: `/api/v2/online-shop/${PRODUCT_ID}`,
+      url: `/online-shop/${PRODUCT_ID}`,
       method: "GET"
     })
     const res = await response.json()
@@ -72,20 +72,12 @@ describe("[GET] /v2/online-shop/:id", () => {
     expect(res.data.title).toBe("Vanilla Perfume")
     expect(res.data.reviews).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return 404 if online shop product not found", async () => {
     const response = await server.inject({
-      url: "/api/v2/online-shop/c375b240-037e-4408-ac39-1063010d48fe",
+      url: "/online-shop/c375b240-037e-4408-ac39-1063010d48fe",
       method: "GET"
     })
     const res = await response.json()
@@ -102,7 +94,7 @@ describe("[GET] /v2/online-shop/:id", () => {
 
   it("should throw zod error if id is not a number", async () => {
     const response = await server.inject({
-      url: "/api/v2/online-shop/invalid_id",
+      url: "/online-shop/invalid_id",
       method: "GET"
     })
     const res = await response.json()

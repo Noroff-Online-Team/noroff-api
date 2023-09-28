@@ -22,10 +22,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/auction/profiles/:id/credits", () => {
+describe("[GET] /auction/profiles/:id/credits", () => {
   it("should return profile credits based on name", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/credits`,
+      url: `/auction/profiles/${TEST_USER_NAME}/credits`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -43,7 +43,7 @@ describe("[GET] /v2/auction/profiles/:id/credits", () => {
 
   it("should throw 404 error when attempting to access profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/does_not_exist/credits`,
+      url: `/auction/profiles/does_not_exist/credits`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -66,7 +66,7 @@ describe("[GET] /v2/auction/profiles/:id/credits", () => {
     await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
 
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/test_user_two/credits`,
+      url: `/auction/profiles/test_user_two/credits`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -87,7 +87,7 @@ describe("[GET] /v2/auction/profiles/:id/credits", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/credits`,
+      url: `/auction/profiles/${TEST_USER_NAME}/credits`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -107,7 +107,7 @@ describe("[GET] /v2/auction/profiles/:id/credits", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/credits`,
+      url: `/auction/profiles/${TEST_USER_NAME}/credits`,
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

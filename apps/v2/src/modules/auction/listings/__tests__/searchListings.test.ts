@@ -31,10 +31,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/auction/listings/search", () => {
+describe("[GET] /auction/listings/search", () => {
   it("should return listings that contain query in either title or description", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/search?q=blue`,
+      url: `/auction/listings/search?q=blue`,
       method: "GET"
     })
     const res = await response.json()
@@ -46,7 +46,7 @@ describe("[GET] /v2/auction/listings/search", () => {
 
   it("should return empty array if no listings match query", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/search?q=random`,
+      url: `/auction/listings/search?q=random`,
       method: "GET"
     })
     const res = await response.json()
@@ -57,7 +57,7 @@ describe("[GET] /v2/auction/listings/search", () => {
 
   it("should return listings with pagination and sort", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/search?q=chair&sort=title&sortOrder=desc&limit=1&page=1`,
+      url: `/auction/listings/search?q=chair&sort=title&sortOrder=desc&limit=1&page=1`,
       method: "GET"
     })
     const res = await response.json()
@@ -78,7 +78,7 @@ describe("[GET] /v2/auction/listings/search", () => {
 
   it("should throw zod error if query param is missing", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/search`,
+      url: `/auction/listings/search`,
       method: "GET"
     })
     const res = await response.json()
@@ -95,7 +95,7 @@ describe("[GET] /v2/auction/listings/search", () => {
 
   it("should throw zod error if query param is empty", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/search?q=`,
+      url: `/auction/listings/search?q=`,
       method: "GET"
     })
     const res = await response.json()

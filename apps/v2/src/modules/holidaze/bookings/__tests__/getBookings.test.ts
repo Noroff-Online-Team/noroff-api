@@ -56,10 +56,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/holidaze/bookings", () => {
+describe("[GET] /holidaze/bookings", () => {
   it("should return all bookings", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/bookings",
+      url: "/holidaze/bookings",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -85,7 +85,7 @@ describe("[GET] /v2/holidaze/bookings", () => {
 
   it("should return all bookings with pagination and sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/bookings?page=1&limit=1&sort=guests&sortOrder=asc",
+      url: "/holidaze/bookings?page=1&limit=1&sort=guests&sortOrder=asc",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -112,7 +112,7 @@ describe("[GET] /v2/holidaze/bookings", () => {
 
   it("should return all bookings with venue", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/bookings?_venue=true",
+      url: "/holidaze/bookings?_venue=true",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -140,7 +140,7 @@ describe("[GET] /v2/holidaze/bookings", () => {
 
   it("should return all bookings with customer", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/bookings?_customer=true",
+      url: "/holidaze/bookings?_customer=true",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -168,7 +168,7 @@ describe("[GET] /v2/holidaze/bookings", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/bookings",
+      url: "/holidaze/bookings",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -188,7 +188,7 @@ describe("[GET] /v2/holidaze/bookings", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/bookings",
+      url: "/holidaze/bookings",
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

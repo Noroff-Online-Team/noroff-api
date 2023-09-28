@@ -38,10 +38,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[POST] /v2/auction/listings", () => {
+describe("[POST] /auction/listings", () => {
   it("should return 201 when successfully created a listing", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings",
+      url: "/auction/listings",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -72,7 +72,7 @@ describe("[POST] /v2/auction/listings", () => {
 
   it("should throw zod errors if data is invalid", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings",
+      url: "/auction/listings",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -110,7 +110,7 @@ describe("[POST] /v2/auction/listings", () => {
 
   it("should throw 401 error when attempting to create without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings",
+      url: "/auction/listings",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -134,7 +134,7 @@ describe("[POST] /v2/auction/listings", () => {
 
   it("should throw 401 error when attempting to create without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings",
+      url: "/auction/listings",
       method: "POST",
       headers: {
         "X-Noroff-API-Key": API_KEY

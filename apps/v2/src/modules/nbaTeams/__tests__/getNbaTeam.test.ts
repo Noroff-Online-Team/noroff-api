@@ -32,10 +32,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/nba-teams/:id", () => {
+describe("[GET] /nba-teams/:id", () => {
   it("should return single NBA team based on id", async () => {
     const response = await server.inject({
-      url: "/api/v2/nba-teams/1",
+      url: "/nba-teams/1",
       method: "GET"
     })
     const res = await response.json()
@@ -45,20 +45,12 @@ describe("[GET] /v2/nba-teams/:id", () => {
     expect(res.data.id).toBeDefined()
     expect(res.data.city).toBe("Atlanta")
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return 404 if NBA team not found", async () => {
     const response = await server.inject({
-      url: "/api/v2/nba-teams/3",
+      url: "/nba-teams/3",
       method: "GET"
     })
     const res = await response.json()
@@ -75,7 +67,7 @@ describe("[GET] /v2/nba-teams/:id", () => {
 
   it("should throw zod error if id is not a number", async () => {
     const response = await server.inject({
-      url: "/api/v2/nba-teams/invalid_id",
+      url: "/nba-teams/invalid_id",
       method: "GET"
     })
     const res = await response.json()

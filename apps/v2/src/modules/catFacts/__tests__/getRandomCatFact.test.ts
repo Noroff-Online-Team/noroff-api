@@ -22,10 +22,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/cat-facts/random", () => {
+describe("[GET] /cat-facts/random", () => {
   it("should return random cat fact", async () => {
     const response = await server.inject({
-      url: "/api/v2/cat-facts/random",
+      url: "/cat-facts/random",
       method: "GET"
     })
     const res = await response.json()
@@ -35,14 +35,6 @@ describe("[GET] /v2/cat-facts/random", () => {
     expect(res.data.id).toBeDefined()
     expect(res.data.text).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 })

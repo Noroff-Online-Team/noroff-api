@@ -25,10 +25,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[POST] /v2/social/posts", () => {
+describe("[POST] /social/posts", () => {
   it("should return 201 when successfully created a post", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts",
+      url: "/social/posts",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -50,7 +50,7 @@ describe("[POST] /v2/social/posts", () => {
 
   it("should return created post with author profile, reactions, and comments", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts?_author=true&_reactions=true&_comments=true",
+      url: "/social/posts?_author=true&_reactions=true&_comments=true",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -75,7 +75,7 @@ describe("[POST] /v2/social/posts", () => {
 
   it("should throw zod errors if data is invalid", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts",
+      url: "/social/posts",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -106,7 +106,7 @@ describe("[POST] /v2/social/posts", () => {
 
   it("should throw 401 error when attempting to create without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts",
+      url: "/social/posts",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -129,7 +129,7 @@ describe("[POST] /v2/social/posts", () => {
 
   it("should throw 401 error when attempting to create without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts",
+      url: "/social/posts",
       method: "POST",
       headers: {
         "X-Noroff-API-Key": API_KEY

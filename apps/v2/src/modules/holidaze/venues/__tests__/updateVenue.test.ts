@@ -45,7 +45,7 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[PUT] /v2/holidaze/venues/:id", () => {
+describe("[PUT] /holidaze/venues/:id", () => {
   it("should return 200 when successfully updated a venue", async () => {
     // Make user a venue manager
     await db.userProfile.update({
@@ -54,7 +54,7 @@ describe("[PUT] /v2/holidaze/venues/:id", () => {
     })
 
     const initialResponse = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -67,7 +67,7 @@ describe("[PUT] /v2/holidaze/venues/:id", () => {
     expect(initialRes.data.maxGuests).toBe(4)
 
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -87,7 +87,7 @@ describe("[PUT] /v2/holidaze/venues/:id", () => {
 
   it("should throw 403 error if user is not a venue manager", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -111,7 +111,7 @@ describe("[PUT] /v2/holidaze/venues/:id", () => {
 
   it("should throw 403 error if venue does not belong to the user", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${SECOND_BEARER_TOKEN}`,
@@ -135,7 +135,7 @@ describe("[PUT] /v2/holidaze/venues/:id", () => {
 
   it("should throw zod errors if no data was provided", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -159,7 +159,7 @@ describe("[PUT] /v2/holidaze/venues/:id", () => {
 
   it("should throw 401 error when attempting to update without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -182,7 +182,7 @@ describe("[PUT] /v2/holidaze/venues/:id", () => {
 
   it("should throw 401 error when attempting to update without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "PUT",
       headers: {
         "X-Noroff-API-Key": API_KEY

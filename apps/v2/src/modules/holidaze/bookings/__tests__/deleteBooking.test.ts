@@ -66,10 +66,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[DELETE] /v2/holidaze/bookings/:id", () => {
+describe("[DELETE] /holidaze/bookings/:id", () => {
   it("should return 204 when successfully deleted a listing", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -82,7 +82,7 @@ describe("[DELETE] /v2/holidaze/bookings/:id", () => {
 
   it("should throw 404 error when attempting to delete a booking that does not exist", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/bookings/857be398-8c34-4be9-8729-8b46837ac3c5",
+      url: "/holidaze/bookings/857be398-8c34-4be9-8729-8b46837ac3c5",
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -103,7 +103,7 @@ describe("[DELETE] /v2/holidaze/bookings/:id", () => {
 
   it("should throw 403 error when attempting to delete a booking that does not belong to the user", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${SECOND_BEARER_TOKEN}`,
@@ -124,7 +124,7 @@ describe("[DELETE] /v2/holidaze/bookings/:id", () => {
 
   it("should throw 401 error when attempting to delete without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -144,7 +144,7 @@ describe("[DELETE] /v2/holidaze/bookings/:id", () => {
 
   it("should throw 401 error when attempting to delete without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/bookings/${BOOKING_ID}`,
+      url: `/holidaze/bookings/${BOOKING_ID}`,
       method: "DELETE",
       headers: {
         "X-Noroff-API-Key": API_KEY

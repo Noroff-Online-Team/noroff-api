@@ -37,10 +37,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/auction/listings/:id", () => {
+describe("[GET] /auction/listings/:id", () => {
   it("should return single listing based on id", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/${LISTING_ID}`,
+      url: `/auction/listings/${LISTING_ID}`,
       method: "GET"
     })
     const res = await response.json()
@@ -49,20 +49,12 @@ describe("[GET] /v2/auction/listings/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.id).toBe(LISTING_ID)
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return single listings with bids", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/${LISTING_ID}?_bids=true`,
+      url: `/auction/listings/${LISTING_ID}?_bids=true`,
       method: "GET"
     })
     const res = await response.json()
@@ -71,20 +63,12 @@ describe("[GET] /v2/auction/listings/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.bids).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return single listing with seller", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/${LISTING_ID}?_seller=true`,
+      url: `/auction/listings/${LISTING_ID}?_seller=true`,
       method: "GET"
     })
     const res = await response.json()
@@ -93,20 +77,12 @@ describe("[GET] /v2/auction/listings/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.seller).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should throw 404 if listing doesn't exist", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbd",
+      url: "/auction/listings/5231496a-0351-4a2a-a876-c036410e0cbd",
       method: "GET"
     })
     const res = await response.json()
@@ -123,7 +99,7 @@ describe("[GET] /v2/auction/listings/:id", () => {
 
   it("should throw zod error if id is not a uuid", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings/invalid_id",
+      url: "/auction/listings/invalid_id",
       method: "GET"
     })
     const res = await response.json()

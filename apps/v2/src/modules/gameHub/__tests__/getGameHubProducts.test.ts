@@ -15,7 +15,7 @@ beforeEach(async () => {
       onSale: true,
       image: {
         create: {
-          url: "https://api.noroff.dev/images/gamehub/0-ping-pong-championship.jpg",
+          url: "https://static.cloud.noroff.dev/api/gamehub/0-ping-pong-championship.jpg",
           alt: ""
         }
       },
@@ -35,7 +35,7 @@ beforeEach(async () => {
       onSale: false,
       image: {
         create: {
-          url: "https://api.noroff.dev/images/gamehub/1-super-duper.jpg",
+          url: "https://static.cloud.noroff.dev/api/gamehub/1-super-duper.jpg",
           alt: ""
         }
       },
@@ -52,10 +52,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/gamehub", () => {
+describe("[GET] /gamehub", () => {
   it("should return all gamehub products", async () => {
     const response = await server.inject({
-      url: "/api/v2/gamehub",
+      url: "/gamehub",
       method: "GET"
     })
     const res = await response.json()
@@ -79,7 +79,7 @@ describe("[GET] /v2/gamehub", () => {
 
   it("should return all gamehub products with sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/gamehub?sort=title&sortOrder=desc",
+      url: "/gamehub?sort=title&sortOrder=desc",
       method: "GET"
     })
     const res = await response.json()
@@ -105,7 +105,7 @@ describe("[GET] /v2/gamehub", () => {
 
   it("should return all gamehub products with pagination", async () => {
     const response = await server.inject({
-      url: "/api/v2/gamehub?page=1&limit=1",
+      url: "/gamehub?page=1&limit=1",
       method: "GET"
     })
     const res = await response.json()

@@ -25,10 +25,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[PUT] /v2/social/profiles/:id/unfollow", () => {
+describe("[PUT] /social/profiles/:id/unfollow", () => {
   it("should return 200 when successfully unfollowed a profile", async () => {
     const followRes = await server.inject({
-      url: `/api/v2/social/profiles/${SECOND_USER_NAME}/follow`,
+      url: `/social/profiles/${SECOND_USER_NAME}/follow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -41,7 +41,7 @@ describe("[PUT] /v2/social/profiles/:id/unfollow", () => {
     expect(followJson.data.following[0].name).toBe(SECOND_USER_NAME)
 
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${SECOND_USER_NAME}/unfollow`,
+      url: `/social/profiles/${SECOND_USER_NAME}/unfollow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -60,7 +60,7 @@ describe("[PUT] /v2/social/profiles/:id/unfollow", () => {
 
   it("should throw 400 error when attempting to unfollow yourself", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${USER_NAME}/unfollow`,
+      url: `/social/profiles/${USER_NAME}/unfollow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -81,7 +81,7 @@ describe("[PUT] /v2/social/profiles/:id/unfollow", () => {
 
   it("should throw 400 error when attempting to unfollow a profile you don't follow", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${SECOND_USER_NAME}/unfollow`,
+      url: `/social/profiles/${SECOND_USER_NAME}/unfollow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -102,7 +102,7 @@ describe("[PUT] /v2/social/profiles/:id/unfollow", () => {
 
   it("should throw 404 error when profile does not exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/does_not_exist/unfollow`,
+      url: `/social/profiles/does_not_exist/unfollow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -123,7 +123,7 @@ describe("[PUT] /v2/social/profiles/:id/unfollow", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${USER_NAME}/unfollow`,
+      url: `/social/profiles/${USER_NAME}/unfollow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -143,7 +143,7 @@ describe("[PUT] /v2/social/profiles/:id/unfollow", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${USER_NAME}/unfollow`,
+      url: `/social/profiles/${USER_NAME}/unfollow`,
       method: "PUT",
       headers: {
         "X-Noroff-API-Key": API_KEY

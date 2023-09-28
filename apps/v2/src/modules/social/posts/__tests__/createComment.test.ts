@@ -36,10 +36,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[POST] /v2/social/posts/:id/comment", () => {
+describe("[POST] /social/posts/:id/comment", () => {
   it("should successfully add a comment to a post", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/comment`,
+      url: `/social/posts/${POST_ID}/comment`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -67,7 +67,7 @@ describe("[POST] /v2/social/posts/:id/comment", () => {
 
   it("should successfully add a reply to a comment", async () => {
     const commentResponse = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/comment`,
+      url: `/social/posts/${POST_ID}/comment`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -81,7 +81,7 @@ describe("[POST] /v2/social/posts/:id/comment", () => {
     const { id: COMMENT_ID } = commentRes.data
 
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/comment`,
+      url: `/social/posts/${POST_ID}/comment`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -110,7 +110,7 @@ describe("[POST] /v2/social/posts/:id/comment", () => {
 
   it("should throw zod error when attempting to add a comment with invalid body", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/comment`,
+      url: `/social/posts/${POST_ID}/comment`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -147,7 +147,7 @@ describe("[POST] /v2/social/posts/:id/comment", () => {
 
     // Create a comment on post 2
     const commentResponse = await server.inject({
-      url: `/api/v2/social/posts/${SECOND_POST_ID}/comment`,
+      url: `/social/posts/${SECOND_POST_ID}/comment`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -162,7 +162,7 @@ describe("[POST] /v2/social/posts/:id/comment", () => {
 
     // Try to reply to the comment on post 2 through post 1
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/comment`,
+      url: `/social/posts/${POST_ID}/comment`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -187,7 +187,7 @@ describe("[POST] /v2/social/posts/:id/comment", () => {
 
   it("should throw 404 when attempting to reply to a non-existent comment", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/comment`,
+      url: `/social/posts/${POST_ID}/comment`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -212,7 +212,7 @@ describe("[POST] /v2/social/posts/:id/comment", () => {
 
   it("should throw 404 error when attempting to add a comment to a non-existent post", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/3/comment`,
+      url: `/social/posts/3/comment`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -236,7 +236,7 @@ describe("[POST] /v2/social/posts/:id/comment", () => {
 
   it("should throw 401 error when attempting to react without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/comment`,
+      url: `/social/posts/${POST_ID}/comment`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -259,7 +259,7 @@ describe("[POST] /v2/social/posts/:id/comment", () => {
 
   it("should throw 401 error when attempting to react without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/comment`,
+      url: `/social/posts/${POST_ID}/comment`,
       method: "POST",
       headers: {
         "X-Noroff-API-Key": API_KEY

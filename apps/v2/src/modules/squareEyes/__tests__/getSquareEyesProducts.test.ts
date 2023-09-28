@@ -53,10 +53,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/square-eyes", () => {
+describe("[GET] /square-eyes", () => {
   it("should return all square eyes products", async () => {
     const response = await server.inject({
-      url: "/api/v2/square-eyes",
+      url: "/square-eyes",
       method: "GET"
     })
     const res = await response.json()
@@ -80,7 +80,7 @@ describe("[GET] /v2/square-eyes", () => {
 
   it("should return all square eyes products with sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/square-eyes?sort=title&sortOrder=desc",
+      url: "/square-eyes?sort=title&sortOrder=desc",
       method: "GET"
     })
     const res = await response.json()
@@ -106,7 +106,7 @@ describe("[GET] /v2/square-eyes", () => {
 
   it("should return all square eyes products with pagination", async () => {
     const response = await server.inject({
-      url: "/api/v2/square-eyes?page=1&limit=1",
+      url: "/square-eyes?page=1&limit=1",
       method: "GET"
     })
     const res = await response.json()

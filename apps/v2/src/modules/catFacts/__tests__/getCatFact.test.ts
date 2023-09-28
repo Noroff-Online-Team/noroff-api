@@ -22,10 +22,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/cat-facts/:id", () => {
+describe("[GET] /cat-facts/:id", () => {
   it("should return single cat fact based on id", async () => {
     const response = await server.inject({
-      url: "/api/v2/cat-facts/1",
+      url: "/cat-facts/1",
       method: "GET"
     })
     const res = await response.json()
@@ -35,20 +35,12 @@ describe("[GET] /v2/cat-facts/:id", () => {
     expect(res.data.id).toBeDefined()
     expect(res.data.text).toBe("On average, cats spend 2/3 of every day sleeping")
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return 404 if cat fact not found", async () => {
     const response = await server.inject({
-      url: "/api/v2/cat-facts/3",
+      url: "/cat-facts/3",
       method: "GET"
     })
     const res = await response.json()
@@ -65,7 +57,7 @@ describe("[GET] /v2/cat-facts/:id", () => {
 
   it("should throw zod error if id is not a number", async () => {
     const response = await server.inject({
-      url: "/api/v2/cat-facts/invalid_id",
+      url: "/cat-facts/invalid_id",
       method: "GET"
     })
     const res = await response.json()

@@ -25,10 +25,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[PUT] /v2/social/profiles/:id/follow", () => {
+describe("[PUT] /social/profiles/:id/follow", () => {
   it("should return 200 when successfully followed a profile", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${SECOND_USER_NAME}/follow`,
+      url: `/social/profiles/${SECOND_USER_NAME}/follow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -48,7 +48,7 @@ describe("[PUT] /v2/social/profiles/:id/follow", () => {
 
   it("should throw 400 error when attempting to follow yourself", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${USER_NAME}/follow`,
+      url: `/social/profiles/${USER_NAME}/follow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -69,7 +69,7 @@ describe("[PUT] /v2/social/profiles/:id/follow", () => {
 
   it("should throw 400 error when attempting to follow a profile you already follow", async () => {
     await server.inject({
-      url: `/api/v2/social/profiles/${SECOND_USER_NAME}/follow`,
+      url: `/social/profiles/${SECOND_USER_NAME}/follow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -78,7 +78,7 @@ describe("[PUT] /v2/social/profiles/:id/follow", () => {
     })
 
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${SECOND_USER_NAME}/follow`,
+      url: `/social/profiles/${SECOND_USER_NAME}/follow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -99,7 +99,7 @@ describe("[PUT] /v2/social/profiles/:id/follow", () => {
 
   it("should throw 404 error when profile does not exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/does_not_exist/follow`,
+      url: `/social/profiles/does_not_exist/follow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -120,7 +120,7 @@ describe("[PUT] /v2/social/profiles/:id/follow", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${USER_NAME}/follow`,
+      url: `/social/profiles/${USER_NAME}/follow`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -140,7 +140,7 @@ describe("[PUT] /v2/social/profiles/:id/follow", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${USER_NAME}/follow`,
+      url: `/social/profiles/${USER_NAME}/follow`,
       method: "PUT",
       headers: {
         "X-Noroff-API-Key": API_KEY

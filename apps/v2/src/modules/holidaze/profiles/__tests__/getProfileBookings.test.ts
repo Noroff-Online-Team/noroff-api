@@ -49,10 +49,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/holidaze/profiles/:id/bookings", () => {
+describe("[GET] /holidaze/profiles/:id/bookings", () => {
   it("should return bookings belonging to profile", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/profiles/${TEST_USER_NAME}/bookings`,
+      url: `/holidaze/profiles/${TEST_USER_NAME}/bookings`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -78,7 +78,7 @@ describe("[GET] /v2/holidaze/profiles/:id/bookings", () => {
 
   it("should return bookings with venue and customer profile", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/profiles/${TEST_USER_NAME}/bookings?_venue=true&_customer=true`,
+      url: `/holidaze/profiles/${TEST_USER_NAME}/bookings?_venue=true&_customer=true`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -106,7 +106,7 @@ describe("[GET] /v2/holidaze/profiles/:id/bookings", () => {
 
   it("should throw 404 error when attempting to access bookings for profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/profiles/does_not_exist/bookings`,
+      url: `/holidaze/profiles/does_not_exist/bookings`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -127,7 +127,7 @@ describe("[GET] /v2/holidaze/profiles/:id/bookings", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/profiles/${TEST_USER_NAME}/bookings`,
+      url: `/holidaze/profiles/${TEST_USER_NAME}/bookings`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -147,7 +147,7 @@ describe("[GET] /v2/holidaze/profiles/:id/bookings", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/profiles/${TEST_USER_NAME}/bookings`,
+      url: `/holidaze/profiles/${TEST_USER_NAME}/bookings`,
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

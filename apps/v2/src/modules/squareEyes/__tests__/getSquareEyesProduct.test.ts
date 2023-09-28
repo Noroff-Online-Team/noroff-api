@@ -56,10 +56,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/square-eyes/:id", () => {
+describe("[GET] /square-eyes/:id", () => {
   it("should return single square eyes product and review based on id", async () => {
     const response = await server.inject({
-      url: `/api/v2/square-eyes/${PRODUCT_ID}`,
+      url: `/square-eyes/${PRODUCT_ID}`,
       method: "GET"
     })
     const res = await response.json()
@@ -69,20 +69,12 @@ describe("[GET] /v2/square-eyes/:id", () => {
     expect(res.data.id).toBeDefined()
     expect(res.data.title).toBe("The Mandalorian")
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return 404 if square eyes product not found", async () => {
     const response = await server.inject({
-      url: "/api/v2/square-eyes/c375b240-037e-4408-ac39-1063010d48fe",
+      url: "/square-eyes/c375b240-037e-4408-ac39-1063010d48fe",
       method: "GET"
     })
     const res = await response.json()
@@ -99,7 +91,7 @@ describe("[GET] /v2/square-eyes/:id", () => {
 
   it("should throw zod error if id is not a number", async () => {
     const response = await server.inject({
-      url: "/api/v2/square-eyes/invalid_id",
+      url: "/square-eyes/invalid_id",
       method: "GET"
     })
     const res = await response.json()

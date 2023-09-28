@@ -26,10 +26,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/jokes", () => {
+describe("[GET] /jokes", () => {
   it("should return all jokes", async () => {
     const response = await server.inject({
-      url: "/api/v2/jokes",
+      url: "/jokes",
       method: "GET"
     })
     const res = await response.json()
@@ -55,7 +55,7 @@ describe("[GET] /v2/jokes", () => {
 
   it("should return all jokes with sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/jokes?sort=setup&sortOrder=desc",
+      url: "/jokes?sort=setup&sortOrder=desc",
       method: "GET"
     })
     const res = await response.json()
@@ -81,7 +81,7 @@ describe("[GET] /v2/jokes", () => {
 
   it("should return all jokes with pagination", async () => {
     const response = await server.inject({
-      url: "/api/v2/jokes?page=1&limit=1",
+      url: "/jokes?page=1&limit=1",
       method: "GET"
     })
     const res = await response.json()

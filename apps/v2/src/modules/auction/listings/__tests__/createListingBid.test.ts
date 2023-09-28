@@ -46,10 +46,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[POST] /v2/auction/listings/:id/bids", () => {
+describe("[POST] /auction/listings/:id/bids", () => {
   it("should return status code 201 when successfully created a bid", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/${LISTING_ID}/bids`,
+      url: `/auction/listings/${LISTING_ID}/bids`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -67,7 +67,7 @@ describe("[POST] /v2/auction/listings/:id/bids", () => {
 
   it("should subtract the bid amount from the user's credits", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/${LISTING_ID}/bids`,
+      url: `/auction/listings/${LISTING_ID}/bids`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -81,7 +81,7 @@ describe("[POST] /v2/auction/listings/:id/bids", () => {
     expect(response.statusCode).toEqual(201)
 
     const userResponse = await server.inject({
-      url: `/api/v2/auction/profiles/${BIDDER_USER_NAME}`,
+      url: `/auction/profiles/${BIDDER_USER_NAME}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -95,7 +95,7 @@ describe("[POST] /v2/auction/listings/:id/bids", () => {
 
   it("should return status code 400 when trying to bid on a listing that has already ended", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/listings/${EXPIRED_LISTING_ID}/bids`,
+      url: `/auction/listings/${EXPIRED_LISTING_ID}/bids`,
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

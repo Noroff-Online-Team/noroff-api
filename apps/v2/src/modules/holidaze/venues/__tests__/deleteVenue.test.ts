@@ -45,7 +45,7 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[DELETE] /v2/holidaze/venues/:id", () => {
+describe("[DELETE] /holidaze/venues/:id", () => {
   it("should return 204 when successfully deleted a venue", async () => {
     // Make user a venue manager
     await db.userProfile.update({
@@ -54,7 +54,7 @@ describe("[DELETE] /v2/holidaze/venues/:id", () => {
     })
 
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -67,7 +67,7 @@ describe("[DELETE] /v2/holidaze/venues/:id", () => {
 
   it("should throw 404 error if venue does not exist", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/venues/857be398-8c34-4be9-8729-8b46837ac3c5",
+      url: "/holidaze/venues/857be398-8c34-4be9-8729-8b46837ac3c5",
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -88,7 +88,7 @@ describe("[DELETE] /v2/holidaze/venues/:id", () => {
 
   it("should throw 403 error if user is not a venue manager", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -109,7 +109,7 @@ describe("[DELETE] /v2/holidaze/venues/:id", () => {
 
   it("should throw 403 error if venue does not belong to the user", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${SECOND_BEARER_TOKEN}`,
@@ -130,7 +130,7 @@ describe("[DELETE] /v2/holidaze/venues/:id", () => {
 
   it("should throw 401 error when attempting to delete without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -150,7 +150,7 @@ describe("[DELETE] /v2/holidaze/venues/:id", () => {
 
   it("should throw 401 error when attempting to delete without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "DELETE",
       headers: {
         "X-Noroff-API-Key": API_KEY

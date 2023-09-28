@@ -19,10 +19,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[POST] /v2/auth/create-api-key", () => {
+describe("[POST] /auth/create-api-key", () => {
   it("should return 201 when creating an API key with correct credentials", async () => {
     const userRes = await server.inject({
-      url: "/api/v2/auth/login",
+      url: "/auth/login",
       method: "POST",
       payload: {
         email: TEST_USER_EMAIL,
@@ -33,7 +33,7 @@ describe("[POST] /v2/auth/create-api-key", () => {
     expect(userRes.statusCode).toBe(200)
 
     const response = await server.inject({
-      url: "/api/v2/auth/create-api-key",
+      url: "/auth/create-api-key",
       method: "POST",
       headers: {
         Authorization: `Bearer ${userRes.json().data.accessToken}`
@@ -52,7 +52,7 @@ describe("[POST] /v2/auth/create-api-key", () => {
 
   it("should return 401 when creating an API key with incorrect credentials", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/create-api-key",
+      url: "/auth/create-api-key",
       method: "POST",
       headers: {}
     })
@@ -69,7 +69,7 @@ describe("[POST] /v2/auth/create-api-key", () => {
 
   it("should use the name if provided in the request body", async () => {
     const userRes = await server.inject({
-      url: "/api/v2/auth/login",
+      url: "/auth/login",
       method: "POST",
       payload: {
         email: TEST_USER_EMAIL,
@@ -80,7 +80,7 @@ describe("[POST] /v2/auth/create-api-key", () => {
     expect(userRes.statusCode).toBe(200)
 
     const response = await server.inject({
-      url: "/api/v2/auth/create-api-key",
+      url: "/auth/create-api-key",
       method: "POST",
       headers: {
         Authorization: `Bearer ${userRes.json().data.accessToken}`

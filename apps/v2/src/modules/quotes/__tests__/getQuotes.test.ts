@@ -43,10 +43,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/quotes", () => {
+describe("[GET] /quotes", () => {
   it("should return all quotes", async () => {
     const response = await server.inject({
-      url: "/api/v2/quotes",
+      url: "/quotes",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -74,7 +74,7 @@ describe("[GET] /v2/quotes", () => {
 
   it("should return all quotes with sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/quotes?sort=author&sortOrder=desc",
+      url: "/quotes?sort=author&sortOrder=desc",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -104,7 +104,7 @@ describe("[GET] /v2/quotes", () => {
 
   it("should return all quotes with pagination", async () => {
     const response = await server.inject({
-      url: "/api/v2/quotes?page=1&limit=1",
+      url: "/quotes?page=1&limit=1",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -131,7 +131,7 @@ describe("[GET] /v2/quotes", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/quotes",
+      url: "/quotes",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -151,7 +151,7 @@ describe("[GET] /v2/quotes", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/quotes",
+      url: "/quotes",
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

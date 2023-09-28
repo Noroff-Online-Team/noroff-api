@@ -20,10 +20,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[POST] /v2/auth/login", () => {
+describe("[POST] /auth/login", () => {
   it("should return 200 when logging in with correct credentials", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/login",
+      url: "/auth/login",
       method: "POST",
       payload: {
         email: TEST_USER_EMAIL,
@@ -48,7 +48,7 @@ describe("[POST] /v2/auth/login", () => {
 
   it("should throw 401 error when logging in with incorrect credentials", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/login",
+      url: "/auth/login",
       method: "POST",
       payload: {
         email: "invalid_email@noroff.no",
@@ -69,7 +69,7 @@ describe("[POST] /v2/auth/login", () => {
 
   it("should throw zod error if email is not a string", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/login",
+      url: "/auth/login",
       method: "POST",
       payload: {
         email: true,
@@ -92,7 +92,7 @@ describe("[POST] /v2/auth/login", () => {
 
   it("should throw zod error if password is not a string", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/login",
+      url: "/auth/login",
       method: "POST",
       payload: {
         email: TEST_USER_EMAIL,
@@ -115,7 +115,7 @@ describe("[POST] /v2/auth/login", () => {
 
   it("should throw zod error if email is missing", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/login",
+      url: "/auth/login",
       method: "POST",
       payload: {
         password: TEST_USER_PASSWORD
@@ -137,7 +137,7 @@ describe("[POST] /v2/auth/login", () => {
 
   it("should throw zod error if password is missing", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/login",
+      url: "/auth/login",
       method: "POST",
       payload: {
         email: TEST_USER_EMAIL
@@ -159,7 +159,7 @@ describe("[POST] /v2/auth/login", () => {
 
   it("should throw zod error if payload is missing", async () => {
     const response = await server.inject({
-      url: "/api/v2/auth/login",
+      url: "/auth/login",
       method: "POST"
     })
     const res = await response.json()

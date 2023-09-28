@@ -60,10 +60,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/auction/listings", () => {
+describe("[GET] /auction/listings", () => {
   it("should return all listings without Bearer and API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings",
+      url: "/auction/listings",
       method: "GET"
     })
     const res = await response.json()
@@ -85,7 +85,7 @@ describe("[GET] /v2/auction/listings", () => {
 
   it("should return all listings with pagination and sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings?page=1&limit=1&sort=title&sortOrder=asc",
+      url: "/auction/listings?page=1&limit=1&sort=title&sortOrder=asc",
       method: "GET"
     })
     const res = await response.json()
@@ -108,7 +108,7 @@ describe("[GET] /v2/auction/listings", () => {
 
   it("should return all listings that match a tag", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings?_tag=blue",
+      url: "/auction/listings?_tag=blue",
       method: "GET"
     })
     const res = await response.json()
@@ -132,7 +132,7 @@ describe("[GET] /v2/auction/listings", () => {
 
   it("should return all listings that are active", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings?_active=true",
+      url: "/auction/listings?_active=true",
       method: "GET"
     })
     const res = await response.json()
@@ -156,7 +156,7 @@ describe("[GET] /v2/auction/listings", () => {
 
   it("should return all listings with bids", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings?_bids=true",
+      url: "/auction/listings?_bids=true",
       method: "GET"
     })
     const res = await response.json()
@@ -180,7 +180,7 @@ describe("[GET] /v2/auction/listings", () => {
 
   it("should return all listings with seller", async () => {
     const response = await server.inject({
-      url: "/api/v2/auction/listings?_seller=true",
+      url: "/auction/listings?_seller=true",
       method: "GET"
     })
     const res = await response.json()

@@ -37,7 +37,7 @@ beforeEach(async () => {
   })
   // Only follow user two
   await server.inject({
-    url: `/api/v2/social/profiles/${USER_TWO_NAME}/follow`,
+    url: `/social/profiles/${USER_TWO_NAME}/follow`,
     method: "PUT",
     headers: {
       Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -55,10 +55,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/social/posts/following", () => {
+describe("[GET] /social/posts/following", () => {
   it("should return all posts", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts/following",
+      url: "/social/posts/following",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -85,7 +85,7 @@ describe("[GET] /v2/social/posts/following", () => {
 
   it("should return all posts with pagination and sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts/following?page=1&limit=1&sort=title&sortOrder=asc",
+      url: "/social/posts/following?page=1&limit=1&sort=title&sortOrder=asc",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -112,7 +112,7 @@ describe("[GET] /v2/social/posts/following", () => {
 
   it("should return all posts with author profile, reactions, and comments", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts/following?_author=true&_reactions=true&_comments=true",
+      url: "/social/posts/following?_author=true&_reactions=true&_comments=true",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -144,7 +144,7 @@ describe("[GET] /v2/social/posts/following", () => {
 
   it("should return all posts that match a tag", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/following?_tag=tag1`,
+      url: `/social/posts/following?_tag=tag1`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -171,7 +171,7 @@ describe("[GET] /v2/social/posts/following", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts/following",
+      url: "/social/posts/following",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -191,7 +191,7 @@ describe("[GET] /v2/social/posts/following", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts/following",
+      url: "/social/posts/following",
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

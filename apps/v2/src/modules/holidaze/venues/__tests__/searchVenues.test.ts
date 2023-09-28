@@ -37,10 +37,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/holidaze/venues/search", () => {
+describe("[GET] /holidaze/venues/search", () => {
   it("should return venues that contain query in either name or description", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/search?q=venue`,
+      url: `/holidaze/venues/search?q=venue`,
       method: "GET"
     })
     const res = await response.json()
@@ -52,7 +52,7 @@ describe("[GET] /v2/holidaze/venues/search", () => {
 
   it("should return empty array if no venues match query", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/search?q=random`,
+      url: `/holidaze/venues/search?q=random`,
       method: "GET"
     })
     const res = await response.json()
@@ -63,7 +63,7 @@ describe("[GET] /v2/holidaze/venues/search", () => {
 
   it("should return venues with pagination and sort", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/search?q=nice&sort=name&sortOrder=asc&limit=1&page=1`,
+      url: `/holidaze/venues/search?q=nice&sort=name&sortOrder=asc&limit=1&page=1`,
       method: "GET"
     })
     const res = await response.json()
@@ -84,7 +84,7 @@ describe("[GET] /v2/holidaze/venues/search", () => {
 
   it("should throw zod error if query param is missing", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/search`,
+      url: `/holidaze/venues/search`,
       method: "GET"
     })
     const res = await response.json()
@@ -101,7 +101,7 @@ describe("[GET] /v2/holidaze/venues/search", () => {
 
   it("should throw zod error if query param is empty", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/search?q=`,
+      url: `/holidaze/venues/search?q=`,
       method: "GET"
     })
     const res = await response.json()

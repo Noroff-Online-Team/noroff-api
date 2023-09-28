@@ -36,7 +36,7 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/auction/profiles/:id/bids", () => {
+describe("[GET] /auction/profiles/:id/bids", () => {
   it("should return profile bids based on name", async () => {
     await db.auctionBid.create({
       data: {
@@ -47,7 +47,7 @@ describe("[GET] /v2/auction/profiles/:id/bids", () => {
     })
 
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/bids`,
+      url: `/auction/profiles/${TEST_USER_NAME}/bids`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -73,7 +73,7 @@ describe("[GET] /v2/auction/profiles/:id/bids", () => {
 
   it("should throw 404 error when attempting to access profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/does_not_exist/bids`,
+      url: `/auction/profiles/does_not_exist/bids`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -94,7 +94,7 @@ describe("[GET] /v2/auction/profiles/:id/bids", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/bids`,
+      url: `/auction/profiles/${TEST_USER_NAME}/bids`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -114,7 +114,7 @@ describe("[GET] /v2/auction/profiles/:id/bids", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/bids`,
+      url: `/auction/profiles/${TEST_USER_NAME}/bids`,
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

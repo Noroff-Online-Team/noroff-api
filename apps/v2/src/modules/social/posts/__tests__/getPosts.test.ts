@@ -35,10 +35,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/social/posts", () => {
+describe("[GET] /social/posts", () => {
   it("should return all posts", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts",
+      url: "/social/posts",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -65,7 +65,7 @@ describe("[GET] /v2/social/posts", () => {
 
   it("should return all posts with pagination and sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts?page=1&limit=1&sort=title&sortOrder=asc",
+      url: "/social/posts?page=1&limit=1&sort=title&sortOrder=asc",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -92,7 +92,7 @@ describe("[GET] /v2/social/posts", () => {
 
   it("should return all posts with author profile, reactions, and comments", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts?_author=true&_reactions=true&_comments=true",
+      url: "/social/posts?_author=true&_reactions=true&_comments=true",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -124,7 +124,7 @@ describe("[GET] /v2/social/posts", () => {
 
   it("should return all posts that match a tag", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts?_tag=tag1`,
+      url: `/social/posts?_tag=tag1`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -151,7 +151,7 @@ describe("[GET] /v2/social/posts", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts",
+      url: "/social/posts",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -171,7 +171,7 @@ describe("[GET] /v2/social/posts", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/posts",
+      url: "/social/posts",
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

@@ -33,7 +33,7 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[POST] /v2/holidaze/venues", () => {
+describe("[POST] /holidaze/venues", () => {
   it("should return 201 when successfully created a venue", async () => {
     // Make user a venue manager
     await db.userProfile.update({
@@ -42,7 +42,7 @@ describe("[POST] /v2/holidaze/venues", () => {
     })
 
     const response = await server.inject({
-      url: "/api/v2/holidaze/venues",
+      url: "/holidaze/venues",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -76,7 +76,7 @@ describe("[POST] /v2/holidaze/venues", () => {
 
   it("should throw 403 if user is not a venue manager", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/venues",
+      url: "/holidaze/venues",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -100,7 +100,7 @@ describe("[POST] /v2/holidaze/venues", () => {
 
   it("should throw zod errors if data is invalid", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/venues",
+      url: "/holidaze/venues",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -133,7 +133,7 @@ describe("[POST] /v2/holidaze/venues", () => {
 
   it("should throw 401 error when attempting to create without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/venues",
+      url: "/holidaze/venues",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -156,7 +156,7 @@ describe("[POST] /v2/holidaze/venues", () => {
 
   it("should throw 401 error when attempting to create without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/holidaze/venues",
+      url: "/holidaze/venues",
       method: "POST",
       headers: {
         "X-Noroff-API-Key": API_KEY

@@ -34,10 +34,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[PUT] /v2/social/posts/:id/react/:symbol", () => {
+describe("[PUT] /social/posts/:id/react/:symbol", () => {
   it("should successfully add a reaction to a post", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/react/${REACTION_SYMBOL}`,
+      url: `/social/posts/${POST_ID}/react/${REACTION_SYMBOL}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -64,7 +64,7 @@ describe("[PUT] /v2/social/posts/:id/react/:symbol", () => {
 
   it("should successfully remove a reaction from a post", async () => {
     const reactionResponse = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/react/${REACTION_SYMBOL}`,
+      url: `/social/posts/${POST_ID}/react/${REACTION_SYMBOL}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -85,7 +85,7 @@ describe("[PUT] /v2/social/posts/:id/react/:symbol", () => {
     })
 
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/react/${REACTION_SYMBOL}`,
+      url: `/social/posts/${POST_ID}/react/${REACTION_SYMBOL}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -107,7 +107,7 @@ describe("[PUT] /v2/social/posts/:id/react/:symbol", () => {
 
   it("should throw zod error when attempting to react to a post with invalid symbol", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/react/not_a_symbol`,
+      url: `/social/posts/${POST_ID}/react/not_a_symbol`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -130,7 +130,7 @@ describe("[PUT] /v2/social/posts/:id/react/:symbol", () => {
 
   it("should throw 404 error when attempting to react to a post that doesn't exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/3/react/${REACTION_SYMBOL}`,
+      url: `/social/posts/3/react/${REACTION_SYMBOL}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -151,7 +151,7 @@ describe("[PUT] /v2/social/posts/:id/react/:symbol", () => {
 
   it("should throw 401 error when attempting to react without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/react/${REACTION_SYMBOL}`,
+      url: `/social/posts/${POST_ID}/react/${REACTION_SYMBOL}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -171,7 +171,7 @@ describe("[PUT] /v2/social/posts/:id/react/:symbol", () => {
 
   it("should throw 401 error when attempting to react without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}/react/${REACTION_SYMBOL}`,
+      url: `/social/posts/${POST_ID}/react/${REACTION_SYMBOL}`,
       method: "PUT",
       headers: {
         "X-Noroff-API-Key": API_KEY

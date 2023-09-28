@@ -44,10 +44,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/old-games/random", () => {
+describe("[GET] /old-games/random", () => {
   it("should return random old game", async () => {
     const response = await server.inject({
-      url: "/api/v2/old-games/random",
+      url: "/old-games/random",
       method: "GET"
     })
     const res = await response.json()
@@ -58,14 +58,6 @@ describe("[GET] /v2/old-games/random", () => {
     expect(res.data.slug).toBeDefined()
     expect(res.data.name).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 })

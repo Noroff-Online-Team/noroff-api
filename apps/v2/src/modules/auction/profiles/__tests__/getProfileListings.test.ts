@@ -44,10 +44,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/auction/profiles/:id/listings", () => {
+describe("[GET] /auction/profiles/:id/listings", () => {
   it("should return listings belonging to profile", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/listings`,
+      url: `/auction/profiles/${TEST_USER_NAME}/listings`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -73,7 +73,7 @@ describe("[GET] /v2/auction/profiles/:id/listings", () => {
 
   it("should return listings with bids and seller profile", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/listings?_bids=true&_seller=true`,
+      url: `/auction/profiles/${TEST_USER_NAME}/listings?_bids=true&_seller=true`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -101,7 +101,7 @@ describe("[GET] /v2/auction/profiles/:id/listings", () => {
 
   it("should return listings matching tag", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/listings?tag=table`,
+      url: `/auction/profiles/${TEST_USER_NAME}/listings?tag=table`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -127,7 +127,7 @@ describe("[GET] /v2/auction/profiles/:id/listings", () => {
 
   it("should return empty array when no listings match tag", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/listings?_tag=invalid_tag`,
+      url: `/auction/profiles/${TEST_USER_NAME}/listings?_tag=invalid_tag`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -153,7 +153,7 @@ describe("[GET] /v2/auction/profiles/:id/listings", () => {
 
   it("should throw 404 error when attempting to access profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/does_not_exist/listings`,
+      url: `/auction/profiles/does_not_exist/listings`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -174,7 +174,7 @@ describe("[GET] /v2/auction/profiles/:id/listings", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/listings`,
+      url: `/auction/profiles/${TEST_USER_NAME}/listings`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -194,7 +194,7 @@ describe("[GET] /v2/auction/profiles/:id/listings", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}/listings`,
+      url: `/auction/profiles/${TEST_USER_NAME}/listings`,
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

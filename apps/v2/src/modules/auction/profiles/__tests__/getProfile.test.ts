@@ -22,10 +22,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/auction/profiles/:id", () => {
+describe("[GET] /auction/profiles/:id", () => {
   it("should return single profile based on name", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}`,
+      url: `/auction/profiles/${TEST_USER_NAME}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -38,20 +38,12 @@ describe("[GET] /v2/auction/profiles/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.name).toBe("test_user")
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return single profile with sort", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}?sort=name&sortOrder=asc`,
+      url: `/auction/profiles/${TEST_USER_NAME}?sort=name&sortOrder=asc`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -64,20 +56,12 @@ describe("[GET] /v2/auction/profiles/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.name).toBe("test_user")
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return single profile with listings", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}?_listings=true`,
+      url: `/auction/profiles/${TEST_USER_NAME}?_listings=true`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -92,20 +76,12 @@ describe("[GET] /v2/auction/profiles/:id", () => {
     expect(res.data.listings).toBeDefined()
     expect(res.data.listings).toHaveLength(0)
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should throw 404 error when attempting to access profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/does_not_exist`,
+      url: `/auction/profiles/does_not_exist`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -126,7 +102,7 @@ describe("[GET] /v2/auction/profiles/:id", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}`,
+      url: `/auction/profiles/${TEST_USER_NAME}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -146,7 +122,7 @@ describe("[GET] /v2/auction/profiles/:id", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/auction/profiles/${TEST_USER_NAME}`,
+      url: `/auction/profiles/${TEST_USER_NAME}`,
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

@@ -23,10 +23,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/social/profiles", () => {
+describe("[GET] /social/profiles", () => {
   it("should return all profiles", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/profiles",
+      url: "/social/profiles",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -52,7 +52,7 @@ describe("[GET] /v2/social/profiles", () => {
 
   it("should return all profiles with pagination and sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/profiles?page=1&limit=1&sort=name&sortOrder=asc",
+      url: "/social/profiles?page=1&limit=1&sort=name&sortOrder=asc",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -79,7 +79,7 @@ describe("[GET] /v2/social/profiles", () => {
 
   it("should return all profiles with posts", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/profiles?_posts=true",
+      url: "/social/profiles?_posts=true",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -107,7 +107,7 @@ describe("[GET] /v2/social/profiles", () => {
 
   it("should return all profiles with followers and following", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/profiles?_followers=true&_following=true",
+      url: "/social/profiles?_followers=true&_following=true",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -135,7 +135,7 @@ describe("[GET] /v2/social/profiles", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/profiles",
+      url: "/social/profiles",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -155,7 +155,7 @@ describe("[GET] /v2/social/profiles", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: "/api/v2/social/profiles",
+      url: "/social/profiles",
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

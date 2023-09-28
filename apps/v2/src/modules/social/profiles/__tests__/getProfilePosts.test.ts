@@ -37,10 +37,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/social/profiles/:id/posts", () => {
+describe("[GET] /social/profiles/:id/posts", () => {
   it("should return posts belonging to profile", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}/posts`,
+      url: `/social/profiles/${TEST_USER_NAME}/posts`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -67,7 +67,7 @@ describe("[GET] /v2/social/profiles/:id/posts", () => {
 
   it("should return posts with author profile, reactions, and comments", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}/posts?_author=true&_reactions=true&_comments=true`,
+      url: `/social/profiles/${TEST_USER_NAME}/posts?_author=true&_reactions=true&_comments=true`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -96,7 +96,7 @@ describe("[GET] /v2/social/profiles/:id/posts", () => {
 
   it("should return posts that match a tag", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}/posts?_tag=tag1`,
+      url: `/social/profiles/${TEST_USER_NAME}/posts?_tag=tag1`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -124,7 +124,7 @@ describe("[GET] /v2/social/profiles/:id/posts", () => {
 
   it("should throw 404 error when attempting to access profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/does_not_exist/posts`,
+      url: `/social/profiles/does_not_exist/posts`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -145,7 +145,7 @@ describe("[GET] /v2/social/profiles/:id/posts", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}/posts`,
+      url: `/social/profiles/${TEST_USER_NAME}/posts`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -165,7 +165,7 @@ describe("[GET] /v2/social/profiles/:id/posts", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/profiles/${TEST_USER_NAME}/posts`,
+      url: `/social/profiles/${TEST_USER_NAME}/posts`,
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY

@@ -43,10 +43,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/quotes/random", () => {
+describe("[GET] /quotes/random", () => {
   it("should return random quote", async () => {
     const response = await server.inject({
-      url: "/api/v2/quotes/random",
+      url: "/quotes/random",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -61,14 +61,6 @@ describe("[GET] /v2/quotes/random", () => {
     expect(res.data.content).toBeDefined()
     expect(res.data.author).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 })

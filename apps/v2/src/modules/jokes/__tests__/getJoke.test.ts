@@ -26,10 +26,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/jokes/:id", () => {
+describe("[GET] /jokes/:id", () => {
   it("should return single joke based on id", async () => {
     const response = await server.inject({
-      url: "/api/v2/jokes/1",
+      url: "/jokes/1",
       method: "GET"
     })
     const res = await response.json()
@@ -39,20 +39,12 @@ describe("[GET] /v2/jokes/:id", () => {
     expect(res.data.id).toBeDefined()
     expect(res.data.setup).toBe("What did the fish say when it hit the wall?")
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return 404 if joke not found", async () => {
     const response = await server.inject({
-      url: "/api/v2/jokes/3",
+      url: "/jokes/3",
       method: "GET"
     })
     const res = await response.json()
@@ -69,7 +61,7 @@ describe("[GET] /v2/jokes/:id", () => {
 
   it("should throw zod error if id is not a number", async () => {
     const response = await server.inject({
-      url: "/api/v2/jokes/invalid_id",
+      url: "/jokes/invalid_id",
       method: "GET"
     })
     const res = await response.json()

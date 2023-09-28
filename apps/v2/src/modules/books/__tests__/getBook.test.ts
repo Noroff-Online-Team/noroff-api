@@ -48,10 +48,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/books/:id", () => {
+describe("[GET] /books/:id", () => {
   it("should return single book based on id", async () => {
     const response = await server.inject({
-      url: "/api/v2/books/1",
+      url: "/books/1",
       method: "GET"
     })
     const res = await response.json()
@@ -61,20 +61,12 @@ describe("[GET] /v2/books/:id", () => {
     expect(res.data.id).toBeDefined()
     expect(res.data.title).toBe("Big Trouble in Town")
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return 404 if book not found", async () => {
     const response = await server.inject({
-      url: "/api/v2/books/3",
+      url: "/books/3",
       method: "GET"
     })
     const res = await response.json()
@@ -91,7 +83,7 @@ describe("[GET] /v2/books/:id", () => {
 
   it("should throw zod error if id is not a number", async () => {
     const response = await server.inject({
-      url: "/api/v2/books/invalid_id",
+      url: "/books/invalid_id",
       method: "GET"
     })
     const res = await response.json()

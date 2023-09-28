@@ -44,10 +44,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/old-games", () => {
+describe("[GET] /old-games", () => {
   it("should return all old games", async () => {
     const response = await server.inject({
-      url: "/api/v2/old-games",
+      url: "/old-games",
       method: "GET"
     })
     const res = await response.json()
@@ -73,7 +73,7 @@ describe("[GET] /v2/old-games", () => {
 
   it("should return all old games with sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/old-games?sort=name&sortOrder=desc",
+      url: "/old-games?sort=name&sortOrder=desc",
       method: "GET"
     })
     const res = await response.json()
@@ -99,7 +99,7 @@ describe("[GET] /v2/old-games", () => {
 
   it("should return all old games with pagination", async () => {
     const response = await server.inject({
-      url: "/api/v2/old-games?page=1&limit=1",
+      url: "/old-games?page=1&limit=1",
       method: "GET"
     })
     const res = await response.json()

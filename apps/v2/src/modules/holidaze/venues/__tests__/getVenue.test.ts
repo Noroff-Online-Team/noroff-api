@@ -30,10 +30,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/holidaze/venues/:id", () => {
+describe("[GET] /holidaze/venues/:id", () => {
   it("should return single venue based on id without Bearer and API Key", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}`,
+      url: `/holidaze/venues/${VENUE_ID}`,
       method: "GET"
     })
     const res = await response.json()
@@ -42,20 +42,12 @@ describe("[GET] /v2/holidaze/venues/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.id).toBe(VENUE_ID)
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return single venue with bookings", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}?_bookings=true`,
+      url: `/holidaze/venues/${VENUE_ID}?_bookings=true`,
       method: "GET"
     })
     const res = await response.json()
@@ -64,20 +56,12 @@ describe("[GET] /v2/holidaze/venues/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.bookings).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 
   it("should return single venue with owner", async () => {
     const response = await server.inject({
-      url: `/api/v2/holidaze/venues/${VENUE_ID}?_owner=true`,
+      url: `/holidaze/venues/${VENUE_ID}?_owner=true`,
       method: "GET"
     })
     const res = await response.json()
@@ -86,14 +70,6 @@ describe("[GET] /v2/holidaze/venues/:id", () => {
     expect(res.data).toBeDefined()
     expect(res.data.owner).toBeDefined()
     expect(res.meta).toBeDefined()
-    expect(res.meta).toStrictEqual({
-      isFirstPage: true,
-      isLastPage: true,
-      currentPage: 1,
-      previousPage: null,
-      nextPage: null,
-      pageCount: 1,
-      totalCount: 1
-    })
+    expect(res.meta).toStrictEqual({})
   })
 })

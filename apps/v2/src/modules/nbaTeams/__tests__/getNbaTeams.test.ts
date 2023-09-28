@@ -32,10 +32,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /v2/nba-teams", () => {
+describe("[GET] /nba-teams", () => {
   it("should return all NBA teams", async () => {
     const response = await server.inject({
-      url: "/api/v2/nba-teams",
+      url: "/nba-teams",
       method: "GET"
     })
     const res = await response.json()
@@ -61,7 +61,7 @@ describe("[GET] /v2/nba-teams", () => {
 
   it("should return all NBA teams with sort", async () => {
     const response = await server.inject({
-      url: "/api/v2/nba-teams?sort=city&sortOrder=desc",
+      url: "/nba-teams?sort=city&sortOrder=desc",
       method: "GET"
     })
     const res = await response.json()
@@ -87,7 +87,7 @@ describe("[GET] /v2/nba-teams", () => {
 
   it("should return all NBA teams with pagination", async () => {
     const response = await server.inject({
-      url: "/api/v2/nba-teams?page=1&limit=1",
+      url: "/nba-teams?page=1&limit=1",
       method: "GET"
     })
     const res = await response.json()

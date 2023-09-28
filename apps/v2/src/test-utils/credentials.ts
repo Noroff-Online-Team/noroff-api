@@ -32,7 +32,7 @@ export async function getAuthCredentials(user: User = {}): Promise<{
 
     // Create API key
     const apiKeyResponse = await server.inject({
-      url: "/api/v2/auth/create-api-key",
+      url: "/auth/create-api-key",
       method: "POST",
       headers: {
         Authorization: `Bearer ${bearerToken}`
@@ -56,7 +56,7 @@ export async function registerUser(user: User = {}): Promise<{ name: string; ema
 
   try {
     await server.inject({
-      url: "/api/v2/auth/register",
+      url: "/auth/register",
       method: "POST",
       payload: { name, email, password }
     })
@@ -73,7 +73,7 @@ async function loginUser(user: User = {}): Promise<{ bearerToken: string }> {
 
   try {
     const response = await server.inject({
-      url: "/api/v2/auth/login",
+      url: "/auth/login",
       method: "POST",
       payload: { email, password }
     })

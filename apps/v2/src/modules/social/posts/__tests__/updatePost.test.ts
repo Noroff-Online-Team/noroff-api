@@ -38,10 +38,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[PUT] /v2/social/posts/:id", () => {
+describe("[PUT] /social/posts/:id", () => {
   it("should return 200 when successfully updated a post", async () => {
     const initialResponse = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -54,7 +54,7 @@ describe("[PUT] /v2/social/posts/:id", () => {
     expect(initialRes.data.title).toBe(originalData.title)
 
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -76,7 +76,7 @@ describe("[PUT] /v2/social/posts/:id", () => {
 
   it("should return created post with author profile, reactions, and comments", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}?_author=true&_reactions=true&_comments=true`,
+      url: `/social/posts/${POST_ID}?_author=true&_reactions=true&_comments=true`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -101,7 +101,7 @@ describe("[PUT] /v2/social/posts/:id", () => {
 
   it("should throw zod errors if data is invalid", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -127,7 +127,7 @@ describe("[PUT] /v2/social/posts/:id", () => {
 
   it("should throw 401 error when attempting to create without API key", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -150,7 +150,7 @@ describe("[PUT] /v2/social/posts/:id", () => {
 
   it("should throw 401 error when attempting to create without Bearer token", async () => {
     const response = await server.inject({
-      url: `/api/v2/social/posts/${POST_ID}`,
+      url: `/social/posts/${POST_ID}`,
       method: "PUT",
       headers: {
         "X-Noroff-API-Key": API_KEY
