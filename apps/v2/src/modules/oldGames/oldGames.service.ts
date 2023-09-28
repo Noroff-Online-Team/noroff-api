@@ -26,7 +26,7 @@ export async function getOldGames(
 }
 
 export async function getOldGame(id: number) {
-  const [data, meta] = await db.oldGame
+  const [data] = await db.oldGame
     .paginate({
       where: { id },
       include: {
@@ -37,14 +37,14 @@ export async function getOldGame(id: number) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export async function getRandomOldGame() {
   const resultLength = await db.oldGame.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await db.oldGame
+  const [data] = await db.oldGame
     .paginate({
       where: { id },
       include: {
@@ -55,5 +55,5 @@ export async function getRandomOldGame() {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }

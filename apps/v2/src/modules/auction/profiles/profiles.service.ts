@@ -41,7 +41,7 @@ export async function getProfiles(
 export async function getProfile(name: string, includes: AuctionProfileIncludes = {}) {
   const includeListings = includes.listings ? { listings: { include: { media: true } } } : {}
 
-  const [data, meta] = await db.userProfile
+  const [data] = await db.userProfile
     .paginate({
       where: { name },
       include: {
@@ -60,7 +60,7 @@ export async function getProfile(name: string, includes: AuctionProfileIncludes 
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export const updateProfile = async (name: string, { avatar, banner }: UpdateProfileSchema) => {
@@ -120,7 +120,7 @@ export async function getProfileListings(
 }
 
 export async function getProfileCredits(name: string) {
-  const [data, meta] = await db.userProfile
+  const [data] = await db.userProfile
     .paginate({
       where: { name },
       select: { credits: true }
@@ -129,7 +129,7 @@ export async function getProfileCredits(name: string) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export async function getProfileBids(

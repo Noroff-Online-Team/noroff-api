@@ -48,7 +48,7 @@ export async function getBooking(id: string, includes: HolidazeBookingIncludes =
       }
     : {}
 
-  const [data, meta] = await db.holidazeBooking
+  const [data] = await db.holidazeBooking
     .paginate({
       where: { id },
       include: {
@@ -61,7 +61,7 @@ export async function getBooking(id: string, includes: HolidazeBookingIncludes =
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export async function createBooking(

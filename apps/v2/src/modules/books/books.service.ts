@@ -21,7 +21,7 @@ export async function getBooks(sort: keyof Book = "id", sortOrder: "asc" | "desc
 }
 
 export async function getBook(id: number) {
-  const [data, meta] = await db.book
+  const [data] = await db.book
     .paginate({
       where: { id },
       include: {
@@ -32,14 +32,14 @@ export async function getBook(id: number) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export async function getRandomBook() {
   const resultLength = await db.book.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await db.book
+  const [data] = await db.book
     .paginate({
       where: { id },
       include: {
@@ -50,5 +50,5 @@ export async function getRandomBook() {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }

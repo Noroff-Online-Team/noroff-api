@@ -25,7 +25,7 @@ export async function getGameHubProducts(
 }
 
 export async function getGameHubProduct(id: string) {
-  const [data, meta] = await db.gameHubProducts
+  const [data] = await db.gameHubProducts
     .paginate({
       where: { id },
       include: {
@@ -36,5 +36,5 @@ export async function getGameHubProduct(id: string) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }

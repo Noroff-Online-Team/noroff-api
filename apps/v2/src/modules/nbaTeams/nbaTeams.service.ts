@@ -23,7 +23,7 @@ export async function getNbaTeams(
 }
 
 export async function getNbaTeam(id: number) {
-  const [data, meta] = await db.nbaTeam
+  const [data] = await db.nbaTeam
     .paginate({
       where: { id }
     })
@@ -31,14 +31,14 @@ export async function getNbaTeam(id: number) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export async function getRandomNbaTeam() {
   const resultLength = await db.nbaTeam.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await db.nbaTeam
+  const [data] = await db.nbaTeam
     .paginate({
       where: { id }
     })
@@ -46,5 +46,5 @@ export async function getRandomNbaTeam() {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }

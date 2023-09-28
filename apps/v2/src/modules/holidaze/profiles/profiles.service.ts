@@ -54,7 +54,7 @@ export async function getProfile(name: string, includes: HolidazeProfileIncludes
     ? { bookings: { include: { venue: { include: { media: true, meta: true, location: true } } } } }
     : {}
 
-  const [data, meta] = await db.userProfile
+  const [data] = await db.userProfile
     .paginate({
       where: { name },
       include: {
@@ -75,7 +75,7 @@ export async function getProfile(name: string, includes: HolidazeProfileIncludes
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export async function updateProfile(name: string, { avatar, banner, ...updateData }: UpdateProfileSchema) {

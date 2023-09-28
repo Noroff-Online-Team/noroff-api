@@ -25,7 +25,7 @@ export async function getSquareEyesProducts(
 }
 
 export async function getSquareEyesProduct(id: string) {
-  const [data, meta] = await db.squareEyesProduct
+  const [data] = await db.squareEyesProduct
     .paginate({
       where: { id },
       include: {
@@ -36,5 +36,5 @@ export async function getSquareEyesProduct(id: string) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }

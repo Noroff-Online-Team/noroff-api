@@ -18,7 +18,7 @@ export async function getQuotes(sort: keyof Quote = "id", sortOrder: "asc" | "de
 }
 
 export async function getQuote(id: number) {
-  const [data, meta] = await db.quote
+  const [data] = await db.quote
     .paginate({
       where: { id }
     })
@@ -26,14 +26,14 @@ export async function getQuote(id: number) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export async function getRandomQuote() {
   const resultLength = await db.quote.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await db.quote
+  const [data] = await db.quote
     .paginate({
       where: { id }
     })
@@ -41,5 +41,5 @@ export async function getRandomQuote() {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }

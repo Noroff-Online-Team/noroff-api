@@ -55,7 +55,7 @@ export async function getListing(id: string, includes: AuctionListingIncludes = 
     ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } }
     : {}
 
-  const [data, meta] = await db.auctionListing
+  const [data] = await db.auctionListing
     .paginate({
       where: { id },
       include: {
@@ -74,7 +74,7 @@ export async function getListing(id: string, includes: AuctionListingIncludes = 
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export async function createListing(data: CreateListingSchema, seller: string, includes: AuctionListingIncludes = {}) {

@@ -71,7 +71,7 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
     : {}
   const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
 
-  const [data, meta] = await db.socialPost
+  const [data] = await db.socialPost
     .paginate({
       where: { id },
       include: {
@@ -93,7 +93,7 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
 
   // Return undefined for data if no post was found, allowing for a simple truthiness check in the controller.
   if (!data.length) {
-    return { data: undefined, meta }
+    return { data: undefined }
   }
 
   const post = data[0]
@@ -112,7 +112,7 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
     enrichedPost.reactions = await fetchReactionCounts(post.id)
   }
 
-  return { data: enrichedPost, meta }
+  return { data: enrichedPost }
 }
 
 export const createPost = async (createPostData: CreatePostSchema, includes: SocialPostIncludes = {}) => {

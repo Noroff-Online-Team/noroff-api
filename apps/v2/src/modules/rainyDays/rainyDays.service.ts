@@ -25,7 +25,7 @@ export async function getRainyDaysProducts(
 }
 
 export async function getRainyDaysProduct(id: string) {
-  const [data, meta] = await db.rainyDaysProduct
+  const [data] = await db.rainyDaysProduct
     .paginate({
       where: { id },
       include: {
@@ -36,5 +36,5 @@ export async function getRainyDaysProduct(id: string) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }

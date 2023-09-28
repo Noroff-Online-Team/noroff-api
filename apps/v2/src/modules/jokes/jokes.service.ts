@@ -18,7 +18,7 @@ export async function getJokes(sort: keyof Joke = "id", sortOrder: "asc" | "desc
 }
 
 export async function getJoke(id: number) {
-  const [data, meta] = await db.joke
+  const [data] = await db.joke
     .paginate({
       where: { id }
     })
@@ -26,14 +26,14 @@ export async function getJoke(id: number) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export async function getRandomJoke() {
   const resultLength = await db.joke.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await db.joke
+  const [data] = await db.joke
     .paginate({
       where: { id }
     })
@@ -41,5 +41,5 @@ export async function getRandomJoke() {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }

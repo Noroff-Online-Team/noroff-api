@@ -49,7 +49,7 @@ export const getProfile = async (name: string, includes: ProfileIncludes = {}) =
   const withFollowingMedia = includes.following ? { following: { include: { avatar: true, banner: true } } } : {}
   const withPostMedia = includes.posts ? { posts: { include: { media: true } } } : {}
 
-  const [data, meta] = await db.userProfile
+  const [data] = await db.userProfile
     .paginate({
       where: { name },
       include: {
@@ -72,7 +72,7 @@ export const getProfile = async (name: string, includes: ProfileIncludes = {}) =
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export const updateProfile = async (name: string, { avatar, banner }: UpdateProfileSchema) => {

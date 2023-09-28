@@ -23,7 +23,7 @@ export async function getCatFacts(
 }
 
 export async function getCatFact(id: number) {
-  const [data, meta] = await db.catFact
+  const [data] = await db.catFact
     .paginate({
       where: { id }
     })
@@ -31,14 +31,14 @@ export async function getCatFact(id: number) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export async function getRandomCatFact() {
   const resultLength = await db.catFact.count()
   const id = getRandomNumber(1, resultLength)
 
-  const [data, meta] = await db.catFact
+  const [data] = await db.catFact
     .paginate({
       where: { id }
     })
@@ -46,5 +46,5 @@ export async function getRandomCatFact() {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }

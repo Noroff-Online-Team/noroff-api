@@ -55,7 +55,7 @@ export async function getVenue(id: string, includes: HolidazeVenueIncludes = {})
     ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
     : {}
 
-  const [data, meta] = await db.holidazeVenue
+  const [data] = await db.holidazeVenue
     .paginate({
       where: { id },
       include: {
@@ -76,7 +76,7 @@ export async function getVenue(id: string, includes: HolidazeVenueIncludes = {})
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
 
 export async function createVenue(

@@ -26,7 +26,7 @@ export async function getOnlineShopProducts(
 }
 
 export async function getOnlineShopProduct(id: string) {
-  const [data, meta] = await db.onlineShopProduct
+  const [data] = await db.onlineShopProduct
     .paginate({
       where: { id },
       include: {
@@ -38,5 +38,5 @@ export async function getOnlineShopProduct(id: string) {
       limit: 1
     })
 
-  return { data: data[0], meta }
+  return { data: data[0] }
 }
