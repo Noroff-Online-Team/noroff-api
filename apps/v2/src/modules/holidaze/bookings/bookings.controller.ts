@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { HolidazeBooking, UserProfile } from "@prisma/v2-client"
-import { BadRequest, NotFound, Forbidden, InternalServerError, isHttpError } from "http-errors"
+import { BadRequest, NotFound, Forbidden, InternalServerError, Conflict, isHttpError } from "http-errors"
 import { getBookings, getBooking, createBooking, deleteBooking, updateBooking } from "./booking.service"
 import {
   bookingIdSchema,
@@ -13,6 +13,8 @@ import {
 } from "./bookings.schema"
 import { getVenue } from "../venues/venues.service"
 import { ZodError } from "zod"
+
+import { checkForOverlappingBookings } from "./booking.utils"
 
 export interface HolidazeBookingIncludes {
   customer?: boolean
@@ -112,6 +114,16 @@ export async function createBookingHandler(
     await createBookingSchema.parseAsync(request.body)
     const { name } = request.user as UserProfile
     const { _customer, _venue } = await queryFlagsSchema.parseAsync(request.query)
+
+    const hasOverlap = await checkForOverlappingBookings(
+      request.body.venueId,
+      request.body.dateFrom,
+      request.body.dateTo
+    )
+
+    if (hasOverlap) {
+      throw new Conflict("The selected dates overlap with an existing booking for this venue.")
+    }
 
     const includes: HolidazeBookingIncludes = {
       customer: Boolean(_customer),

@@ -74,6 +74,83 @@ describe("[POST] /holidaze/bookings", () => {
     expect(res.meta).toStrictEqual({})
   })
 
+  it("should return 201 when successfully creating two bookings for same venue with different dates", async () => {
+    await server.inject({
+      url: "/holidaze/bookings",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        ...createData,
+        dateFrom: new Date(new Date().setMonth(new Date().getMonth() + 2)),
+        dateTo: new Date(new Date().setMonth(new Date().getMonth() + 3))
+      }
+    })
+
+    const response = await server.inject({
+      url: "/holidaze/bookings",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        ...createData
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toEqual(201)
+    expect(res.data).toStrictEqual({
+      id: expect.any(String),
+      dateFrom: expect.any(String),
+      dateTo: expect.any(String),
+      guests: 2,
+      created: expect.any(String),
+      updated: expect.any(String)
+    })
+    expect(res.meta).toBeDefined()
+    expect(res.meta).toStrictEqual({})
+  })
+
+  it("should throw 409 error if booking for same time period already exists", async () => {
+    await server.inject({
+      url: "/holidaze/bookings",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        ...createData
+      }
+    })
+
+    const response = await server.inject({
+      url: "/holidaze/bookings",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        ...createData
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toEqual(409)
+    expect(res.data).not.toBeDefined()
+    expect(res.meta).not.toBeDefined()
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toHaveLength(1)
+    expect(res.errors[0]).toStrictEqual({
+      message: "The selected dates overlap with an existing booking for this venue."
+    })
+  })
+
   it("should throw zod errors if data is invalid", async () => {
     const response = await server.inject({
       url: "/holidaze/bookings",
