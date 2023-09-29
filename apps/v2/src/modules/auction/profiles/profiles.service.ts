@@ -24,7 +24,8 @@ export async function getProfiles(
         banner: true,
         _count: {
           select: {
-            listings: true
+            listings: true,
+            wins: true
           }
         }
       },
@@ -55,7 +56,8 @@ export async function getProfile(name: string, includes: AuctionProfileIncludes 
         banner: true,
         _count: {
           select: {
-            listings: true
+            listings: true,
+            wins: true
           }
         }
       }
@@ -232,7 +234,8 @@ export async function searchProfiles(
         banner: true,
         _count: {
           select: {
-            listings: true
+            listings: true,
+            wins: true
           }
         }
       },

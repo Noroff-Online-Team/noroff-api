@@ -72,7 +72,8 @@ export const displayProfileSchema = z.object({
     .optional(),
   _count: z
     .object({
-      listings: z.number().int().optional()
+      listings: z.number().int().optional(),
+      wins: z.number().int().optional()
     })
     .nullish()
 })
