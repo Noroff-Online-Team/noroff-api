@@ -16,10 +16,16 @@ import {
   getProfileListingsHandler,
   getProfileCreditsHandler,
   getProfileBidsHandler,
+  getProfileWinsHandler,
   searchProfilesHandler
 } from "./profiles.controller"
 import { createResponseSchema } from "@noroff/api-utils"
-import { listingQuerySchema, listingResponseSchema, profileBidsResponseSchema } from "../listings/listings.schema"
+import {
+  listingQuerySchema,
+  listingWinsQuerySchema,
+  listingResponseSchema,
+  profileBidsResponseSchema
+} from "../listings/listings.schema"
 
 async function profilesRoutes(server: FastifyInstance) {
   server.get(
@@ -119,6 +125,23 @@ async function profilesRoutes(server: FastifyInstance) {
       }
     },
     getProfileBidsHandler
+  )
+
+  server.get(
+    "/:name/wins",
+    {
+      onRequest: [server.authenticate, server.apiKey],
+      schema: {
+        tags: ["auction-profiles"],
+        security: [{ bearerAuth: [] }],
+        querystring: listingWinsQuerySchema,
+        params: profileNameSchema,
+        response: {
+          200: createResponseSchema(listingResponseSchema.array())
+        }
+      }
+    },
+    getProfileWinsHandler
   )
 
   server.get(

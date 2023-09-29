@@ -37,11 +37,11 @@ export async function scheduleCreditsTransfer(listingId: string, endsAt: Date): 
       // Get highest bid of listing
       const [winner, ...losers] = listing.data.bids.sort((a, b) => b.amount - a.amount)
 
-      // Add listing id to winner wins
-      await db.userProfile.update({
-        where: { name: winner.bidderName },
+      // Add listing to winner listing wins
+      await db.auctionListing.update({
+        where: { id: listingId },
         data: {
-          wins: { push: listingId }
+          winnerName: winner.bidderName
         }
       })
 

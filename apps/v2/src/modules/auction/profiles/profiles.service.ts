@@ -11,13 +11,15 @@ export async function getProfiles(
   page = 1,
   includes: AuctionProfileIncludes = {}
 ) {
-  const includeListings = includes.listings ? { listings: { include: { media: true } } } : {}
+  const withListingMedia = includes.listings ? { listings: { include: { media: true } } } : {}
+  const withWinsMedia = includes.wins ? { wins: { include: { media: true } } } : {}
 
   const [data, meta] = await db.userProfile
     .paginate({
       include: {
         ...includes,
-        ...includeListings,
+        ...withWinsMedia,
+        ...withListingMedia,
         avatar: true,
         banner: true,
         _count: {
@@ -39,14 +41,16 @@ export async function getProfiles(
 }
 
 export async function getProfile(name: string, includes: AuctionProfileIncludes = {}) {
-  const includeListings = includes.listings ? { listings: { include: { media: true } } } : {}
+  const withListingMedia = includes.listings ? { listings: { include: { media: true } } } : {}
+  const withWinsMedia = includes.wins ? { wins: { include: { media: true } } } : {}
 
   const [data] = await db.userProfile
     .paginate({
       where: { name },
       include: {
         ...includes,
-        ...includeListings,
+        ...withWinsMedia,
+        ...withListingMedia,
         avatar: true,
         banner: true,
         _count: {
@@ -164,6 +168,46 @@ export async function getProfileBids(
   return { data, meta }
 }
 
+export async function getProfileWins(
+  name: string,
+  sort: keyof AuctionListing = "created",
+  sortOrder: "asc" | "desc" = "desc",
+  limit = 100,
+  page = 1,
+  includes: AuctionListingIncludes = {}
+) {
+  const withListingSeller = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+  const withBidder = includes.bids ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } } : {}
+
+  const [data, meta] = await db.auctionListing
+    .paginate({
+      where: {
+        winnerName: name,
+        endsAt: { lte: new Date() }
+      },
+      orderBy: {
+        [sort]: sortOrder
+      },
+      include: {
+        ...includes,
+        ...withBidder,
+        ...withListingSeller,
+        media: true,
+        _count: {
+          select: {
+            bids: true
+          }
+        }
+      }
+    })
+    .withPages({
+      limit,
+      page
+    })
+
+  return { data, meta }
+}
+
 export async function searchProfiles(
   sort: keyof UserProfile = "name",
   sortOrder: "asc" | "desc" = "desc",
@@ -172,6 +216,9 @@ export async function searchProfiles(
   query: string,
   includes: AuctionProfileIncludes = {}
 ) {
+  const withListingMedia = includes.listings ? { listings: { include: { media: true } } } : {}
+  const withWinsMedia = includes.wins ? { wins: { include: { media: true } } } : {}
+
   const [data, meta] = await db.userProfile
     .paginate({
       where: {
@@ -179,6 +226,8 @@ export async function searchProfiles(
       },
       include: {
         ...includes,
+        ...withWinsMedia,
+        ...withListingMedia,
         avatar: true,
         banner: true,
         _count: {

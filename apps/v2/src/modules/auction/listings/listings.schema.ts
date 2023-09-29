@@ -153,6 +153,8 @@ export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).
     .nonempty("Query cannot be empty")
 })
 
+export const listingWinsQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore)
+
 export type CreateListingSchema = z.infer<typeof createListingSchema>
 
 export type UpdateListingSchema = z.infer<typeof updateListingSchema>

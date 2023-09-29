@@ -198,9 +198,9 @@ model UserProfile {
   following    UserProfile[]        @relation("Follows")
   // Auction House
   credits      Int                  @default(1000)
-  listings     AuctionListing[]
+  listings     AuctionListing[]     @relation("Listings")
   bids         AuctionBid[]
-  wins         String[]
+  wins         AuctionListing[]     @relation("Wins")
   // Holidaze
   venueManager Boolean              @default(false)
   venues       HolidazeVenue[]
@@ -258,8 +258,10 @@ model AuctionListing {
   created     DateTime     @default(now())
   updated     DateTime     @updatedAt
   endsAt      DateTime
-  seller      UserProfile  @relation(fields: [sellerName], references: [name], onDelete: Cascade)
+  seller      UserProfile  @relation("Listings", fields: [sellerName], references: [name], onDelete: Cascade)
   sellerName  String
+  winner      UserProfile? @relation("Wins", fields: [winnerName], references: [name], onDelete: Cascade)
+  winnerName  String?
   bids        AuctionBid[]
 }
 

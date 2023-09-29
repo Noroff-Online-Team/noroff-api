@@ -57,7 +57,19 @@ export const displayProfileSchema = z.object({
     })
     .array()
     .optional(),
-  wins: z.string().uuid().array().optional(),
+  wins: z
+    .object({
+      id: z.string().uuid(),
+      title: z.string(),
+      description: z.string().nullish(),
+      media: z.object(mediaProperties).array().nullish(),
+      tags: z.string().array().nullish(),
+      created: z.date(),
+      updated: z.date(),
+      endsAt: z.date()
+    })
+    .array()
+    .optional(),
   _count: z
     .object({
       listings: z.number().int().optional()
@@ -66,7 +78,8 @@ export const displayProfileSchema = z.object({
 })
 
 const queryFlagsCore = {
-  _listings: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _listings: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
+  _wins: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
 }
 
 export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({

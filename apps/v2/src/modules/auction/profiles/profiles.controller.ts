@@ -17,6 +17,7 @@ import {
   updateProfile,
   getProfileListings,
   getProfileBids,
+  getProfileWins,
   searchProfiles
 } from "./profiles.service"
 
@@ -26,6 +27,7 @@ import { listingQuerySchema } from "../listings/listings.schema"
 
 export interface AuctionProfileIncludes {
   listings?: boolean
+  wins?: boolean
 }
 
 export async function getProfilesHandler(
@@ -33,21 +35,23 @@ export async function getProfilesHandler(
     Querystring: {
       limit?: number
       page?: number
-      _listings?: boolean
       sort?: keyof UserProfile
       sortOrder?: "asc" | "desc"
+      _listings?: boolean
+      _wins?: boolean
     }
   }>
 ) {
   try {
-    const { sort, sortOrder, limit, page, _listings } = request.query
+    const { sort, sortOrder, limit, page, _listings, _wins } = request.query
 
     if (limit && limit > 100) {
       throw new BadRequest("Limit cannot be greater than 100")
     }
 
     const includes: AuctionProfileIncludes = {
-      listings: Boolean(_listings)
+      listings: Boolean(_listings),
+      wins: Boolean(_wins)
     }
 
     const profiles = await getProfiles(sort, sortOrder, limit, page, includes)
@@ -71,15 +75,17 @@ export async function getProfileHandler(
     Params: { name: string }
     Querystring: {
       _listings?: boolean
+      _wins?: boolean
     }
   }>
 ) {
   try {
     const { name } = await profileNameSchema.parseAsync(request.params)
-    const { _listings } = await queryFlagsSchema.parseAsync(request.query)
+    const { _listings, _wins } = await queryFlagsSchema.parseAsync(request.query)
 
     const includes: AuctionProfileIncludes = {
-      listings: Boolean(_listings)
+      listings: Boolean(_listings),
+      wins: Boolean(_wins)
     }
 
     const profile = await getProfile(name, includes)
@@ -281,6 +287,55 @@ export async function getProfileBidsHandler(
   }
 }
 
+export async function getProfileWinsHandler(
+  request: FastifyRequest<{
+    Params: { name: string }
+    Querystring: {
+      limit?: number
+      page?: number
+      sort?: keyof AuctionListing
+      sortOrder?: "asc" | "desc"
+      _seller?: boolean
+      _bids?: boolean
+    }
+  }>
+) {
+  try {
+    const { name } = await profileNameSchema.parseAsync(request.params)
+    await listingQuerySchema.parseAsync(request.query)
+    const { sort, sortOrder, limit, page, _seller, _bids } = request.query
+
+    if (limit && limit > 100) {
+      throw new BadRequest("Limit cannot be greater than 100")
+    }
+
+    const profileExists = await getProfile(name)
+
+    if (!profileExists.data) {
+      throw new NotFound("No profile with this name")
+    }
+
+    const includes: AuctionListingIncludes = {
+      bids: Boolean(_bids),
+      seller: Boolean(_seller)
+    }
+
+    const listings = await getProfileWins(name, sort, sortOrder, limit, page, includes)
+
+    return listings
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new BadRequest(error.message)
+    }
+
+    if (isHttpError(error)) {
+      throw error
+    }
+
+    throw new InternalServerError("Something went wrong.")
+  }
+}
+
 export async function searchProfilesHandler(
   request: FastifyRequest<{
     Querystring: {
@@ -289,16 +344,18 @@ export async function searchProfilesHandler(
       limit?: number
       page?: number
       _listings?: boolean
+      _wins?: boolean
       q: string
     }
   }>
 ) {
   try {
     await searchQuerySchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page, _listings, q } = request.query
+    const { sort, sortOrder, limit, page, _listings, _wins, q } = request.query
 
     const includes: AuctionProfileIncludes = {
-      listings: Boolean(_listings)
+      listings: Boolean(_listings),
+      wins: Boolean(_wins)
     }
 
     const results = await searchProfiles(sort, sortOrder, limit, page, q, includes)
