@@ -26,7 +26,6 @@ These endpoints support pagination and sorting. Read more about these features [
     banner: { type: "object", typeDescription: "Instance of `Media` model.", description: "The profile banner image." },
     avatar: { type: "object", typeDescription: "Instance of `Media` model.", description: "The profile avatar image." },
     credits: { type: "integer", description: "The number of credits the profile has." },
-    wins: { type: "Array<string>", description: "A string array of ids of the listings the profile has won." },
     _count: {
       type: "Object",
       typeDescription: "{\n  listings: integer;\n}",
@@ -43,7 +42,8 @@ Not all of the properties of a post are returned by default. You can use the fol
 
 <TypeTable
   type={{
-    _listings: { type: "boolean", default: "false", description: "Include listings." }
+    _listings: { type: "boolean", default: "false", description: "Include listings." },
+    _wins: { type: "boolean", default: "false", description: "Include wins." }
   }}
 />
 
@@ -62,8 +62,24 @@ Not all of the properties of a post are returned by default. You can use the fol
       "alt": "string"
     },
     "credits": 0,
-    "wins": ["string"],
     "listings": [
+      {
+        "id": "string",
+        "title": "string",
+        "description": "string",
+        "media": [
+          {
+            "url": "https://url.com/image.jpg",
+            "alt": "string"
+          }
+        ],
+        "tags": ["string"],
+        "created": "2020-01-01T00:00:00.000Z",
+        "updated": "2020-01-01T00:00:00.000Z",
+        "endsAt": "2020-01-01T00:00:00.000Z"
+      }
+    ],
+    "wins": [
       {
         "id": "string",
         "title": "string",
@@ -112,7 +128,6 @@ Retrieve all profiles.
         "alt": "string"
       },
       "credits": 0,
-      "wins": ["string"],
       "_count": {
         "listings": 0
       }
@@ -130,7 +145,6 @@ Retrieve all profiles.
         "alt": "string"
       },
       "credits": 0,
-      "wins": ["string"],
       "_count": {
         "listings": 0
       }
@@ -172,7 +186,6 @@ Retrieve a single profile by its id.
       "alt": "string"
     },
     "credits": 0,
-    "wins": ["string"],
     "_count": {
       "listings": 0
     }
@@ -221,7 +234,6 @@ You can send either or both of the properties in the request body.
       "alt": "string"
     },
     "credits": 0,
-    "wins": ["string"],
     "_count": {
       "listings": 0
     }
@@ -341,6 +353,69 @@ Retrieve all bids made by profile.
         }
       },
       "created": "2020-01-01T00:00:00.000Z"
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## All wins by profile
+
+<EndpointDetails path="/auction/profiles/<name>/wins" />
+
+Retrieve all listings won by profile.
+
+The response is the same as the [listings](./listings#all-listings) endpoint, and accepts the same optional query parameters and flags.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": "string",
+      "title": "string",
+      "description": "string",
+      "media": [
+        {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        }
+      ],
+      "tags": ["string"],
+      "created": "2020-01-01T00:00:00.000Z",
+      "updated": "2020-01-01T00:00:00.000Z",
+      "endsAt": "2020-01-01T00:00:00.000Z",
+      "_count": {
+        "bids": 0
+      }
+    },
+    {
+      "id": "string",
+      "title": "string",
+      "description": "string",
+      "media": [
+        {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        }
+      ],
+      "tags": ["string"],
+      "created": "2020-01-01T00:00:00.000Z",
+      "updated": "2020-01-01T00:00:00.000Z",
+      "endsAt": "2020-01-01T00:00:00.000Z",
+      "_count": {
+        "bids": 0
+      }
     }
     // ...
   ],
