@@ -28,7 +28,7 @@ These endpoints support pagination and sorting. Read more about these features [
     credits: { type: "integer", description: "The number of credits the profile has." },
     _count: {
       type: "Object",
-      typeDescription: "{\n  listings: integer;\n}",
+      typeDescription: "{\n  listings: integer;\n  wins: integer;\n}",
       description: "A JSON object containing the number of listings for this profile."
     }
   }}
@@ -97,7 +97,8 @@ Not all of the properties of a post are returned by default. You can use the fol
       }
     ],
     "_count": {
-      "listings": 0
+      "listings": 0,
+      "wins": 0
     }
   },
   "meta": {}
@@ -129,7 +130,8 @@ Retrieve all profiles.
       },
       "credits": 0,
       "_count": {
-        "listings": 0
+        "listings": 0,
+        "wins": 0
       }
     },
     {
@@ -146,7 +148,8 @@ Retrieve all profiles.
       },
       "credits": 0,
       "_count": {
-        "listings": 0
+        "listings": 0,
+        "wins": 0
       }
     }
     // ...
@@ -187,7 +190,8 @@ Retrieve a single profile by its id.
     },
     "credits": 0,
     "_count": {
-      "listings": 0
+      "listings": 0,
+      "wins": 0
     }
   },
   "meta": {}
@@ -235,7 +239,8 @@ You can send either or both of the properties in the request body.
     },
     "credits": 0,
     "_count": {
-      "listings": 0
+      "listings": 0,
+      "wins": 0
     }
   },
   "meta": {}
