@@ -115,7 +115,48 @@ describe("[POST] /holidaze/bookings", () => {
     expect(res.meta).toStrictEqual({})
   })
 
-  it("should throw 409 error if booking for same time period already exists", async () => {
+  it("should return 201 when successfully creating two bookings for same venue with same date but not exceeding maxGuests", async () => {
+    await server.inject({
+      url: "/holidaze/bookings",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        ...createData,
+        guests: 1
+      }
+    })
+
+    const response = await server.inject({
+      url: "/holidaze/bookings",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        ...createData,
+        guests: 1
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toEqual(201)
+    expect(res.data).toStrictEqual({
+      id: expect.any(String),
+      dateFrom: expect.any(String),
+      dateTo: expect.any(String),
+      guests: 1,
+      created: expect.any(String),
+      updated: expect.any(String)
+    })
+    expect(res.meta).toBeDefined()
+    expect(res.meta).toStrictEqual({})
+  })
+
+  it("should throw 409 error if booking for same time period already exists, and does exceed maxGuests", async () => {
     await server.inject({
       url: "/holidaze/bookings",
       method: "POST",
@@ -147,7 +188,31 @@ describe("[POST] /holidaze/bookings", () => {
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      message: "The selected dates overlap with an existing booking for this venue."
+      message:
+        "The selected dates and guests either overlap with an existing booking or exceed the maximum guests for this venue."
+    })
+  })
+
+  it("should throw 404 error if venue does not exist", async () => {
+    const response = await server.inject({
+      url: "/holidaze/bookings",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        ...createData,
+        venueId: "220c5e60-6558-4d64-b94d-a42e52baa93c" // random uuid
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toEqual(404)
+    expect(res.data).not.toBeDefined()
+    expect(res.meta).not.toBeDefined()
+    expect(res.errors[0]).toStrictEqual({
+      message: "No venue with this id"
     })
   })
 

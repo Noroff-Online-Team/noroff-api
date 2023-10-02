@@ -115,16 +115,6 @@ export async function createBookingHandler(
     const { name } = request.user as UserProfile
     const { _customer, _venue } = await queryFlagsSchema.parseAsync(request.query)
 
-    const hasOverlap = await checkForOverlappingBookings(
-      request.body.venueId,
-      request.body.dateFrom,
-      request.body.dateTo
-    )
-
-    if (hasOverlap) {
-      throw new Conflict("The selected dates overlap with an existing booking for this venue.")
-    }
-
     const includes: HolidazeBookingIncludes = {
       customer: Boolean(_customer),
       venue: Boolean(_venue)
@@ -134,6 +124,14 @@ export async function createBookingHandler(
 
     if (!venue.data) {
       throw new NotFound("No venue with this id")
+    }
+
+    const hasOverlap = await checkForOverlappingBookings(request.body)
+
+    if (hasOverlap) {
+      throw new Conflict(
+        "The selected dates and guests either overlap with an existing booking or exceed the maximum guests for this venue."
+      )
     }
 
     if (request.body.guests > venue.data.maxGuests) {
