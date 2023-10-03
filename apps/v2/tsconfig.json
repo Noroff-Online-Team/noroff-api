@@ -17,9 +17,6 @@
       "@/*": ["./*"]
     }
   },
-  "ts-node": {
-    "transpileOnly": true
-  },
   "include": ["src/**/*", "types"],
   "exclude": ["node_modules"]
 }

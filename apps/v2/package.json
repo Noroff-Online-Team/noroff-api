@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "tsx watch --clear-screen=false src/app.ts",
     "start": "node dist/src/app.js",
-    "build": "rimraf dist && tsc -p tsconfig.json && tscpaths -p tsconfig.json -s ./ -o ./dist",
+    "build": "rimraf dist && tsc && tscpaths -p tsconfig.json -s ./ -o ./dist",
+    "build:new": "tsx src/app.ts",
     "prebuild": "yarn prisma generate",
     "postinstall": "yarn prisma generate",
     "db:seed": "prisma db seed",
