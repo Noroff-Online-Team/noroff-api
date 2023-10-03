@@ -1,4 +1,4 @@
-# .github/workflows/v2_build_and_test.yaml
+# .github/workflows/v2_build_and_test.yml
 name: API v2 build and test
 
 on:
@@ -7,7 +7,7 @@ on:
       - main
       - v2
     paths:
-      - "apps/v2/**"
+      - apps/v2/**
   workflow_dispatch:
 
 jobs:
@@ -24,9 +24,9 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Build @noroff/api-utils
-        run: yarn build:api-utils
+        run: "yarn build:api-utils"
       - name: Build @noroff/api-v2
-        run: yarn build:v2
+        run: "yarn build:v2"
 
   test:
     name: Test
@@ -58,7 +58,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Build @noroff/api-utils
-        run: yarn build:api-utils
+        run: "yarn build:api-utils"
       - name: Run Prisma migrations
         run: yarn prisma migrate deploy
         working-directory: apps/v2
