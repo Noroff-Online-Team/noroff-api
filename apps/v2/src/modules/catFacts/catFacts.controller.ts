@@ -1,7 +1,6 @@
 import { CatFact } from "@prisma/v2-client"
 import { FastifyRequest } from "fastify"
-import { NotFound, BadRequest, InternalServerError } from "http-errors"
-import { ZodError } from "zod"
+import { NotFound, BadRequest } from "http-errors"
 import { catFactParamsSchema } from "./catFacts.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
 
@@ -33,11 +32,7 @@ export async function getCatFactsHandler(
 
     return catFacts
   } catch (error) {
-    if (error instanceof NotFound) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -58,15 +53,7 @@ export async function getCatFactHandler(
 
     return catFact
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (error instanceof NotFound) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -80,10 +67,6 @@ export async function getRandomCatFactHandler() {
 
     return catFact
   } catch (error) {
-    if (error instanceof NotFound) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }

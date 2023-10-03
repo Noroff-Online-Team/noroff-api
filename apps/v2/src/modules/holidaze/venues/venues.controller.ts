@@ -1,6 +1,6 @@
 import { UserProfile, HolidazeVenue } from "@prisma/v2-client"
 import { FastifyRequest, FastifyReply } from "fastify"
-import { BadRequest, NotFound, Forbidden, InternalServerError, isHttpError } from "http-errors"
+import { BadRequest, NotFound, Forbidden } from "http-errors"
 import {
   createVenueSchema,
   CreateVenueSchema,
@@ -14,7 +14,6 @@ import {
 import { getProfile } from "../profiles/profiles.service"
 import { getVenues, getVenue, createVenue, deleteVenue, updateVenue, searchVenues } from "./venues.service"
 import { mediaGuard } from "@noroff/api-utils"
-import { ZodError } from "zod"
 
 export interface HolidazeVenueIncludes {
   owner?: boolean
@@ -50,15 +49,7 @@ export async function getVenuesHandler(
 
     return venues
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -88,15 +79,7 @@ export async function getVenueHandler(
 
     return venue
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -140,15 +123,7 @@ export async function createVenueHandler(
 
     reply.code(201).send(venue)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -199,15 +174,7 @@ export async function updateVenueHandler(
 
     return updatedVenue
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -241,15 +208,7 @@ export async function deleteVenueHandler(
 
     reply.code(204)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -279,10 +238,6 @@ export async function searchVenuesHandler(
 
     return results
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }

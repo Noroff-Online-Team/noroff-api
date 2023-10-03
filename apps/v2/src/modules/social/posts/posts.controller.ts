@@ -1,7 +1,7 @@
 import { SocialPost, UserProfile } from "@prisma/v2-client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { NotFound, Forbidden, InternalServerError, BadRequest, isHttpError } from "http-errors"
+import { NotFound, Forbidden, BadRequest } from "http-errors"
 
 import {
   CreateCommentSchema,
@@ -25,7 +25,6 @@ import {
   getPostsOfFollowedUsers,
   searchPosts
 } from "./posts.service"
-import { ZodError } from "zod"
 
 export interface SocialPostIncludes {
   author?: boolean
@@ -65,15 +64,7 @@ export async function getPostsHandler(
 
     return posts
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -105,15 +96,7 @@ export async function getPostHandler(
 
     return post
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -148,15 +131,7 @@ export async function createPostHandler(
 
     reply.code(201).send(post)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -184,15 +159,7 @@ export async function deletePostHandler(
 
     reply.code(204)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -237,15 +204,7 @@ export async function updatePostHandler(
 
     return updatedPost
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -270,15 +229,7 @@ export async function createOrDeleteReactionHandler(
 
     return result
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -324,15 +275,7 @@ export async function createCommentHandler(
 
     reply.code(201).send(result)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong." + error)
+    throw error
   }
 }
 
@@ -368,15 +311,7 @@ export async function getPostsOfFollowedUsersHandler(
 
     return posts
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -408,10 +343,6 @@ export async function searchPostsHandler(
 
     return results
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    throw new InternalServerError("Something went wrong." + error)
+    throw error
   }
 }

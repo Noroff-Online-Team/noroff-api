@@ -1,7 +1,6 @@
 import { FastifyRequest } from "fastify"
 import { SquareEyesProduct } from "@prisma/v2-client"
-import { isHttpError, NotFound, BadRequest, InternalServerError } from "http-errors"
-import { ZodError } from "zod"
+import { NotFound, BadRequest } from "http-errors"
 import { squareEyesParamsSchema } from "./squareEyes.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
 
@@ -33,15 +32,7 @@ export async function getSquareEyesProductsHandler(
 
     return products
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -62,14 +53,6 @@ export async function getSquareEyesProductHandler(
 
     return product
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }

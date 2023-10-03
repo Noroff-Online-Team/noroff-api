@@ -3,7 +3,7 @@ import { FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
 import { searchQuerySchema, UpdateProfileSchema } from "./profiles.schema"
 import { SocialPostIncludes } from "../posts/posts.controller"
-import { isHttpError, NotFound, BadRequest, Forbidden, InternalServerError } from "http-errors"
+import { NotFound, BadRequest, Forbidden } from "http-errors"
 
 import {
   getProfiles,
@@ -16,7 +16,6 @@ import {
 } from "./profiles.service"
 import { checkIsUserFollowing } from "./profiles.utils"
 import { profilesQuerySchema, profileNameSchema, queryFlagsSchema, updateProfileSchema } from "./profiles.schema"
-import { ZodError } from "zod"
 
 export interface ProfileIncludes {
   followers?: boolean
@@ -59,15 +58,7 @@ export async function getProfilesHandler(
 
     return profiles
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -99,15 +90,7 @@ export async function getProfileHandler(
 
     return profile
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -143,15 +126,7 @@ export async function updateProfileHandler(
 
     return profile
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -184,15 +159,7 @@ export async function followProfileHandler(
 
     return profile
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -225,15 +192,7 @@ export async function unfollowProfileHandler(
 
     return profile
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -277,15 +236,7 @@ export async function getProfilePostsHandler(
 
     return posts
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -317,10 +268,6 @@ export async function searchProfilesHandler(
 
     return results
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    throw new InternalServerError("Something went wrong." + error)
+    throw error
   }
 }

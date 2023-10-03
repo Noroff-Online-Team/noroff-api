@@ -1,7 +1,6 @@
 import { FastifyRequest } from "fastify"
 import { GameHubProducts } from "@prisma/v2-client"
-import { NotFound, BadRequest, InternalServerError } from "http-errors"
-import { ZodError } from "zod"
+import { NotFound, BadRequest } from "http-errors"
 import { gameHubParamsSchema } from "./gameHub.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
 
@@ -33,11 +32,7 @@ export async function getGameHubProductsHandler(
 
     return products
   } catch (error) {
-    if (error instanceof NotFound) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -58,14 +53,6 @@ export async function getGameHubProductHandler(
 
     return product
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (error instanceof NotFound) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }

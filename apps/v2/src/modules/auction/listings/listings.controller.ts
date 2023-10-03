@@ -2,7 +2,7 @@ import { getProfile } from "./../profiles/profiles.service"
 import { AuctionBid, AuctionListing, UserProfile, Prisma } from "@prisma/v2-client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { NotFound, BadRequest, Forbidden, InternalServerError, isHttpError } from "http-errors"
+import { NotFound, BadRequest, Forbidden } from "http-errors"
 
 import {
   CreateListingSchema,
@@ -23,7 +23,6 @@ import {
   createListingBid,
   searchListings
 } from "./listings.service"
-import { ZodError } from "zod"
 
 export type ListingWithBids = Prisma.PromiseReturnType<typeof getListing> & {
   data: {
@@ -67,15 +66,7 @@ export async function getListingsHandler(
 
     return listings
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -105,15 +96,7 @@ export async function getListingHandler(
 
     return listing
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -147,15 +130,7 @@ export async function createListingHandler(
 
     reply.code(201).send(listing)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -200,15 +175,7 @@ export async function updateListingHandler(
 
     return updatedListing
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -236,15 +203,7 @@ export async function deleteListingHandler(
 
     reply.code(204)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -300,15 +259,7 @@ export async function createListingBidHandler(
 
     reply.code(201).send(updatedListing)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -338,10 +289,6 @@ export async function searchListingsHandler(
 
     return results
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }

@@ -10,8 +10,7 @@ import {
   createApiKeySchema
 } from "./auth.schema"
 import { createProfile, findProfileByEmail, findProfileByEmailOrName, createApiKey } from "./auth.service"
-import { BadRequest, InternalServerError, Unauthorized, isHttpError } from "http-errors"
-import { ZodError } from "zod"
+import { BadRequest, Unauthorized } from "http-errors"
 
 export async function registerProfileHandler(
   request: FastifyRequest<{
@@ -39,15 +38,7 @@ export async function registerProfileHandler(
 
     reply.code(201).send(profile)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -90,15 +81,7 @@ export async function loginHandler(
       }
     }
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -116,14 +99,6 @@ export async function createApiKeyHandler(
 
     reply.code(201).send(apiKey)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }

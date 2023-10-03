@@ -9,7 +9,7 @@ import {
   queryFlagsSchema,
   searchQuerySchema
 } from "./profiles.schema"
-import { NotFound, BadRequest, Forbidden, InternalServerError, isHttpError } from "http-errors"
+import { NotFound, BadRequest, Forbidden } from "http-errors"
 
 import {
   getProfiles,
@@ -22,7 +22,6 @@ import {
 } from "./profiles.service"
 
 import { AuctionListingIncludes } from "../listings/listings.controller"
-import { ZodError } from "zod"
 import { listingQuerySchema } from "../listings/listings.schema"
 
 export interface AuctionProfileIncludes {
@@ -58,15 +57,7 @@ export async function getProfilesHandler(
 
     return profiles
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -96,15 +87,7 @@ export async function getProfileHandler(
 
     return profile
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -140,15 +123,7 @@ export async function updateProfileHandler(
 
     return profile
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -191,15 +166,7 @@ export async function getProfileListingsHandler(
 
     return listings
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -228,15 +195,7 @@ export async function getProfileCreditsHandler(
       }
     }
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -275,15 +234,7 @@ export async function getProfileBidsHandler(
 
     return bids
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -324,15 +275,7 @@ export async function getProfileWinsHandler(
 
     return listings
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -362,10 +305,6 @@ export async function searchProfilesHandler(
 
     return results
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    throw new InternalServerError("Something went wrong." + error)
+    throw error
   }
 }

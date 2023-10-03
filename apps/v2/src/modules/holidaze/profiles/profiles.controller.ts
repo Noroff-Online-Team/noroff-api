@@ -9,7 +9,7 @@ import {
   updateProfileSchema,
   searchQuerySchema
 } from "./profiles.schema"
-import { NotFound, BadRequest, Forbidden, InternalServerError, isHttpError } from "http-errors"
+import { NotFound, BadRequest, Forbidden } from "http-errors"
 
 import {
   getProfiles,
@@ -21,7 +21,6 @@ import {
 } from "./profiles.service"
 import { HolidazeBookingIncludes } from "../bookings/bookings.controller"
 import { HolidazeVenueIncludes } from "../venues/venues.controller"
-import { ZodError } from "zod"
 
 export interface HolidazeProfileIncludes {
   venues?: boolean
@@ -57,15 +56,7 @@ export async function getProfilesHandler(
 
     return profiles
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -95,15 +86,7 @@ export async function getProfileHandler(
 
     return profile
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -139,15 +122,7 @@ export async function updateProfileHandler(
 
     return updatedProfile
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -187,15 +162,7 @@ export async function getProfileVenuesHandler(
 
     return venues
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -235,15 +202,7 @@ export async function getProfileBookingsHandler(
 
     return bookings
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -273,10 +232,6 @@ export async function searchProfilesHandler(
 
     return results
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    throw new InternalServerError("Something went wrong." + error)
+    throw error
   }
 }

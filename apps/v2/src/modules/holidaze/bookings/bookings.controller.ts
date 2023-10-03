@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { HolidazeBooking, UserProfile } from "@prisma/v2-client"
-import { BadRequest, NotFound, Forbidden, InternalServerError, Conflict, isHttpError } from "http-errors"
+import { BadRequest, NotFound, Forbidden, Conflict } from "http-errors"
 import { getBookings, getBooking, createBooking, deleteBooking, updateBooking } from "./booking.service"
 import {
   bookingIdSchema,
@@ -12,7 +12,6 @@ import {
   UpdateBookingSchema
 } from "./bookings.schema"
 import { getVenue } from "../venues/venues.service"
-import { ZodError } from "zod"
 
 import { checkForOverlappingBookings } from "./booking.utils"
 
@@ -50,15 +49,7 @@ export async function getBookingsHandler(
 
     return bookings
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -88,15 +79,7 @@ export async function getBookingHandler(
 
     return booking
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -150,15 +133,7 @@ export async function createBookingHandler(
 
     reply.code(201).send(booking)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -205,15 +180,7 @@ export async function updateBookingHandler(
 
     return updatedBooking
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
 
@@ -241,14 +208,6 @@ export async function deleteBookingHandler(
 
     reply.code(204)
   } catch (error) {
-    if (error instanceof ZodError) {
-      throw new BadRequest(error.message)
-    }
-
-    if (isHttpError(error)) {
-      throw error
-    }
-
-    throw new InternalServerError("Something went wrong.")
+    throw error
   }
 }
