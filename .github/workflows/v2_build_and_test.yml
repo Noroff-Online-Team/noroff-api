@@ -1,18 +1,35 @@
-# .github/workflows/v2-tests.yaml
-name: Noroff API tests
+# .github/workflows/v2_build_and_test.yaml
+name: API v2 build and test
 
 on:
   pull_request:
     branches:
       - main
-      - v2
+      - v2 # TODO: Remove once v2 is merged into main
     paths:
       - "apps/v2/**"
   workflow_dispatch:
 
 jobs:
-  test-v2:
-    name: Run tests
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install dependencies
+        run: yarn install
+      - name: Build @noroff/api-utils
+        run: yarn build:api-utils
+      - name: Build @noroff/api-v2
+        run: yarn build:v2
+
+  test:
+    name: Test
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -41,8 +58,7 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Build @noroff/api-utils
-        run: yarn build
-        working-directory: packages/api-utils
+        run: yarn build:api-utils
       - name: Run Prisma migrations
         run: yarn prisma migrate deploy
         working-directory: apps/v2
