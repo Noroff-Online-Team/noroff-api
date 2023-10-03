@@ -5,7 +5,7 @@ on:
   pull_request:
     branches:
       - main
-      - v2 # TODO: Remove once v2 is merged into main
+      - v2
     paths:
       - "apps/v2/**"
   workflow_dispatch:
