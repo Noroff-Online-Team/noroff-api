@@ -1,10 +1,5 @@
 import { z } from "zod"
 
-/**
- * Creates a response schema for a given data schema.
- * Defaults the meta property to empty object.
- * Pagination is not available nor make sense on PUT, POST, DELETE requests, so the returned meta object will be empty.
- */
 const metaSchema = z
   .object({
     isFirstPage: z.boolean().optional(),
@@ -17,9 +12,15 @@ const metaSchema = z
   })
   .default({})
 
+/**
+ * Creates a response schema for a given data schema.
+ * @param dataSchema The data schema to use for the response.
+ * @param emptyMeta Whether or not to include an empty meta object in the response. Defaults to false.
+ * @returns A response schema for a given data schema.
+ */
 export function createResponseSchema<T>(dataSchema: z.ZodType<T>) {
   return z.object({
-    data: z.array(dataSchema).or(dataSchema).or(z.object({})),
+    data: z.union([dataSchema, z.array(dataSchema), z.object({})]),
     meta: metaSchema
   })
 }
