@@ -722,6 +722,17 @@
     glob "^8.0.1"
     p-limit "^3.1.0"
 
+"@fastify/swagger-ui@^1.9.3":
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/@fastify/swagger-ui/-/swagger-ui-1.9.3.tgz#1ec03ea2595cb2e7d6de6ae7c949bebcff8370a5"
+  integrity sha512-YYqce4CydjDIEry6Zo4JLjVPe5rjS8iGnk3fHiIQnth9sFSLeyG0U1DCH+IyYmLddNDg1uWJOuErlVqnu/jI3w==
+  dependencies:
+    "@fastify/static" "^6.0.0"
+    fastify-plugin "^4.0.0"
+    openapi-types "^12.0.2"
+    rfdc "^1.3.0"
+    yaml "^2.2.2"
+
 "@fastify/swagger@^7.5.1":
   version "7.6.1"
   resolved "https://registry.yarnpkg.com/@fastify/swagger/-/swagger-7.6.1.tgz#5b8a790378cc13c040975e0f300d710a20317132"
@@ -733,6 +744,17 @@
     openapi-types "^12.0.0"
     rfdc "^1.3.0"
     yaml "^2.1.1"
+
+"@fastify/swagger@^8.10.1":
+  version "8.10.1"
+  resolved "https://registry.yarnpkg.com/@fastify/swagger/-/swagger-8.10.1.tgz#c3421f960b320baa50b470b061510e98fdb62e67"
+  integrity sha512-NZ4PyppZWEd4j8qPt4AKGhuMm7dALe2IntmI2NrdlnPno+rFRyQJHw3XHdziN7yirYGhCGM+vByItWEnPHLu4w==
+  dependencies:
+    fastify-plugin "^4.0.0"
+    json-schema-resolver "^2.0.0"
+    openapi-types "^12.0.0"
+    rfdc "^1.3.0"
+    yaml "^2.2.2"
 
 "@floating-ui/core@^1.4.2":
   version "1.5.0"
@@ -6412,7 +6434,7 @@ oo-ascii-tree@^1.84.0:
   resolved "https://registry.yarnpkg.com/oo-ascii-tree/-/oo-ascii-tree-1.88.0.tgz#3ed84cdcaab9e5b7970fcfc2d086c2c069db65b7"
   integrity sha512-A7m3z7XlUD3DnXSYxWmAdKQTIY6+1JzWS0lhaqgPGhj6g7a/odCsV1ctaRnjJljCB3zQBrbp2QHdYTUsD9AXcQ==
 
-openapi-types@^12.0.0:
+openapi-types@^12.0.0, openapi-types@^12.0.2:
   version "12.1.3"
   resolved "https://registry.yarnpkg.com/openapi-types/-/openapi-types-12.1.3.tgz#471995eb26c4b97b7bd356aacf7b91b73e777dd3"
   integrity sha512-N4YtSYJqghVu4iek2ZUvcN/0aqH1kRDuNqzcycDxhOUpg7GdvLa2F3DgS6yBNhInhv2r/6I0Flkn7CqL8+nIcw==
@@ -8284,7 +8306,7 @@ yaml@2.3.1:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.3.1.tgz#02fe0975d23cd441242aa7204e09fc28ac2ac33b"
   integrity sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ==
 
-yaml@^2.1.1, yaml@^2.3.1:
+yaml@^2.1.1, yaml@^2.2.2, yaml@^2.3.1:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.3.2.tgz#f522db4313c671a0ca963a75670f1c12ea909144"
   integrity sha512-N/lyzTPaJasoDmfV7YTrYCI0G/3ivm/9wdG0aHuheKowWQwGTsK0Eoiw6utmzAnI6pkJa0DUVygvp3spqqEKXg==
