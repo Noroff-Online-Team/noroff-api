@@ -14,11 +14,11 @@
   },
   "dependencies": {
     "http-errors": "^2.0.0",
-    "typescript": "^4.8.2",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/http-errors": "^1.8.2",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "typescript": "^5.2.2"
   }
 }
