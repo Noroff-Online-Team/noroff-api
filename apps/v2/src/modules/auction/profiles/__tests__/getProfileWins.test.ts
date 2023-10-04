@@ -78,7 +78,7 @@ describe("[GET] /auction/profiles/:name/wins", () => {
       pageCount: 1,
       totalCount: 1
     })
-  }, 10000)
+  })
 
   it("should return wins with bids and seller profile", async () => {
     // Wait for auction to end
@@ -135,7 +135,7 @@ describe("[GET] /auction/profiles/:name/wins", () => {
       pageCount: 1,
       totalCount: 1
     })
-  }, 10000)
+  })
 
   it("should throw 404 error when attempting to access profile that does not exist", async () => {
     const response = await server.inject({
