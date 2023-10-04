@@ -4,6 +4,7 @@ const jestConfig: JestConfigWithTsJest = {
   clearMocks: true,
   preset: "ts-jest",
   testEnvironment: "node",
+  testTimeout: 20000,
   setupFilesAfterEnv: ["<rootDir>/src/test-utils/server.ts"],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1"

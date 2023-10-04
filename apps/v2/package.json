@@ -39,7 +39,8 @@
     "prisma-extension-pagination": "^0.5.0",
     "qs": "^6.11.2",
     "statuses": "^2.0.1",
-    "zod": "^3.22.3",
+    "ts-node": "^10.9.1",
+    "zod": "^3.21.4",
     "zod-to-json-schema": "^3.21.4"
   },
   "devDependencies": {
@@ -53,10 +54,9 @@
     "prisma": "^5.2.0",
     "rimraf": "^3.0.2",
     "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.1",
     "tscpaths": "^0.0.9",
     "tsx": "^3.12.10",
-    "typescript": "^4.8.2"
+    "typescript": "^5.2.2"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
