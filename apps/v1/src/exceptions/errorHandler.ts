@@ -22,6 +22,18 @@ export default async function (error: FastifyError, request: FastifyRequest, rep
     errors = parsedErrors
   }
 
+  if (error.statusCode === 429) {
+    reply.code(statusCode).send({
+      errors: [
+        {
+          message: "Too many requests, please try again later"
+        }
+      ],
+      status: statuses(statusCode),
+      statusCode
+    })
+  }
+
   if (error.code === "FST_JWT_NO_AUTHORIZATION_IN_HEADER") {
     reply.code(statusCode).send({
       errors: [

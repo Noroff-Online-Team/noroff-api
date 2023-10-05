@@ -18,7 +18,7 @@
     "@fastify/autoload": "^5.7.1",
     "@fastify/cors": "^8.4.0",
     "@fastify/jwt": "^7.2.1",
-    "@fastify/rate-limit": "^7.4.0",
+    "@fastify/rate-limit": "^8.0.3",
     "@fastify/swagger": "^8.11.0",
     "@fastify/swagger-ui": "^1.10.0",
     "@noroff/api-utils": "*",
