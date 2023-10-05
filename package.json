@@ -31,11 +31,11 @@
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
-    "prettier": "^2.7.1",
+    "prettier": "^3.0.3",
     "turbo": "^1.10.14"
   },
   "lint-staged": {
-    "*": "prettier --ignore-unknown --write",
+    "*": "prettier --ignore-unknown --write .",
     "*.ts": "eslint --cache --fix"
   },
   "packageManager": "yarn@1.22.19"

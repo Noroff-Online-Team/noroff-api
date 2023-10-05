@@ -69,9 +69,12 @@ export const createListingSchema = z.object({
     .trim()
     .nullish(),
   endsAt: z
-    .preprocess(arg => {
-      if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
-    }, z.date({ required_error: "endsAt is required" }))
+    .preprocess(
+      arg => {
+        if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
+      },
+      z.date({ required_error: "endsAt is required" })
+    )
     .refine(
       date => {
         const today = new Date()

@@ -69,12 +69,18 @@ export const bookingsQuerySchema = z.object({
 })
 
 export const createBookingSchema = z.object({
-  dateFrom: z.preprocess(arg => {
-    if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
-  }, z.date({ required_error: "dateFrom is required" })),
-  dateTo: z.preprocess(arg => {
-    if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
-  }, z.date({ required_error: "dateTo is required" })),
+  dateFrom: z.preprocess(
+    arg => {
+      if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
+    },
+    z.date({ required_error: "dateFrom is required" })
+  ),
+  dateTo: z.preprocess(
+    arg => {
+      if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
+    },
+    z.date({ required_error: "dateTo is required" })
+  ),
   guests: z
     .number({
       invalid_type_error: "Guests must be a number"
