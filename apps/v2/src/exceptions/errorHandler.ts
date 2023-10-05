@@ -49,6 +49,16 @@ const jwtErrorHandler: ErrorHandlerStrategy = error => {
   return null
 }
 
+const rateLimitErrorHandler: ErrorHandlerStrategy = error => {
+  if (error.statusCode === 429) {
+    return {
+      statusCode: error.statusCode ?? 429,
+      errors: [{ message: "Too many requests, please try again later" }]
+    }
+  }
+  return null
+}
+
 // We can add additional handling for the different Prisma error codes.
 // https://www.prisma.io/docs/reference/api-reference/error-reference
 const prismaErrorHandler: ErrorHandlerStrategy = error => {
@@ -103,7 +113,13 @@ const prismaErrorHandler: ErrorHandlerStrategy = error => {
   return null
 }
 
-const errorHandlers: ErrorHandlerStrategy[] = [zodErrorHandler, httpErrorHandler, jwtErrorHandler, prismaErrorHandler]
+const errorHandlers: ErrorHandlerStrategy[] = [
+  zodErrorHandler,
+  httpErrorHandler,
+  jwtErrorHandler,
+  rateLimitErrorHandler,
+  prismaErrorHandler
+]
 
 export default async function (error: FastifyError, request: FastifyRequest, reply: FastifyReply): Promise<void> {
   let handledError = null
