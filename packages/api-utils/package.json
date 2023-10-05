@@ -17,8 +17,8 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@types/http-errors": "^1.8.2",
-    "rimraf": "^3.0.2",
+    "@types/http-errors": "^2.0.2",
+    "rimraf": "^5.0.5",
     "typescript": "^5.2.2"
   }
 }
