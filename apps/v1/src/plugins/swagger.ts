@@ -5,9 +5,6 @@ import { version } from "../../package.json"
 
 export default fp(async fastify => {
   fastify.register(swagger, {
-    routePrefix: "/docs",
-    exposeRoute: true,
-    staticCSP: true,
     swagger: {
       info: {
         title: "Noroff API",
