@@ -27,7 +27,6 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "contentlayer": "^0.3.4",
-    "katex": "^0.16.8",
     "lucide-react": "^0.279.0",
     "next": "^13.5.2",
     "next-contentlayer": "^0.3.4",
