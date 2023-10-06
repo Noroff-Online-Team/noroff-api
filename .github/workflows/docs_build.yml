@@ -23,5 +23,5 @@ jobs:
           node-version: 18.x
       - name: Install dependencies
         run: yarn install
-      - name: Build @noroff/api-v1
+      - name: Build @noroff/api-docs
         run: "yarn build:docs"
