@@ -3,7 +3,6 @@ import { Nav } from "@/components/nav"
 import { Inter } from "next/font/google"
 import clsx from "clsx"
 import "next-docs-ui/style.css"
-import "katex/dist/katex.min.css"
 import "./global.css"
 import { base_url } from "@/utils/metadata"
 import { Provider } from "./provider"
@@ -14,7 +13,10 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s | Noroff API Documentation",
       default: "Noroff API Documentation"
     },
-    themeColor: "#030711",
+    themeColor: [
+      { media: "(prefers-color-scheme: light)", color: "white" },
+      { media: "(prefers-color-scheme: dark)", color: "black" }
+    ],
     description: "Noroff API Documentation",
     metadataBase: base_url
   }
