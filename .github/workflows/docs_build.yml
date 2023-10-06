@@ -2,6 +2,12 @@
 name: API docs build and test
 
 on:
+  push:
+    branches:
+      - main
+      - v2
+    paths:
+      - apps/docs/**
   pull_request:
     branches:
       - main
