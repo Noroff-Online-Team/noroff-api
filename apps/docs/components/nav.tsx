@@ -12,7 +12,7 @@ import { NoroffLogo } from "./noroff-logo"
 const item = cva("px-2 py-1 rounded-md transition-colors hover:text-accent-foreground", {
   variants: {
     active: {
-      true: "bg-accent text-accent-foreground"
+      true: "bg-border text-foreground dark:bg-accent dark:text-accent-foreground"
     }
   }
 })

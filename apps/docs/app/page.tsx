@@ -19,7 +19,7 @@ export default function HomePage() {
         <div className="mt-14 grid grid-cols-1 max-w-4xl gap-8 animate-in fade-in slide-in-from-bottom-10 duration-1000 md:grid-cols-2">
           <Link href="/docs/v2" className="group relative overflow-hidden rounded-xl p-px z-[2]">
             <i className="absolute inset-0 opacity-0 transition-opacity z-[-1] animated-border group-hover:opacity-100" />
-            <div className="absolute inset-px bg-background bg-gradient-radial from-blue-400/20 to-blue-400/0 rounded-[inherit] z-[-1]" />
+            <div className="absolute inset-px bg-background bg-gradient-radial rounded-[inherit] from-purple-400/20 to-purple-400/0 z-[-1]" />
             <div className="flex flex-col items-center rounded-[inherit] h-full p-6 border sm:p-12">
               <div className="border p-3 bg-gradient-to-b from-blue-400/30 border-blue-500/50 shadow-xl shadow-background/50 mb-6 rounded-xl">
                 <Tally2Icon className="h-9 w-9 text-blue-400 dark:text-cyan-200" />
@@ -31,7 +31,7 @@ export default function HomePage() {
 
           <Link href="/docs/v1" className="group relative overflow-hidden p-px rounded-xl z-[2]">
             <i className="absolute inset-0 opacity-0 transition-opacity z-[-1] animated-border group-hover:opacity-100" />
-            <div className="absolute inset-px bg-background bg-gradient-radial rounded-[inherit] from-purple-400/20 to-purple-400/0 z-[-1]" />
+            <div className="absolute inset-px bg-background bg-gradient-radial rounded-[inherit] from-blue-400/20 to-blue-400/0 z-[-1]" />
             <div className="flex flex-col items-center rounded-[inherit] h-full z-[2] p-6 border sm:p-12">
               <div className="border p-3 bg-gradient-to-b from-purple-400/10 border-foreground/20 shadow-xl shadow-background/50 mb-6 rounded-xl">
                 <Tally1Icon className="h-9 w-9 text-purple-400 dark:text-purple-200" />

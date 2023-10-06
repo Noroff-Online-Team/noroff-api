@@ -10,12 +10,7 @@ export function Provider({ children }: { children: ReactNode }) {
   return (
     <RootProvider
       search={{
-        SearchDialog,
-        links: [
-          ["Holidaze", "/docs/v2/holidaze"],
-          ["Social", "/docs/v2/social"],
-          ["Auction House", "/docs/v2/auction-house"]
-        ]
+        SearchDialog
       }}
     >
       {children}

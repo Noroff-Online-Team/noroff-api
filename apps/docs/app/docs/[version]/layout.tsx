@@ -1,4 +1,3 @@
-import { cn } from "@/utils/cn"
 import { getTree } from "@/utils/source"
 import { Tally1Icon, Tally2Icon } from "lucide-react"
 import { DocsLayout } from "next-docs-ui/layout"
@@ -11,12 +10,7 @@ export default function Layout({ params, children }: { params: { version: string
     params.version === "v1" ? [Tally1Icon, "Noroff API", "Documentation"] : [Tally2Icon, "Noroff API", "Documentation"]
 
   return (
-    <main
-      className={cn(
-        params.version === "v1" && "[--primary:213_94%_68%]",
-        params.version === "v2" && "[--primary:270_95%_75%]"
-      )}
-    >
+    <main className="[--primary:213_94%_68%]">
       <div id="docs-gradient" className="absolute right-0 top-0 overflow-hidden z-[-1] sm:right-[20vw]">
         <Image
           alt=""
