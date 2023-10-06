@@ -1,0 +1,35 @@
+# .github/workflows/v1_build.yml
+name: API v1 build and test
+
+on:
+  push:
+    branches:
+      - main
+      - v2
+    paths:
+      - apps/v1/**
+  pull_request:
+    branches:
+      - main
+      - v2
+    paths:
+      - apps/v1/**
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install dependencies
+        run: yarn install
+      - name: Build @noroff/api-utils
+        run: "yarn build:api-utils"
+      - name: Build @noroff/api-v1
+        run: "yarn build:v1"
