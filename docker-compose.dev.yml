@@ -1,0 +1,93 @@
+version: "3.9"
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: no
+    ports:
+      - 9090:9090
+    volumes:
+      - prometheus_storage:/prometheus
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: no
+    ports:
+      - 9091:3000
+    volumes:
+      - grafana_storage:/var/lib/grafana
+
+  postgres:
+    image: postgres:16
+    container_name: api-db
+    restart: no
+    environment:
+      POSTGRES_USER: ${DC_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${DC_POSTGRES_PASSWORD}
+      POSTGRES_MULTIPLE_DATABASES: apiv1, apiv2
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - ./docker/multiple-dbs.sh:/docker-entrypoint-initdb.d/multiple-dbs.sh
+      - postgres_storage:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  api-v1:
+    container_name: api-v1
+    restart: no
+    build:
+      context: .
+      dockerfile: ./apps/v1/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - 3001:3000
+    environment:
+      DATABASE_URL: ${DC_POSTGRES_URI}/apiv1
+      JWT_SECRET: ${DC_JWT_SECRET}
+      PORT: 3000
+
+  api-v2:
+    container_name: api-v2
+    restart: no
+    build:
+      context: .
+      dockerfile: ./apps/v2/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: ${DC_POSTGRES_URI}/apiv2
+      JWT_SECRET: ${DC_JWT_SECRET}
+      PORT: 3000
+
+  docs:
+    container_name: docs
+    restart: no
+    build:
+      context: .
+      dockerfile: ./apps/docs/Dockerfile
+    ports:
+      - 3002:3000
+    environment:
+      PORT: 3000
+
+volumes:
+  prometheus_storage:
+    driver: local
+  grafana_storage:
+    driver: local
+  postgres_storage:
+    driver: local
