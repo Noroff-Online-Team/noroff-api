@@ -9,9 +9,11 @@ services:
       - 9090:9090
     volumes:
       - prometheus_storage:/prometheus
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
+    networks:
+      - noroff
 
   grafana:
     image: grafana/grafana
@@ -21,6 +23,22 @@ services:
       - 9091:3000
     volumes:
       - grafana_storage:/var/lib/grafana
+    depends_on:
+      - loki
+    networks:
+      - noroff
+
+  loki:
+    image: grafana/loki
+    container_name: loki
+    restart: no
+    ports:
+      - 3100:3100
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - loki_storage:/data
+    networks:
+      - noroff
 
   postgres:
     image: postgres:16
@@ -40,6 +58,8 @@ services:
       - postgres_storage:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    networks:
+      - noroff
 
   api-v1:
     container_name: api-v1
@@ -56,6 +76,8 @@ services:
       DATABASE_URL: ${DC_POSTGRES_URI}/apiv1
       JWT_SECRET: ${DC_JWT_SECRET}
       PORT: 3000
+    networks:
+      - noroff
 
   api-v2:
     container_name: api-v2
@@ -72,6 +94,8 @@ services:
       DATABASE_URL: ${DC_POSTGRES_URI}/apiv2
       JWT_SECRET: ${DC_JWT_SECRET}
       PORT: 3000
+    networks:
+      - noroff
 
   docs:
     container_name: docs
@@ -83,11 +107,14 @@ services:
       - 3002:3000
     environment:
       PORT: 3000
+    networks:
+      - noroff
 
 volumes:
   prometheus_storage:
-    driver: local
   grafana_storage:
-    driver: local
   postgres_storage:
-    driver: local
+  loki_storage:
+
+networks:
+  noroff:
