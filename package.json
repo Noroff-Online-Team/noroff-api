@@ -1,58 +1,42 @@
 {
   "name": "noroff-api",
-  "description": "Noroff API server",
   "version": "1.0.0",
   "private": true,
+  "author": "Noroff School of Technology and Digital Media <https://noroff.no>",
   "license": "UNLICENSED",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "tsnd --respawn --transpile-only --exit-child src/app.ts",
-    "start": "node dist/src/app.js",
-    "build": "rimraf dist && tsc -p tsconfig.json && npm run copy-images",
-    "prebuild": "prisma generate",
-    "copy-images": "copyfiles -u 1 \"src/public/**/*\" dist/src",
+    "dev": "turbo dev --parallel",
+    "build:v1": "turbo build --filter=v1...",
+    "build:v2": "turbo build --filter=v2...",
+    "build:docs": "turbo build --filter=docs...",
+    "build:api-utils": "turbo build --filter=@noroff/api-utils...",
+    "build": "turbo build",
+    "start:v1": "yarn --cwd apps/v1 start",
+    "start:v2": "yarn --cwd apps/v2 start",
+    "start:docs": "yarn --cwd apps/docs start",
+    "start": "concurrently \"yarn start:v1\" \"yarn start:v2\" \"yarn start:docs\"",
     "prepare": "husky install"
   },
-  "dependencies": {
-    "@fastify/autoload": "^5.7.1",
-    "@fastify/cors": "^8.1.0",
-    "@fastify/jwt": "^6.3.2",
-    "@fastify/rate-limit": "^7.4.0",
-    "@fastify/static": "^6.5.0",
-    "@fastify/swagger": "^7.5.1",
-    "@prisma/client": "^4.3.1",
-    "axios": "^0.27.2",
-    "fastify": "^4.8.1",
-    "fastify-plugin": "^4.5.0",
-    "fastify-type-provider-zod": "^1.1.7",
-    "http-errors": "^2.0.0",
-    "node-schedule": "^2.1.0",
-    "statuses": "^2.0.1",
-    "zod": "^3.19.0",
-    "zod-to-json-schema": "^3.18.1"
-  },
   "devDependencies": {
-    "@types/http-errors": "^1.8.2",
-    "@types/node": "^18.11.9",
-    "@types/node-schedule": "^2.1.0",
-    "@types/statuses": "^2.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.36.2",
-    "@typescript-eslint/parser": "^5.36.2",
-    "copyfiles": "^2.4.1",
-    "eslint": "^8.23.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "husky": ">=6",
-    "lint-staged": ">=10",
-    "prettier": "^2.7.1",
-    "prisma": "^4.3.1",
-    "rimraf": "^3.0.2",
-    "ts-node-dev": "^2.0.0",
-    "typescript": "^4.8.2"
+    "@types/node": "^20.6.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.4",
+    "@typescript-eslint/parser": "^6.7.4",
+    "concurrently": "^8.2.1",
+    "eslint": "^8.50.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
+    "prettier": "^3.0.3",
+    "turbo": "^1.10.14"
   },
   "lint-staged": {
-    "./src/**/*.ts": [
-      "prettier --write",
-      "eslint --cache --fix"
-    ]
-  }
+    "*": "prettier --ignore-unknown --write .",
+    "*.ts": "eslint --cache --fix"
+  },
+  "packageManager": "yarn@1.22.19"
 }

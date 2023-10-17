@@ -131,3 +131,9 @@ dist
 
 # Mac OS X
 .DS_Store
+
+# Turborepo
+.turbo
+
+# Contentlayer
+.contentlayer

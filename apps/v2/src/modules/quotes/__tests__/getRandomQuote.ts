@@ -1,0 +1,66 @@
+import { server, getAuthCredentials } from "@/test-utils"
+import { db } from "@/utils"
+
+let BEARER_TOKEN = ""
+let API_KEY = ""
+
+beforeEach(async () => {
+  const { bearerToken, apiKey } = await getAuthCredentials()
+
+  BEARER_TOKEN = bearerToken
+  API_KEY = apiKey
+
+  await db.$executeRaw`ALTER SEQUENCE "Quote_id_seq" RESTART WITH 1;`
+  await db.quote.createMany({
+    data: [
+      {
+        content: "The Superior Man is aware of Righteousness, the inferior man is aware of advantage.",
+        author: "Confucius",
+        tags: ["famous-quotes"],
+        authorId: "ropvZKOXYhLr",
+        authorSlug: "confucius",
+        length: 83
+      },
+      {
+        content:
+          "America's freedom of religion, and freedom from religion, offers every wisdom tradition an opportunity to address our soul-deep needs: Christianity, Judaism, Islam, Buddhism, Hinduism, secular humanism, agnosticism and atheism among others.",
+        author: "Parker Palmer",
+        tags: ["wisdom"],
+        authorId: "XPDojD6THK",
+        authorSlug: "parker-palmer",
+        length: 240
+      }
+    ]
+  })
+})
+
+afterEach(async () => {
+  const quotes = db.quote.deleteMany()
+  const apiKey = db.apiKey.deleteMany()
+  const users = db.userProfile.deleteMany()
+
+  await db.$transaction([quotes, apiKey, users])
+  await db.$disconnect()
+})
+
+describe("[GET] /quotes/random", () => {
+  it("should return random quote", async () => {
+    const response = await server.inject({
+      url: "/quotes/random",
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(200)
+    expect(res.data).toBeDefined()
+    expect(res.data.id).toBeDefined()
+    expect(res.data.content).toBeDefined()
+    expect(res.data.author).toBeDefined()
+    expect(res.meta).toBeDefined()
+    expect(res.meta).toStrictEqual({})
+  })
+})

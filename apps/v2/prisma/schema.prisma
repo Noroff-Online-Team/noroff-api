@@ -1,0 +1,330 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma/v2-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Basic
+model Book {
+  id          Int    @id @default(autoincrement())
+  title       String
+  author      String
+  genre       String
+  description String
+  isbn        String @unique
+  image       Media?
+  published   String
+  publisher   String
+}
+
+model OldGame {
+  id          Int      @id @default(autoincrement())
+  slug        String
+  name        String
+  description String
+  released    String
+  image       Media?
+  genre       String[]
+}
+
+model NbaTeam {
+  id           Int    @id @default(autoincrement())
+  abbreviation String
+  city         String
+  conference   String
+  division     String
+  full_name    String
+  name         String
+}
+
+model Joke {
+  id        Int    @id @default(autoincrement())
+  type      String
+  setup     String
+  punchline String
+}
+
+model CatFact {
+  id   Int    @id @default(autoincrement())
+  text String
+}
+
+model Quote {
+  id         Int      @id @default(autoincrement())
+  content    String
+  author     String
+  tags       String[]
+  authorId   String
+  authorSlug String
+  length     Int
+}
+
+model OnlineShopProduct {
+  id              String             @id @default(uuid())
+  title           String
+  description     String
+  price           Float
+  discountedPrice Float
+  image           Media?
+  rating          Float
+  reviews         OnlineShopReview[]
+  tags            String[]
+}
+
+model OnlineShopReview {
+  id          String            @id @default(uuid())
+  username    String
+  rating      Float
+  description String
+  productId   String
+  product     OnlineShopProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+// E-commerce
+model RainyDaysProduct {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  gender          String
+  sizes           String[]
+  baseColor       String
+  price           Float
+  discountedPrice Float
+  onSale          Boolean
+  image           Media?
+  tags            String[]
+  favorite        Boolean
+}
+
+model GameHubProducts {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  genre           String
+  released        String
+  ageRating       String
+  price           Float
+  discountedPrice Float
+  onSale          Boolean
+  image           Media?
+  tags            String[]
+  favorite        Boolean
+}
+
+model SquareEyesProduct {
+  id              String   @id @default(uuid())
+  title           String
+  description     String
+  genre           String
+  rating          String
+  released        String
+  price           Float
+  discountedPrice Float
+  onSale          Boolean
+  image           Media?
+  tags            String[]
+  favorite        Boolean
+}
+
+// Media
+model Media {
+  id                  String             @id @default(uuid())
+  url                 String
+  alt                 String?
+  // Relations
+  socialPost          SocialPost?        @relation(fields: [socialPostId], references: [id], onDelete: Cascade)
+  socialPostId        Int?               @unique
+  auctionListing      AuctionListing?    @relation(fields: [auctionListingId], references: [id], onDelete: Cascade)
+  auctionListingId    String?
+  holidazeVenue       HolidazeVenue?     @relation(fields: [holidazeVenueId], references: [id], onDelete: Cascade)
+  holidazeVenueId     String?
+  userAvatar          UserProfile?       @relation("AvatarMedia", fields: [userAvatarId], references: [id], onDelete: Cascade)
+  userAvatarId        Int?               @unique
+  userBanner          UserProfile?       @relation("BannerMedia", fields: [userBannerId], references: [id], onDelete: Cascade)
+  userBannerId        Int?               @unique
+  book                Book?              @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  bookId              Int?               @unique
+  oldGame             OldGame?           @relation(fields: [oldGameId], references: [id], onDelete: Cascade)
+  oldGameId           Int?               @unique
+  onlineShopProduct   OnlineShopProduct? @relation(fields: [onlineShopProductId], references: [id], onDelete: Cascade)
+  onlineShopProductId String?            @unique
+  rainyDaysProduct    RainyDaysProduct?  @relation(fields: [rainyDaysProductId], references: [id], onDelete: Cascade)
+  rainyDaysProductId  String?            @unique
+  gameHubProduct      GameHubProducts?   @relation(fields: [gameHubProductId], references: [id], onDelete: Cascade)
+  gameHubProductId    String?            @unique
+  squareEyesProduct   SquareEyesProduct? @relation(fields: [squareEyesProductId], references: [id], onDelete: Cascade)
+  squareEyesProductId String?            @unique
+}
+
+// User API Key
+enum ApiKeyStatus {
+  ACTIVE
+  REVOKED
+}
+
+model ApiKey {
+  id        Int          @id @default(autoincrement())
+  name      String?      @default("API Key")
+  key       String       @unique @default(uuid())
+  revokedAt DateTime?
+  status    ApiKeyStatus @default(ACTIVE)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  userId    Int
+  user      UserProfile  @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// User Profile
+model UserProfile {
+  id           Int                  @id @default(autoincrement())
+  name         String               @unique
+  email        String               @unique
+  avatar       Media?               @relation("AvatarMedia")
+  banner       Media?               @relation("BannerMedia")
+  bio          String?
+  password     String
+  salt         String
+  created      DateTime             @default(now())
+  updated      DateTime             @updatedAt
+  // Social
+  posts        SocialPost[]
+  comments     SocialPostComment[]
+  reactions    SocialPostReaction[]
+  followers    UserProfile[]        @relation("Follows")
+  following    UserProfile[]        @relation("Follows")
+  // Auction House
+  credits      Int                  @default(1000)
+  listings     AuctionListing[]     @relation("Listings")
+  bids         AuctionBid[]
+  wins         AuctionListing[]     @relation("Wins")
+  // Holidaze
+  venueManager Boolean              @default(false)
+  venues       HolidazeVenue[]
+  bookings     HolidazeBooking[]
+  apiKeys      ApiKey[]
+}
+
+// Social
+model SocialPost {
+  id        Int                  @id @default(autoincrement())
+  title     String
+  body      String?
+  author    UserProfile          @relation(fields: [owner], references: [name], onDelete: Cascade)
+  tags      String[]
+  media     Media?
+  owner     String
+  created   DateTime             @default(now())
+  updated   DateTime             @updatedAt
+  reactions SocialPostReaction[]
+  comments  SocialPostComment[]
+  mediaId   String?
+}
+
+model SocialPostReaction {
+  symbol  String
+  count   Int         @default(1)
+  post    SocialPost  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId  Int
+  reactor UserProfile @relation(fields: [owner], references: [name], onDelete: Cascade)
+  owner   String
+
+  @@id([postId, symbol, owner])
+}
+
+model SocialPostComment {
+  id        Int                 @id @default(autoincrement())
+  post      SocialPost          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  body      String
+  author    UserProfile         @relation(fields: [owner], references: [name], onDelete: Cascade)
+  owner     String
+  created   DateTime            @default(now())
+  replyTo   SocialPostComment?  @relation("Replies", fields: [replyToId], references: [id])
+  replies   SocialPostComment[] @relation("Replies")
+  replyToId Int?
+}
+
+// Auction House
+model AuctionListing {
+  id          String       @id @default(uuid())
+  title       String
+  description String?
+  media       Media[]
+  tags        String[]
+  created     DateTime     @default(now())
+  updated     DateTime     @updatedAt
+  endsAt      DateTime
+  seller      UserProfile  @relation("Listings", fields: [sellerName], references: [name], onDelete: Cascade)
+  sellerName  String
+  winner      UserProfile? @relation("Wins", fields: [winnerName], references: [name], onDelete: Cascade)
+  winnerName  String?
+  bids        AuctionBid[]
+}
+
+model AuctionBid {
+  id         String         @id @default(uuid())
+  amount     Int
+  bidder     UserProfile    @relation(fields: [bidderName], references: [name], onDelete: Cascade)
+  bidderName String
+  listing    AuctionListing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  listingId  String
+  created    DateTime       @default(now())
+}
+
+// Holidaze
+model HolidazeVenue {
+  id          String                @id @default(uuid())
+  name        String
+  description String
+  media       Media[]
+  price       Float
+  maxGuests   Int
+  rating      Float                 @default(0)
+  created     DateTime              @default(now())
+  updated     DateTime              @updatedAt
+  meta        HolidazeVenueMeta     @relation(fields: [metaId], references: [id], onDelete: Cascade)
+  metaId      String                @unique
+  owner       UserProfile           @relation(fields: [ownerName], references: [name], onDelete: Cascade)
+  ownerName   String
+  location    HolidazeVenueLocation @relation(fields: [locationId], references: [id], onDelete: Cascade)
+  locationId  String                @unique
+  bookings    HolidazeBooking[]
+}
+
+model HolidazeVenueMeta {
+  id        String         @id @default(uuid())
+  wifi      Boolean        @default(false)
+  parking   Boolean        @default(false)
+  breakfast Boolean        @default(false)
+  pets      Boolean        @default(false)
+  venue     HolidazeVenue?
+}
+
+model HolidazeVenueLocation {
+  id        String         @id @default(uuid())
+  address   String?
+  city      String?
+  zip       String?
+  country   String?
+  continent String?
+  lat       Float?
+  lng       Float?
+  venue     HolidazeVenue?
+}
+
+model HolidazeBooking {
+  id           String        @id @default(uuid())
+  dateFrom     DateTime
+  dateTo       DateTime
+  guests       Int
+  created      DateTime      @default(now())
+  updated      DateTime      @updatedAt
+  venue        HolidazeVenue @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  venueId      String
+  customer     UserProfile   @relation(fields: [customerName], references: [name], onDelete: Cascade)
+  customerName String
+}

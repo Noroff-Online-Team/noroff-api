@@ -1,0 +1,73 @@
+# .github/workflows/v2_build_and_test.yml
+name: API v2 build and test
+
+on:
+  push:
+    branches:
+      - main
+      - v2
+    paths:
+      - apps/v2/**
+  pull_request:
+    branches:
+      - main
+      - v2
+    paths:
+      - apps/v2/**
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install dependencies
+        run: yarn install
+      - name: Build @noroff/api-utils
+        run: "yarn build:api-utils"
+      - name: Build @noroff/api-v2
+        run: "yarn build:v2"
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:14.1-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      PORT: ${{ secrets.PORT }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install dependencies
+        run: yarn install
+      - name: Build @noroff/api-utils
+        run: "yarn build:api-utils"
+      - name: Run Prisma migrations
+        run: yarn prisma migrate deploy
+        working-directory: apps/v2
+      - name: Run tests
+        run: yarn test
+        working-directory: apps/v2

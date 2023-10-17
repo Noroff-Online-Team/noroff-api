@@ -1,0 +1,107 @@
+---
+title: Online Shop
+---
+
+import { Hr } from "@/components/hr"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+These endpoints allow you to retrieve all products, or a single product by its id. The response will be an array of JSON objects if you request all products, or a single JSON object if you request a single product.
+
+## The Online Shop model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The id of the product." },
+    title: { type: "string", description: "The title of the product." },
+    description: { type: "string", description: "The description of the product." },
+    price: { type: "float", description: "The price of the product." },
+    discountedPrice: { type: "float", description: "The discounted price of the product." },
+    imageUrl: { type: "string", description: "The image url of the product." },
+    rating: { type: "integer", description: "The rating of the product." },
+    tags: { type: "Array<string>", description: "A string array of the tags of the product." },
+    reviews: {
+      type: "Array<Review>",
+      typeDescription: "Array<{\n  id: string;\n  username: string;\n  rating: float;\n  description: string;\n}>",
+      description: "An array of product reviews."
+    }
+  }}
+/>
+
+<Hr />
+
+## All products
+
+<EndpointDetails path="/online-shop" />
+
+Retrieve all online shop products and its associated reviews.
+
+```json title="Response"
+[
+  {
+    "id": "159fdd2f-2b12-46de-9654-d9139525ba87",
+    "title": "Gold headphones",
+    "description": "Professional headphones with gold trim.",
+    "price": 449.99,
+    "discountedPrice": 382.49,
+    "imageUrl": "https://static.cloud.noroff.dev/api/online-shop/3-headphones-beats.jpg",
+    "rating": 4,
+    "tags": ["headphones"],
+    "reviews": [
+      {
+        "id": "88e11191-d2e5-4bfb-9bcb-d7e158284657",
+        "username": "Michael J.",
+        "rating": 4,
+        "description": "Good sound quality."
+      }
+    ]
+  },
+  {
+    "id": "109566af-c5c2-4f87-86cb-76f36fb8d378",
+    "title": "Vanilla Perfume",
+    "description": "Women's perfume that smells a warm and sweet, with nuances of wood and jasmine.",
+    "price": 2599.99,
+    "discountedPrice": 2079.99,
+    "imageUrl": "https://static.cloud.noroff.dev/api/online-shop/1-perfume-white.jpg",
+    "rating": 5,
+    "tags": ["perfume", "beauty"],
+    "reviews": [
+      {
+        "id": "90a61e3e-355a-42e4-b038-d91dcad33c20",
+        "username": "Jim N.",
+        "rating": 5,
+        "description": "My partner loves it, its her favourite."
+      }
+    ]
+  }
+]
+```
+
+<Hr />
+
+## Single product
+
+<EndpointDetails path="/online-shop/<id>" />
+
+Retrieve a single online shop product and its associated reviews by product id.
+
+```json title="Response"
+{
+  "id": "159fdd2f-2b12-46de-9654-d9139525ba87",
+  "title": "Gold headphones",
+  "description": "Professional headphones with gold trim.",
+  "price": 449.99,
+  "discountedPrice": 382.49,
+  "imageUrl": "https://static.cloud.noroff.dev/api/online-shop/3-headphones-beats.jpg",
+  "rating": 4,
+  "tags": ["headphones"],
+  "reviews": [
+    {
+      "id": "88e11191-d2e5-4bfb-9bcb-d7e158284657",
+      "username": "Michael J.",
+      "rating": 4,
+      "description": "Good sound quality."
+    }
+  ]
+}
+```

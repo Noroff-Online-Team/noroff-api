@@ -1,0 +1,117 @@
+---
+title: Quotes
+---
+
+import { Hr } from "@/components/hr"
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+
+These endpoints allow you to retrieve all quotes, a single quote by its id, or a random quote. The response will be an array of JSON objects if you request all quotes, or a single JSON object if you request a single quote or a random quote.
+
+## The Quote model
+
+<TypeTable
+  type={{
+    id: { type: "integer", description: "The id of the quote." },
+    content: { type: "string", description: "The content of the quote." },
+    author: { type: "string", description: "The author of the quote." },
+    tags: { type: "Array<string>", description: "A string array of the tags of the quote." },
+    authorId: { type: "string", description: "The id of the author." },
+    authorSlug: { type: "string", description: "The slug of the author." },
+    length: { type: "integer", description: "The length of the quote body." }
+  }}
+/>
+
+<Hr />
+
+## All quotes
+
+<EndpointDetails path="/quotes" />
+
+Retrieve all quotes.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": 1,
+      "content": "The Superior Man is aware of Righteousness, the inferior man is aware of advantage.",
+      "author": "Confucius",
+      "tags": ["famous-quotes"],
+      "authorId": "ropvZKOXYhLr",
+      "authorSlug": "confucius",
+      "length": 83
+    },
+    {
+      "id": 2,
+      "content": "America's freedom of religion, and freedom from religion, offers every wisdom tradition an opportunity to address our soul-deep needs: Christianity, Judaism, Islam, Buddhism, Hinduism, secular humanism, agnosticism and atheism among others.",
+      "author": "Parker Palmer",
+      "tags": ["wisdom"],
+      "authorId": "XPDojD6THK",
+      "authorSlug": "parker-palmer",
+      "length": 240
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Single quote
+
+<EndpointDetails path="/quotes/<id>" />
+
+Retrieve a single quote by its id.
+
+```json title="Response"
+{
+  "data": {
+    "id": 1,
+    "content": "The Superior Man is aware of Righteousness, the inferior man is aware of advantage.",
+    "author": "Confucius",
+    "tags": ["famous-quotes"],
+    "authorId": "ropvZKOXYhLr",
+    "authorSlug": "confucius",
+    "length": 83
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Random quote
+
+<EndpointDetails path="/quotes/random" />
+
+Retrieve a random quote.
+
+```json title="Response"
+{
+  "data": {
+    "id": 88,
+    "content": "Keep yourself to the sunshine and you cannot see the shadow.",
+    "author": "Helen Keller",
+    "tags": ["famous-quotes"],
+    "authorId": "pYjZMId1ilhK",
+    "authorSlug": "helen-keller",
+    "length": 60
+  },
+  "meta": {}
+}
+```

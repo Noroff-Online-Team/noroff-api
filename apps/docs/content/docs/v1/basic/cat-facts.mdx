@@ -1,0 +1,70 @@
+---
+title: Cat Facts
+---
+
+import { Hr } from "@/components/hr"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+These endpoints allow you to retrieve all cat facts, a single cat fact by its id, or a random cat fact. The response will be an array of JSON objects if you request all facts, or a single JSON object if you request a single fact or a random fact.
+
+## The Cat Fact model
+
+<TypeTable
+  type={{
+    id: { type: "integer", description: "The id of the cat fact." },
+    text: { type: "string", description: "The text of the cat fact." }
+  }}
+/>
+
+<Hr />
+
+## All cat facts
+
+<EndpointDetails path="/cat-facts" />
+
+Retrieve all cat facts.
+
+```json title="Response"
+[
+  {
+    "id": 1,
+    "text": "On average, cats spend 2/3 of every day sleeping"
+  },
+  {
+    "id": 2,
+    "text": "Unlike dogs, cats do not have a sweet tooth"
+  }
+  // ...
+]
+```
+
+<Hr />
+
+## Single cat fact
+
+<EndpointDetails path="/cat-facts/<id>" />
+
+Retrieve a single cat fact by its id.
+
+```json title="Response"
+{
+  "id": 1,
+  "text": "On average, cats spend 2/3 of every day sleeping"
+}
+```
+
+<Hr />
+
+## Random cat fact
+
+<EndpointDetails path="/cat-facts/random" />
+
+Retrieve a random cat fact.
+
+```json title="Response"
+{
+  "id": 70,
+  "text": "Genetically, cats' brains are more similar to that of a human than a dog's brain"
+}
+```

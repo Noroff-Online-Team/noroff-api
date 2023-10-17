@@ -1,0 +1,413 @@
+---
+title: Posts
+description: Posts related to Social
+---
+
+import { Hr } from "@/components/hr"
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+
+These endpoints allow you to create, read, update and delete posts. Posts are the main content of a social network, can be created by any profile and can receive reactions and comments.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Post model
+
+<TypeTable
+  type={{
+    id: { type: "integer", description: "The unique identifier for the post." },
+    title: { type: "string", description: "The title of the post." },
+    body: { type: "string", description: "The body of the post." },
+    tags: { type: "Array<string>", description: "A string array of tags." },
+    image: {
+      type: "object",
+      typeDescription: "Instance of `Media` model.",
+      description: "The image associated with post."
+    },
+    created: { type: "string", description: "The date the post was created." },
+    updated: { type: "string", description: "The date the post was last updated." },
+    _count: {
+      type: "object",
+      typeDescription: "{\n  comments: integer;\n  reactions: integer;\n}",
+      description: "A JSON object containing the number of comments and reactions."
+    }
+  }}
+/>
+
+### Optional properties
+
+<TypeTable
+  type={{
+    "author?": { type: "Profile", description: "The profile that created the post." },
+    "comments?": {
+      type: "Array<Comment>",
+      description: "An array of comments associated with the post."
+    },
+    "reactions?": {
+      type: "Array<Reaction>",
+      description: "An array of reactions associated with the post."
+    }
+  }}
+/>
+
+<Hr />
+
+## Query parameters
+
+Not all of the properties of a post are returned by default. You can use the following optional query parameters to include additional properties in the response.
+
+<TypeTable
+  type={{
+    _author: { type: "boolean", default: "false", description: "Include author." },
+    _comments: { type: "boolean", default: "false", description: "Include comments." },
+    _reactions: { type: "boolean", default: "false", description: "Include reactions." }
+  }}
+/>
+
+```json title="Example with all optional query parameters"
+{
+  "data": {
+    "id": 0,
+    "title": "string",
+    "body": "string",
+    "tags": ["string"],
+    "media": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    },
+    "created": "2022-09-04T08:08:38.830Z",
+    "updated": "2022-09-04T08:08:38.830Z",
+    "author": {
+      "name": "string",
+      "email": "user@example.com",
+      "bio": "string",
+      "avatar": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "banner": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      }
+    },
+    "reactions": [
+      {
+        "symbol": "string",
+        "count": 0
+      }
+    ],
+    "comments": [
+      {
+        "body": "string",
+        "replyToId": null, // or number if comment is reply to another comment
+        "id": 0,
+        "postId": 0,
+        "owner": "string",
+        "created": "2022-09-04T08:17:59.383Z",
+        "author": {
+          "name": "string",
+          "email": "user@example.com",
+          "bio": "string",
+          "avatar": {
+            "url": "https://url.com/image.jpg",
+            "alt": "string"
+          },
+          "banner": {
+            "url": "https://url.com/image.jpg",
+            "alt": "string"
+          }
+        }
+      }
+    ],
+    "_count": {
+      "comments": 0,
+      "reactions": 0
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Filtering
+
+You can filter based on an entry in the tags array by using the `_tag` query flag. You may only filter by one tag at a time.
+
+<TypeTable
+  type={{
+    _tag: { type: "string", description: "Only posts matching tag." },
+    _active: { type: "boolean", description: "Only active posts." }
+  }}
+/>
+
+An example query filtering for active listings with the `my_tag` tag.
+
+<EndpointDetails path="/social/posts?_tag=my_tag&_active=true" />
+
+<Hr />
+
+## All posts
+
+<EndpointDetails path="/social/posts" />
+
+Retrieve all posts.
+
+> If you want to get all posts by a specific profile, you can use the [posts by profile](./profiles#all-posts-by-profile) endpoint.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": 0,
+      "title": "string",
+      "body": "string",
+      "tags": ["string"],
+      "media": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "created": "2022-09-04T08:08:38.830Z",
+      "updated": "2022-09-04T08:08:38.830Z",
+      "_count": {
+        "comments": 0,
+        "reactions": 0
+      }
+    },
+    {
+      "id": 0,
+      "title": "string",
+      "body": "string",
+      "tags": ["string"],
+      "media": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "created": "2022-09-04T08:08:38.830Z",
+      "updated": "2022-09-04T08:08:38.830Z",
+      "_count": {
+        "comments": 0,
+        "reactions": 0
+      }
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Single post
+
+<EndpointDetails path="/social/posts/<id>" />
+
+Retrieve a single post by its id.
+
+> Use the `_author`, `_comments` and/or `_reactions` flags to get more data from this request.
+
+```json title="Response"
+{
+  "data": {
+    "id": 0,
+    "title": "string",
+    "body": "string",
+    "tags": ["string"],
+    "media": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    },
+    "created": "2022-09-04T08:08:38.830Z",
+    "updated": "2022-09-04T08:08:38.830Z",
+    "_count": {
+      "comments": 0,
+      "reactions": 0
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## All posts from following
+
+<EndpointDetails path="/social/posts/following" />
+
+Retrieve all posts from profiles that the authenticated user is following.
+
+The data returned is similar to the [all posts](#all-posts) endpoint and accepts the same optional query flags.
+
+<Hr />
+
+## Create post
+
+<EndpointDetails method="POST" path="/social/posts" />
+
+Create a new post. Only the `title` property is required, but we recommend at least including the `body` and `media` properties as well.
+
+> Please note that the `media.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+{
+  "title": "string", // Required
+  "body": "string", // Optional
+  "tags": ["string"], // Optional
+  "media": {
+    "url": "https://url.com/image.jpg",
+    "alt": "string"
+  } // Optional
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": 0,
+    "title": "string",
+    "body": "string",
+    "tags": ["string"],
+    "media": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    },
+    "created": "2022-09-04T16:21:02.042Z",
+    "updated": "2022-09-04T16:21:02.042Z",
+    "_count": {
+      "comments": 0,
+      "reactions": 0
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Update post
+
+<EndpointDetails method="PUT" path="/social/posts/<id>" />
+
+Update a post based on its id. This endpoint returns the updated post.
+
+> Please note that the `media.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+{
+  "title": "string",
+  "body": "string",
+  "tags": ["string"],
+  "media": {
+    "url": "https://url.com/image.jpg",
+    "alt": "string"
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": 0,
+    "created": "2022-09-04T16:21:02.044Z",
+    "updated": "2022-09-04T16:21:02.044Z",
+    "title": "string",
+    "body": "string",
+    "tags": ["string"],
+    "media": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    },
+    "_count": {
+      "comments": 0,
+      "reactions": 0
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Delete post
+
+<EndpointDetails method="DELETE" path="/social/posts/<id>" />
+
+Delete a post based on its id.
+
+Returns an empty `204 No Content` response on success.
+
+<Hr />
+
+## React to post
+
+<EndpointDetails method="PUT" path="/social/posts/<id>/react/<symbol>" />
+
+> This endpoint allows you to toggle reactions. If the authenticated user has already reacted to the post with the provided symbol, the reaction will be removed. Otherwise, the reaction will be added.
+
+React to a post with a symbol.
+
+Returns the original post id, the symbol reacted with, and an array of all reactions on the post.
+
+The `symbol` parameter should be an actual emoji. For example, to react to a post with a 👍 emoji, you would use the following endpoint: `/social/posts/<id>/react/👍`
+
+> You do not need to include a body for this request.
+
+```json title="Response"
+{
+  "data": {
+    "postId": 0,
+    "symbol": "string",
+    "reactions": [
+      {
+        "symbol": "string",
+        "count": 0
+      }
+    ]
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Comment on post
+
+<EndpointDetails method="POST" path="/social/posts/<id>/comment" />
+
+This endpoint allows a comment to be made on a post. The optional `replyToId` property can be used to link this comment to an existing comment.
+
+> Please note, when replying to another comment, that the `replyToId` property must be a valid comment id. If the comment exists, but is not associated with the post, you will receive a `400 Bad Request` error response. Should the comment not exist, you will receive a `404 Not Found` error response.
+
+```json title="Request"
+{
+  "body": "string", // Required
+  "replyToId": 0 // Optional - Only required if replying to another comment
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "body": "string",
+    "replyToId": null, // or replyToId number if provided in request
+    "id": 0,
+    "postId": 0,
+    "owner": "string",
+    "created": "2022-09-04T16:29:07.175Z"
+  },
+  "meta": {}
+}
+```

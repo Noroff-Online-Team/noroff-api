@@ -1,0 +1,105 @@
+---
+title: Books
+---
+
+import { Hr } from "@/components/hr"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+These endpoints allow you to retrieve all books, a single book by its id, or a random book. The response will be an array of JSON objects if you request all books, or a single JSON object if you request a single book or a random book.
+
+## The Book model
+
+<TypeTable
+  type={{
+    id: { type: "integer", description: "Unique identifier for the book." },
+    title: { type: "string", description: "Title of the book." },
+    author: { type: "string", description: "Author of the book." },
+    genre: { type: "string", description: "Genre of the book." },
+    description: { type: "string", description: "Description of the book." },
+    isbn: { type: "string", description: "ISBN of the book." },
+    image: { type: "string", description: "Image of the book." },
+    published: { type: "string", description: "Date of publication of the book." },
+    publisher: { type: "string", description: "Publisher of the book." }
+  }}
+/>
+
+<Hr />
+
+## All books
+
+<EndpointDetails path="/books" />
+
+Retrieve all books.
+
+```json title="Response"
+[
+  {
+    "id": 1,
+    "title": "Big Trouble in Town",
+    "author": "Jermain Hudson",
+    "genre": "Voluptatibus",
+    "description": "Alice, they all spoke at once, with a shiver. 'I beg pardon, your Majesty,' said the Caterpillar. This was such a noise inside, no one to listen to me! I'LL soon make you dry enough!' They all sat.",
+    "isbn": "9785699252138",
+    "image": "http://placeimg.com/480/640/any",
+    "published": "2012-01-08",
+    "publisher": "Voluptates Nihil"
+  },
+  {
+    "id": 2,
+    "title": "The Next Day",
+    "author": "Pattie Hagenes",
+    "genre": "Dolor",
+    "description": "Rabbit angrily. 'Here! Come and help me out of the tea--' 'The twinkling of the conversation. Alice replied, so eagerly that the cause of this pool? I am to see that queer little toss of her ever.",
+    "isbn": "9798692336644",
+    "image": "http://placeimg.com/480/640/any",
+    "published": "1977-03-03",
+    "publisher": "Blanditiis Labore"
+  }
+  // ...
+]
+```
+
+<Hr />
+
+## Single book
+
+<EndpointDetails path="/books/<id>" />
+
+Retrieve a single book by its id.
+
+```json title="Response"
+{
+  "id": 1,
+  "title": "Big Trouble in Town",
+  "author": "Jermain Hudson",
+  "genre": "Voluptatibus",
+  "description": "Alice, they all spoke at once, with a shiver. 'I beg pardon, your Majesty,' said the Caterpillar. This was such a noise inside, no one to listen to me! I'LL soon make you dry enough!' They all sat.",
+  "isbn": "9785699252138",
+  "image": "http://placeimg.com/480/640/any",
+  "published": "2012-01-08",
+  "publisher": "Voluptates Nihil"
+}
+```
+
+<Hr />
+
+## Random book
+
+<EndpointDetails path="/books/random" />
+
+Retrieve a random book.
+
+```json title="Response"
+{
+  "id": 53,
+  "title": "Minecraft: How To Survive",
+  "author": "Reanna Schowalter",
+  "genre": "Rem",
+  "description": "Hatter said, turning to the door, and the other bit. Her chin was pressed hard against it, that attempt proved a failure. Alice heard it muttering to himself in an offended tone, 'so I should.",
+  "isbn": "9794275021358",
+  "image": "http://placeimg.com/480/640/any",
+  "published": "2004-12-27",
+  "publisher": "Et Sit"
+}
+```

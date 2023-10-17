@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: no
+    container_name: integration-tests-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5433:5432

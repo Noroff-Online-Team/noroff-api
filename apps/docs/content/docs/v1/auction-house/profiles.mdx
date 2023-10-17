@@ -1,0 +1,225 @@
+---
+title: Profiles
+description: Profiles related to Auction House
+---
+
+import { Hr } from "@/components/hr"
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](./authentication) to get an access token.
+</Callout>
+
+These endpoints allow you to manage profiles. They are the users of the auction house and are the owners of listings.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Profile model
+
+<TypeTable
+  type={{
+    name: { type: "string", description: "The unique name of the profile." },
+    email: { type: "string", description: "The email address of the profile." },
+    avatar: { type: "string", description: "The URL of the profile avatar image." },
+    credits: { type: "integer", description: "The number of credits the profile has." },
+    wins: { type: "Array<string>", description: "A string array of ids of the listings the profile has won." },
+    _count: {
+      type: "Object",
+      typeDescription: "{\n  listings: integer;\n}",
+      description: "A JSON object containing the number of listings for this profile."
+    }
+  }}
+/>
+
+<Hr />
+
+## Query parameters
+
+Not all of the properties of a post are returned by default. You can use the following optional query parameters to include additional properties in the response.
+
+<TypeTable
+  type={{
+    _listings: { type: "boolean", default: "false", description: "Include listings." }
+  }}
+/>
+
+```json title="Example with all optional query parameters"
+{
+  "name": "string",
+  "email": "user@example.com",
+  "avatar": "https://url.com/image.jpg",
+  "credits": 0,
+  "wins": ["string"],
+  "listings": [
+    {
+      "id": "string",
+      "title": "string",
+      "description": "string",
+      "media": ["https://url.com/image.jpg"],
+      "created": "2020-01-01T00:00:00.000Z",
+      "updated": "2020-01-01T00:00:00.000Z",
+      "endsAt": "2020-01-01T00:00:00.000Z"
+    }
+  ],
+  "_count": {
+    "listings": 0
+  }
+}
+```
+
+<Hr />
+
+## All profiles
+
+<EndpointDetails path="/auction/profiles" />
+
+Retrieve all profiles.
+
+```json title="Response"
+[
+  {
+    "name": "string",
+    "email": "user@example.com",
+    "avatar": "https://url.com/image.jpg",
+    "credits": 0,
+    "wins": ["string"],
+    "_count": {
+      "listings": 0
+    }
+  },
+  {
+    "name": "string",
+    "email": "user@example.com",
+    "avatar": "https://url.com/image.jpg",
+    "credits": 0,
+    "wins": ["string"],
+    "_count": {
+      "listings": 0
+    }
+  }
+]
+```
+
+<Hr />
+
+## Single profile
+
+<EndpointDetails path="/auction/profiles/<name>" />
+
+Retrieve a single profile by its id.
+
+```json title="Response"
+{
+  "name": "string",
+  "email": "user@example.com",
+  "avatar": "https://url.com/image.jpg",
+  "credits": 0,
+  "wins": ["string"],
+  "_count": {
+    "listings": 0
+  }
+}
+```
+
+<Hr />
+
+## Update profile media
+
+<EndpointDetails method="PUT" path="/auction/profiles/<name>/media" />
+
+Update or set profile `avatar` image.
+
+Remove the `avatar` by setting the property to `null`.
+
+> Please note that profile `avatar` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a 400 error response.
+
+```json title="Request"
+{
+  "avatar": "https://url.com/image.jpg" // Required
+}
+```
+
+```json title="Request"
+{
+  "name": "string",
+  "email": "user@example.com",
+  "avatar": "https://url.com/image.jpg",
+  "credits": 0,
+  "wins": ["string"],
+  "_count": {
+    "listings": 0
+  }
+}
+```
+
+<Hr />
+
+## All listings by profile
+
+<EndpointDetails path="/auction/profiles/<name>/listings" />
+
+Retrieve all listings created by profile.
+
+The response is the same as the [listings](./listings#all-listings) endpoint, and accepts the same optional query parameters and flags.
+
+```json title="Response"
+[
+  {
+    "id": "string",
+    "title": "string",
+    "description": "string",
+    "media": ["https://url.com/image.jpg"],
+    "tags": ["string"],
+    "created": "2020-01-01T00:00:00.000Z",
+    "updated": "2020-01-01T00:00:00.000Z",
+    "endsAt": "2020-01-01T00:00:00.000Z",
+    "_count": {
+      "bids": 0
+    }
+  },
+  {
+    "id": "string",
+    "title": "string",
+    "description": "string",
+    "media": ["https://url.com/image.jpg"],
+    "tags": ["string"],
+    "created": "2020-01-01T00:00:00.000Z",
+    "updated": "2020-01-01T00:00:00.000Z",
+    "endsAt": "2020-01-01T00:00:00.000Z",
+    "_count": {
+      "bids": 0
+    }
+  }
+  // ...
+]
+```
+
+<Hr />
+
+## All bids by profile
+
+<EndpointDetails path="/auction/profiles/<name>/bids" />
+
+Retrieve all bids made by profile.
+
+> Use the `_listing` flag to include the associated listing's data.
+
+```json title="Response"
+[
+  {
+    "id": "string",
+    "amount": 0,
+    "bidderName": "string",
+    "created": "2020-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "string",
+    "amount": 0,
+    "bidderName": "string",
+    "created": "2020-01-01T00:00:00.000Z"
+  }
+  // ...
+]
+```

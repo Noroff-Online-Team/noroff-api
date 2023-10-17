@@ -1,0 +1,47 @@
+{
+  "name": "v1",
+  "description": "Noroff API server",
+  "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false src/app.ts",
+    "start": "node dist/src/app.js",
+    "build": "rimraf dist && tsc && tscpaths -p tsconfig.json -s ./ -o ./dist",
+    "prebuild": "yarn prisma generate",
+    "postinstall": "yarn prisma generate"
+  },
+  "dependencies": {
+    "@fastify/autoload": "^5.7.1",
+    "@fastify/cors": "^8.4.0",
+    "@fastify/jwt": "^7.2.1",
+    "@fastify/rate-limit": "^8.0.3",
+    "@fastify/swagger": "^8.11.0",
+    "@fastify/swagger-ui": "^1.10.0",
+    "@noroff/api-utils": "*",
+    "@prisma/client": "5.4.1",
+    "dotenv": "^16.3.1",
+    "fastify": "^4.23.2",
+    "fastify-plugin": "^4.5.1",
+    "fastify-type-provider-zod": "^1.1.9",
+    "http-errors": "^2.0.0",
+    "node-schedule": "^2.1.1",
+    "statuses": "^2.0.1",
+    "zod": "^3.21.4",
+    "zod-to-json-schema": "^3.21.4"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.1.0",
+    "@types/http-errors": "^2.0.2",
+    "@types/node-schedule": "^2.1.1",
+    "@types/statuses": "^2.0.2",
+    "prisma": "^5.4.1",
+    "rimraf": "^5.0.5",
+    "tscpaths": "^0.0.9",
+    "tsx": "^3.13.0",
+    "typescript": "^5.2.2"
+  }
+}

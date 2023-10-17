@@ -1,0 +1,51 @@
+{
+  "name": "docs",
+  "description": "Noroff API docs",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Noroff School of Technology and Digital Media <https://noroff.no>",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "scripts": {
+    "dev": "PORT=3002 next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "resolutions": {
+    "@opentelemetry/api": "1.4.1",
+    "@opentelemetry/core": "1.13.0",
+    "@opentelemetry/exporter-trace-otlp-grpc": "0.39.1",
+    "@opentelemetry/resources": "1.13.0",
+    "@opentelemetry/sdk-trace-base": "1.13.0",
+    "@opentelemetry/sdk-trace-node": "1.13.0",
+    "@opentelemetry/semantic-conventions": "1.13.0"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.4",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "contentlayer": "^0.3.4",
+    "lucide-react": "^0.279.0",
+    "next": "^13.5.2",
+    "next-contentlayer": "^0.3.4",
+    "next-docs-ui": "^2.3.1",
+    "next-docs-zeta": "^2.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwind-merge": "^1.14.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.6.2",
+    "@types/react": "^18.2.22",
+    "@types/react-dom": "^18.2.7",
+    "autoprefixer": "^10.4.15",
+    "postcss": "^8.4.30",
+    "shiki": "^0.14.4",
+    "supports-color": "^9.4.0",
+    "tailwindcss": "^3.3.3",
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.2.2"
+  }
+}

@@ -1,0 +1,434 @@
+---
+title: Venues
+description: Venues related to Holidaze
+---
+
+import { Hr } from "@/components/hr"
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+<Callout variant="warning">
+  Some of these are authenticated endpoints. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+
+These endpoints allow you to retrieve venues.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Venue model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique id of the venue." },
+    name: { type: "string", description: "The name of the venue." },
+    description: { type: "string", description: "The description of the venue." },
+    media: {
+      type: "Array<object>",
+      typeDescription: "Array of `Media` model.",
+      description: "An array of media associated with the listing."
+    },
+    price: { type: "float", description: "The price of the venue." },
+    maxGuests: { type: "integer", description: "The maximum number of guests." },
+    rating: { type: "float", description: "The rating of the venue." },
+    created: { type: "string", description: "The date and time when the venue was created." },
+    updated: { type: "string", description: "The date and time when the venue was updated." },
+    meta: {
+      type: "Object",
+      typeDescription: "{\n  wifi: boolean;\n  parking: boolean;\n  breakfast: boolean;\n  pets: boolean;\n}",
+      description: "A JSON object containing meta data about the venue."
+    },
+    location: {
+      type: "Object",
+      typeDescription:
+        "{\n  address: string;\n  city: string;\n  zip: string;\n  country: string;\n  continent: string;\n  lat: float;\n  long: float;\n}",
+      description: "A JSON object containing the location of the venue."
+    }
+  }}
+/>
+
+<Hr />
+
+## Query parameters
+
+Not all of the properties of a venue are returned by default. You can use the following optional query parameters to include additional properties in the response.
+
+<TypeTable
+  type={{
+    _owner: { type: "boolean", default: "false", description: "Include owner." },
+    _bookings: { type: "boolean", default: "false", description: "Include bookings." }
+  }}
+/>
+
+```json title="Example with all optional query parameters"
+{
+  "data": {
+    "id": "string",
+    "name": "string",
+    "description": "string",
+    "media": [
+      {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      }
+    ],
+    "price": 0,
+    "maxGuests": 0,
+    "rating": 0,
+    "created": "string",
+    "updated": "string",
+    "meta": {
+      "wifi": true,
+      "parking": true,
+      "breakfast": true,
+      "pets": true
+    },
+    "location": {
+      "address": "string",
+      "city": "string",
+      "zip": "string",
+      "country": "string",
+      "continent": "string",
+      "lat": 0,
+      "lng": 0
+    },
+    "owner": {
+      "name": "string",
+      "email": "user@example.com",
+      "bio": "string",
+      "avatar": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "banner": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      }
+    },
+    "bookings": [
+      {
+        "id": "string",
+        "dateFrom": "string",
+        "dateTo": "string",
+        "guests": 0,
+        "created": "string",
+        "updated": "string",
+        "customer": {
+          "name": "string",
+          "email": "user@example.com",
+          "bio": "string",
+          "avatar": {
+            "url": "https://url.com/image.jpg",
+            "alt": "string"
+          },
+          "banner": {
+            "url": "https://url.com/image.jpg",
+            "alt": "string"
+          }
+        }
+      }
+    ]
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## All venues
+
+<Callout variant="info">This endpoint does not require authentication.</Callout>
+
+<EndpointDetails path="/holidaze/venues" />
+
+Retrieve all venues.
+
+> If you want to get all venues by a specific profile, you can use the [venues by profile](./profiles#all-venues-by-profile) endpoint.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": "string",
+      "name": "string",
+      "description": "string",
+      "media": [
+        {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        }
+      ],
+      "price": 0,
+      "maxGuests": 0,
+      "rating": 0,
+      "created": "string",
+      "updated": "string",
+      "meta": {
+        "wifi": true,
+        "parking": true,
+        "breakfast": true,
+        "pets": true
+      },
+      "location": {
+        "address": "string",
+        "city": "string",
+        "zip": "string",
+        "country": "string",
+        "continent": "string",
+        "lat": 0,
+        "lng": 0
+      }
+    },
+    {
+      "id": "string",
+      "name": "string",
+      "description": "string",
+      "media": [
+        {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        }
+      ],
+      "price": 0,
+      "maxGuests": 0,
+      "rating": 0,
+      "created": "string",
+      "updated": "string",
+      "meta": {
+        "wifi": true,
+        "parking": true,
+        "breakfast": true,
+        "pets": true
+      },
+      "location": {
+        "address": "string",
+        "city": "string",
+        "zip": "string",
+        "country": "string",
+        "continent": "string",
+        "lat": 0,
+        "lng": 0
+      }
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Single venue
+
+<Callout variant="info">This endpoint does not require authentication.</Callout>
+
+<EndpointDetails path="/holidaze/venues/<id>" />
+
+Retrieve a single venue based on its id.
+
+```json title="Response"
+{
+  "data": {
+    "id": "string",
+    "name": "string",
+    "description": "string",
+    "media": [
+      {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      }
+    ],
+    "price": 0,
+    "maxGuests": 0,
+    "rating": 0,
+    "created": "string",
+    "updated": "string",
+    "meta": {
+      "wifi": true,
+      "parking": true,
+      "breakfast": true,
+      "pets": true
+    },
+    "location": {
+      "address": "string",
+      "city": "string",
+      "zip": "string",
+      "country": "string",
+      "continent": "string",
+      "lat": 0,
+      "lng": 0
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Create venue
+
+<EndpointDetails method="POST" path="/holidaze/venues" />
+
+Creation a new venue.
+
+```json title="Request"
+{
+  "name": "string", // Required
+  "description": "string", // Required
+  "media": [
+    {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    }
+  ], // Optional
+  "price": 0, // Required
+  "maxGuests": 0, // Required
+  "rating": 0, // Optional (default: 0)
+  "meta": {
+    "wifi": true, // Optional (default: false)
+    "parking": true, // Optional (default: false)
+    "breakfast": true, // Optional (default: false)
+    "pets": true // Optional (default: false)
+  },
+  "location": {
+    "address": "string", // Optional (default: null)
+    "city": "string", // Optional (default: null)
+    "zip": "string", // Optional (default: null)
+    "country": "string", // Optional (default: null)
+    "continent": "string", // Optional (default: null)
+    "lat": 0, // Optional (default: 0)
+    "lng": 0 // Optional (default: 0)
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "string",
+    "name": "string",
+    "description": "string",
+    "media": [
+      {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      }
+    ],
+    "price": 0,
+    "maxGuests": 0,
+    "rating": 0,
+    "created": "string",
+    "updated": "string",
+    "meta": {
+      "wifi": true,
+      "parking": true,
+      "breakfast": true,
+      "pets": true
+    },
+    "location": {
+      "address": "string",
+      "city": "string",
+      "zip": "string",
+      "country": "string",
+      "continent": "string",
+      "lat": 0,
+      "lng": 0
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Update venue
+
+<EndpointDetails method="PUT" path="/holidaze/venues/<id>" />
+
+Updating a venue.
+
+```json title="Request"
+{
+  "name": "string", // Optional
+  "description": "string", // Optional
+  "media": [
+    {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    }
+  ], // Optional
+  "price": 0, // Optional
+  "maxGuests": 0, // Optional
+  "rating": 0, // Optional
+  "meta": {
+    "wifi": true, // Optional
+    "parking": true, // Optional
+    "breakfast": true, // Optional
+    "pets": true // Optional
+  },
+  "location": {
+    "address": "string", // Optional
+    "city": "string", // Optional
+    "zip": "string", // Optional
+    "country": "string", // Optional
+    "continent": "string", // Optional
+    "lat": 0, // Optional
+    "lng": 0 // Optional
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "string",
+    "name": "string",
+    "description": "string",
+    "media": [
+      {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      }
+    ],
+    "price": 0,
+    "maxGuests": 0,
+    "rating": 0,
+    "created": "string",
+    "updated": "string",
+    "meta": {
+      "wifi": true,
+      "parking": true,
+      "breakfast": true,
+      "pets": true
+    },
+    "location": {
+      "address": "string",
+      "city": "string",
+      "zip": "string",
+      "country": "string",
+      "continent": "string",
+      "lat": 0,
+      "lng": 0
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Delete venue
+
+<EndpointDetails method="DELETE" path="/holidaze/venues/<id>" />
+
+Delete a venue based on its id.
+
+Returns an empty `204 No Content` response on success.

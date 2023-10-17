@@ -1,0 +1,33 @@
+# .github/workflows/docs_build.yml
+name: API docs build and test
+
+on:
+  push:
+    branches:
+      - main
+      - v2
+    paths:
+      - apps/docs/**
+  pull_request:
+    branches:
+      - main
+      - v2
+    paths:
+      - apps/docs/**
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Install dependencies
+        run: yarn install
+      - name: Build @noroff/api-docs
+        run: "yarn build:docs"

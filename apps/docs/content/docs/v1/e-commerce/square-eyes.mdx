@@ -1,0 +1,96 @@
+---
+title: Square Eyes
+---
+
+import { Hr } from "@/components/hr"
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+These endpoints allow you to retrieve all products, or a single product by its id. The response will be an array of JSON objects if you request all products, or a single JSON object if you request a single product.
+
+## The Square Eyes model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The id of the product." },
+    title: { type: "string", description: "The title of the product." },
+    description: { type: "string", description: "The description of the product." },
+    genre: { type: "string", description: "The genre of the product." },
+    rating: { type: "string", description: "The rating of the product." },
+    released: { type: "string", description: "The release date of the product." },
+    price: { type: "float", description: "The price of the product." },
+    discountedPrice: { type: "float", description: "The discounted price of the product." },
+    onSale: { type: "boolean", description: "Whether the product is on sale or not." },
+    image: { type: "string", description: "The image of the product." },
+    tags: { type: "Array<string>", description: "A string array of the tags of the product." },
+    favorite: { type: "boolean", description: "Whether the product is a favorite or not." }
+  }}
+/>
+
+<Hr />
+
+## All products
+
+<EndpointDetails path="/square-eyes" />
+
+Retrieve all products.
+
+```json title="Response"
+[
+  {
+    "id": "352ba432-5b5d-4ccc-9aba-f2704c500cf3",
+    "title": "Hobbs & Shaw",
+    "description": "Lawman Luke Hobbs (Dwayne 'The Rock' Johnson) and outcast Deckard Shaw (Jason Statham) form an unlikely alliance when a cyber-genetically enhanced villain threatens the future of humanity.",
+    "genre": "Action",
+    "rating": "6.5",
+    "released": "2019",
+    "price": 129.99,
+    "discountedPrice": 119.99,
+    "onSale": true,
+    "image": "https://static.cloud.noroff.dev/api/square-eyes/0-hobbs-and-shaw.jpg",
+    "tags": ["gamehub", "game"],
+    "favorite": true
+  },
+  {
+    "id": "4696b9e6-ec6e-4672-a08d-3e3212a215c8",
+    "title": "Godzilla: King of the Monsters",
+    "description": "The crypto-zoological agency Monarch faces off against a battery of god-sized monsters, including the mighty Godzilla, who collides with Mothra, Rodan, and his ultimate nemesis, the three-headed King Ghidorah.",
+    "genre": "Action",
+    "rating": "9",
+    "released": "2019",
+    "price": 109.99,
+    "discountedPrice": 109.99,
+    "onSale": false,
+    "image": "https://static.cloud.noroff.dev/api/square-eyes/1-godzilla-king-of-monsters.jpg",
+    "tags": ["gamehub", "game"],
+    "favorite": true
+  }
+  // ...
+]
+```
+
+<Hr />
+
+## Single product
+
+<EndpointDetails path="/square-eyes/<id>" />
+
+Retrieve a single product by its id.
+
+```json title="Response"
+{
+  "id": "352ba432-5b5d-4ccc-9aba-f2704c500cf3",
+  "title": "Hobbs & Shaw",
+  "description": "Lawman Luke Hobbs (Dwayne 'The Rock' Johnson) and outcast Deckard Shaw (Jason Statham) form an unlikely alliance when a cyber-genetically enhanced villain threatens the future of humanity.",
+  "genre": "Action",
+  "rating": "6.5",
+  "released": "2019",
+  "price": 129.99,
+  "discountedPrice": 119.99,
+  "onSale": true,
+  "image": "https://static.cloud.noroff.dev/api/square-eyes/0-hobbs-and-shaw.jpg",
+  "tags": ["gamehub", "game"],
+  "favorite": true
+}
+```

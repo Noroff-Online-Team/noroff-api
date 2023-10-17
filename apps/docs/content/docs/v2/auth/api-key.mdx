@@ -1,0 +1,89 @@
+---
+title: API Key
+description: Create and use an API Key to access the Noroff API.
+---
+
+import { Hr } from "@/components/hr"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { TypeTable } from "next-docs-ui/components/type-table"
+
+## The API Key model
+
+<TypeTable
+  type={{
+    name: {
+      type: "string",
+      default: "API Key",
+      description: "The API Key name. This really only exists for your own reference."
+    },
+    status: {
+      type: "string",
+      default: "ACTIVE",
+      description: "The API Key status. Can be either ACTIVE or REVOKED."
+    },
+    key: {
+      type: "string",
+      typeDescription: "A UUID v4 string.",
+      description: "The API Key."
+    }
+  }}
+/>
+
+## Create an API Key
+
+<EndpointDetails method="POST" path="/auth/create-api-key" />
+
+You can use this endpoint to create an API Key.
+
+You do not need to provide any data in the request body, but you can optionally provide a `name` value.
+
+```json title="Request"
+{
+  "name": "My API Key name" // Optional
+}
+```
+
+A successful response will return a `201 Created` status code and the newly created API Key.
+
+```json title="Request"
+{
+  "data": {
+    "name": "My API Key name", // Or "API Key" if no name was provided
+    "status": "ACTIVE",
+    "key": "be4ab55c-d5b0-44c3-8a11-67a7dafddd10" // The API Key
+  },
+  "meta": {}
+}
+```
+
+### Restrictions
+
+- If set, the `name` value must be less than 32 characters.
+
+### Types
+
+<TypeTable
+  type={{
+    name: {
+      type: "string",
+      default: "API Key",
+      description: "The API Key name. This really only exists for your own reference."
+    }
+  }}
+/>
+
+## Using the API Key
+
+You use the API Key by sending it in the `X-Noroff-API-Key` header, along with the access token of the requesting user.
+
+```js
+const options = {
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+    "X-Noroff-API-Key": apiKey
+  }
+}
+
+const response = await fetch(`${NOROFF_API_URL}/social/posts`, options)
+const data = await response.json()
+```
