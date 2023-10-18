@@ -39,25 +39,21 @@ export async function getProfilesHandler(
     }
   }>
 ) {
-  try {
-    await profilesQuerySchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page, _venues, _bookings } = request.query
+  await profilesQuerySchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page, _venues, _bookings } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const includes: HolidazeProfileIncludes = {
-      venues: Boolean(_venues),
-      bookings: Boolean(_bookings)
-    }
-
-    const profiles = await getProfiles(sort, sortOrder, limit, page, includes)
-
-    return profiles
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const includes: HolidazeProfileIncludes = {
+    venues: Boolean(_venues),
+    bookings: Boolean(_bookings)
+  }
+
+  const profiles = await getProfiles(sort, sortOrder, limit, page, includes)
+
+  return profiles
 }
 
 export async function getProfileHandler(
@@ -69,25 +65,21 @@ export async function getProfileHandler(
     }
   }>
 ) {
-  try {
-    const { name } = await profileNameSchema.parseAsync(request.params)
-    const { _venues, _bookings } = await queryFlagsSchema.parseAsync(request.query)
+  const { name } = await profileNameSchema.parseAsync(request.params)
+  const { _venues, _bookings } = await queryFlagsSchema.parseAsync(request.query)
 
-    const includes: HolidazeProfileIncludes = {
-      venues: Boolean(_venues),
-      bookings: Boolean(_bookings)
-    }
-
-    const profile = await getProfile(name, includes)
-
-    if (!profile.data) {
-      throw new NotFound("No profile with this name")
-    }
-
-    return profile
-  } catch (error) {
-    throw error
+  const includes: HolidazeProfileIncludes = {
+    venues: Boolean(_venues),
+    bookings: Boolean(_bookings)
   }
+
+  const profile = await getProfile(name, includes)
+
+  if (!profile.data) {
+    throw new NotFound("No profile with this name")
+  }
+
+  return profile
 }
 
 export async function updateProfileHandler(
@@ -96,34 +88,30 @@ export async function updateProfileHandler(
     Body: UpdateProfileSchema
   }>
 ) {
-  try {
-    const { venueManager, banner, avatar } = await updateProfileSchema.parseAsync(request.body)
-    const { name: profileToUpdate } = await profileNameSchema.parseAsync(request.params)
-    const { name: requesterProfile } = request.user as UserProfile
+  const { venueManager, banner, avatar } = await updateProfileSchema.parseAsync(request.body)
+  const { name: profileToUpdate } = await profileNameSchema.parseAsync(request.params)
+  const { name: requesterProfile } = request.user as UserProfile
 
-    const profile = await getProfile(profileToUpdate)
+  const profile = await getProfile(profileToUpdate)
 
-    if (!profile.data) {
-      throw new NotFound("No profile with this name")
-    }
-
-    if (profileToUpdate.toLowerCase() !== requesterProfile.toLowerCase()) {
-      throw new Forbidden("You do not have permission to update this profile")
-    }
-
-    if (avatar?.url) {
-      await mediaGuard(avatar.url)
-    }
-    if (banner?.url) {
-      await mediaGuard(banner.url)
-    }
-
-    const updatedProfile = await updateProfile(profileToUpdate, { venueManager, banner, avatar })
-
-    return updatedProfile
-  } catch (error) {
-    throw error
+  if (!profile.data) {
+    throw new NotFound("No profile with this name")
   }
+
+  if (profileToUpdate.toLowerCase() !== requesterProfile.toLowerCase()) {
+    throw new Forbidden("You do not have permission to update this profile")
+  }
+
+  if (avatar?.url) {
+    await mediaGuard(avatar.url)
+  }
+  if (banner?.url) {
+    await mediaGuard(banner.url)
+  }
+
+  const updatedProfile = await updateProfile(profileToUpdate, { venueManager, banner, avatar })
+
+  return updatedProfile
 }
 
 export async function getProfileVenuesHandler(
@@ -139,31 +127,27 @@ export async function getProfileVenuesHandler(
     }
   }>
 ) {
-  try {
-    const { name } = await profileNameSchema.parseAsync(request.params)
-    const { limit, page, sort, sortOrder, _owner, _bookings } = request.query
+  const { name } = await profileNameSchema.parseAsync(request.params)
+  const { limit, page, sort, sortOrder, _owner, _bookings } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const profile = await getProfile(name)
-
-    if (!profile.data) {
-      throw new NotFound("No profile with this name")
-    }
-
-    const includes: HolidazeVenueIncludes = {
-      owner: Boolean(_owner),
-      bookings: Boolean(_bookings)
-    }
-
-    const venues = await getProfileVenues(name, sort, sortOrder, limit, page, includes)
-
-    return venues
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const profile = await getProfile(name)
+
+  if (!profile.data) {
+    throw new NotFound("No profile with this name")
+  }
+
+  const includes: HolidazeVenueIncludes = {
+    owner: Boolean(_owner),
+    bookings: Boolean(_bookings)
+  }
+
+  const venues = await getProfileVenues(name, sort, sortOrder, limit, page, includes)
+
+  return venues
 }
 
 export async function getProfileBookingsHandler(
@@ -179,31 +163,27 @@ export async function getProfileBookingsHandler(
     }
   }>
 ) {
-  try {
-    const { name } = await profileNameSchema.parseAsync(request.params)
-    const { limit, page, sort, sortOrder, _customer, _venue } = request.query
+  const { name } = await profileNameSchema.parseAsync(request.params)
+  const { limit, page, sort, sortOrder, _customer, _venue } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const profile = await getProfile(name)
-
-    if (!profile.data) {
-      throw new NotFound("No profile with this name")
-    }
-
-    const includes: HolidazeBookingIncludes = {
-      customer: Boolean(_customer),
-      venue: Boolean(_venue)
-    }
-
-    const bookings = await getProfileBookings(name, sort, sortOrder, limit, page, includes)
-
-    return bookings
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const profile = await getProfile(name)
+
+  if (!profile.data) {
+    throw new NotFound("No profile with this name")
+  }
+
+  const includes: HolidazeBookingIncludes = {
+    customer: Boolean(_customer),
+    venue: Boolean(_venue)
+  }
+
+  const bookings = await getProfileBookings(name, sort, sortOrder, limit, page, includes)
+
+  return bookings
 }
 
 export async function searchProfilesHandler(
@@ -219,19 +199,15 @@ export async function searchProfilesHandler(
     }
   }>
 ) {
-  try {
-    await searchQuerySchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page, _venues, _bookings, q } = request.query
+  await searchQuerySchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page, _venues, _bookings, q } = request.query
 
-    const includes: HolidazeProfileIncludes = {
-      venues: Boolean(_venues),
-      bookings: Boolean(_bookings)
-    }
-
-    const results = await searchProfiles(sort, sortOrder, limit, page, q, includes)
-
-    return results
-  } catch (error) {
-    throw error
+  const includes: HolidazeProfileIncludes = {
+    venues: Boolean(_venues),
+    bookings: Boolean(_bookings)
   }
+
+  const results = await searchProfiles(sort, sortOrder, limit, page, q, includes)
+
+  return results
 }
