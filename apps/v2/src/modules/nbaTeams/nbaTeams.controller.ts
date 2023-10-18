@@ -16,24 +16,20 @@ export async function getNbaTeamsHandler(
     }
   }>
 ) {
-  try {
-    await sortAndPaginationSchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page } = request.query
+  await sortAndPaginationSchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const nbaTeams = await getNbaTeams(sort, sortOrder, limit, page)
-
-    if (!nbaTeams.data.length) {
-      throw new NotFound("Couldn't find any NBA teams.")
-    }
-
-    return nbaTeams
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const nbaTeams = await getNbaTeams(sort, sortOrder, limit, page)
+
+  if (!nbaTeams.data.length) {
+    throw new NotFound("Couldn't find any NBA teams.")
+  }
+
+  return nbaTeams
 }
 
 export async function getNbaTeamHandler(
@@ -41,32 +37,24 @@ export async function getNbaTeamHandler(
     Params: { id: number }
   }>
 ) {
-  try {
-    const params = nbaTeamParamsSchema.parse(request.params)
-    const { id } = params
+  const params = nbaTeamParamsSchema.parse(request.params)
+  const { id } = params
 
-    const nbaTeam = await getNbaTeam(id)
+  const nbaTeam = await getNbaTeam(id)
 
-    if (!nbaTeam.data) {
-      throw new NotFound("No NBA team with such ID")
-    }
-
-    return nbaTeam
-  } catch (error) {
-    throw error
+  if (!nbaTeam.data) {
+    throw new NotFound("No NBA team with such ID")
   }
+
+  return nbaTeam
 }
 
 export async function getRandomNbaTeamHandler() {
-  try {
-    const nbaTeam = await getRandomNbaTeam()
+  const nbaTeam = await getRandomNbaTeam()
 
-    if (!nbaTeam.data) {
-      throw new NotFound("Couldn't find any NBA teams.")
-    }
-
-    return nbaTeam
-  } catch (error) {
-    throw error
+  if (!nbaTeam.data) {
+    throw new NotFound("Couldn't find any NBA teams.")
   }
+
+  return nbaTeam
 }
