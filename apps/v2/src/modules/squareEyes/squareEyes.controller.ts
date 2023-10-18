@@ -16,24 +16,20 @@ export async function getSquareEyesProductsHandler(
     }
   }>
 ) {
-  try {
-    await sortAndPaginationSchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page } = request.query
+  await sortAndPaginationSchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const products = await getSquareEyesProducts(sort, sortOrder, limit, page)
-
-    if (!products.data.length) {
-      throw new NotFound("Couldn't find any products.")
-    }
-
-    return products
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const products = await getSquareEyesProducts(sort, sortOrder, limit, page)
+
+  if (!products.data.length) {
+    throw new NotFound("Couldn't find any products.")
+  }
+
+  return products
 }
 
 export async function getSquareEyesProductHandler(
@@ -41,18 +37,14 @@ export async function getSquareEyesProductHandler(
     Params: { id: string }
   }>
 ) {
-  try {
-    const params = squareEyesParamsSchema.parse(request.params)
-    const { id } = params
+  const params = squareEyesParamsSchema.parse(request.params)
+  const { id } = params
 
-    const product = await getSquareEyesProduct(id)
+  const product = await getSquareEyesProduct(id)
 
-    if (!product.data) {
-      throw new NotFound("No product with such ID")
-    }
-
-    return product
-  } catch (error) {
-    throw error
+  if (!product.data) {
+    throw new NotFound("No product with such ID")
   }
+
+  return product
 }
