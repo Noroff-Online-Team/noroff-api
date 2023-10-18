@@ -36,30 +36,26 @@ export async function getProfilesHandler(
     }
   }>
 ) {
-  try {
-    await profilesQuerySchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page, _followers, _following, _posts } = request.query
+  await profilesQuerySchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page, _followers, _following, _posts } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const includes: ProfileIncludes = {
-      posts: Boolean(_posts),
-      followers: Boolean(_followers),
-      following: Boolean(_following)
-    }
-
-    const profiles = await getProfiles(sort, sortOrder, limit, page, includes)
-
-    if (!profiles.data.length) {
-      throw new NotFound("Couldn't find any profiles")
-    }
-
-    return profiles
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const includes: ProfileIncludes = {
+    posts: Boolean(_posts),
+    followers: Boolean(_followers),
+    following: Boolean(_following)
+  }
+
+  const profiles = await getProfiles(sort, sortOrder, limit, page, includes)
+
+  if (!profiles.data.length) {
+    throw new NotFound("Couldn't find any profiles")
+  }
+
+  return profiles
 }
 
 export async function getProfileHandler(
@@ -72,26 +68,22 @@ export async function getProfileHandler(
     }
   }>
 ) {
-  try {
-    const { name } = profileNameSchema.parse(request.params)
-    const { _followers, _following, _posts } = queryFlagsSchema.parse(request.query)
+  const { name } = profileNameSchema.parse(request.params)
+  const { _followers, _following, _posts } = queryFlagsSchema.parse(request.query)
 
-    const includes: ProfileIncludes = {
-      posts: Boolean(_posts),
-      followers: Boolean(_followers),
-      following: Boolean(_following)
-    }
-
-    const profile = await getProfile(name, includes)
-
-    if (!profile.data) {
-      throw new NotFound("No profile with this name")
-    }
-
-    return profile
-  } catch (error) {
-    throw error
+  const includes: ProfileIncludes = {
+    posts: Boolean(_posts),
+    followers: Boolean(_followers),
+    following: Boolean(_following)
   }
+
+  const profile = await getProfile(name, includes)
+
+  if (!profile.data) {
+    throw new NotFound("No profile with this name")
+  }
+
+  return profile
 }
 
 export async function updateProfileHandler(
@@ -100,34 +92,30 @@ export async function updateProfileHandler(
     Body: UpdateProfileSchema
   }>
 ) {
-  try {
-    const { avatar, banner } = updateProfileSchema.parse(request.body)
-    const { name: profileToUpdate } = profileNameSchema.parse(request.params)
-    const { name: requesterProfile } = request.user as UserProfile
+  const { avatar, banner } = updateProfileSchema.parse(request.body)
+  const { name: profileToUpdate } = profileNameSchema.parse(request.params)
+  const { name: requesterProfile } = request.user as UserProfile
 
-    const profileExists = await getProfile(profileToUpdate)
+  const profileExists = await getProfile(profileToUpdate)
 
-    if (!profileExists.data) {
-      throw new NotFound("No profile with this name")
-    }
-
-    if (requesterProfile.toLowerCase() !== profileToUpdate.toLowerCase()) {
-      throw new Forbidden("You do not have permission to update this profile")
-    }
-
-    if (avatar?.url) {
-      await mediaGuard(avatar.url)
-    }
-    if (banner?.url) {
-      await mediaGuard(banner.url)
-    }
-
-    const profile = await updateProfile(profileToUpdate, { avatar, banner })
-
-    return profile
-  } catch (error) {
-    throw error
+  if (!profileExists.data) {
+    throw new NotFound("No profile with this name")
   }
+
+  if (requesterProfile.toLowerCase() !== profileToUpdate.toLowerCase()) {
+    throw new Forbidden("You do not have permission to update this profile")
+  }
+
+  if (avatar?.url) {
+    await mediaGuard(avatar.url)
+  }
+  if (banner?.url) {
+    await mediaGuard(banner.url)
+  }
+
+  const profile = await updateProfile(profileToUpdate, { avatar, banner })
+
+  return profile
 }
 
 export async function followProfileHandler(
@@ -135,32 +123,28 @@ export async function followProfileHandler(
     Params: { name: string }
   }>
 ) {
-  try {
-    const { name: target } = profileNameSchema.parse(request.params)
-    const { name: follower } = request.user as UserProfile
+  const { name: target } = profileNameSchema.parse(request.params)
+  const { name: follower } = request.user as UserProfile
 
-    if (target.toLowerCase() === follower.toLowerCase()) {
-      throw new BadRequest("You can't follow yourself")
-    }
-
-    const profileExists = await getProfile(target)
-
-    if (!profileExists.data) {
-      throw new NotFound("No profile with this name")
-    }
-
-    const isFollowing = await checkIsUserFollowing(follower, target)
-
-    if (isFollowing) {
-      throw new BadRequest("You are already following this profile")
-    }
-
-    const profile = await followProfile(target, follower)
-
-    return profile
-  } catch (error) {
-    throw error
+  if (target.toLowerCase() === follower.toLowerCase()) {
+    throw new BadRequest("You can't follow yourself")
   }
+
+  const profileExists = await getProfile(target)
+
+  if (!profileExists.data) {
+    throw new NotFound("No profile with this name")
+  }
+
+  const isFollowing = await checkIsUserFollowing(follower, target)
+
+  if (isFollowing) {
+    throw new BadRequest("You are already following this profile")
+  }
+
+  const profile = await followProfile(target, follower)
+
+  return profile
 }
 
 export async function unfollowProfileHandler(
@@ -168,32 +152,28 @@ export async function unfollowProfileHandler(
     Params: { name: string }
   }>
 ) {
-  try {
-    const { name: target } = profileNameSchema.parse(request.params)
-    const { name: follower } = request.user as UserProfile
+  const { name: target } = profileNameSchema.parse(request.params)
+  const { name: follower } = request.user as UserProfile
 
-    if (target.toLowerCase() === follower.toLowerCase()) {
-      throw new BadRequest("You can't unfollow yourself")
-    }
-
-    const profileExists = await getProfile(target)
-
-    if (!profileExists.data) {
-      throw new NotFound("No profile with this name")
-    }
-
-    const isFollowing = await checkIsUserFollowing(follower, target)
-
-    if (!isFollowing) {
-      throw new BadRequest("You are not following this profile")
-    }
-
-    const profile = await unfollowProfile(target, follower)
-
-    return profile
-  } catch (error) {
-    throw error
+  if (target.toLowerCase() === follower.toLowerCase()) {
+    throw new BadRequest("You can't unfollow yourself")
   }
+
+  const profileExists = await getProfile(target)
+
+  if (!profileExists.data) {
+    throw new NotFound("No profile with this name")
+  }
+
+  const isFollowing = await checkIsUserFollowing(follower, target)
+
+  if (!isFollowing) {
+    throw new BadRequest("You are not following this profile")
+  }
+
+  const profile = await unfollowProfile(target, follower)
+
+  return profile
 }
 
 export async function getProfilePostsHandler(
@@ -211,33 +191,29 @@ export async function getProfilePostsHandler(
     }
   }>
 ) {
-  try {
-    await profilesQuerySchema.parseAsync(request.query)
-    const { name } = profileNameSchema.parse(request.params)
-    const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } = request.query
+  await profilesQuerySchema.parseAsync(request.query)
+  const { name } = profileNameSchema.parse(request.params)
+  const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const profileExists = await getProfile(name)
-
-    if (!profileExists.data) {
-      throw new NotFound("No profile with this name")
-    }
-
-    const includes: SocialPostIncludes = {
-      author: Boolean(_author),
-      reactions: Boolean(_reactions),
-      comments: Boolean(_comments)
-    }
-
-    const posts = await getProfilePosts(name, sort, sortOrder, limit, page, includes, _tag)
-
-    return posts
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const profileExists = await getProfile(name)
+
+  if (!profileExists.data) {
+    throw new NotFound("No profile with this name")
+  }
+
+  const includes: SocialPostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
+  }
+
+  const posts = await getProfilePosts(name, sort, sortOrder, limit, page, includes, _tag)
+
+  return posts
 }
 
 export async function searchProfilesHandler(
@@ -254,20 +230,16 @@ export async function searchProfilesHandler(
     }
   }>
 ) {
-  try {
-    await searchQuerySchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page, _posts, _followers, _following, q } = request.query
+  await searchQuerySchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page, _posts, _followers, _following, q } = request.query
 
-    const includes: ProfileIncludes = {
-      posts: Boolean(_posts),
-      followers: Boolean(_followers),
-      following: Boolean(_following)
-    }
-
-    const results = await searchProfiles(sort, sortOrder, limit, page, q, includes)
-
-    return results
-  } catch (error) {
-    throw error
+  const includes: ProfileIncludes = {
+    posts: Boolean(_posts),
+    followers: Boolean(_followers),
+    following: Boolean(_following)
   }
+
+  const results = await searchProfiles(sort, sortOrder, limit, page, q, includes)
+
+  return results
 }
