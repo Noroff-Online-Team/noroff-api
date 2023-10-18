@@ -16,24 +16,20 @@ export async function getBooksHandler(
     }
   }>
 ) {
-  try {
-    await sortAndPaginationSchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page } = request.query
+  await sortAndPaginationSchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const books = await getBooks(sort, sortOrder, limit, page)
-
-    if (!books.data.length) {
-      throw new NotFound("Couldn't find any books.")
-    }
-
-    return books
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const books = await getBooks(sort, sortOrder, limit, page)
+
+  if (!books.data.length) {
+    throw new NotFound("Couldn't find any books.")
+  }
+
+  return books
 }
 
 export async function getBookHandler(
@@ -41,32 +37,24 @@ export async function getBookHandler(
     Params: { id: number }
   }>
 ) {
-  try {
-    const params = bookParamsSchema.parse(request.params)
-    const { id } = params
+  const params = bookParamsSchema.parse(request.params)
+  const { id } = params
 
-    const book = await getBook(id)
+  const book = await getBook(id)
 
-    if (!book.data) {
-      throw new NotFound("No book with such ID")
-    }
-
-    return book
-  } catch (error) {
-    throw error
+  if (!book.data) {
+    throw new NotFound("No book with such ID")
   }
+
+  return book
 }
 
 export async function getRandomBookHandler() {
-  try {
-    const book = await getRandomBook()
+  const book = await getRandomBook()
 
-    if (!book.data) {
-      throw new NotFound("Couldn't find any books.")
-    }
-
-    return book
-  } catch (error) {
-    throw error
+  if (!book.data) {
+    throw new NotFound("Couldn't find any books.")
   }
+
+  return book
 }
