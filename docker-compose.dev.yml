@@ -9,7 +9,7 @@ services:
       - 9090:9090
     volumes:
       - prometheus_storage:/prometheus
-      - ./configs/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
     networks:
@@ -21,8 +21,13 @@ services:
     restart: no
     ports:
       - 9091:3000
+    environment:
+      - GF_DATASOURCE_PATH=/etc/grafana/provisioning/datasources
     volumes:
       - grafana_storage:/var/lib/grafana
+      - ./configs/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./configs/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./configs/grafana/dbs:/etc/grafana/provisioning/dashboards
     depends_on:
       - loki
     networks:
