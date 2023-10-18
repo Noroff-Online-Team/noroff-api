@@ -16,24 +16,20 @@ export async function getCatFactsHandler(
     }
   }>
 ) {
-  try {
-    await sortAndPaginationSchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page } = request.query
+  await sortAndPaginationSchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const catFacts = await getCatFacts(sort, sortOrder, limit, page)
-
-    if (!catFacts.data.length) {
-      throw new NotFound("Couldn't find any cat facts.")
-    }
-
-    return catFacts
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const catFacts = await getCatFacts(sort, sortOrder, limit, page)
+
+  if (!catFacts.data.length) {
+    throw new NotFound("Couldn't find any cat facts.")
+  }
+
+  return catFacts
 }
 
 export async function getCatFactHandler(
@@ -41,32 +37,24 @@ export async function getCatFactHandler(
     Params: { id: number }
   }>
 ) {
-  try {
-    const params = catFactParamsSchema.parse(request.params)
-    const { id } = params
+  const params = catFactParamsSchema.parse(request.params)
+  const { id } = params
 
-    const catFact = await getCatFact(id)
+  const catFact = await getCatFact(id)
 
-    if (!catFact.data) {
-      throw new NotFound("No cat fact with such ID")
-    }
-
-    return catFact
-  } catch (error) {
-    throw error
+  if (!catFact.data) {
+    throw new NotFound("No cat fact with such ID")
   }
+
+  return catFact
 }
 
 export async function getRandomCatFactHandler() {
-  try {
-    const catFact = await getRandomCatFact()
+  const catFact = await getRandomCatFact()
 
-    if (!catFact.data) {
-      throw new NotFound("Couldn't find any cat facts.")
-    }
-
-    return catFact
-  } catch (error) {
-    throw error
+  if (!catFact.data) {
+    throw new NotFound("Couldn't find any cat facts.")
   }
+
+  return catFact
 }
