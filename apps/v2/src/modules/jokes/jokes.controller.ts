@@ -16,24 +16,20 @@ export async function getJokesHandler(
     }
   }>
 ) {
-  try {
-    await sortAndPaginationSchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page } = request.query
+  await sortAndPaginationSchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const jokes = await getJokes(sort, sortOrder, limit, page)
-
-    if (!jokes.data.length) {
-      throw new NotFound("Couldn't find any jokes.")
-    }
-
-    return jokes
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const jokes = await getJokes(sort, sortOrder, limit, page)
+
+  if (!jokes.data.length) {
+    throw new NotFound("Couldn't find any jokes.")
+  }
+
+  return jokes
 }
 
 export async function getJokeHandler(
@@ -41,32 +37,24 @@ export async function getJokeHandler(
     Params: { id: number }
   }>
 ) {
-  try {
-    const params = jokeParamsSchema.parse(request.params)
-    const { id } = params
+  const params = jokeParamsSchema.parse(request.params)
+  const { id } = params
 
-    const joke = await getJoke(id)
+  const joke = await getJoke(id)
 
-    if (!joke.data) {
-      throw new NotFound("No joke with such ID")
-    }
-
-    return joke
-  } catch (error) {
-    throw error
+  if (!joke.data) {
+    throw new NotFound("No joke with such ID")
   }
+
+  return joke
 }
 
 export async function getRandomJokeHandler() {
-  try {
-    const joke = await getRandomJoke()
+  const joke = await getRandomJoke()
 
-    if (!joke.data) {
-      throw new NotFound("Couldn't find any jokes.")
-    }
-
-    return joke
-  } catch (error) {
-    throw error
+  if (!joke.data) {
+    throw new NotFound("Couldn't find any jokes.")
   }
+
+  return joke
 }
