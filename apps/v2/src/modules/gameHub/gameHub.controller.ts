@@ -16,24 +16,20 @@ export async function getGameHubProductsHandler(
     }
   }>
 ) {
-  try {
-    await sortAndPaginationSchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page } = request.query
+  await sortAndPaginationSchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const products = await getGameHubProducts(sort, sortOrder, limit, page)
-
-    if (!products.data.length) {
-      throw new NotFound("Couldn't find any products.")
-    }
-
-    return products
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const products = await getGameHubProducts(sort, sortOrder, limit, page)
+
+  if (!products.data.length) {
+    throw new NotFound("Couldn't find any products.")
+  }
+
+  return products
 }
 
 export async function getGameHubProductHandler(
@@ -41,18 +37,14 @@ export async function getGameHubProductHandler(
     Params: { id: string }
   }>
 ) {
-  try {
-    const params = gameHubParamsSchema.parse(request.params)
-    const { id } = params
+  const params = gameHubParamsSchema.parse(request.params)
+  const { id } = params
 
-    const product = await getGameHubProduct(id)
+  const product = await getGameHubProduct(id)
 
-    if (!product.data) {
-      throw new NotFound("No product with such ID")
-    }
-
-    return product
-  } catch (error) {
-    throw error
+  if (!product.data) {
+    throw new NotFound("No product with such ID")
   }
+
+  return product
 }
