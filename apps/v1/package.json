@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "tsx watch --clear-screen=false src/app.ts",
     "start": "node dist/src/app.js",
+    "start:migrate:prod": "yarn prisma migrate deploy && yarn start",
     "build": "rimraf dist && tsc && tscpaths -p tsconfig.json -s ./ -o ./dist",
     "prebuild": "yarn prisma generate",
     "postinstall": "yarn prisma generate"
@@ -25,6 +26,7 @@
     "@prisma/client": "5.4.1",
     "dotenv": "^16.3.1",
     "fastify": "^4.23.2",
+    "fastify-metrics": "^10.3.2",
     "fastify-plugin": "^4.5.1",
     "fastify-type-provider-zod": "^1.1.9",
     "http-errors": "^2.0.0",

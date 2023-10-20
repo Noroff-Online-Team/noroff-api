@@ -3,9 +3,10 @@ const config = {
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   reactStrictMode: true,
   eslint: {
-    // Replaced by root workspace command
     ignoreDuringBuilds: true
-  }
+  },
+  // For docker
+  output: "standalone"
 }
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
