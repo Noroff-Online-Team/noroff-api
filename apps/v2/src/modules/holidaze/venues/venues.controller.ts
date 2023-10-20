@@ -32,25 +32,21 @@ export async function getVenuesHandler(
     }
   }>
 ) {
-  try {
-    await venuesQuerySchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page, _owner, _bookings } = request.query
+  await venuesQuerySchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page, _owner, _bookings } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const includes: HolidazeVenueIncludes = {
-      owner: Boolean(_owner),
-      bookings: Boolean(_bookings)
-    }
-
-    const venues = await getVenues(sort, sortOrder, limit, page, includes)
-
-    return venues
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const includes: HolidazeVenueIncludes = {
+    owner: Boolean(_owner),
+    bookings: Boolean(_bookings)
+  }
+
+  const venues = await getVenues(sort, sortOrder, limit, page, includes)
+
+  return venues
 }
 
 export async function getVenueHandler(
@@ -62,25 +58,21 @@ export async function getVenueHandler(
     }
   }>
 ) {
-  try {
-    const { id } = await venueIdSchema.parseAsync(request.params)
-    const { _owner, _bookings } = await queryFlagsSchema.parseAsync(request.query)
+  const { id } = await venueIdSchema.parseAsync(request.params)
+  const { _owner, _bookings } = await queryFlagsSchema.parseAsync(request.query)
 
-    const includes: HolidazeVenueIncludes = {
-      owner: Boolean(_owner),
-      bookings: Boolean(_bookings)
-    }
-
-    const venue = await getVenue(id, includes)
-
-    if (!venue.data) {
-      throw new NotFound("Venue not found")
-    }
-
-    return venue
-  } catch (error) {
-    throw error
+  const includes: HolidazeVenueIncludes = {
+    owner: Boolean(_owner),
+    bookings: Boolean(_bookings)
   }
+
+  const venue = await getVenue(id, includes)
+
+  if (!venue.data) {
+    throw new NotFound("Venue not found")
+  }
+
+  return venue
 }
 
 export async function createVenueHandler(
@@ -93,38 +85,34 @@ export async function createVenueHandler(
   }>,
   reply: FastifyReply
 ) {
-  try {
-    const { name } = request.user as UserProfile
-    const { media } = await createVenueSchema.parseAsync(request.body)
-    const { _owner, _bookings } = await queryFlagsSchema.parseAsync(request.query)
+  const { name } = request.user as UserProfile
+  const { media } = await createVenueSchema.parseAsync(request.body)
+  const { _owner, _bookings } = await queryFlagsSchema.parseAsync(request.query)
 
-    const includes: HolidazeVenueIncludes = {
-      owner: Boolean(_owner),
-      bookings: Boolean(_bookings)
-    }
-
-    const profile = await getProfile(name)
-
-    if (!profile.data) {
-      throw new NotFound("Profile not found")
-    }
-
-    if (!profile.data.venueManager) {
-      throw new Forbidden("You are not a venue manager")
-    }
-
-    if (media) {
-      for (const image of media) {
-        await mediaGuard(image.url)
-      }
-    }
-
-    const venue = await createVenue(name, request.body, includes)
-
-    reply.code(201).send(venue)
-  } catch (error) {
-    throw error
+  const includes: HolidazeVenueIncludes = {
+    owner: Boolean(_owner),
+    bookings: Boolean(_bookings)
   }
+
+  const profile = await getProfile(name)
+
+  if (!profile.data) {
+    throw new NotFound("Profile not found")
+  }
+
+  if (!profile.data.venueManager) {
+    throw new Forbidden("You are not a venue manager")
+  }
+
+  if (media) {
+    for (const image of media) {
+      await mediaGuard(image.url)
+    }
+  }
+
+  const venue = await createVenue(name, request.body, includes)
+
+  reply.code(201).send(venue)
 }
 
 export async function updateVenueHandler(
@@ -137,45 +125,41 @@ export async function updateVenueHandler(
     }
   }>
 ) {
-  try {
-    const { name } = request.user as UserProfile
-    const { id } = await venueIdSchema.parseAsync(request.params)
-    const { media } = await updateVenueSchema.parseAsync(request.body)
-    const { _owner, _bookings } = await queryFlagsSchema.parseAsync(request.query)
+  const { name } = request.user as UserProfile
+  const { id } = await venueIdSchema.parseAsync(request.params)
+  const { media } = await updateVenueSchema.parseAsync(request.body)
+  const { _owner, _bookings } = await queryFlagsSchema.parseAsync(request.query)
 
-    const includes: HolidazeVenueIncludes = {
-      owner: Boolean(_owner),
-      bookings: Boolean(_bookings)
-    }
-
-    const venue = await getVenue(id)
-
-    if (!venue.data) {
-      throw new NotFound("Venue not found")
-    }
-
-    if (venue.data.ownerName.toLowerCase() !== name.toLowerCase()) {
-      throw new Forbidden("You are not the owner of this venue")
-    }
-
-    const profile = await getProfile(name)
-
-    if (!profile?.data?.venueManager) {
-      throw new Forbidden("You are not a venue manager")
-    }
-
-    if (media) {
-      for (const image of media) {
-        await mediaGuard(image.url)
-      }
-    }
-
-    const updatedVenue = await updateVenue(id, request.body, includes)
-
-    return updatedVenue
-  } catch (error) {
-    throw error
+  const includes: HolidazeVenueIncludes = {
+    owner: Boolean(_owner),
+    bookings: Boolean(_bookings)
   }
+
+  const venue = await getVenue(id)
+
+  if (!venue.data) {
+    throw new NotFound("Venue not found")
+  }
+
+  if (venue.data.ownerName.toLowerCase() !== name.toLowerCase()) {
+    throw new Forbidden("You are not the owner of this venue")
+  }
+
+  const profile = await getProfile(name)
+
+  if (!profile?.data?.venueManager) {
+    throw new Forbidden("You are not a venue manager")
+  }
+
+  if (media) {
+    for (const image of media) {
+      await mediaGuard(image.url)
+    }
+  }
+
+  const updatedVenue = await updateVenue(id, request.body, includes)
+
+  return updatedVenue
 }
 
 export async function deleteVenueHandler(
@@ -184,32 +168,28 @@ export async function deleteVenueHandler(
   }>,
   reply: FastifyReply
 ) {
-  try {
-    const { name } = request.user as UserProfile
-    const { id } = await venueIdSchema.parseAsync(request.params)
+  const { name } = request.user as UserProfile
+  const { id } = await venueIdSchema.parseAsync(request.params)
 
-    const venue = await getVenue(id)
+  const venue = await getVenue(id)
 
-    if (!venue.data) {
-      throw new NotFound("Venue not found")
-    }
-
-    if (venue.data.ownerName.toLowerCase() !== name.toLowerCase()) {
-      throw new Forbidden("You are not the owner of this venue")
-    }
-
-    const profile = await getProfile(name)
-
-    if (!profile?.data?.venueManager) {
-      throw new Forbidden("You are not a venue manager")
-    }
-
-    await deleteVenue(id)
-
-    reply.code(204)
-  } catch (error) {
-    throw error
+  if (!venue.data) {
+    throw new NotFound("Venue not found")
   }
+
+  if (venue.data.ownerName.toLowerCase() !== name.toLowerCase()) {
+    throw new Forbidden("You are not the owner of this venue")
+  }
+
+  const profile = await getProfile(name)
+
+  if (!profile?.data?.venueManager) {
+    throw new Forbidden("You are not a venue manager")
+  }
+
+  await deleteVenue(id)
+
+  reply.code(204)
 }
 
 export async function searchVenuesHandler(
@@ -225,19 +205,15 @@ export async function searchVenuesHandler(
     }
   }>
 ) {
-  try {
-    await searchQuerySchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page, _owner, _bookings, q } = request.query
+  await searchQuerySchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page, _owner, _bookings, q } = request.query
 
-    const includes: HolidazeVenueIncludes = {
-      owner: Boolean(_owner),
-      bookings: Boolean(_bookings)
-    }
-
-    const results = await searchVenues(sort, sortOrder, limit, page, q, includes)
-
-    return results
-  } catch (error) {
-    throw error
+  const includes: HolidazeVenueIncludes = {
+    owner: Boolean(_owner),
+    bookings: Boolean(_bookings)
   }
+
+  const results = await searchVenues(sort, sortOrder, limit, page, q, includes)
+
+  return results
 }

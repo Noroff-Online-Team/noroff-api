@@ -16,24 +16,20 @@ export async function getQuotesHandler(
     }
   }>
 ) {
-  try {
-    await sortAndPaginationSchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page } = request.query
+  await sortAndPaginationSchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const quotes = await getQuotes(sort, sortOrder, limit, page)
-
-    if (!quotes.data.length) {
-      throw new NotFound("Couldn't find any quotes.")
-    }
-
-    return quotes
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const quotes = await getQuotes(sort, sortOrder, limit, page)
+
+  if (!quotes.data.length) {
+    throw new NotFound("Couldn't find any quotes.")
+  }
+
+  return quotes
 }
 
 export async function getQuoteHandler(
@@ -41,32 +37,24 @@ export async function getQuoteHandler(
     Params: { id: number }
   }>
 ) {
-  try {
-    const params = quoteParamsSchema.parse(request.params)
-    const { id } = params
+  const params = quoteParamsSchema.parse(request.params)
+  const { id } = params
 
-    const quote = await getQuote(id)
+  const quote = await getQuote(id)
 
-    if (!quote.data) {
-      throw new NotFound("No quote with such ID")
-    }
-
-    return quote
-  } catch (error) {
-    throw error
+  if (!quote.data) {
+    throw new NotFound("No quote with such ID")
   }
+
+  return quote
 }
 
 export async function getRandomQuoteHandler() {
-  try {
-    const quote = await getRandomQuote()
+  const quote = await getRandomQuote()
 
-    if (!quote.data) {
-      throw new NotFound("Couldn't find any quotes.")
-    }
-
-    return quote
-  } catch (error) {
-    throw error
+  if (!quote.data) {
+    throw new NotFound("Couldn't find any quotes.")
   }
+
+  return quote
 }

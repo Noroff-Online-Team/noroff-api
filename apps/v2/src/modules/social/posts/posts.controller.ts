@@ -46,26 +46,22 @@ export async function getPostsHandler(
     }
   }>
 ) {
-  try {
-    await postsQuerySchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } = request.query
+  await postsQuerySchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const includes: SocialPostIncludes = {
-      author: Boolean(_author),
-      reactions: Boolean(_reactions),
-      comments: Boolean(_comments)
-    }
-
-    const posts = await getPosts(sort, sortOrder, limit, page, includes, _tag)
-
-    return posts
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const includes: SocialPostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
+  }
+
+  const posts = await getPosts(sort, sortOrder, limit, page, includes, _tag)
+
+  return posts
 }
 
 export async function getPostHandler(
@@ -78,26 +74,22 @@ export async function getPostHandler(
     }
   }>
 ) {
-  try {
-    const { id } = await postIdParamsSchema.parseAsync(request.params)
-    const { _author, _reactions, _comments } = request.query
+  const { id } = await postIdParamsSchema.parseAsync(request.params)
+  const { _author, _reactions, _comments } = request.query
 
-    const includes: SocialPostIncludes = {
-      author: Boolean(_author),
-      reactions: Boolean(_reactions),
-      comments: Boolean(_comments)
-    }
-
-    const post = await getPost(id, includes)
-
-    if (!post.data) {
-      throw new NotFound("No post with such ID")
-    }
-
-    return post
-  } catch (error) {
-    throw error
+  const includes: SocialPostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
   }
+
+  const post = await getPost(id, includes)
+
+  if (!post.data) {
+    throw new NotFound("No post with such ID")
+  }
+
+  return post
 }
 
 export async function createPostHandler(
@@ -111,28 +103,24 @@ export async function createPostHandler(
   }>,
   reply: FastifyReply
 ) {
-  try {
-    await mediaSchema.parseAsync(request.body)
-    const { name } = request.user as UserProfile
-    const { media } = request.body
-    const { _author, _reactions, _comments } = request.query
+  await mediaSchema.parseAsync(request.body)
+  const { name } = request.user as UserProfile
+  const { media } = request.body
+  const { _author, _reactions, _comments } = request.query
 
-    const includes: SocialPostIncludes = {
-      author: Boolean(_author),
-      reactions: Boolean(_reactions),
-      comments: Boolean(_comments)
-    }
-
-    if (media?.url) {
-      await mediaGuard(media.url)
-    }
-
-    const post = await createPost({ ...request.body, owner: name }, includes)
-
-    reply.code(201).send(post)
-  } catch (error) {
-    throw error
+  const includes: SocialPostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
   }
+
+  if (media?.url) {
+    await mediaGuard(media.url)
+  }
+
+  const post = await createPost({ ...request.body, owner: name }, includes)
+
+  reply.code(201).send(post)
 }
 
 export async function deletePostHandler(
@@ -141,26 +129,22 @@ export async function deletePostHandler(
   }>,
   reply: FastifyReply
 ) {
-  try {
-    const { id } = await postIdParamsSchema.parseAsync(request.params)
-    const { name } = request.user as UserProfile
+  const { id } = await postIdParamsSchema.parseAsync(request.params)
+  const { name } = request.user as UserProfile
 
-    const post = await getPost(id, { author: true })
+  const post = await getPost(id, { author: true })
 
-    if (!post.data) {
-      throw new NotFound("Post not found")
-    }
-
-    if (name.toLowerCase() !== post.data.author?.name.toLowerCase()) {
-      throw new Forbidden("You do not have permission to delete this post")
-    }
-
-    await deletePost(id)
-
-    reply.code(204)
-  } catch (error) {
-    throw error
+  if (!post.data) {
+    throw new NotFound("Post not found")
   }
+
+  if (name.toLowerCase() !== post.data.author?.name.toLowerCase()) {
+    throw new Forbidden("You do not have permission to delete this post")
+  }
+
+  await deletePost(id)
+
+  reply.code(204)
 }
 
 export async function updatePostHandler(
@@ -174,38 +158,34 @@ export async function updatePostHandler(
     }
   }>
 ) {
-  try {
-    const { id } = await postIdParamsSchema.parseAsync(request.params)
-    const { name } = request.user as UserProfile
-    const { media } = request.body
-    const { _author, _reactions, _comments } = request.query
+  const { id } = await postIdParamsSchema.parseAsync(request.params)
+  const { name } = request.user as UserProfile
+  const { media } = request.body
+  const { _author, _reactions, _comments } = request.query
 
-    const includes: SocialPostIncludes = {
-      author: Boolean(_author),
-      reactions: Boolean(_reactions),
-      comments: Boolean(_comments)
-    }
-
-    if (media?.url) {
-      await mediaGuard(media.url)
-    }
-
-    const post = await getPost(id, { author: true })
-
-    if (!post.data) {
-      throw new NotFound("Post not found")
-    }
-
-    if (name.toLowerCase() !== post.data.author?.name.toLowerCase()) {
-      throw new Forbidden("You do not have permission to edit this post")
-    }
-
-    const updatedPost = await updatePost(id, request.body, includes)
-
-    return updatedPost
-  } catch (error) {
-    throw error
+  const includes: SocialPostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
   }
+
+  if (media?.url) {
+    await mediaGuard(media.url)
+  }
+
+  const post = await getPost(id, { author: true })
+
+  if (!post.data) {
+    throw new NotFound("Post not found")
+  }
+
+  if (name.toLowerCase() !== post.data.author?.name.toLowerCase()) {
+    throw new Forbidden("You do not have permission to edit this post")
+  }
+
+  const updatedPost = await updatePost(id, request.body, includes)
+
+  return updatedPost
 }
 
 export async function createOrDeleteReactionHandler(
@@ -213,24 +193,20 @@ export async function createOrDeleteReactionHandler(
     Params: { id: number; symbol: string }
   }>
 ) {
-  try {
-    const { id } = await postIdParamsSchema.parseAsync(request.params)
-    const { symbol } = request.params
-    await emojiSchema.parseAsync(symbol)
-    const { name } = request.user as UserProfile
+  const { id } = await postIdParamsSchema.parseAsync(request.params)
+  const { symbol } = request.params
+  await emojiSchema.parseAsync(symbol)
+  const { name } = request.user as UserProfile
 
-    const post = await getPost(id)
+  const post = await getPost(id)
 
-    if (!post.data) {
-      throw new NotFound("Post not found")
-    }
-
-    const result = await createOrDeleteReaction(id, symbol, name)
-
-    return result
-  } catch (error) {
-    throw error
+  if (!post.data) {
+    throw new NotFound("Post not found")
   }
+
+  const result = await createOrDeleteReaction(id, symbol, name)
+
+  return result
 }
 
 export async function createCommentHandler(
@@ -241,42 +217,38 @@ export async function createCommentHandler(
   }>,
   reply: FastifyReply
 ) {
-  try {
-    const { id } = await postIdParamsSchema.parseAsync(request.params)
-    const { _author } = await authorQuerySchema.parseAsync(request.query)
-    const { name } = request.user as UserProfile
-    const { replyToId } = request.body
+  const { id } = await postIdParamsSchema.parseAsync(request.params)
+  const { _author } = await authorQuerySchema.parseAsync(request.query)
+  const { name } = request.user as UserProfile
+  const { replyToId } = request.body
 
-    const post = await getPost(id, { comments: true })
+  const post = await getPost(id, { comments: true })
 
-    if (!post.data) {
-      throw new NotFound("Post not found")
-    }
-
-    if (replyToId) {
-      const replyComment = await getComment(replyToId)
-
-      if (!replyComment) {
-        throw new NotFound("You can't reply to a comment that does not exist")
-      }
-
-      const isRelatedToPost = post.data.comments?.find(comment => comment.id === replyToId)
-
-      if (!isRelatedToPost) {
-        throw new BadRequest("Comment is not related to this post")
-      }
-    }
-
-    const includes: SocialPostIncludes = {
-      author: Boolean(_author)
-    }
-
-    const result = await createComment(id, name, request.body, includes)
-
-    reply.code(201).send(result)
-  } catch (error) {
-    throw error
+  if (!post.data) {
+    throw new NotFound("Post not found")
   }
+
+  if (replyToId) {
+    const replyComment = await getComment(replyToId)
+
+    if (!replyComment) {
+      throw new NotFound("You can't reply to a comment that does not exist")
+    }
+
+    const isRelatedToPost = post.data.comments?.find(comment => comment.id === replyToId)
+
+    if (!isRelatedToPost) {
+      throw new BadRequest("Comment is not related to this post")
+    }
+  }
+
+  const includes: SocialPostIncludes = {
+    author: Boolean(_author)
+  }
+
+  const result = await createComment(id, name, request.body, includes)
+
+  reply.code(201).send(result)
 }
 
 export async function getPostsOfFollowedUsersHandler(
@@ -293,26 +265,22 @@ export async function getPostsOfFollowedUsersHandler(
     }
   }>
 ) {
-  try {
-    const { id } = request.user as UserProfile
-    const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } = request.query
+  const { id } = request.user as UserProfile
+  const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } = request.query
 
-    if (limit && limit > 100) {
-      throw new BadRequest("Limit cannot be greater than 100")
-    }
-
-    const includes: SocialPostIncludes = {
-      author: Boolean(_author),
-      reactions: Boolean(_reactions),
-      comments: Boolean(_comments)
-    }
-
-    const posts = await getPostsOfFollowedUsers(id, sort, sortOrder, limit, page, includes, _tag)
-
-    return posts
-  } catch (error) {
-    throw error
+  if (limit && limit > 100) {
+    throw new BadRequest("Limit cannot be greater than 100")
   }
+
+  const includes: SocialPostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
+  }
+
+  const posts = await getPostsOfFollowedUsers(id, sort, sortOrder, limit, page, includes, _tag)
+
+  return posts
 }
 
 export async function searchPostsHandler(
@@ -329,20 +297,16 @@ export async function searchPostsHandler(
     }
   }>
 ) {
-  try {
-    await searchQuerySchema.parseAsync(request.query)
-    const { sort, sortOrder, limit, page, _author, _reactions, _comments, q } = request.query
+  await searchQuerySchema.parseAsync(request.query)
+  const { sort, sortOrder, limit, page, _author, _reactions, _comments, q } = request.query
 
-    const includes: SocialPostIncludes = {
-      author: Boolean(_author),
-      reactions: Boolean(_reactions),
-      comments: Boolean(_comments)
-    }
-
-    const results = await searchPosts(sort, sortOrder, limit, page, q, includes)
-
-    return results
-  } catch (error) {
-    throw error
+  const includes: SocialPostIncludes = {
+    author: Boolean(_author),
+    reactions: Boolean(_reactions),
+    comments: Boolean(_comments)
   }
+
+  const results = await searchPosts(sort, sortOrder, limit, page, q, includes)
+
+  return results
 }
