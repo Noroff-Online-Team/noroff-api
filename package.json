@@ -14,6 +14,7 @@
     "build:v2": "yarn turbo build --filter=v2...",
     "build:docs": "yarn turbo build --filter=docs...",
     "build:api-utils": "yarn turbo build --filter=@noroff/api-utils...",
+    "build:logger": "yarn turbo build --filter=@noroff/logger...",
     "build": "yarn turbo build",
     "start:v1": "yarn --cwd apps/v1 start",
     "start:v2": "yarn --cwd apps/v2 start",

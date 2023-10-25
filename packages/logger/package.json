@@ -1,0 +1,24 @@
+{
+  "name": "@noroff/logger",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Noroff School of Technology and Digital Media <https://noroff.no>",
+  "license": "UNLICENSED",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "src/index.ts"
+  ],
+  "scripts": {
+    "build": "rimraf dist && tsc"
+  },
+  "dependencies": {
+    "pino": "^8.16.0",
+    "pino-loki": "^2.1.3",
+    "pino-pretty": "^10.2.3"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.2"
+  }
+}
