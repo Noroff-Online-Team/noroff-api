@@ -60,6 +60,8 @@ jobs:
         run: yarn install
       - name: Build @noroff/api-utils
         run: "yarn build:api-utils"
+      - name: Build @noroff/logger
+        run: "yarn build:logger"
       - name: Run Prisma migrations
         run: yarn prisma migrate deploy
         working-directory: apps/v2
