@@ -11,6 +11,10 @@ interface CreateLoggerOptions {
  * @returns A Pino logger instance with Loki transport
  */
 export function createLogger({ label }: CreateLoggerOptions = { label: "Noroff API" }) {
+  if (process.env.NODE_ENV === "test") {
+    return pino({ level: "silent" })
+  }
+
   return pino({
     transport: {
       targets: [
