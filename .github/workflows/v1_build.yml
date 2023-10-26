@@ -2,16 +2,9 @@
 name: API v1 build and test
 
 on:
-  push:
-    branches:
-      - main
-      - v2
-    paths:
-      - apps/v1/**
   pull_request:
     branches:
       - main
-      - v2
     paths:
       - apps/v1/**
   workflow_dispatch:
