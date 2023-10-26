@@ -31,5 +31,7 @@ jobs:
         run: yarn install
       - name: Build @noroff/api-utils
         run: "yarn build:api-utils"
+      - name: Build @noroff/logger
+        run: "yarn build:logger"
       - name: Build @noroff/api-v1
         run: "yarn build:v1"
