@@ -29,6 +29,8 @@ export default fp(async fastify => {
   fastify.addHook("onResponse", (req, reply, next) => {
     logger.info({
       id: req.id,
+      url: req.url,
+      method: req.method,
       statusCode: reply.statusCode,
       responseTime: reply.getResponseTime()
     })
