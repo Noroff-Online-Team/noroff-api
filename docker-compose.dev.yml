@@ -26,7 +26,7 @@ services:
     volumes:
       - grafana_storage:/var/lib/grafana
       - ./configs/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
-      - ./configs/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./configs/grafana/dbs/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
       - ./configs/grafana/dbs:/etc/grafana/provisioning/dashboards
     depends_on:
       - loki

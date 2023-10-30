@@ -2,16 +2,9 @@
 name: API v1 build and test
 
 on:
-  push:
-    branches:
-      - main
-      - v2
-    paths:
-      - apps/v1/**
   pull_request:
     branches:
       - main
-      - v2
     paths:
       - apps/v1/**
   workflow_dispatch:
@@ -31,5 +24,7 @@ jobs:
         run: yarn install
       - name: Build @noroff/api-utils
         run: "yarn build:api-utils"
+      - name: Build @noroff/logger
+        run: "yarn build:logger"
       - name: Build @noroff/api-v1
         run: "yarn build:v1"
