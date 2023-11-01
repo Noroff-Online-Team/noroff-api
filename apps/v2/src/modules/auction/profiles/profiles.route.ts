@@ -66,7 +66,7 @@ async function profilesRoutes(server: FastifyInstance) {
     {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
-        tags: ["auction-listings"],
+        tags: ["auction-profiles"],
         querystring: searchQuerySchema,
         response: {
           200: createResponseSchema(displayProfileSchema.array())
