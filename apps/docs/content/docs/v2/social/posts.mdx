@@ -141,14 +141,13 @@ You can filter based on an entry in the tags array by using the `_tag` query fla
 
 <TypeTable
   type={{
-    _tag: { type: "string", description: "Only posts matching tag." },
-    _active: { type: "boolean", description: "Only active posts." }
+    _tag: { type: "string", description: "Only posts matching tag." }
   }}
 />
 
-An example query filtering for active listings with the `my_tag` tag.
+An example query filtering for posts with the tag `my_tag`:
 
-<EndpointDetails path="/social/posts?_tag=my_tag&_active=true" />
+<EndpointDetails path="/social/posts?_tag=my_tag" />
 
 <Hr />
 
@@ -411,3 +410,11 @@ This endpoint allows a comment to be made on a post. The optional `replyToId` pr
   "meta": {}
 }
 ```
+
+<Hr />
+
+## Search posts
+
+<EndpointDetails path="/social/posts/search?q=<query>" />
+
+Search for posts by their `title` or `body` properties.
