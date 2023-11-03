@@ -40,10 +40,31 @@ const httpErrorHandler: ErrorHandlerStrategy = error => {
 }
 
 const jwtErrorHandler: ErrorHandlerStrategy = error => {
-  if (error.code === "FST_JWT_NO_AUTHORIZATION_IN_HEADER") {
+  if (error.code.startsWith("FST_JWT")) {
+    let statusCode: number
+    let customMessage: string
+
+    switch (error.code) {
+      case "FST_JWT_NO_AUTHORIZATION_IN_HEADER":
+        statusCode = 401
+        customMessage = "No authorization header was found"
+        break
+      case "FST_JWT_AUTHORIZATION_TOKEN_INVALID":
+        statusCode = 401
+        customMessage = "Invalid authorization token. Please login again"
+        break
+      case "FST_JWT_BAD_REQUEST":
+        statusCode = 400
+        customMessage = "Bad format in request authorization header. Correct format is Authorization: Bearer [token]"
+        break
+      default:
+        statusCode = 401
+        customMessage = "Invalid authorization header"
+    }
+
     return {
-      statusCode: error.statusCode ?? 401,
-      errors: [{ message: "No authorization header was found" }]
+      statusCode,
+      errors: [{ message: customMessage }]
     }
   }
   return null
