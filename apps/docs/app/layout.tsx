@@ -1,4 +1,4 @@
-import type { Metadata } from "next/types"
+import type { Metadata, Viewport } from "next/types"
 import { Nav } from "@/components/nav"
 import { Inter } from "next/font/google"
 import clsx from "clsx"
@@ -13,13 +13,16 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s | Noroff API Documentation",
       default: "Noroff API Documentation"
     },
-    themeColor: [
-      { media: "(prefers-color-scheme: light)", color: "white" },
-      { media: "(prefers-color-scheme: dark)", color: "black" }
-    ],
     description: "Noroff API Documentation",
     metadataBase: base_url
   }
+}
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" }
+  ]
 }
 
 const inter = Inter({
