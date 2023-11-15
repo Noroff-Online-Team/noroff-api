@@ -48,7 +48,7 @@
 
 /* Full-width styles */
 .nd-container {
-  max-width: none;
+  max-width: none !important;
 }
 
 main > div:nth-of-type(2) > aside:nth-child(1) {
