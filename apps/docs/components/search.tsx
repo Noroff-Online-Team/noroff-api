@@ -40,6 +40,11 @@ export default function CustomSearchDialog(props: SharedProps) {
               className={cn(itemVariants({ active: tag === version.param }))}
               onClick={() => setTag(version.param)}
               tabIndex={-1}
+              aria-label={
+                tag === version.param
+                  ? `Currently searching ${version.version} docs`
+                  : `Switch to searching ${version.version} docs`
+              }
             >
               {version.version}
             </button>
