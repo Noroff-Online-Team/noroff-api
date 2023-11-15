@@ -1,5 +1,6 @@
 "use client"
 
+import { Hr } from "@/components/hr"
 import { useMDXComponent } from "next-contentlayer/hooks"
 import { ImageZoom } from "next-docs-ui/components/image-zoom"
 import defaultComponents from "next-docs-ui/mdx"
@@ -10,6 +11,7 @@ const components = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   img: (props: any) => <ImageZoom {...props} />,
   pre: (props: HTMLAttributes<HTMLPreElement>) => <defaultComponents.pre {...props} className="max-h-[400px]" />,
+  Hr: (props: HTMLAttributes<HTMLHRElement>) => <Hr {...props} />,
   blockquote: (props: React.QuoteHTMLAttributes<HTMLQuoteElement>) => (
     <div className="my-4 rounded-lg border px-3 text-sm shadow-md">{props.children}</div>
   )
