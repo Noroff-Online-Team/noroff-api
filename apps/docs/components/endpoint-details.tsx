@@ -20,7 +20,7 @@ export function EndpointDetails({
   path: string
 }) {
   return (
-    <div className="flex items-center gap-x-2 mt-4 font-semibold font-mono ">
+    <div className="flex items-center gap-x-2 mt-4 font-semibold font-mono">
       <span className={`leading-6 rounded-lg text-[0.75rem] px-2 py-0.5 ring-1 ring-inset ${classes[method]}`}>
         {method}
       </span>

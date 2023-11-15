@@ -8,6 +8,7 @@ import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { NoroffLogo } from "./noroff-logo"
+import { versions } from "@/utils/versions"
 
 const item = cva("px-2 py-1 rounded-md transition-colors hover:text-accent-foreground", {
   variants: {
@@ -55,7 +56,7 @@ export function Nav() {
           </div>
         </div>
       }
-      enableSidebar={version === "v1" || version === "v2"}
+      enableSidebar={versions.some(m => m.param === version)}
       links={[
         {
           label: "Github",
@@ -78,12 +79,11 @@ export function Nav() {
       transparent={!version && isScrolledDown}
     >
       <div className="bg-secondary/50 rounded-md border p-1 text-sm text-muted-foreground max-sm:absolute max-sm:left-[50%] max-sm:translate-x-[-50%]">
-        <Link href="/docs/v2" className={cn(item({ active: version === "v2" }))}>
-          v2
-        </Link>
-        <Link href="/docs/v1" className={cn(item({ active: version === "v1" }))}>
-          v1
-        </Link>
+        {versions.map(m => (
+          <Link key={m.param} href={`/docs/${m.param}`} className={cn(item({ active: version === m.param }))}>
+            {m.version}
+          </Link>
+        ))}
       </div>
     </OriginalNav>
   )
