@@ -55,12 +55,5 @@ export default function Layout({ params, children }: { params: { version: string
 }
 
 export function generateStaticParams() {
-  return [
-    {
-      version: "v1"
-    },
-    {
-      version: "v2"
-    }
-  ]
+  return versions.map(version => ({ version: version.param }))
 }
