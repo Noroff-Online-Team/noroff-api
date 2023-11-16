@@ -8,10 +8,10 @@
     "node": ">=18.17.0"
   },
   "scripts": {
-    "dev": "tsx watch --clear-screen=false src/app.ts",
-    "start": "node dist/src/app.js",
+    "dev": "tsup src/app.ts --watch src",
+    "start": "node dist/app.js",
     "start:migrate:prod": "yarn prisma migrate deploy && yarn start",
-    "build": "rimraf dist && tsc && tscpaths -p tsconfig.json -s ./ -o ./dist",
+    "build": "tsup",
     "prebuild": "yarn prisma generate",
     "postinstall": "yarn prisma generate"
   },
@@ -42,9 +42,7 @@
     "@types/node-schedule": "^2.1.1",
     "@types/statuses": "^2.0.2",
     "prisma": "^5.4.1",
-    "rimraf": "^5.0.5",
-    "tscpaths": "^0.0.9",
-    "tsx": "^3.13.0",
+    "tsup": "^7.2.0",
     "typescript": "^5.2.2"
   }
 }
