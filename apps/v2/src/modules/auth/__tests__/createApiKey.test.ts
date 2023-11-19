@@ -1,4 +1,5 @@
-import { server, registerUser } from "@/test-utils"
+import { registerUser, server } from "@/test-utils"
+
 import { db } from "@/utils"
 
 let TEST_USER_EMAIL = ""

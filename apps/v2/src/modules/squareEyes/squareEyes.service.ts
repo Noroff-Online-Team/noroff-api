@@ -1,4 +1,5 @@
 import { SquareEyesProduct } from "@prisma/v2-client"
+
 import { db } from "@/utils"
 
 export async function getSquareEyesProducts(

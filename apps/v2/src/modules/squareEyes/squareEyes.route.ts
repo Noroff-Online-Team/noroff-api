@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify"
-
-import { squareEyesSchema, squareEyesParamsSchema } from "./squareEyes.schema"
 import { createResponseSchema, sortAndPaginationSchema } from "@noroff/api-utils"
-import { getSquareEyesProductsHandler, getSquareEyesProductHandler } from "./squareEyes.controller"
+
+import { getSquareEyesProductHandler, getSquareEyesProductsHandler } from "./squareEyes.controller"
+import { squareEyesParamsSchema, squareEyesSchema } from "./squareEyes.schema"
 
 async function squareEyesRoutes(server: FastifyInstance) {
   server.get(

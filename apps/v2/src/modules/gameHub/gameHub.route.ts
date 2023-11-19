@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify"
-
-import { gameHubSchema, gameHubParamsSchema } from "./gameHub.schema"
 import { createResponseSchema, sortAndPaginationSchema } from "@noroff/api-utils"
-import { getGameHubProductsHandler, getGameHubProductHandler } from "./gameHub.controller"
+
+import { getGameHubProductHandler, getGameHubProductsHandler } from "./gameHub.controller"
+import { gameHubParamsSchema, gameHubSchema } from "./gameHub.schema"
 
 async function gameHubRoutes(server: FastifyInstance) {
   server.get(

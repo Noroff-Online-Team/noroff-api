@@ -1,4 +1,5 @@
-import { server, getAuthCredentials } from "@/test-utils"
+import { getAuthCredentials, server } from "@/test-utils"
+
 import { db } from "@/utils"
 
 const VENUE_ID = "36a89378-83fa-4f3f-a777-ad15edbd1d40"

@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify"
-
-import { onlineShopSchema, onlineShopParamsSchema } from "./onlineShop.schema"
 import { createResponseSchema, sortAndPaginationSchema } from "@noroff/api-utils"
-import { getOnlineShopProductsHandler, getOnlineShopProductHandler } from "./onlineShop.controller"
+
+import { getOnlineShopProductHandler, getOnlineShopProductsHandler } from "./onlineShop.controller"
+import { onlineShopParamsSchema, onlineShopSchema } from "./onlineShop.schema"
 
 async function onlineShopRoutes(server: FastifyInstance) {
   server.get(

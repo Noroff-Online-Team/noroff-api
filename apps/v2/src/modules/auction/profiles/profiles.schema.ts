@@ -1,5 +1,6 @@
-import { z } from "zod"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { z } from "zod"
+
 import { mediaProperties, profileCore, profileMedia } from "../../auth/auth.schema"
 
 export const updateProfileSchema = z.object(profileMedia)

@@ -1,7 +1,8 @@
-import { z } from "zod"
-import { displayProfileSchema } from "../profiles/profiles.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { z } from "zod"
+
 import { mediaProperties, mediaPropertiesWithErrors, profileCore } from "../../auth/auth.schema"
+import { displayProfileSchema } from "../profiles/profiles.schema"
 
 const bidCore = {
   id: z.string().uuid(),

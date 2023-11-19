@@ -1,5 +1,7 @@
 import { hashPassword } from "@noroff/api-utils"
+
 import { db } from "@/utils"
+
 import { CreateProfileInput } from "./auth.schema"
 
 const DEFAULT_AVATAR = {

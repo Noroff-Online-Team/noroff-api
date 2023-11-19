@@ -1,5 +1,5 @@
-import fp from "fastify-plugin"
 import { createLogger } from "@noroff/logger"
+import fp from "fastify-plugin"
 
 const logger = createLogger({ label: "API-v2" })
 

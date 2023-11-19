@@ -1,6 +1,8 @@
 import { NotFound } from "http-errors"
-import { CreateBookingSchema } from "./bookings.schema"
+
 import { db } from "@/utils"
+
+import { CreateBookingSchema } from "./bookings.schema"
 
 export async function checkForOverlappingBookings({
   venueId,

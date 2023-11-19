@@ -1,8 +1,10 @@
-import { UserProfile, SocialPost } from "@prisma/v2-client"
+import { SocialPost, UserProfile } from "@prisma/v2-client"
+
 import { db } from "@/utils"
+
+import { SocialPostIncludes } from "../posts/posts.controller"
 import { ProfileIncludes } from "./profiles.controller"
 import { UpdateProfileSchema } from "./profiles.schema"
-import { SocialPostIncludes } from "../posts/posts.controller"
 
 export async function getProfiles(
   sort: keyof UserProfile = "name",

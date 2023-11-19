@@ -1,4 +1,5 @@
-import { server, registerUser, getAuthCredentials } from "@/test-utils"
+import { getAuthCredentials, registerUser, server } from "@/test-utils"
+
 import { db } from "@/utils"
 
 const LISTING_ID = "db66a67e-3bb4-4286-a0e3-f4380a07c53d"

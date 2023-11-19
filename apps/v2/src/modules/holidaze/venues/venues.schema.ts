@@ -1,5 +1,6 @@
-import { z } from "zod"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { z } from "zod"
+
 import { mediaProperties, mediaPropertiesWithErrors, profileCore } from "../../auth/auth.schema"
 
 const venueId = {

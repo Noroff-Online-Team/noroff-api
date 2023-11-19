@@ -1,8 +1,8 @@
-import type { FastifyError, FastifyRequest, FastifyReply } from "fastify"
+import type { FastifyError, FastifyReply, FastifyRequest } from "fastify"
 import { Prisma } from "@prisma/v2-client"
-import { ZodError, ZodIssueCode } from "zod"
-import statuses from "statuses"
 import { isHttpError } from "http-errors"
+import statuses from "statuses"
+import { ZodError, ZodIssueCode } from "zod"
 
 type ErrorHandlerStrategy = (error: FastifyError) => {
   statusCode: number

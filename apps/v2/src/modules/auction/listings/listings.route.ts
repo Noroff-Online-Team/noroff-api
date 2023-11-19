@@ -1,25 +1,25 @@
 import { FastifyInstance } from "fastify"
+import { createResponseSchema } from "@noroff/api-utils"
 
 import {
-  getListingsHandler,
-  getListingHandler,
-  createListingHandler,
-  updateListingHandler,
-  deleteListingHandler,
   createListingBidHandler,
-  searchListingsHandler
+  createListingHandler,
+  deleteListingHandler,
+  getListingHandler,
+  getListingsHandler,
+  searchListingsHandler,
+  updateListingHandler
 } from "./listings.controller"
 import {
+  bidBodySchema,
+  createListingSchema,
+  listingIdParamsSchema,
   listingQuerySchema,
   listingResponseSchema,
   queryFlagsSchema,
-  listingIdParamsSchema,
-  createListingSchema,
-  updateListingSchema,
-  bidBodySchema,
-  searchQuerySchema
+  searchQuerySchema,
+  updateListingSchema
 } from "./listings.schema"
-import { createResponseSchema } from "@noroff/api-utils"
 
 async function listingsRoutes(server: FastifyInstance) {
   server.get(

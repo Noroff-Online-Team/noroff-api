@@ -1,10 +1,10 @@
-import { CatFact } from "@prisma/v2-client"
 import { FastifyRequest } from "fastify"
-import { NotFound, BadRequest } from "http-errors"
-import { catFactParamsSchema } from "./catFacts.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { CatFact } from "@prisma/v2-client"
+import { BadRequest, NotFound } from "http-errors"
 
-import { getCatFacts, getCatFact, getRandomCatFact } from "./catFacts.service"
+import { catFactParamsSchema } from "./catFacts.schema"
+import { getCatFact, getCatFacts, getRandomCatFact } from "./catFacts.service"
 
 export async function getCatFactsHandler(
   request: FastifyRequest<{

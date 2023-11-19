@@ -1,16 +1,17 @@
-import { UserProfile } from "@prisma/v2-client"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { verifyPassword, mediaGuard } from "@noroff/api-utils"
-import {
-  CreateProfileInput,
-  LoginInput,
-  createProfileBodySchema,
-  loginBodySchema,
-  CreateAPIKeyInput,
-  createApiKeySchema
-} from "./auth.schema"
-import { createProfile, findProfileByEmail, findProfileByEmailOrName, createApiKey } from "./auth.service"
+import { mediaGuard, verifyPassword } from "@noroff/api-utils"
+import { UserProfile } from "@prisma/v2-client"
 import { BadRequest, Unauthorized } from "http-errors"
+
+import {
+  CreateAPIKeyInput,
+  createApiKeySchema,
+  createProfileBodySchema,
+  CreateProfileInput,
+  loginBodySchema,
+  LoginInput
+} from "./auth.schema"
+import { createApiKey, createProfile, findProfileByEmail, findProfileByEmailOrName } from "./auth.service"
 
 export async function registerProfileHandler(
   request: FastifyRequest<{

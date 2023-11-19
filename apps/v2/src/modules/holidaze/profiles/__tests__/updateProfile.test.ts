@@ -1,4 +1,5 @@
-import { server, registerUser, getAuthCredentials } from "@/test-utils"
+import { getAuthCredentials, registerUser, server } from "@/test-utils"
+
 import { db } from "@/utils"
 
 const updateData = {

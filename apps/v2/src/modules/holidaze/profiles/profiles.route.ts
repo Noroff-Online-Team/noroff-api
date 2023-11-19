@@ -1,25 +1,24 @@
 import { FastifyInstance } from "fastify"
-
-import {
-  displayProfileSchema,
-  profilesQuerySchema,
-  profileNameSchema,
-  queryFlagsSchema,
-  updateProfileSchema,
-  searchQuerySchema
-} from "./profiles.schema"
-import {
-  getProfilesHandler,
-  getProfileHandler,
-  updateProfileHandler,
-  getProfileVenuesHandler,
-  getProfileBookingsHandler,
-  searchProfilesHandler
-} from "./profiles.controller"
 import { createResponseSchema } from "@noroff/api-utils"
 
+import { bookingsQuerySchema, displayBookingSchema } from "../bookings/bookings.schema"
 import { displayVenueSchema, venuesQuerySchema } from "../venues/venues.schema"
-import { displayBookingSchema, bookingsQuerySchema } from "../bookings/bookings.schema"
+import {
+  getProfileBookingsHandler,
+  getProfileHandler,
+  getProfilesHandler,
+  getProfileVenuesHandler,
+  searchProfilesHandler,
+  updateProfileHandler
+} from "./profiles.controller"
+import {
+  displayProfileSchema,
+  profileNameSchema,
+  profilesQuerySchema,
+  queryFlagsSchema,
+  searchQuerySchema,
+  updateProfileSchema
+} from "./profiles.schema"
 
 async function profilesRoutes(server: FastifyInstance) {
   server.get(

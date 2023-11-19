@@ -1,21 +1,27 @@
-import { UserProfile, SocialPost } from "@prisma/v2-client"
 import { FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { searchQuerySchema, UpdateProfileSchema } from "./profiles.schema"
-import { SocialPostIncludes } from "../posts/posts.controller"
-import { NotFound, BadRequest, Forbidden } from "http-errors"
+import { SocialPost, UserProfile } from "@prisma/v2-client"
+import { BadRequest, Forbidden, NotFound } from "http-errors"
 
+import { SocialPostIncludes } from "../posts/posts.controller"
 import {
-  getProfiles,
-  getProfile,
-  updateProfile,
+  profileNameSchema,
+  profilesQuerySchema,
+  queryFlagsSchema,
+  searchQuerySchema,
+  UpdateProfileSchema,
+  updateProfileSchema
+} from "./profiles.schema"
+import {
   followProfile,
-  unfollowProfile,
+  getProfile,
   getProfilePosts,
-  searchProfiles
+  getProfiles,
+  searchProfiles,
+  unfollowProfile,
+  updateProfile
 } from "./profiles.service"
 import { checkIsUserFollowing } from "./profiles.utils"
-import { profilesQuerySchema, profileNameSchema, queryFlagsSchema, updateProfileSchema } from "./profiles.schema"
 
 export interface ProfileIncludes {
   followers?: boolean

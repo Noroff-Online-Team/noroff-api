@@ -1,4 +1,5 @@
-import { server, registerUser } from "@/test-utils"
+import { registerUser, server } from "@/test-utils"
+
 import { db } from "@/utils"
 
 const VENUE_ID = "2be0af49-2680-4e4d-9423-178346985bbe"

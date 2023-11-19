@@ -1,7 +1,9 @@
-import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
 import { HolidazeVenue } from "@prisma/v2-client"
+
 import { db } from "@/utils"
+
 import { HolidazeVenueIncludes } from "./venues.controller"
+import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
 
 const DEFAULT_MEDIA = [
   {
