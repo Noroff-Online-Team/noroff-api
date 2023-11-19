@@ -10,5 +10,21 @@
   "tabWidth": 2,
   "trailingComma": "none",
   "useTabs": false,
-  "printWidth": 120
+  "printWidth": 120,
+  "importOrder": [
+    "^(react(/.*)?)$|^react$",
+    "^(next(/.*)?)$|^next$",
+    "^(fastify(/.*)?)$|^fastify$",
+    "^(@noroff(/.*)?)$|^@noroff$",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^types$",
+    "^@/types(/.*)?$",
+    "^@/components(/.*)?$",
+    "^@/lib(/.*)?$",
+    "^@/utils(/.*)?$",
+    "",
+    "^[.]"
+  ],
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"]
 }
