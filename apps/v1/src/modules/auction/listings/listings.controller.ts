@@ -1,17 +1,17 @@
-import { getProfile } from "../profiles/profiles.service"
-import { AuctionBid, AuctionListing, AuctionProfile, Prisma } from "@prisma/v1-client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { NotFound, BadRequest, Forbidden } from "http-errors"
+import { AuctionBid, AuctionListing, AuctionProfile, Prisma } from "@prisma/v1-client"
+import { BadRequest, Forbidden, NotFound } from "http-errors"
 
+import { getProfile } from "../profiles/profiles.service"
 import { CreateListingSchema, UpdateListingSchema } from "./listings.schema"
 import {
-  getListings,
-  getListing,
   createListing,
-  updateListing,
+  createListingBid,
   deleteListing,
-  createListingBid
+  getListing,
+  getListings,
+  updateListing
 } from "./listings.service"
 
 export type ListingWithBids = Prisma.PromiseReturnType<typeof getListing> & { bids: Array<AuctionBid> | [] }

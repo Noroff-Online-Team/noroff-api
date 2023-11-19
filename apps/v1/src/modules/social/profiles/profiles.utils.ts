@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/v1-client"
+
 import { FollowSchema } from "./profiles.schema"
 import { getProfile } from "./profiles.service"
 

@@ -1,4 +1,5 @@
 import { z } from "zod"
+
 import { displayProfileSchema } from "../profiles/profiles.schema"
 
 const listingId = {

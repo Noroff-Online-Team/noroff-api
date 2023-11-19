@@ -1,7 +1,7 @@
 import { FastifyRequest } from "fastify"
 import { NotFound } from "http-errors"
 
-import { getCatFacts, getCatFact, getRandomCatFact } from "./catFacts.service"
+import { getCatFact, getCatFacts, getRandomCatFact } from "./catFacts.service"
 
 export async function getCatFactsHandler() {
   const catFacts = await getCatFacts()

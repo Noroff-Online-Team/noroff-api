@@ -1,5 +1,7 @@
 import { hashPassword } from "@noroff/api-utils"
+
 import { prisma } from "@/utils"
+
 import { CreateProfileInput } from "../profiles/profiles.schema"
 
 export async function createProfile(input: CreateProfileInput) {

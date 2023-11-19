@@ -1,5 +1,7 @@
 import { HolidazeBooking, HolidazeProfile, HolidazeVenue } from "@prisma/v1-client"
+
 import { prisma } from "@/utils"
+
 import { HolidazeBookingIncludes } from "../bookings/bookings.controller"
 import { HolidazeVenueIncludes } from "../venues/venues.controller"
 import { HolidazeProfileIncludes } from "./profiles.controller"

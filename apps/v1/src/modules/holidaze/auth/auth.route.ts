@@ -1,7 +1,8 @@
 import { FastifyInstance } from "fastify"
+
+import { createProfileResponseSchema, createProfileSchema } from "../profiles/profiles.schema"
 import { loginHandler, registerProfileHandler } from "./auth.controller"
-import { loginSchema, loginResponseSchema } from "./auth.schema"
-import { createProfileSchema, createProfileResponseSchema } from "../profiles/profiles.schema"
+import { loginResponseSchema, loginSchema } from "./auth.schema"
 
 async function holidazeAuthRoutes(server: FastifyInstance) {
   server.post(

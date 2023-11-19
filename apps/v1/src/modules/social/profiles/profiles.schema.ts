@@ -1,4 +1,5 @@
 import { z } from "zod"
+
 import { postSchema } from "../posts/posts.schema"
 
 const profileMedia = {

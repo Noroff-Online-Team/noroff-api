@@ -1,24 +1,23 @@
 import { FastifyInstance } from "fastify"
 
+import { bookingsQuerySchema, displayBookingSchema } from "../bookings/bookings.schema"
+import { displayVenueSchema, venuesQuerySchema } from "../venues/venues.schema"
+import {
+  getProfileBookingsHandler,
+  getProfileHandler,
+  getProfilesHandler,
+  getProfileVenuesHandler,
+  updateProfileHandler,
+  updateProfileMediaHandler
+} from "./profiles.controller"
 import {
   displayProfileSchema,
-  profilesQuerySchema,
-  profileNameSchema,
-  queryFlagsSchema,
   profileMediaSchema,
-  profileVenueManagerSchema
+  profileNameSchema,
+  profilesQuerySchema,
+  profileVenueManagerSchema,
+  queryFlagsSchema
 } from "./profiles.schema"
-import {
-  getProfilesHandler,
-  getProfileHandler,
-  updateProfileHandler,
-  updateProfileMediaHandler,
-  getProfileVenuesHandler,
-  getProfileBookingsHandler
-} from "./profiles.controller"
-
-import { displayVenueSchema, venuesQuerySchema } from "../venues/venues.schema"
-import { displayBookingSchema, bookingsQuerySchema } from "../bookings/bookings.schema"
 
 async function profilesRoutes(server: FastifyInstance) {
   server.get(

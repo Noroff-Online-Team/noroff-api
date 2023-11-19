@@ -1,6 +1,6 @@
-import type { FastifyError, FastifyRequest, FastifyReply } from "fastify"
-import { ZodError, ZodIssueCode } from "zod"
+import type { FastifyError, FastifyReply, FastifyRequest } from "fastify"
 import statuses from "statuses"
+import { ZodError, ZodIssueCode } from "zod"
 
 export default async function (error: FastifyError, request: FastifyRequest, reply: FastifyReply) {
   interface ParsedError {

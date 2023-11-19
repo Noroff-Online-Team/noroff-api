@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
-import { rainyDaysResponseSchema, rainyDaysParamsSchema } from "./rainyDays.schema"
-import { getRainyDaysProductsHandler, getRainyDaysProductHandler } from "./rainyDays.controller"
+import { getRainyDaysProductHandler, getRainyDaysProductsHandler } from "./rainyDays.controller"
+import { rainyDaysParamsSchema, rainyDaysResponseSchema } from "./rainyDays.schema"
 
 async function rainyDaysRoutes(server: FastifyInstance) {
   server.get(

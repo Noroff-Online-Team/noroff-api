@@ -1,12 +1,11 @@
-import { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/v1-client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { ProfileMediaSchema } from "./profiles.schema"
-import { NotFound, BadRequest, Forbidden } from "http-errors"
-
-import { getProfiles, getProfile, updateProfileMedia, getProfileListings, getProfileBids } from "./profiles.service"
+import { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/v1-client"
+import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { AuctionListingIncludes } from "../listings/listings.controller"
+import { ProfileMediaSchema } from "./profiles.schema"
+import { getProfile, getProfileBids, getProfileListings, getProfiles, updateProfileMedia } from "./profiles.service"
 
 export interface AuctionProfileIncludes {
   listings?: boolean

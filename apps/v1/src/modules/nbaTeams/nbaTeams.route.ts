@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
-import { nbaTeamResponseSchema, nbaTeamParamsSchema } from "./nbaTeams.schema"
-import { getNbaTeamsHandler, getNbaTeamHandler, getRandomNbaTeamHandler } from "./nbaTeams.controller"
+import { getNbaTeamHandler, getNbaTeamsHandler, getRandomNbaTeamHandler } from "./nbaTeams.controller"
+import { nbaTeamParamsSchema, nbaTeamResponseSchema } from "./nbaTeams.schema"
 
 async function nbaTeamRoutes(server: FastifyInstance) {
   server.get(

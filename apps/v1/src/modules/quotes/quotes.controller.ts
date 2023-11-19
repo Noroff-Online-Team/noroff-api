@@ -1,7 +1,7 @@
 import { FastifyRequest } from "fastify"
 import { NotFound } from "http-errors"
 
-import { getQuotes, getQuote, getRandomQuote } from "./quotes.service"
+import { getQuote, getQuotes, getRandomQuote } from "./quotes.service"
 
 export async function getQuotesHandler() {
   const quotes = await getQuotes()

@@ -1,7 +1,7 @@
 import { FastifyRequest } from "fastify"
 import { NotFound } from "http-errors"
 
-import { getGameHubProducts, getGameHubProduct } from "./gameHub.service"
+import { getGameHubProduct, getGameHubProducts } from "./gameHub.service"
 
 export async function getGameHubProductsHandler() {
   const products = await getGameHubProducts()

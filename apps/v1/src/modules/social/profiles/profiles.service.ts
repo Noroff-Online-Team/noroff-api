@@ -1,8 +1,10 @@
-import { Profile, Post } from "@prisma/v1-client"
+import { Post, Profile } from "@prisma/v1-client"
+
 import { prisma } from "@/utils"
+
+import { PostIncludes } from "../posts/posts.controller"
 import { ProfileIncludes } from "./profiles.controller"
 import { ProfileMediaSchema } from "./profiles.schema"
-import { PostIncludes } from "../posts/posts.controller"
 
 export async function getProfiles(
   sort: keyof Profile = "name",

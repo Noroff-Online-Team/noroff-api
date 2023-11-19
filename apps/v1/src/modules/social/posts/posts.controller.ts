@@ -1,19 +1,19 @@
-import { Prisma, Post, Profile, Comment } from "@prisma/v1-client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
-import { NotFound, Forbidden, BadRequest } from "http-errors"
+import { Comment, Post, Prisma, Profile } from "@prisma/v1-client"
+import { BadRequest, Forbidden, NotFound } from "http-errors"
 
+import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
 import {
-  getPosts,
-  getPost,
+  createComment,
   createPost,
-  updatePost,
   createReaction,
   deletePost,
-  createComment,
   getComment,
-  getPostsOfFollowedUsers
+  getPost,
+  getPosts,
+  getPostsOfFollowedUsers,
+  updatePost
 } from "./posts.service"
 
 export interface PostIncludes {

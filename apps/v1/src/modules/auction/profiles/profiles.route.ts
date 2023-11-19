@@ -1,22 +1,22 @@
 import { FastifyInstance } from "fastify"
 
+import { listingQuerySchema, listingResponseSchema, profileBidsResponseSchema } from "../listings/listings.schema"
+import {
+  getProfileBidsHandler,
+  getProfileCreditsHandler,
+  getProfileHandler,
+  getProfileListingsHandler,
+  getProfilesHandler,
+  updateProfileMediaHandler
+} from "./profiles.controller"
 import {
   displayProfileSchema,
-  profilesQuerySchema,
+  profileCreditsSchema,
   profileMediaSchema,
   profileNameSchema,
-  queryFlagsSchema,
-  profileCreditsSchema
+  profilesQuerySchema,
+  queryFlagsSchema
 } from "./profiles.schema"
-import {
-  getProfilesHandler,
-  getProfileHandler,
-  updateProfileMediaHandler,
-  getProfileListingsHandler,
-  getProfileCreditsHandler,
-  getProfileBidsHandler
-} from "./profiles.controller"
-import { listingQuerySchema, listingResponseSchema, profileBidsResponseSchema } from "../listings/listings.schema"
 
 async function profilesRoutes(server: FastifyInstance) {
   server.get(

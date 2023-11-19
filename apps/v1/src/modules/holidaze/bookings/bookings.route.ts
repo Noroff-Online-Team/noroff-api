@@ -1,20 +1,20 @@
 import { FastifyInstance } from "fastify"
 
 import {
-  displayBookingSchema,
-  bookingsQuerySchema,
-  queryFlagsSchema,
-  bookingIdSchema,
-  createBookingSchema,
-  updateBookingSchema
-} from "./bookings.schema"
-import {
-  getBookingsHandler,
-  getBookingHandler,
   createBookingHandler,
   deleteBookingHandler,
+  getBookingHandler,
+  getBookingsHandler,
   updateBookingHandler
 } from "./bookings.controller"
+import {
+  bookingIdSchema,
+  bookingsQuerySchema,
+  createBookingSchema,
+  displayBookingSchema,
+  queryFlagsSchema,
+  updateBookingSchema
+} from "./bookings.schema"
 
 async function bookingsRoutes(server: FastifyInstance) {
   server.get(
