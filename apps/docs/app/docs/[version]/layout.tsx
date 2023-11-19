@@ -1,9 +1,10 @@
-import { getTree } from "@/utils/source"
-import { DocsLayout } from "next-docs-ui/layout"
-import Image from "next/image"
 import type { ReactNode } from "react"
-import { versions } from "@/utils/versions"
+import Image from "next/image"
+import { DocsLayout } from "next-docs-ui/layout"
+
 import { cn } from "@/utils/cn"
+import { getTree } from "@/utils/source"
+import { versions } from "@/utils/versions"
 
 export default function Layout({ params, children }: { params: { version: string }; children: ReactNode }) {
   const tree = getTree(params.version)

@@ -1,10 +1,10 @@
 import { FastifyRequest } from "fastify"
-import { Book } from "@prisma/v2-client"
-import { NotFound, BadRequest } from "http-errors"
-import { bookParamsSchema } from "./books.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { Book } from "@prisma/v2-client"
+import { BadRequest, NotFound } from "http-errors"
 
-import { getBooks, getBook, getRandomBook } from "./books.service"
+import { bookParamsSchema } from "./books.schema"
+import { getBook, getBooks, getRandomBook } from "./books.service"
 
 export async function getBooksHandler(
   request: FastifyRequest<{

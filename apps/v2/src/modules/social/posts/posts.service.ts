@@ -1,5 +1,7 @@
 import { SocialPost } from "@prisma/v2-client"
+
 import { db } from "@/utils"
+
 import { SocialPostIncludes } from "./posts.controller"
 import { CreateCommentSchema, CreatePostBaseSchema, CreatePostSchema, DisplaySocialPost, Media } from "./posts.schema"
 

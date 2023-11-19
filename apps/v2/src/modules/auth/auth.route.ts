@@ -1,14 +1,15 @@
 import { FastifyInstance } from "fastify"
-import { loginHandler, registerProfileHandler, createApiKeyHandler } from "./auth.controller"
+import { createResponseSchema } from "@noroff/api-utils"
+
+import { createApiKeyHandler, loginHandler, registerProfileHandler } from "./auth.controller"
 import {
-  loginBodySchema,
-  loginResponseSchema,
+  createApiKeyResponseSchema,
+  createApiKeySchema,
   createProfileBodySchema,
   createProfileResponseSchema,
-  createApiKeyResponseSchema,
-  createApiKeySchema
+  loginBodySchema,
+  loginResponseSchema
 } from "./auth.schema"
-import { createResponseSchema } from "@noroff/api-utils"
 
 async function authRoutes(server: FastifyInstance) {
   server.post(

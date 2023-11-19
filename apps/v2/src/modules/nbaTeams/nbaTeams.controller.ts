@@ -1,10 +1,10 @@
 import { FastifyRequest } from "fastify"
-import { NbaTeam } from "@prisma/v2-client"
-import { NotFound, BadRequest } from "http-errors"
-import { nbaTeamParamsSchema } from "./nbaTeams.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { NbaTeam } from "@prisma/v2-client"
+import { BadRequest, NotFound } from "http-errors"
 
-import { getNbaTeams, getNbaTeam, getRandomNbaTeam } from "./nbaTeams.service"
+import { nbaTeamParamsSchema } from "./nbaTeams.schema"
+import { getNbaTeam, getNbaTeams, getRandomNbaTeam } from "./nbaTeams.service"
 
 export async function getNbaTeamsHandler(
   request: FastifyRequest<{

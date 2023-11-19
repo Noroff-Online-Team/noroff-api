@@ -1,4 +1,5 @@
-import { InfoIcon, AlertCircle, AlertTriangle } from "lucide-react"
+import { AlertCircle, AlertTriangle, InfoIcon } from "lucide-react"
+
 import { Alert, AlertDescription } from "@/components/ui/alert"
 
 /**

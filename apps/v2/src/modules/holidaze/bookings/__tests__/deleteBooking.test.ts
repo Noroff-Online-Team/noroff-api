@@ -1,4 +1,5 @@
-import { server, getAuthCredentials } from "@/test-utils"
+import { getAuthCredentials, server } from "@/test-utils"
+
 import { db } from "@/utils"
 
 const BOOKING_ID = "857be398-8c34-4be9-8729-8b46837ac3c4"

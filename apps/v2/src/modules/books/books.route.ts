@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify"
-
-import { bookSchema, bookParamsSchema } from "./books.schema"
 import { createResponseSchema, sortAndPaginationSchema } from "@noroff/api-utils"
-import { getBooksHandler, getBookHandler, getRandomBookHandler } from "./books.controller"
+
+import { getBookHandler, getBooksHandler, getRandomBookHandler } from "./books.controller"
+import { bookParamsSchema, bookSchema } from "./books.schema"
 
 async function bookRoutes(server: FastifyInstance) {
   server.get(

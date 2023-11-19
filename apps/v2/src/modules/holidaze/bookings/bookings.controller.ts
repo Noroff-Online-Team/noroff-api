@@ -1,7 +1,10 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { HolidazeBooking, UserProfile } from "@prisma/v2-client"
-import { BadRequest, NotFound, Forbidden, Conflict } from "http-errors"
-import { getBookings, getBooking, createBooking, deleteBooking, updateBooking } from "./booking.service"
+import { BadRequest, Conflict, Forbidden, NotFound } from "http-errors"
+
+import { getVenue } from "../venues/venues.service"
+import { createBooking, deleteBooking, getBooking, getBookings, updateBooking } from "./booking.service"
+import { checkForOverlappingBookings } from "./booking.utils"
 import {
   bookingIdSchema,
   bookingsQuerySchema,
@@ -11,9 +14,6 @@ import {
   updateBookingSchema,
   UpdateBookingSchema
 } from "./bookings.schema"
-import { getVenue } from "../venues/venues.service"
-
-import { checkForOverlappingBookings } from "./booking.utils"
 
 export interface HolidazeBookingIncludes {
   customer?: boolean

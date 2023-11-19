@@ -1,7 +1,9 @@
-import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
 import { HolidazeVenue } from "@prisma/v1-client"
+
 import { prisma } from "@/utils"
+
 import { HolidazeVenueIncludes } from "./venues.controller"
+import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
 
 const DEFAULT_MEDIA = ["https://source.unsplash.com/1600x900/?hotel"]
 

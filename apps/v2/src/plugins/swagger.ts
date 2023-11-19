@@ -1,6 +1,7 @@
-import fp from "fastify-plugin"
 import swagger from "@fastify/swagger"
+import fp from "fastify-plugin"
 import { jsonSchemaTransform } from "fastify-type-provider-zod"
+
 import { version } from "../../package.json"
 
 export default fp(async fastify => {

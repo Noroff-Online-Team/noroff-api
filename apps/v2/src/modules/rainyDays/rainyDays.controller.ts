@@ -1,10 +1,10 @@
 import { FastifyRequest } from "fastify"
-import { RainyDaysProduct } from "@prisma/v2-client"
-import { NotFound, BadRequest } from "http-errors"
-import { rainyDaysParamsSchema } from "./rainyDays.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { RainyDaysProduct } from "@prisma/v2-client"
+import { BadRequest, NotFound } from "http-errors"
 
-import { getRainyDaysProducts, getRainyDaysProduct } from "./rainyDays.service"
+import { rainyDaysParamsSchema } from "./rainyDays.schema"
+import { getRainyDaysProduct, getRainyDaysProducts } from "./rainyDays.service"
 
 export async function getRainyDaysProductsHandler(
   request: FastifyRequest<{

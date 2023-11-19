@@ -1,10 +1,10 @@
 import { FastifyRequest } from "fastify"
-import { OnlineShopProduct } from "@prisma/v2-client"
-import { NotFound, BadRequest } from "http-errors"
-import { onlineShopParamsSchema } from "./onlineShop.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { OnlineShopProduct } from "@prisma/v2-client"
+import { BadRequest, NotFound } from "http-errors"
 
-import { getOnlineShopProducts, getOnlineShopProduct } from "./onlineShop.service"
+import { onlineShopParamsSchema } from "./onlineShop.schema"
+import { getOnlineShopProduct, getOnlineShopProducts } from "./onlineShop.service"
 
 export async function getOnlineShopProductsHandler(
   request: FastifyRequest<{

@@ -1,10 +1,10 @@
 import { FastifyRequest } from "fastify"
-import { Quote } from "@prisma/v2-client"
-import { NotFound, BadRequest } from "http-errors"
-import { quoteParamsSchema } from "./quotes.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { Quote } from "@prisma/v2-client"
+import { BadRequest, NotFound } from "http-errors"
 
-import { getQuotes, getQuote, getRandomQuote } from "./quotes.service"
+import { quoteParamsSchema } from "./quotes.schema"
+import { getQuote, getQuotes, getRandomQuote } from "./quotes.service"
 
 export async function getQuotesHandler(
   request: FastifyRequest<{

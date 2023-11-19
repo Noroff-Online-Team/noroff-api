@@ -1,7 +1,8 @@
+import { sortAndPaginationSchema } from "@noroff/api-utils"
 import { z } from "zod"
+
 import { profileCore } from "../../auth/auth.schema"
 import { venueCore } from "../venues/venues.schema"
-import { sortAndPaginationSchema } from "@noroff/api-utils"
 
 const bookingId = {
   id: z.string().uuid()

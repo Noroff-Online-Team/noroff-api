@@ -1,8 +1,9 @@
+import { sortAndPaginationSchema } from "@noroff/api-utils"
 import { z } from "zod"
+
+import { profileCore, profileMedia } from "../../auth/auth.schema"
 import { bookingCore } from "../bookings/bookings.schema"
 import { venueCore } from "../venues/venues.schema"
-import { sortAndPaginationSchema } from "@noroff/api-utils"
-import { profileCore, profileMedia } from "../../auth/auth.schema"
 
 const profileVenueManager = {
   venueManager: z

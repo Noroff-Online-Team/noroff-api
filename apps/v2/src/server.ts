@@ -5,7 +5,6 @@ import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-
 
 import errorHandler from "./exceptions/errorHandler"
 import notFoundHandler from "./exceptions/notFoundHandler"
-
 import routes from "./modules/routes"
 
 // Main startup

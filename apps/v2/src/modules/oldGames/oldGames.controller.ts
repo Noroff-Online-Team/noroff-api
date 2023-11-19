@@ -1,10 +1,10 @@
 import { FastifyRequest } from "fastify"
-import { OldGame } from "@prisma/v2-client"
-import { NotFound, BadRequest } from "http-errors"
-import { oldGameParamsSchema } from "./oldGames.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { OldGame } from "@prisma/v2-client"
+import { BadRequest, NotFound } from "http-errors"
 
-import { getOldGames, getOldGame, getRandomOldGame } from "./oldGames.service"
+import { oldGameParamsSchema } from "./oldGames.schema"
+import { getOldGame, getOldGames, getRandomOldGame } from "./oldGames.service"
 
 export async function getOldGamesHandler(
   request: FastifyRequest<{

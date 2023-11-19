@@ -1,23 +1,23 @@
 import { FastifyInstance } from "fastify"
+import { createResponseSchema } from "@noroff/api-utils"
 
 import {
-  displayVenueSchema,
-  venuesQuerySchema,
-  venueIdSchema,
-  queryFlagsSchema,
-  createVenueSchema,
-  updateVenueSchema,
-  searchQuerySchema
-} from "./venues.schema"
-import {
-  getVenuesHandler,
-  getVenueHandler,
   createVenueHandler,
   deleteVenueHandler,
-  updateVenueHandler,
-  searchVenuesHandler
+  getVenueHandler,
+  getVenuesHandler,
+  searchVenuesHandler,
+  updateVenueHandler
 } from "./venues.controller"
-import { createResponseSchema } from "@noroff/api-utils"
+import {
+  createVenueSchema,
+  displayVenueSchema,
+  queryFlagsSchema,
+  searchQuerySchema,
+  updateVenueSchema,
+  venueIdSchema,
+  venuesQuerySchema
+} from "./venues.schema"
 
 async function venuesRoutes(server: FastifyInstance) {
   server.get(

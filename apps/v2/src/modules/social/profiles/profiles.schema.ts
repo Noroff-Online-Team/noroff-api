@@ -1,5 +1,6 @@
-import { z } from "zod"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { z } from "zod"
+
 import { profileCore, profileMedia } from "../../auth/auth.schema"
 import { postSchema } from "../posts/posts.schema"
 

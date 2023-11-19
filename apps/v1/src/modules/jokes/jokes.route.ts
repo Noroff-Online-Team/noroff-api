@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
-import { jokeResponseSchema, jokeParamsSchema } from "./jokes.schema"
-import { getJokesHandler, getJokeHandler, getRandomJokeHandler } from "./jokes.controller"
+import { getJokeHandler, getJokesHandler, getRandomJokeHandler } from "./jokes.controller"
+import { jokeParamsSchema, jokeResponseSchema } from "./jokes.schema"
 
 async function jokeRoutes(server: FastifyInstance) {
   server.get(

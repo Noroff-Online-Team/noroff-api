@@ -1,7 +1,7 @@
 import { FastifyRequest } from "fastify"
 import { NotFound } from "http-errors"
 
-import { getBooks, getBook, getRandomBook } from "./books.service"
+import { getBook, getBooks, getRandomBook } from "./books.service"
 
 export async function getBooksHandler() {
   const books = await getBooks()

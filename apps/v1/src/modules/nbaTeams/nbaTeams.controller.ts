@@ -1,7 +1,7 @@
 import { FastifyRequest } from "fastify"
 import { NotFound } from "http-errors"
 
-import { getNbaTeams, getNbaTeam, getRandomNbaTeam } from "./nbaTeams.service"
+import { getNbaTeam, getNbaTeams, getRandomNbaTeam } from "./nbaTeams.service"
 
 export async function getNbaTeamsHandler() {
   const nbaTeams = await getNbaTeams()

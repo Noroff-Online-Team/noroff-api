@@ -1,7 +1,7 @@
 import { FastifyRequest } from "fastify"
 import { NotFound } from "http-errors"
 
-import { getOldGames, getOldGame, getRandomOldGame } from "./oldGames.service"
+import { getOldGame, getOldGames, getRandomOldGame } from "./oldGames.service"
 
 export async function getOldGamesHandler() {
   const oldGames = await getOldGames()

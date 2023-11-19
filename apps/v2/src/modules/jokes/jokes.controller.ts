@@ -1,10 +1,10 @@
 import { FastifyRequest } from "fastify"
-import { Joke } from "@prisma/v2-client"
-import { NotFound, BadRequest } from "http-errors"
-import { jokeParamsSchema } from "./jokes.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { Joke } from "@prisma/v2-client"
+import { BadRequest, NotFound } from "http-errors"
 
-import { getJokes, getJoke, getRandomJoke } from "./jokes.service"
+import { jokeParamsSchema } from "./jokes.schema"
+import { getJoke, getJokes, getRandomJoke } from "./jokes.service"
 
 export async function getJokesHandler(
   request: FastifyRequest<{

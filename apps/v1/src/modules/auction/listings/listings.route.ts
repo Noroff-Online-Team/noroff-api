@@ -1,21 +1,21 @@
 import { FastifyInstance } from "fastify"
 
 import {
-  getListingsHandler,
-  getListingHandler,
+  createListingBidHandler,
   createListingHandler,
-  updateListingHandler,
   deleteListingHandler,
-  createListingBidHandler
+  getListingHandler,
+  getListingsHandler,
+  updateListingHandler
 } from "./listings.controller"
 import {
+  bidBodySchema,
+  createListingSchema,
+  listingIdParamsSchema,
   listingQuerySchema,
   listingResponseSchema,
   queryFlagsSchema,
-  listingIdParamsSchema,
-  createListingSchema,
-  updateListingSchema,
-  bidBodySchema
+  updateListingSchema
 } from "./listings.schema"
 
 async function listingsRoutes(server: FastifyInstance) {

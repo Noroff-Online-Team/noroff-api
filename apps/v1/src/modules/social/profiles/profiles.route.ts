@@ -1,21 +1,21 @@
 import { FastifyInstance } from "fastify"
 
+import { displayPostSchema, postsQuerySchema } from "../posts/posts.schema"
+import {
+  followProfileHandler,
+  getProfileHandler,
+  getProfilePostsHandler,
+  getProfilesHandler,
+  unfollowProfileHandler,
+  updateProfileMediaHandler
+} from "./profiles.controller"
 import {
   displayProfileSchema,
-  profilesQuerySchema,
   profileMediaSchema,
   profileNameSchema,
+  profilesQuerySchema,
   queryFlagsSchema
 } from "./profiles.schema"
-import {
-  getProfilesHandler,
-  getProfileHandler,
-  updateProfileMediaHandler,
-  followProfileHandler,
-  unfollowProfileHandler,
-  getProfilePostsHandler
-} from "./profiles.controller"
-import { displayPostSchema, postsQuerySchema } from "../posts/posts.schema"
 
 async function profilesRoutes(server: FastifyInstance) {
   server.get(

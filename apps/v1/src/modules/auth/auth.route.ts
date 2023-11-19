@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
-import { loginSchema, authResponseSchema } from "./auth.schema"
 import { getTokenHandler } from "./auth.controller"
+import { authResponseSchema, loginSchema } from "./auth.schema"
 
 async function authRoutes(server: FastifyInstance) {
   server.post(

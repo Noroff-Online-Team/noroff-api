@@ -1,14 +1,16 @@
 "use client"
 
-import { cn } from "@/utils/cn"
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { useParams } from "next/navigation"
 import { cva } from "class-variance-authority"
 import { GithubIcon } from "lucide-react"
 import { Nav as OriginalNav } from "next-docs-ui/nav"
-import Link from "next/link"
-import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
-import { NoroffLogo } from "./noroff-logo"
+
+import { cn } from "@/utils/cn"
 import { versions } from "@/utils/versions"
+
+import { NoroffLogo } from "./noroff-logo"
 
 const item = cva("px-2 py-1 rounded-md transition-colors hover:text-accent-foreground", {
   variants: {

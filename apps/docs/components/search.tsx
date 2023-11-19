@@ -1,11 +1,12 @@
 "use client"
 
-import { cn } from "@/utils/cn"
+import { useEffect, useState } from "react"
+import { useParams } from "next/navigation"
 import { cva } from "class-variance-authority"
 import { SearchDialog, type SharedProps } from "next-docs-ui/components/dialog/search"
 import { useDocsSearch } from "next-docs-zeta/search/client"
-import { useParams } from "next/navigation"
-import { useState, useEffect } from "react"
+
+import { cn } from "@/utils/cn"
 import { versions } from "@/utils/versions"
 
 const itemVariants = cva("border px-2 py-0.5 rounded-md text-xs text-muted-foreground font-medium transition-colors", {

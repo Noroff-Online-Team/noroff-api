@@ -1,28 +1,28 @@
 import { FastifyInstance } from "fastify"
 
 import {
-  displayPostSchema,
-  postsQuerySchema,
-  createPostBaseSchema,
-  updatePostBodySchema,
-  queryFlagsSchema,
-  postIdParamsSchema,
-  reactionSchema,
-  reactionParamsSchema,
-  createCommentSchema,
-  displayCommentSchema,
-  authorQuerySchema
-} from "./posts.schema"
-import {
-  getPostsHandler,
-  getPostHandler,
+  createCommentHandler,
   createPostHandler,
-  updatePostHandler,
   createReactionHandler,
   deletePostHandler,
-  createCommentHandler,
-  getPostsOfFollowedUsersHandler
+  getPostHandler,
+  getPostsHandler,
+  getPostsOfFollowedUsersHandler,
+  updatePostHandler
 } from "./posts.controller"
+import {
+  authorQuerySchema,
+  createCommentSchema,
+  createPostBaseSchema,
+  displayCommentSchema,
+  displayPostSchema,
+  postIdParamsSchema,
+  postsQuerySchema,
+  queryFlagsSchema,
+  reactionParamsSchema,
+  reactionSchema,
+  updatePostBodySchema
+} from "./posts.schema"
 
 async function postsRoutes(server: FastifyInstance) {
   server.get(

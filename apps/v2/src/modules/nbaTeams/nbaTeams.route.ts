@@ -1,8 +1,8 @@
 import { FastifyInstance } from "fastify"
-
-import { nbaTeamSchema, nbaTeamParamsSchema } from "./nbaTeams.schema"
 import { createResponseSchema, sortAndPaginationSchema } from "@noroff/api-utils"
-import { getNbaTeamsHandler, getNbaTeamHandler, getRandomNbaTeamHandler } from "./nbaTeams.controller"
+
+import { getNbaTeamHandler, getNbaTeamsHandler, getRandomNbaTeamHandler } from "./nbaTeams.controller"
+import { nbaTeamParamsSchema, nbaTeamSchema } from "./nbaTeams.schema"
 
 async function nbaTeamRoutes(server: FastifyInstance) {
   server.get(

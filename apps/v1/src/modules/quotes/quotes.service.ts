@@ -1,4 +1,5 @@
 import { getRandomNumber } from "@noroff/api-utils"
+
 import { prisma } from "@/utils"
 
 export async function getQuotes() {

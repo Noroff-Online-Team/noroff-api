@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 
-import { onlineShopResponseSchema, onlineShopParamsSchema } from "./onlineShop.schema"
-import { getOnlineShopProductsHandler, getOnlineShopProductHandler } from "./onlineShop.controller"
+import { getOnlineShopProductHandler, getOnlineShopProductsHandler } from "./onlineShop.controller"
+import { onlineShopParamsSchema, onlineShopResponseSchema } from "./onlineShop.schema"
 
 async function onlineShopRoutes(server: FastifyInstance) {
   server.get(

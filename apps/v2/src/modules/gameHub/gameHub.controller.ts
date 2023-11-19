@@ -1,10 +1,10 @@
 import { FastifyRequest } from "fastify"
-import { GameHubProducts } from "@prisma/v2-client"
-import { NotFound, BadRequest } from "http-errors"
-import { gameHubParamsSchema } from "./gameHub.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { GameHubProducts } from "@prisma/v2-client"
+import { BadRequest, NotFound } from "http-errors"
 
-import { getGameHubProducts, getGameHubProduct } from "./gameHub.service"
+import { gameHubParamsSchema } from "./gameHub.schema"
+import { getGameHubProduct, getGameHubProducts } from "./gameHub.service"
 
 export async function getGameHubProductsHandler(
   request: FastifyRequest<{

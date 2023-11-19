@@ -1,8 +1,8 @@
 "use client"
 
-import { RootProvider } from "next-docs-ui/provider"
-import dynamic from "next/dynamic"
 import type { ReactNode } from "react"
+import dynamic from "next/dynamic"
+import { RootProvider } from "next-docs-ui/provider"
 
 const SearchDialog = dynamic(() => import("@/components/search"))
 

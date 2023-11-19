@@ -1,10 +1,10 @@
 import { FastifyRequest } from "fastify"
-import { SquareEyesProduct } from "@prisma/v2-client"
-import { NotFound, BadRequest } from "http-errors"
-import { squareEyesParamsSchema } from "./squareEyes.schema"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
+import { SquareEyesProduct } from "@prisma/v2-client"
+import { BadRequest, NotFound } from "http-errors"
 
-import { getSquareEyesProducts, getSquareEyesProduct } from "./squareEyes.service"
+import { squareEyesParamsSchema } from "./squareEyes.schema"
+import { getSquareEyesProduct, getSquareEyesProducts } from "./squareEyes.service"
 
 export async function getSquareEyesProductsHandler(
   request: FastifyRequest<{

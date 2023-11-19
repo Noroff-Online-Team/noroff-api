@@ -1,29 +1,29 @@
-import { SocialPost, UserProfile } from "@prisma/v2-client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { NotFound, Forbidden, BadRequest } from "http-errors"
+import { SocialPost, UserProfile } from "@prisma/v2-client"
+import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import {
+  authorQuerySchema,
   CreateCommentSchema,
   CreatePostBaseSchema,
   emojiSchema,
+  mediaSchema,
   postIdParamsSchema,
   postsQuerySchema,
-  authorQuerySchema,
-  mediaSchema,
   searchQuerySchema
 } from "./posts.schema"
 import {
-  getPosts,
-  getPost,
-  createPost,
-  updatePost,
-  createOrDeleteReaction,
-  deletePost,
   createComment,
+  createOrDeleteReaction,
+  createPost,
+  deletePost,
   getComment,
+  getPost,
+  getPosts,
   getPostsOfFollowedUsers,
-  searchPosts
+  searchPosts,
+  updatePost
 } from "./posts.service"
 
 export interface SocialPostIncludes {

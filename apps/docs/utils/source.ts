@@ -1,9 +1,9 @@
+import { createElement } from "react"
 import { allDocs, allMeta } from "contentlayer/generated"
+import type { RawDocumentData } from "contentlayer/source-files"
 import { AxeIcon } from "lucide-react"
 import { createUtils, loadContext } from "next-docs-zeta/contentlayer"
-import { type PageTree, createPageTreeBuilder } from "next-docs-zeta/server"
-import { createElement } from "react"
-import type { RawDocumentData } from "contentlayer/source-files"
+import { createPageTreeBuilder, type PageTree } from "next-docs-zeta/server"
 
 const ctx = loadContext(allMeta, allDocs, {
   resolveIcon() {

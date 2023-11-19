@@ -1,27 +1,27 @@
-import { getProfile } from "./../profiles/profiles.service"
-import { AuctionBid, AuctionListing, UserProfile, Prisma } from "@prisma/v2-client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { NotFound, BadRequest, Forbidden } from "http-errors"
+import { AuctionBid, AuctionListing, Prisma, UserProfile } from "@prisma/v2-client"
+import { BadRequest, Forbidden, NotFound } from "http-errors"
 
+import { getProfile } from "./../profiles/profiles.service"
 import {
-  CreateListingSchema,
-  listingQuerySchema,
-  UpdateListingSchema,
-  queryFlagsSchema,
-  listingIdParamsSchema,
   bidBodySchema,
+  CreateListingSchema,
+  listingIdParamsSchema,
+  listingQuerySchema,
   mediaSchema,
-  searchQuerySchema
+  queryFlagsSchema,
+  searchQuerySchema,
+  UpdateListingSchema
 } from "./listings.schema"
 import {
-  getListings,
-  getListing,
   createListing,
-  updateListing,
-  deleteListing,
   createListingBid,
-  searchListings
+  deleteListing,
+  getListing,
+  getListings,
+  searchListings,
+  updateListing
 } from "./listings.service"
 
 export type ListingWithBids = Prisma.PromiseReturnType<typeof getListing> & {

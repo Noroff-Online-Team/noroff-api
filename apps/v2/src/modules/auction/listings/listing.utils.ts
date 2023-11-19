@@ -1,7 +1,9 @@
 import schedule from "node-schedule"
+
 import { db } from "@/utils"
-import { getListing } from "./listings.service"
+
 import { ListingWithBids } from "./listings.controller"
+import { getListing } from "./listings.service"
 
 /**
  * Either award a user credits or do nothing depending on their current credit amount

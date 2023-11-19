@@ -1,6 +1,7 @@
 import { FastifyRequest } from "fastify"
-import { Unauthorized, BadRequest, Forbidden } from "http-errors"
 import fp from "fastify-plugin"
+import { BadRequest, Forbidden, Unauthorized } from "http-errors"
+
 import { db } from "@/utils"
 
 export default fp(async fastify => {

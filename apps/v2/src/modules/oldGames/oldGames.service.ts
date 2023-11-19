@@ -1,5 +1,6 @@
-import { OldGame } from "@prisma/v2-client"
 import { getRandomNumber } from "@noroff/api-utils"
+import { OldGame } from "@prisma/v2-client"
+
 import { db } from "@/utils"
 
 export async function getOldGames(

@@ -1,5 +1,6 @@
-import { Joke } from "@prisma/v2-client"
 import { getRandomNumber } from "@noroff/api-utils"
+import { Joke } from "@prisma/v2-client"
+
 import { db } from "@/utils"
 
 export async function getJokes(sort: keyof Joke = "id", sortOrder: "asc" | "desc" = "asc", limit = 100, page = 1) {

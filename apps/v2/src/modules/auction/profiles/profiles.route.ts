@@ -1,31 +1,31 @@
 import { FastifyInstance } from "fastify"
+import { createResponseSchema } from "@noroff/api-utils"
 
 import {
-  displayProfileSchema,
-  profilesQuerySchema,
-  updateProfileSchema,
-  profileNameSchema,
-  queryFlagsSchema,
-  profileCreditsSchema,
-  searchQuerySchema
-} from "./profiles.schema"
-import {
-  getProfilesHandler,
-  getProfileHandler,
-  updateProfileHandler,
-  getProfileListingsHandler,
-  getProfileCreditsHandler,
-  getProfileBidsHandler,
-  getProfileWinsHandler,
-  searchProfilesHandler
-} from "./profiles.controller"
-import { createResponseSchema } from "@noroff/api-utils"
-import {
   listingQuerySchema,
-  listingWinsQuerySchema,
   listingResponseSchema,
+  listingWinsQuerySchema,
   profileBidsResponseSchema
 } from "../listings/listings.schema"
+import {
+  getProfileBidsHandler,
+  getProfileCreditsHandler,
+  getProfileHandler,
+  getProfileListingsHandler,
+  getProfilesHandler,
+  getProfileWinsHandler,
+  searchProfilesHandler,
+  updateProfileHandler
+} from "./profiles.controller"
+import {
+  displayProfileSchema,
+  profileCreditsSchema,
+  profileNameSchema,
+  profilesQuerySchema,
+  queryFlagsSchema,
+  searchQuerySchema,
+  updateProfileSchema
+} from "./profiles.schema"
 
 async function profilesRoutes(server: FastifyInstance) {
   server.get(

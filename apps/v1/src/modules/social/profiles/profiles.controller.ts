@@ -1,17 +1,17 @@
-import { Profile, Post } from "@prisma/v1-client"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { ProfileMediaSchema } from "./profiles.schema"
-import { PostIncludes } from "../posts/posts.controller"
-import { NotFound, BadRequest } from "http-errors"
+import { Post, Profile } from "@prisma/v1-client"
+import { BadRequest, NotFound } from "http-errors"
 
+import { PostIncludes } from "../posts/posts.controller"
+import { ProfileMediaSchema } from "./profiles.schema"
 import {
-  getProfiles,
-  getProfile,
-  updateProfileMedia,
   followProfile,
+  getProfile,
+  getProfilePosts,
+  getProfiles,
   unfollowProfile,
-  getProfilePosts
+  updateProfileMedia
 } from "./profiles.service"
 import { checkIsUserFollowing } from "./profiles.utils"
 

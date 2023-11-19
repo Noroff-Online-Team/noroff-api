@@ -1,9 +1,10 @@
 import { FastifyReply, FastifyRequest } from "fastify"
+import { mediaGuard, verifyPassword } from "@noroff/api-utils"
 import { BadRequest, Unauthorized } from "http-errors"
+
+import { CreateProfileInput } from "../profiles/profiles.schema"
 import { LoginInput } from "./auth.schema"
 import { createProfile, findProfileByEmail, findProfileByEmailOrName } from "./auth.service"
-import { CreateProfileInput } from "../profiles/profiles.schema"
-import { verifyPassword, mediaGuard } from "@noroff/api-utils"
 
 export async function registerProfileHandler(
   request: FastifyRequest<{

@@ -1,12 +1,13 @@
 "use client"
 
-import { EndpointDetails } from "@/components/endpoint-details"
-import { Callout } from "@/components/callout"
-import { TypeTable } from "next-docs-ui/components/type-table"
+import type { HTMLAttributes } from "react"
 import { useMDXComponent } from "next-contentlayer/hooks"
 import { ImageZoom } from "next-docs-ui/components/image-zoom"
+import { TypeTable } from "next-docs-ui/components/type-table"
 import defaultComponents from "next-docs-ui/mdx"
-import type { HTMLAttributes } from "react"
+
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
 
 type TypeTableObjectType = {
   [name: string]: {

@@ -1,20 +1,20 @@
 import { FastifyInstance } from "fastify"
 
 import {
-  displayVenueSchema,
-  venuesQuerySchema,
-  venueIdSchema,
-  queryFlagsSchema,
-  createVenueSchema,
-  updateVenueSchema
-} from "./venues.schema"
-import {
-  getVenuesHandler,
-  getVenueHandler,
   createVenueHandler,
   deleteVenueHandler,
+  getVenueHandler,
+  getVenuesHandler,
   updateVenueHandler
 } from "./venues.controller"
+import {
+  createVenueSchema,
+  displayVenueSchema,
+  queryFlagsSchema,
+  updateVenueSchema,
+  venueIdSchema,
+  venuesQuerySchema
+} from "./venues.schema"
 
 async function venuesRoutes(server: FastifyInstance) {
   server.get(

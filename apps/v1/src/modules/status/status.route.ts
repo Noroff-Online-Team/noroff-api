@@ -1,4 +1,5 @@
 import { FastifyInstance } from "fastify"
+
 import { statusResponseSchema } from "./status.schema"
 
 async function statusRoutes(server: FastifyInstance) {

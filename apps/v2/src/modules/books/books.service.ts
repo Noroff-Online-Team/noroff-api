@@ -1,5 +1,6 @@
-import { Book } from "@prisma/v2-client"
 import { getRandomNumber } from "@noroff/api-utils"
+import { Book } from "@prisma/v2-client"
+
 import { db } from "@/utils"
 
 export async function getBooks(sort: keyof Book = "id", sortOrder: "asc" | "desc" = "asc", limit = 100, page = 1) {

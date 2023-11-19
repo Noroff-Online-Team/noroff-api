@@ -1,7 +1,7 @@
 import { FastifyRequest } from "fastify"
 import { NotFound } from "http-errors"
 
-import { getJokes, getJoke, getRandomJoke } from "./jokes.service"
+import { getJoke, getJokes, getRandomJoke } from "./jokes.service"
 
 export async function getJokesHandler() {
   const jokes = await getJokes()
