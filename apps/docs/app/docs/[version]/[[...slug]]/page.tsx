@@ -1,10 +1,12 @@
-import { getPage, getPageUrl, getTree } from "@/utils/source"
+import { notFound } from "next/navigation"
 import { allDocs } from "contentlayer/generated"
 import { ExternalLinkIcon } from "lucide-react"
 import { MDXContent } from "next-docs-ui/mdx"
 import { DocsPage } from "next-docs-ui/page"
 import { findNeighbour, getTableOfContents } from "next-docs-zeta/server"
-import { notFound } from "next/navigation"
+
+import { getPage, getPageUrl, getTree } from "@/utils/source"
+
 import { Content } from "./content"
 
 type Param = {

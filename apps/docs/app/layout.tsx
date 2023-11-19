@@ -1,10 +1,14 @@
-import type { Metadata, Viewport } from "next/types"
-import { Nav } from "@/components/nav"
 import { Inter } from "next/font/google"
+import type { Metadata, Viewport } from "next/types"
 import clsx from "clsx"
+
+import { Nav } from "@/components/nav"
+
 import "next-docs-ui/style.css"
 import "./global.css"
+
 import { base_url } from "@/utils/metadata"
+
 import { Provider } from "./provider"
 
 export async function generateMetadata(): Promise<Metadata> {
