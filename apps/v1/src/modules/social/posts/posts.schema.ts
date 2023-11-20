@@ -170,7 +170,7 @@ export const deleteCommentSchema = postIdParamsSchema.extend({
     val => parseInt(val as string, 10),
     z
       .number({
-        invalid_type_error: "Post ID must be a number"
+        invalid_type_error: "Comment ID must be a number"
       })
       .int()
   )
