@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
 import { Post, Profile } from "@prisma/v1-client"
-import { BadRequest, NotFound } from "http-errors"
+import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { PostIncludes } from "../posts/posts.controller"
 import { ProfileMediaSchema } from "./profiles.schema"
@@ -87,11 +87,24 @@ export async function updateProfileMediaHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { name } = request.params
   const { avatar, banner } = request.body
+  const { name: profileToUpdate } = request.params
+  const { name: requesterProfile } = request.user as Profile
+
+  const profileExists = await getProfile(profileToUpdate)
+
+  if (!profileExists) {
+    throw new NotFound("No profile with this name")
+  }
+
+  if (requesterProfile.toLowerCase() !== profileToUpdate.toLowerCase()) {
+    throw new Forbidden("You do not have permission to update this profile")
+  }
+
   await mediaGuard(banner)
   await mediaGuard(avatar)
-  const profile = await updateProfileMedia(name, request.body)
+
+  const profile = await updateProfileMedia(profileToUpdate, request.body)
   reply.code(200).send(profile)
 }
 
