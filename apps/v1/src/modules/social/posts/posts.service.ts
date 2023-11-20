@@ -157,21 +157,9 @@ export const createComment = async (postId: number, owner: string, comment: Crea
   })
 
 export const deleteCommentAndReplies = async (id: number) => {
-  const comment = await getComment(id)
-
-  if (comment) {
-    // Delete all direct replies recursively
-    if (comment.replies && comment.replies.length > 0) {
-      for (const reply of comment.replies) {
-        await deleteCommentAndReplies(reply.id) // Recursive call for each reply
-      }
-    }
-
-    // Delete the comment itself
-    await prisma.comment.delete({
-      where: { id }
-    })
-  }
+  await prisma.comment.delete({
+    where: { id }
+  })
 }
 
 export const getComment = async (id: number) => {

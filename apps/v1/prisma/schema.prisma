@@ -128,7 +128,7 @@ model Comment {
   author    Profile   @relation(fields: [owner], references: [name], onDelete: Cascade)
   owner     String
   created   DateTime
-  replyTo   Comment?  @relation("Replies", fields: [replyToId], references: [id])
+  replyTo   Comment?  @relation("Replies", fields: [replyToId], references: [id], onDelete: Cascade)
   replies   Comment[] @relation("Replies")
   replyToId Int?
 }
