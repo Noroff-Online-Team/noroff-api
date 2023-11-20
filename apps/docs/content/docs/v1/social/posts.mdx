@@ -176,7 +176,7 @@ Retrieve a single post by its id.
 
 <Hr />
 
-## All posts from followed profiles
+## All posts from following
 
 <EndpointDetails path="/social/posts/following" />
 
@@ -317,3 +317,15 @@ This endpoint allows a comment to be made on a post. The optional `replyToId` pr
   }
 }
 ```
+
+<Hr />
+
+## Delete comment from post
+
+<EndpointDetails method="DELETE" path="/social/posts/<id>/comment/<comment-id>" />
+
+> Deleting a comment will also delete all replies to that comment.
+
+Delete a comment from a post.
+
+Returns an empty 204 response on success.
