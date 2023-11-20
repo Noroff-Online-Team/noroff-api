@@ -164,8 +164,7 @@ export const deleteCommentAndReplies = async (id: number) => {
 
 export const getComment = async (id: number) => {
   return await prisma.comment.findUnique({
-    where: { id },
-    include: { replies: true }
+    where: { id }
   })
 }
 
