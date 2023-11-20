@@ -156,28 +156,17 @@ export const createComment = async (postId: number, owner: string, comment: Crea
     }
   })
 
-export const deleteComment = async (id: number) =>
+export const deleteCommentAndReplies = async (id: number) => {
   await prisma.comment.delete({
-    where: {
-      id
-    }
+    where: { id }
   })
+}
 
-export const getComment = async (id: number) =>
-  await prisma.comment.findUnique({
-    where: {
-      id
-    },
-    select: {
-      id: true,
-      body: true,
-      created: true,
-      owner: true,
-      replyToId: true,
-      replies: true,
-      author: true
-    }
+export const getComment = async (id: number) => {
+  return await prisma.comment.findUnique({
+    where: { id }
   })
+}
 
 export const getPostsOfFollowedUsers = async (
   id: number,

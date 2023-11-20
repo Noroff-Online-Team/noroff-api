@@ -8,6 +8,7 @@ import {
   createComment,
   createPost,
   createReaction,
+  deleteCommentAndReplies,
   deletePost,
   getComment,
   getPost,
@@ -255,26 +256,35 @@ export async function createCommentHandler(
 
 export async function deleteCommentHandler(
   request: FastifyRequest<{
-    Params: { id: number }
+    Params: {
+      id: number
+      commentId: number
+    }
   }>,
   reply: FastifyReply
 ) {
-  const { id } = request.params
+  const { id, commentId } = request.params
   const { name } = request.user as Profile
 
-  const comment = await getComment(id)
+  const post = await getPost(id)
+
+  if (!post) {
+    throw new NotFound("Post not found")
+  }
+
+  const comment = await getComment(commentId)
 
   if (!comment) {
     throw new NotFound("Comment not found")
   }
 
-  if (name !== comment.owner) {
+  if (name.toLowerCase() !== comment.owner.toLowerCase()) {
     throw new Forbidden("You do not have permission to delete this comment")
   }
 
   try {
-    await deletePost(id)
-    reply.send(204)
+    await deleteCommentAndReplies(commentId)
+    reply.code(204)
   } catch (error) {
     reply.code(500).send(error)
   }

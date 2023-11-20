@@ -4,6 +4,7 @@ import {
   createCommentHandler,
   createPostHandler,
   createReactionHandler,
+  deleteCommentHandler,
   deletePostHandler,
   getPostHandler,
   getPostsHandler,
@@ -14,6 +15,7 @@ import {
   authorQuerySchema,
   createCommentSchema,
   createPostBaseSchema,
+  deleteCommentSchema,
   displayCommentSchema,
   displayPostSchema,
   postIdParamsSchema,
@@ -155,6 +157,19 @@ async function postsRoutes(server: FastifyInstance) {
       }
     },
     createCommentHandler
+  )
+
+  server.delete(
+    "/:id/comment/:commentId",
+    {
+      preHandler: [server.authenticate],
+      schema: {
+        tags: ["social-posts"],
+        security: [{ bearerAuth: [] }],
+        params: deleteCommentSchema
+      }
+    },
+    deleteCommentHandler
   )
 }
 

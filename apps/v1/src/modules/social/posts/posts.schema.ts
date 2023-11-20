@@ -165,6 +165,17 @@ export const createPostSchema = z.object({
   ...postCore
 })
 
+export const deleteCommentSchema = postIdParamsSchema.extend({
+  commentId: z.preprocess(
+    val => parseInt(val as string, 10),
+    z
+      .number({
+        invalid_type_error: "Comment ID must be a number"
+      })
+      .int()
+  )
+})
+
 export const displayPostSchema = z.object({
   ...postCore,
   ...reactions,
