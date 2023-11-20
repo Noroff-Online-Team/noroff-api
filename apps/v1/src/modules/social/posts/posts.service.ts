@@ -156,28 +156,30 @@ export const createComment = async (postId: number, owner: string, comment: Crea
     }
   })
 
-export const deleteComment = async (id: number) =>
-  await prisma.comment.delete({
-    where: {
-      id
-    }
-  })
+export const deleteCommentAndReplies = async (id: number) => {
+  const comment = await getComment(id)
 
-export const getComment = async (id: number) =>
-  await prisma.comment.findUnique({
-    where: {
-      id
-    },
-    select: {
-      id: true,
-      body: true,
-      created: true,
-      owner: true,
-      replyToId: true,
-      replies: true,
-      author: true
+  if (comment) {
+    // Delete all direct replies recursively
+    if (comment.replies && comment.replies.length > 0) {
+      for (const reply of comment.replies) {
+        await deleteCommentAndReplies(reply.id) // Recursive call for each reply
+      }
     }
+
+    // Delete the comment itself
+    await prisma.comment.delete({
+      where: { id }
+    })
+  }
+}
+
+export const getComment = async (id: number) => {
+  return await prisma.comment.findUnique({
+    where: { id },
+    include: { replies: true }
   })
+}
 
 export const getPostsOfFollowedUsers = async (
   id: number,
