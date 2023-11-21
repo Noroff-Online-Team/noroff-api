@@ -34,7 +34,7 @@ afterEach(async () => {
 })
 
 describe("[POST] /social/posts/:id/comment", () => {
-  it("should successfully add a comment to a post", async () => {
+  it("should successfully delete a comment", async () => {
     const { id: COMMENT_ID } = await db.socialPostComment.create({
       data: {
         body: "Test comment",
@@ -54,9 +54,7 @@ describe("[POST] /social/posts/:id/comment", () => {
 
     expect(response.statusCode).toBe(204)
 
-    const comments = await db.socialPostComment.findMany({
-      where: { id: COMMENT_ID }
-    })
+    const comments = await db.socialPostComment.findMany()
     expect(comments).toHaveLength(0)
   })
 
