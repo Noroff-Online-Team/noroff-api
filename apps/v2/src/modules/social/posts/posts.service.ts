@@ -293,7 +293,7 @@ export const createComment = async (
   return { data }
 }
 
-export const deleteComment = async (id: number) => {
+export const deleteCommentAndReplies = async (id: number) => {
   await db.socialPostComment.delete({
     where: { id }
   })
