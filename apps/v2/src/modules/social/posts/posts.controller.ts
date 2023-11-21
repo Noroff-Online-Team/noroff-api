@@ -325,7 +325,7 @@ export async function deleteCommentHandler(
   const { id, commentId } = await deleteCommentSchema.parseAsync(request.params)
   const { name } = request.user as UserProfile
 
-  const post = await getPost(id, { author: true, comments: true })
+  const post = await getPost(id, { comments: true })
 
   if (!post.data) {
     throw new NotFound("Post not found")
