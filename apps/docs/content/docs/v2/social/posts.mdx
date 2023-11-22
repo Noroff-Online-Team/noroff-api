@@ -408,6 +408,18 @@ This endpoint allows a comment to be made on a post. The optional `replyToId` pr
 
 <Hr />
 
+## Delete comment from post
+
+<EndpointDetails method="DELETE" path="/social/posts/<id>/comment/<comment-id>" />
+
+> Deleting a comment will also delete all replies to that comment.
+
+Delete a comment based on its id.
+
+Returns an empty `204 No Content` response on success.
+
+<Hr />
+
 ## Search posts
 
 <EndpointDetails path="/social/posts/search?q=<query>" />

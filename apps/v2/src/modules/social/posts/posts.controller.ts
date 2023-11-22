@@ -7,6 +7,7 @@ import {
   authorQuerySchema,
   CreateCommentSchema,
   CreatePostBaseSchema,
+  deleteCommentSchema,
   emojiSchema,
   mediaSchema,
   postIdParamsSchema,
@@ -17,6 +18,7 @@ import {
   createComment,
   createOrDeleteReaction,
   createPost,
+  deleteCommentAndReplies,
   deletePost,
   getComment,
   getPost,
@@ -309,4 +311,43 @@ export async function searchPostsHandler(
   const results = await searchPosts(sort, sortOrder, limit, page, q, includes)
 
   return results
+}
+
+export async function deleteCommentHandler(
+  request: FastifyRequest<{
+    Params: {
+      id: number
+      commentId: number
+    }
+  }>,
+  reply: FastifyReply
+) {
+  const { id, commentId } = await deleteCommentSchema.parseAsync(request.params)
+  const { name } = request.user as UserProfile
+
+  const post = await getPost(id, { comments: true })
+
+  if (!post.data) {
+    throw new NotFound("Post not found")
+  }
+
+  const comment = await getComment(commentId)
+
+  if (!comment) {
+    throw new NotFound("Comment not found")
+  }
+
+  const isRelatedToPost = post.data.comments?.find(comment => comment.id === commentId)
+
+  if (!isRelatedToPost) {
+    throw new BadRequest("Comment is not related to this post")
+  }
+
+  if (name.toLowerCase() !== comment.owner.toLowerCase()) {
+    throw new Forbidden("You do not have permission to delete this comment")
+  }
+
+  await deleteCommentAndReplies(commentId)
+
+  reply.code(204)
 }

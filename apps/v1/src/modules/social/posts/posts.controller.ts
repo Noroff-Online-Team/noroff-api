@@ -266,7 +266,7 @@ export async function deleteCommentHandler(
   const { id, commentId } = request.params
   const { name } = request.user as Profile
 
-  const post = await getPost(id)
+  const post = await getPost(id, { comments: true })
 
   if (!post) {
     throw new NotFound("Post not found")
@@ -276,6 +276,12 @@ export async function deleteCommentHandler(
 
   if (!comment) {
     throw new NotFound("Comment not found")
+  }
+
+  const isRelatedToPost = post.comments?.find(comment => comment.id === commentId)
+
+  if (!isRelatedToPost) {
+    throw new BadRequest("Comment is not related to this post")
   }
 
   if (name.toLowerCase() !== comment.owner.toLowerCase()) {

@@ -68,10 +68,19 @@ const postId = {
 export const postIdParamsSchema = z.object({
   id: z.coerce
     .number({
-      invalid_type_error: "ID must be a number"
+      invalid_type_error: "Post ID must be a number"
     })
-    .int("ID must be an integer")
-    .positive("ID must be a positive integer")
+    .int("Post ID must be an integer")
+    .positive("Post ID must be a positive integer")
+})
+
+export const deleteCommentSchema = postIdParamsSchema.extend({
+  commentId: z.coerce
+    .number({
+      invalid_type_error: "Comment ID must be a number"
+    })
+    .int("Comment ID must be an integer")
+    .positive("Comment ID must be a positive integer")
 })
 
 const postMeta = {
