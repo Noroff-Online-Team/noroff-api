@@ -180,6 +180,7 @@ export const getProfilePosts = async (
         ...includes,
         ...withCommentAuthor,
         ...withAuthorMedia,
+        media: true,
         _count: {
           select: {
             comments: true,
