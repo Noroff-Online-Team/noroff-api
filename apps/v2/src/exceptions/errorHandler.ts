@@ -40,7 +40,7 @@ const httpErrorHandler: ErrorHandlerStrategy = error => {
 }
 
 const jwtErrorHandler: ErrorHandlerStrategy = error => {
-  if (error.code.startsWith("FST_JWT")) {
+  if (error.code?.startsWith("FST_JWT")) {
     let statusCode: number
     let customMessage: string
 
