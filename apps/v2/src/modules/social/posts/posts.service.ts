@@ -122,7 +122,6 @@ export const createPost = async (createPostData: CreatePostSchema, includes: Soc
   const withCommentAuthor = includes.comments
     ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
     : {}
-  const withMedia = media?.url ? { media: true } : {}
   const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
 
   const data = await db.socialPost.create({
@@ -133,8 +132,8 @@ export const createPost = async (createPostData: CreatePostSchema, includes: Soc
     include: {
       ...includes,
       ...withCommentAuthor,
-      ...withMedia,
       ...withAuthorMedia,
+      media: true,
       _count: {
         select: {
           comments: true,
@@ -156,7 +155,6 @@ export const updatePost = async (
   const withCommentAuthor = includes.comments
     ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
     : {}
-  const withMedia = media?.url ? { media: true } : {}
 
   const data = await db.socialPost.update({
     data: {
@@ -167,7 +165,7 @@ export const updatePost = async (
     include: {
       ...includes,
       ...withCommentAuthor,
-      ...withMedia,
+      media: true,
       _count: {
         select: {
           comments: true,
