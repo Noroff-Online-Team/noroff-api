@@ -143,7 +143,9 @@ export const createPost = async (createPostData: CreatePostSchema, includes: Soc
     }
   })
 
-  return { data }
+  const enrichedData = includes.reactions ? { ...data, reactions: await fetchReactionCounts(data.id) } : data
+
+  return { data: enrichedData }
 }
 
 export const updatePost = async (
@@ -175,7 +177,9 @@ export const updatePost = async (
     }
   })
 
-  return { data }
+  const enrichedData = includes.reactions ? { ...data, reactions: await fetchReactionCounts(id) } : data
+
+  return { data: enrichedData }
 }
 
 export const deletePost = async (id: number) => {
@@ -185,17 +189,30 @@ export const deletePost = async (id: number) => {
 }
 
 async function fetchReactionCounts(postId: number) {
-  const reactionCounts = await db.socialPostReaction.groupBy({
-    by: ["symbol"],
+  const reactions = await db.socialPostReaction.findMany({
     where: { postId },
-    _count: {
-      symbol: true
-    }
+    select: { symbol: true, owner: true }
   })
 
-  return reactionCounts.map(r => ({
-    symbol: r.symbol,
-    count: r._count.symbol
+  // Transform reactions into a more efficient structure for processing
+  const reactionSummary = reactions.reduce<{ [key: string]: { count: number; reactors: string[] } }>(
+    (acc, reaction) => {
+      const { symbol, owner } = reaction
+      if (!acc[symbol]) {
+        acc[symbol] = { count: 0, reactors: [] }
+      }
+      acc[symbol].count += 1
+      acc[symbol].reactors.push(owner)
+      return acc
+    },
+    {}
+  )
+
+  // Convert the summary object back into the desired array format
+  return Object.entries(reactionSummary).map(([symbol, { count, reactors }]) => ({
+    symbol,
+    count,
+    reactors
   }))
 }
 
@@ -215,48 +232,18 @@ export const createOrDeleteReaction = async (postId: number, symbol: string, own
   let reactionDetails
 
   if (userReaction) {
-    // If the user has already reacted with this symbol
-    if (userReaction.count === 1) {
-      // If the count is 1, delete the reaction entry
-      reactionDetails = await db.socialPostReaction.delete({ where: userReactionQuery })
-    } else {
-      // Otherwise, decrement the count
-      reactionDetails = await db.socialPostReaction.update({
-        where: userReactionQuery,
-        data: {
-          count: {
-            decrement: 1
-          }
-        }
-      })
-    }
-  } else {
-    // If the user hasn't reacted with this symbol
-    const existingReaction = await db.socialPostReaction.findUnique({
+    reactionDetails = await db.socialPostReaction.delete({
       where: userReactionQuery
     })
-
-    if (existingReaction) {
-      // If a reaction entry exists for the post and symbol, increment the count
-      reactionDetails = await db.socialPostReaction.update({
-        where: userReactionQuery,
-        data: {
-          count: {
-            increment: 1
-          }
-        }
-      })
-    } else {
-      // If no reaction entry exists for the post and symbol, create a new entry with a count of 1
-      reactionDetails = await db.socialPostReaction.create({
-        data: {
-          postId,
-          owner,
-          symbol,
-          count: 1
-        }
-      })
-    }
+  } else {
+    reactionDetails = await db.socialPostReaction.create({
+      data: {
+        postId,
+        owner,
+        symbol,
+        count: 1
+      }
+    })
   }
 
   const reactions = await fetchReactionCounts(postId)
@@ -349,7 +336,11 @@ export const getPostsOfFollowedUsers = async (
       page: page
     })
 
-  return { data, meta }
+  const enrichedData = includes.reactions
+    ? await Promise.all(data.map(async post => ({ ...post, reactions: await fetchReactionCounts(post.id) })))
+    : data
+
+  return { data: enrichedData, meta }
 }
 
 export const searchPosts = async (
@@ -391,5 +382,9 @@ export const searchPosts = async (
       page
     })
 
-  return { data, meta }
+  const enrichedData = includes.reactions
+    ? await Promise.all(data.map(async post => ({ ...post, reactions: await fetchReactionCounts(post.id) })))
+    : data
+
+  return { data: enrichedData, meta }
 }
