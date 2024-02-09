@@ -92,7 +92,8 @@ const reactions = {
   reactions: z
     .object({
       symbol: z.string(),
-      count: z.number().int()
+      count: z.number().int(),
+      reactors: z.array(z.string()).optional()
     })
     .array()
     .optional()

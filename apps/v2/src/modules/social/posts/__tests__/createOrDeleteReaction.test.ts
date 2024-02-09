@@ -55,7 +55,8 @@ describe("[PUT] /social/posts/:id/react/:symbol", () => {
       reactions: expect.arrayContaining([
         expect.objectContaining({
           symbol: REACTION_SYMBOL,
-          count: 1
+          count: 1,
+          reactors: expect.arrayContaining([expect.any(String)])
         })
       ])
     })
@@ -80,7 +81,8 @@ describe("[PUT] /social/posts/:id/react/:symbol", () => {
       reactions: [
         {
           symbol: REACTION_SYMBOL,
-          count: 1
+          count: 1,
+          reactors: expect.arrayContaining([expect.any(String)])
         }
       ]
     })
