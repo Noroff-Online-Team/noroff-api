@@ -1,7 +1,7 @@
 import { sortAndPaginationSchema } from "@noroff/api-utils"
 import { z } from "zod"
 
-import { profileCore, profileMedia } from "../../auth/auth.schema"
+import { profileBio, profileCore, profileMedia } from "../../auth/auth.schema"
 import { bookingCore } from "../bookings/bookings.schema"
 import { venueCore } from "../venues/venues.schema"
 
@@ -15,7 +15,8 @@ const profileVenueManager = {
 
 export const updateProfileSchema = z.object({
   ...profileMedia,
-  ...profileVenueManager
+  ...profileVenueManager,
+  ...profileBio
 })
 
 export const holidazeProfileSchema = z.object(profileCore).extend(profileVenueManager)
