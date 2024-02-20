@@ -48,6 +48,10 @@ export const profileMedia = {
   banner: z.object(mediaPropertiesWithErrors).optional()
 }
 
+export const profileBio = {
+  bio: z.string().max(160, "Bio cannot be greater than 160 characters").trim().nullish()
+}
+
 export const profileCore = {
   name: z
     .string({
