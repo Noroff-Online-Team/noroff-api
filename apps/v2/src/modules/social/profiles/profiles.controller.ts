@@ -98,7 +98,7 @@ export async function updateProfileHandler(
     Body: UpdateProfileSchema
   }>
 ) {
-  const { avatar, banner } = updateProfileSchema.parse(request.body)
+  const { avatar, banner, ...rest } = updateProfileSchema.parse(request.body)
   const { name: profileToUpdate } = profileNameSchema.parse(request.params)
   const { name: requesterProfile } = request.user as UserProfile
 
@@ -119,7 +119,7 @@ export async function updateProfileHandler(
     await mediaGuard(banner.url)
   }
 
-  const profile = await updateProfile(profileToUpdate, { avatar, banner })
+  const profile = await updateProfile(profileToUpdate, { avatar, banner, ...rest })
 
   return profile
 }

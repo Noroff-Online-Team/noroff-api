@@ -1,10 +1,13 @@
 import { sortAndPaginationSchema } from "@noroff/api-utils"
 import { z } from "zod"
 
-import { profileCore, profileMedia } from "../../auth/auth.schema"
+import { profileBio, profileCore, profileMedia } from "../../auth/auth.schema"
 import { postSchema } from "../posts/posts.schema"
 
-export const updateProfileSchema = z.object(profileMedia)
+export const updateProfileSchema = z.object({
+  ...profileMedia,
+  ...profileBio
+})
 export const profileSchema = z.object(profileCore)
 
 export const profileNameSchema = z.object({

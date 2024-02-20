@@ -77,10 +77,11 @@ export const getProfile = async (name: string, includes: ProfileIncludes = {}) =
   return { data: data[0] }
 }
 
-export const updateProfile = async (name: string, { avatar, banner }: UpdateProfileSchema) => {
+export const updateProfile = async (name: string, { avatar, banner, ...updateData }: UpdateProfileSchema) => {
   const data = await db.userProfile.update({
     where: { name },
     data: {
+      ...updateData,
       avatar: avatar ? { delete: {}, create: avatar } : undefined,
       banner: banner ? { delete: {}, create: banner } : undefined
     },
