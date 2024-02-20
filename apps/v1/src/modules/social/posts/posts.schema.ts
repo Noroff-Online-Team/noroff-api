@@ -26,6 +26,7 @@ export const postCore = {
       invalid_type_error: "Title must be a string",
       required_error: "Title is required"
     })
+    .min(1, "Title cannot be empty")
     .max(280, "Title cannot be greater than 280 characters")
     .trim(),
   body: z
@@ -43,6 +44,7 @@ const updatePostCore = {
     .string({
       invalid_type_error: "Title must be a string"
     })
+    .min(1, "Title cannot be empty")
     .max(280, "Title cannot be greater than 280 characters")
     .trim()
     .nullish(),
