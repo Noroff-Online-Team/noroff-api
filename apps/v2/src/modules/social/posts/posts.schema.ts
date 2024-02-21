@@ -3,6 +3,13 @@ import { z } from "zod"
 
 import { mediaPropertiesWithErrors, profileCore } from "../../auth/auth.schema"
 
+const POST_TITLE_MIN_LENGTH = 1
+const POST_TITLE_MAX_LENGTH = 280
+const POST_BODY_MAX_LENGTH = 280
+const POST_TAGS_MAX_LENGTH = 24
+const POST_MAX_TAGS = 8
+const COMMENT_BODY_MAX_LENGTH = 280
+
 const mediaCore = {
   media: z.object(mediaPropertiesWithErrors).nullish()
 }
@@ -14,9 +21,9 @@ const tagsAndMedia = {
     .string({
       invalid_type_error: "Tags must be an array of strings"
     })
-    .max(24, "Tags cannot be greater than 24 characters")
+    .max(POST_TAGS_MAX_LENGTH, "Tags cannot be greater than 24 characters")
     .array()
-    .max(8, "You cannot have more than 8 tags")
+    .max(POST_MAX_TAGS, "You cannot have more than 8 tags")
     .optional(),
   ...mediaCore
 }
@@ -27,14 +34,14 @@ export const postCore = {
       invalid_type_error: "Title must be a string",
       required_error: "Title is required"
     })
-    .min(1, "Title cannot be empty")
-    .max(280, "Title cannot be greater than 280 characters")
+    .min(POST_TITLE_MIN_LENGTH, "Title cannot be empty")
+    .max(POST_TITLE_MAX_LENGTH, "Title cannot be greater than 280 characters")
     .trim(),
   body: z
     .string({
       invalid_type_error: "Body must be a string"
     })
-    .max(280, "Body cannot be greater than 280 characters")
+    .max(POST_BODY_MAX_LENGTH, "Body cannot be greater than 280 characters")
     .trim()
     .nullish(),
   ...tagsAndMedia
@@ -45,14 +52,15 @@ const updatePostCore = {
     .string({
       invalid_type_error: "Title must be a string"
     })
-    .max(280, "Title cannot be greater than 280 characters")
+    .min(POST_TITLE_MIN_LENGTH, "Title cannot be empty")
+    .max(POST_TITLE_MAX_LENGTH, "Title cannot be greater than 280 characters")
     .trim()
     .nullish(),
   body: z
     .string({
       invalid_type_error: "Body must be a string"
     })
-    .max(280, "Body cannot be greater than 280 characters")
+    .max(POST_BODY_MAX_LENGTH, "Body cannot be greater than 280 characters")
     .trim()
     .nullish(),
   ...tagsAndMedia
@@ -125,7 +133,7 @@ const commentCore = {
       invalid_type_error: "Body must be a string",
       required_error: "Body is required"
     })
-    .max(280, "Body cannot be greater than 280 characters")
+    .max(COMMENT_BODY_MAX_LENGTH, "Body cannot be greater than 280 characters")
     .trim(),
   replyToId: z
     .number({
@@ -161,10 +169,7 @@ export const createPostBaseSchema = z.object(postCore)
 
 export const updatePostBodySchema = z
   .object(updatePostCore)
-  .refine(
-    ({ title, body, tags, media }) => !!title || !!body || !!tags || !!media,
-    "You must provide either title, body, tags, or media"
-  )
+  .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
 
 export const createPostSchema = z.object({
   ...postOwner,
