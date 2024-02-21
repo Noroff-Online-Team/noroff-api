@@ -199,14 +199,15 @@ Retrieve a single profile by its id.
 
 <EndpointDetails method="PUT" path="/auction/profiles/<name>" />
 
-Update or set profile `banner` and `avatar` images.
+Update or set `bio`, `banner` and `avatar` properties.
 
-You can send either or both of the properties in the request body.
+You may provide any combination of the properties, but at least one must be provided.
 
 > Please note that the `avatar.url` and `banner.url` properties must be fully formed URLs that links to live and publicly accessible images. The API will check the provided URLs and if they cannot be accessed publicly you will receive a `400 Bad Request` error response.
 
 ```json title="Request"
 {
+  "bio": "string",
   "avatar": {
     "url": "https://picsum.photos/id/135/800/800",
     "alt": ""

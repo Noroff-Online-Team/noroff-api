@@ -370,7 +370,7 @@ The response is the same as the [venues](./venues#all-venues) endpoint, and acce
 
 <EndpointDetails method="PUT" path="/holidaze/profiles/<name>" />
 
-Update or set `venueManager` boolean, `avatar` and/or `banner` image.
+Update or set `bio`, `venueManager`, `banner` and `avatar` properties.
 
 You may provide any combination of the properties, but at least one must be provided.
 
@@ -378,7 +378,7 @@ You may provide any combination of the properties, but at least one must be prov
 
 ```json title="Request"
 {
-  "venueManager": true,
+  "bio": "string",
   "avatar": {
     "url": "https://url.com/image.jpg",
     "alt": "string"
@@ -386,7 +386,8 @@ You may provide any combination of the properties, but at least one must be prov
   "banner": {
     "url": "https://url.com/image.jpg",
     "alt": "string"
-  }
+  },
+  "venueManager": true
 }
 ```
 
