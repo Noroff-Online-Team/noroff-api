@@ -10,7 +10,8 @@ const updateData = {
   banner: {
     url: "https://picsum.photos/id/888/1500/500",
     alt: ""
-  }
+  },
+  bio: "This is a test bio"
 }
 
 let BEARER_TOKEN = ""
@@ -59,6 +60,7 @@ describe("[PUT] /holidaze/profiles/:id", () => {
       url: "https://picsum.photos/id/888/1500/500",
       alt: ""
     })
+    expect(res.data.bio).toStrictEqual("This is a test bio")
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({})
   })
@@ -86,6 +88,48 @@ describe("[PUT] /holidaze/profiles/:id", () => {
       alt: "A blurry multi-colored rainbow background"
     })
     expect(res.data).toBeDefined()
+    expect(res.meta).toBeDefined()
+    expect(res.meta).toStrictEqual({})
+  })
+
+  it("should successfully update the profile bio", async () => {
+    const response = await server.inject({
+      url: `/holidaze/profiles/${TEST_USER_NAME}`,
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        bio: "This is a test bio"
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(200)
+    expect(res.data).toBeDefined()
+    expect(res.data.bio).toStrictEqual("This is a test bio")
+    expect(res.meta).toBeDefined()
+    expect(res.meta).toStrictEqual({})
+  })
+
+  it("should successfully remove the profile bio by setting it to null", async () => {
+    const response = await server.inject({
+      url: `/holidaze/profiles/${TEST_USER_NAME}`,
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        bio: null
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(200)
+    expect(res.data).toBeDefined()
+    expect(res.data.bio).toBeNull()
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({})
   })
