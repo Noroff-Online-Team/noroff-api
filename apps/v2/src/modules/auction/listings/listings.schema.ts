@@ -4,6 +4,12 @@ import { z } from "zod"
 import { mediaProperties, mediaPropertiesWithErrors, profileCore } from "../../auth/auth.schema"
 import { displayProfileSchema } from "../profiles/profiles.schema"
 
+const LISTING_TITLE_MIN_LENGTH = 1
+const LISTING_TITLE_MAX_LENGTH = 280
+const LISTING_DESCRIPTION_MAX_LENGTH = 280
+const LISTING_TAGS_MAX_LENGTH = 24
+const LISTING_MAX_TAGS = 8
+
 const bidCore = {
   id: z.string().uuid(),
   amount: z.number(),
@@ -47,9 +53,9 @@ const tagsAndMedia = {
     .string({
       invalid_type_error: "Tags must be an array of strings"
     })
-    .max(24, "Tags cannot be greater than 24 characters")
+    .max(LISTING_TAGS_MAX_LENGTH, "Tags cannot be greater than 24 characters")
     .array()
-    .max(8, "You cannot have more than 8 tags")
+    .max(LISTING_MAX_TAGS, "You cannot have more than 8 tags")
     .optional(),
   media: z.object(mediaPropertiesWithErrors).array().max(8, "You cannot have more than 8 images").nullish()
 }
@@ -60,14 +66,14 @@ export const createListingSchema = z.object({
       required_error: "Title is required",
       invalid_type_error: "Title must be a string"
     })
-    .min(1, "Title cannot be empty")
-    .max(280, "Title cannot be greater than 280 characters")
+    .min(LISTING_TITLE_MIN_LENGTH, "Title cannot be empty")
+    .max(LISTING_TITLE_MAX_LENGTH, "Title cannot be greater than 280 characters")
     .trim(),
   description: z
     .string({
       invalid_type_error: "Description must be a string"
     })
-    .max(280, "Description cannot be greater than 280 characters")
+    .max(LISTING_DESCRIPTION_MAX_LENGTH, "Description cannot be greater than 280 characters")
     .trim()
     .nullish(),
   endsAt: z
@@ -99,14 +105,15 @@ export const updateListingCore = {
     .string({
       invalid_type_error: "Title must be a string"
     })
-    .max(280, "Title cannot be greater than 280 characters")
+    .min(LISTING_TITLE_MIN_LENGTH, "Title cannot be empty")
+    .max(LISTING_TITLE_MAX_LENGTH, "Title cannot be greater than 280 characters")
     .trim()
     .nullish(),
   description: z
     .string({
       invalid_type_error: "Description must be a string"
     })
-    .max(280, "Description cannot be greater than 280 characters")
+    .max(LISTING_DESCRIPTION_MAX_LENGTH, "Description cannot be greater than 280 characters")
     .trim()
     .nullish(),
   ...tagsAndMedia
@@ -114,10 +121,7 @@ export const updateListingCore = {
 
 export const updateListingSchema = z
   .object(updateListingCore)
-  .refine(
-    ({ title, description, media, tags }) => !!title || !!description || !!media || !!tags,
-    "You must provide either title, description, media, or tags"
-  )
+  .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
 
 const queryFlagsCore = {
   _seller: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
