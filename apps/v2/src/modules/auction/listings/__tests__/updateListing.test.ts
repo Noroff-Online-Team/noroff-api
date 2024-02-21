@@ -117,8 +117,35 @@ describe("[PUT] /auction/listings/:id", () => {
     expect(res.errors).toStrictEqual([
       {
         code: "custom",
-        message: "You must provide either title, description, media, or tags",
+        message: "You must provide at least one field to update",
         path: []
+      }
+    ])
+  })
+
+  it("should throw zod error if attempting to update with an empty title", async () => {
+    const response = await server.inject({
+      url: `/auction/listings/${LISTING_ID}`,
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        title: "",
+        endsAt: new Date(new Date().setMonth(new Date().getMonth() + 1))
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toEqual(400)
+    expect(res.data).not.toBeDefined()
+    expect(res.meta).not.toBeDefined()
+    expect(res.errors).toStrictEqual([
+      {
+        code: "too_small",
+        message: "Title cannot be empty",
+        path: ["title"]
       }
     ])
   })

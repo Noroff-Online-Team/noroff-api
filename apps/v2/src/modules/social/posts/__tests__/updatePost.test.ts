@@ -126,6 +126,32 @@ describe("[PUT] /social/posts/:id", () => {
     ])
   })
 
+  it("should throw zod error if attempting to update with an empty title", async () => {
+    const response = await server.inject({
+      url: `/social/posts/${POST_ID}`,
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        title: ""
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toEqual(400)
+    expect(res.data).not.toBeDefined()
+    expect(res.meta).not.toBeDefined()
+    expect(res.errors).toStrictEqual([
+      {
+        code: "too_small",
+        message: "Title cannot be empty",
+        path: ["title"]
+      }
+    ])
+  })
+
   it("should throw 401 error when attempting to create without API key", async () => {
     const response = await server.inject({
       url: `/social/posts/${POST_ID}`,
