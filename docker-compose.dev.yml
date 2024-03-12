@@ -4,7 +4,7 @@ services:
   prometheus:
     image: prom/prometheus
     container_name: prometheus
-    restart: no
+    restart: "no"
     ports:
       - 9090:9090
     volumes:
@@ -18,7 +18,7 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
-    restart: no
+    restart: "no"
     ports:
       - 9091:3000
     environment:
@@ -36,7 +36,7 @@ services:
   loki:
     image: grafana/loki
     container_name: loki
-    restart: no
+    restart: "no"
     ports:
       - 3100:3100
     command: -config.file=/etc/loki/local-config.yaml
@@ -48,7 +48,7 @@ services:
   postgres:
     image: postgres:16
     container_name: api-db
-    restart: no
+    restart: "no"
     environment:
       POSTGRES_USER: ${DC_POSTGRES_USER}
       POSTGRES_PASSWORD: ${DC_POSTGRES_PASSWORD}
@@ -68,7 +68,7 @@ services:
 
   api-v1:
     container_name: api-v1
-    restart: no
+    restart: "no"
     build:
       context: .
       dockerfile: ./apps/v1/Dockerfile
@@ -86,7 +86,7 @@ services:
 
   api-v2:
     container_name: api-v2
-    restart: no
+    restart: "no"
     build:
       context: .
       dockerfile: ./apps/v2/Dockerfile
@@ -104,7 +104,7 @@ services:
 
   docs:
     container_name: docs
-    restart: no
+    restart: "no"
     build:
       context: .
       dockerfile: ./apps/docs/Dockerfile
