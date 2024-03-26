@@ -97,6 +97,7 @@ export async function getProfileListings(
 ) {
   const whereTag = tag ? { tags: { has: tag } } : {}
   const whereActive = active ? { endsAt: { gte: new Date() } } : {}
+  const withBidder = includes.bids ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } } : {}
   const withProfileMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
 
   const [data, meta] = await db.auctionListing
@@ -111,6 +112,7 @@ export async function getProfileListings(
       },
       include: {
         ...includes,
+        ...withBidder,
         ...withProfileMedia,
         media: true,
         _count: {
