@@ -50,7 +50,8 @@ export const createBookingSchema = z.object({
       invalid_type_error: "Guests must be a number"
     })
     .int("Guests must be an integer")
-    .min(1, "Guests must be at least 1"),
+    .min(1, "Guests must be at least 1")
+    .max(100, "Guests cannot exceed 100"),
   venueId: z
     .string({
       required_error: "venueId is required",

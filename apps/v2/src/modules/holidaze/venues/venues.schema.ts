@@ -39,8 +39,16 @@ const venueLocationWithErrors = {
   zip: z.string({ invalid_type_error: "Zip must be a string" }).nullish(),
   country: z.string({ invalid_type_error: "Country must be a string" }).nullish(),
   continent: z.string({ invalid_type_error: "Continent must be a string" }).nullish(),
-  lat: z.number({ invalid_type_error: "Latitude must be a number" }).nullish(),
-  lng: z.number({ invalid_type_error: "Longitude must be a number" }).nullish()
+  lat: z
+    .number({ invalid_type_error: "Latitude must be a number" })
+    .min(-90, "Latitude must be between -90 and 90")
+    .max(90, "Latitude must be between -90 and 90")
+    .nullish(),
+  lng: z
+    .number({ invalid_type_error: "Longitude must be a number" })
+    .min(-180, "Longitude must be between -180 and 180")
+    .max(180, "Longitude must be between -180 and 180")
+    .nullish()
 }
 
 export const venueCore = {
@@ -101,7 +109,8 @@ export const createVenueSchema = z.object({
       invalid_type_error: "Price must be a number",
       required_error: "Price is required"
     })
-    .min(0, "You cannot pay guests to stay at your venue"),
+    .min(0, "You cannot pay guests to stay at your venue")
+    .max(10_000, "Price cannot be greater than 10,000"),
   maxGuests: z
     .number({
       invalid_type_error: "Max guests must be a number",
@@ -138,6 +147,7 @@ const updateVenueCore = {
       invalid_type_error: "Price must be a number"
     })
     .min(0, "You cannot pay guests to stay at your venue")
+    .max(10_000, "Price cannot be greater than 10,000")
     .optional(),
   maxGuests: z
     .number({
