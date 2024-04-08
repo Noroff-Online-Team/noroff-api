@@ -1,5 +1,9 @@
 import { z } from "zod"
 
+const venueManager = {
+  venueManager: z.boolean({ invalid_type_error: "Venue manager must be a boolean" }).optional()
+}
+
 export const mediaProperties = {
   url: z.string().url(),
   alt: z.string().optional().default("")
@@ -11,6 +15,7 @@ export const mediaPropertiesWithErrors = {
       required_error: "Image URL is required",
       invalid_type_error: "Image URL must be a string"
     })
+    .max(300, "Image URL cannot be greater than 300 characters")
     .url("Image URL must be valid URL"),
   alt: z
     .string({
@@ -75,6 +80,7 @@ export const profileCore = {
 
 export const createProfileBodySchema = z.object({
   ...profileCore,
+  ...venueManager,
   password: z
     .string({
       required_error: "Password is required",
@@ -83,7 +89,7 @@ export const createProfileBodySchema = z.object({
     .min(8, "Password must be at least 8 characters")
 })
 
-export const createProfileResponseSchema = z.object(profileCore)
+export const createProfileResponseSchema = z.object(profileCore).extend(venueManager)
 
 export const profileMediaSchema = z.object(profileMedia)
 

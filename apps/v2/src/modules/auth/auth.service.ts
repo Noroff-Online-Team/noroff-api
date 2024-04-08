@@ -27,9 +27,13 @@ export async function createProfile(input: CreateProfileInput) {
       salt,
       password: hash
     },
-    include: {
+    select: {
+      name: true,
+      email: true,
+      bio: true,
       avatar: true,
-      banner: true
+      banner: true,
+      venueManager: !!rest.venueManager
     }
   })
 
