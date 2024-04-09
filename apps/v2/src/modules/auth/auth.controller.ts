@@ -63,9 +63,6 @@ export async function loginHandler(
     throw new Unauthorized("Invalid email or password")
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { password, salt, ...rest } = profile.data
-
   return {
     data: {
       name: profile.data.name,
@@ -73,7 +70,10 @@ export async function loginHandler(
       bio: profile.data.bio,
       avatar: profile.data.avatar,
       banner: profile.data.banner,
-      accessToken: request.jwt.sign(rest)
+      accessToken: request.jwt.sign({
+        name: profile.data.name,
+        email: profile.data.email
+      })
     }
   }
 }
