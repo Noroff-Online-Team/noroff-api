@@ -79,14 +79,13 @@ describe("[DELETE] /blog/posts/:name/:id", () => {
     })
     const res = await response.json()
 
-    // We're expecting a 404 here because in the context of the requesting user, the post does not exist.
-    expect(response.statusCode).toBe(404)
+    expect(response.statusCode).toBe(403)
     expect(res.data).not.toBeDefined()
     expect(res.meta).not.toBeDefined()
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      message: "Post not found"
+      message: "You do not have permission to delete this post"
     })
   })
 

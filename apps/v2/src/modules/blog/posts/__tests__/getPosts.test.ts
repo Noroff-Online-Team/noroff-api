@@ -3,6 +3,7 @@ import { getAuthCredentials, server } from "@/test-utils"
 import { db } from "@/utils"
 
 let USER_NAME = ""
+let SECOND_USER_NAME = ""
 let BEARER_TOKEN = ""
 
 beforeEach(async () => {
@@ -13,6 +14,7 @@ beforeEach(async () => {
   })
 
   USER_NAME = name
+  SECOND_USER_NAME = secondName
   BEARER_TOKEN = bearerToken
 
   await db.blogPost.createMany({
@@ -30,8 +32,6 @@ beforeEach(async () => {
     ]
   })
 
-  // Create a 3rd post from another user.
-  // This is to test that the endpoint only returns posts from the authenticated user.
   await db.blogPost.create({
     data: {
       title: "Second user post",
@@ -125,6 +125,26 @@ describe("[GET] /blog/posts/:name", () => {
       nextPage: null,
       pageCount: 1,
       totalCount: 1
+    })
+  })
+
+  it("should return 403 if user does not have permission to view post", async () => {
+    const response = await server.inject({
+      url: `/blog/posts/${SECOND_USER_NAME}`,
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`
+      }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(403)
+    expect(res.data).not.toBeDefined()
+    expect(res.meta).not.toBeDefined()
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toHaveLength(1)
+    expect(res.errors[0]).toStrictEqual({
+      message: "You do not have permission to view this post"
     })
   })
 })
