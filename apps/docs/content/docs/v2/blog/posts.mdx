@@ -15,7 +15,7 @@ These endpoints support pagination and sorting. Read more about these features [
 
 <TypeTable
   type={{
-    id: { type: "integer", description: "The unique identifier for the post." },
+    id: { type: "string", description: "The unique identifier for the post." },
     title: { type: "string", description: "The title of the post." },
     body: { type: "string", description: "The body of the post." },
     tags: { type: "Array<string>", description: "A string array of tags." },
@@ -61,7 +61,7 @@ Retrieve all posts.
 {
   "data": [
     {
-      "id": 0,
+      "id": "string",
       "title": "string",
       "body": "string",
       "tags": ["string"],
@@ -70,10 +70,23 @@ Retrieve all posts.
         "alt": "string"
       },
       "created": "2022-09-04T08:08:38.830Z",
-      "updated": "2022-09-04T08:08:38.830Z"
+      "updated": "2022-09-04T08:08:38.830Z",
+      "author": {
+        "name": "string",
+        "email": "string",
+        "bio": "string",
+        "avatar": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        },
+        "banner": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        }
+      }
     },
     {
-      "id": 0,
+      "id": "string",
       "title": "string",
       "body": "string",
       "tags": ["string"],
@@ -82,7 +95,20 @@ Retrieve all posts.
         "alt": "string"
       },
       "created": "2022-09-04T08:08:38.830Z",
-      "updated": "2022-09-04T08:08:38.830Z"
+      "updated": "2022-09-04T08:08:38.830Z",
+      "author": {
+        "name": "string",
+        "email": "string",
+        "bio": "string",
+        "avatar": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        },
+        "banner": {
+          "url": "https://url.com/image.jpg",
+          "alt": "string"
+        }
+      }
     }
     // ...
   ],
@@ -109,7 +135,7 @@ Retrieve a single post by its id.
 ```json title="Response"
 {
   "data": {
-    "id": 0,
+    "id": "string",
     "title": "string",
     "body": "string",
     "tags": ["string"],
@@ -118,7 +144,20 @@ Retrieve a single post by its id.
       "alt": "string"
     },
     "created": "2022-09-04T08:08:38.830Z",
-    "updated": "2022-09-04T08:08:38.830Z"
+    "updated": "2022-09-04T08:08:38.830Z",
+    "author": {
+      "name": "string",
+      "email": "string",
+      "bio": "string",
+      "avatar": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "banner": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      }
+    }
   },
   "meta": {}
 }
@@ -149,7 +188,7 @@ Create a new post. Only the `title` property is required, but we recommend at le
 ```json title="Response"
 {
   "data": {
-    "id": 0,
+    "id": "string",
     "title": "string",
     "body": "string",
     "tags": ["string"],
@@ -158,7 +197,20 @@ Create a new post. Only the `title` property is required, but we recommend at le
       "alt": "string"
     },
     "created": "2022-09-04T16:21:02.042Z",
-    "updated": "2022-09-04T16:21:02.042Z"
+    "updated": "2022-09-04T16:21:02.042Z",
+    "author": {
+      "name": "string",
+      "email": "string",
+      "bio": "string",
+      "avatar": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "banner": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      }
+    }
   },
   "meta": {}
 }
@@ -189,15 +241,28 @@ Update a post based on its id. This endpoint returns the updated post.
 ```json title="Response"
 {
   "data": {
-    "id": 0,
-    "created": "2022-09-04T16:21:02.044Z",
-    "updated": "2022-09-04T16:21:02.044Z",
+    "id": "string",
     "title": "string",
     "body": "string",
     "tags": ["string"],
     "media": {
       "url": "https://url.com/image.jpg",
       "alt": "string"
+    },
+    "created": "2022-09-04T16:21:02.044Z",
+    "updated": "2022-09-04T16:21:02.044Z",
+    "author": {
+      "name": "string",
+      "email": "string",
+      "bio": "string",
+      "avatar": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "banner": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      }
     }
   },
   "meta": {}
