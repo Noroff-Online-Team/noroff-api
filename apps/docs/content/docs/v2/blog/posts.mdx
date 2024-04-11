@@ -1,0 +1,215 @@
+---
+title: Posts
+description: Posts related to Blog
+---
+
+<Callout variant="warning">
+  Some of these are authenticated endpoints. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+
+These endpoints allow you to create, read, update and delete posts. Posts are the main content of a blog and can be created by any profile.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Post model
+
+<TypeTable
+  type={{
+    id: { type: "integer", description: "The unique identifier for the post." },
+    title: { type: "string", description: "The title of the post." },
+    body: { type: "string", description: "The body of the post." },
+    tags: { type: "Array<string>", description: "A string array of tags." },
+    author: {
+      type: "Profile",
+      description: "The profile that created the post."
+    },
+    media: {
+      type: "object",
+      typeDescription: "Instance of `Media` model.",
+      description: "The image associated with post."
+    },
+    created: { type: "string", description: "The date the post was created." },
+    updated: { type: "string", description: "The date the post was last updated." }
+  }}
+/>
+
+<Hr />
+
+## Filtering
+
+You can filter based on an entry in the tags array by using the `_tag` query flag. You may only filter by one tag at a time.
+
+<TypeTable
+  type={{
+    _tag: { type: "string", description: "Only posts matching tag." }
+  }}
+/>
+
+An example query filtering for posts with the tag `my_tag`:
+
+<EndpointDetails path="/blog/posts/<name>?_tag=my_tag" />
+
+<Hr />
+
+## All posts
+
+<EndpointDetails path="/blog/posts/<name>" />
+
+Retrieve all posts.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": 0,
+      "title": "string",
+      "body": "string",
+      "tags": ["string"],
+      "media": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "created": "2022-09-04T08:08:38.830Z",
+      "updated": "2022-09-04T08:08:38.830Z"
+    },
+    {
+      "id": 0,
+      "title": "string",
+      "body": "string",
+      "tags": ["string"],
+      "media": {
+        "url": "https://url.com/image.jpg",
+        "alt": "string"
+      },
+      "created": "2022-09-04T08:08:38.830Z",
+      "updated": "2022-09-04T08:08:38.830Z"
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Single post
+
+<EndpointDetails path="/blog/posts/<name>/<id>" />
+
+Retrieve a single post by its id.
+
+```json title="Response"
+{
+  "data": {
+    "id": 0,
+    "title": "string",
+    "body": "string",
+    "tags": ["string"],
+    "media": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    },
+    "created": "2022-09-04T08:08:38.830Z",
+    "updated": "2022-09-04T08:08:38.830Z"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Create post
+
+<EndpointDetails method="POST" path="/blog/posts/<name>" />
+
+Create a new post. Only the `title` property is required, but we recommend at least including the `body` and `media` properties as well.
+
+> Please note that the `media.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+{
+  "title": "string", // Required
+  "body": "string", // Optional
+  "tags": ["string"], // Optional
+  "media": {
+    "url": "https://url.com/image.jpg",
+    "alt": "string"
+  } // Optional
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": 0,
+    "title": "string",
+    "body": "string",
+    "tags": ["string"],
+    "media": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    },
+    "created": "2022-09-04T16:21:02.042Z",
+    "updated": "2022-09-04T16:21:02.042Z"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Update post
+
+<EndpointDetails method="PUT" path="/blog/posts/<name>/<id>" />
+
+Update a post based on its id. This endpoint returns the updated post.
+
+> Please note that the `media.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+{
+  "title": "string",
+  "body": "string",
+  "tags": ["string"],
+  "media": {
+    "url": "https://url.com/image.jpg",
+    "alt": "string"
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": 0,
+    "created": "2022-09-04T16:21:02.044Z",
+    "updated": "2022-09-04T16:21:02.044Z",
+    "title": "string",
+    "body": "string",
+    "tags": ["string"],
+    "media": {
+      "url": "https://url.com/image.jpg",
+      "alt": "string"
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Delete post
+
+<EndpointDetails method="DELETE" path="/blog/posts/<name>/<id>" />
+
+Delete a post based on its id.
+
+Returns an empty `204 No Content` response on success.
