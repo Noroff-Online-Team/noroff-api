@@ -22,7 +22,8 @@ You will need to send all of the required values in your `POST` request body.
   "banner": {
     "url": "https://img.service.com/banner.jpg", // Optional
     "alt": "My banner alt text" // Optional
-  }
+  },
+  "venueManager": true // Optional
 }
 ```
 
@@ -41,7 +42,8 @@ A successful response will return a `201 Created` status code and the newly crea
     "banner": {
       "url": "https://img.service.com/banner.jpg",
       "alt": "My banner alt text"
-    }
+    },
+    "venueManager": true
   },
   "meta": {}
 }
@@ -75,6 +77,7 @@ A successful response will return a `201 Created` status code and the newly crea
       type: "object?",
       typeDescription: "{\n  url: string,\n  alt?: string\n}",
       description: "The user's banner image"
-    }
+    },
+    venueManager: { type: "boolean", description: "Indicates whether the user is a venue manager" }
   }}
 />
