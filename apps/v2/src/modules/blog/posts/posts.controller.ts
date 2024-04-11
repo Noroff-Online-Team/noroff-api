@@ -14,6 +14,7 @@ import { createPost, deletePost, getPost, getPosts, updatePost } from "./posts.s
 
 export async function getPostsHandler(
   request: FastifyRequest<{
+    Params: { name: string }
     Querystring: {
       limit?: number
       page?: number
@@ -23,9 +24,14 @@ export async function getPostsHandler(
     }
   }>
 ) {
+  const { name: paramsName } = await profileNameSchema.parseAsync(request.params)
   await postsQuerySchema.parseAsync(request.query)
   const { sort, sortOrder, limit, page, _tag } = request.query
   const { name } = request.user as UserProfile
+
+  if (name.toLowerCase() !== paramsName.toLowerCase()) {
+    throw new Forbidden("You do not have permission to view this post")
+  }
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -38,11 +44,18 @@ export async function getPostsHandler(
 
 export async function getPostHandler(
   request: FastifyRequest<{
-    Params: { id: string }
+    Params: {
+      id: string
+      name: string
+    }
   }>
 ) {
-  const { id } = await postIdWithNameParamsSchema.parseAsync(request.params)
+  const { id, name: paramsName } = await postIdWithNameParamsSchema.parseAsync(request.params)
   const { name } = request.user as UserProfile
+
+  if (name.toLowerCase() !== paramsName.toLowerCase()) {
+    throw new Forbidden("You do not have permission to view this post")
+  }
 
   const post = await getPost(id, name)
 
@@ -60,41 +73,44 @@ export async function createPostHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { name } = await profileNameSchema.parseAsync(request.params)
+  const { name: paramsName } = await profileNameSchema.parseAsync(request.params)
   await mediaSchema.parseAsync(request.body)
-  const { name: requestUser } = request.user as UserProfile
+  const { name } = request.user as UserProfile
   const { media } = request.body
+
+  if (name.toLowerCase() !== paramsName.toLowerCase()) {
+    throw new Forbidden("You do not have permission to create a post for another user")
+  }
 
   if (media?.url) {
     await mediaGuard(media.url)
   }
 
-  if (name.toLowerCase() !== requestUser.toLowerCase()) {
-    throw new Forbidden("You do not have permission to create a post for another user")
-  }
-
-  const post = await createPost({ ...request.body, owner: requestUser })
+  const post = await createPost({ ...request.body, owner: name })
 
   reply.code(201).send(post)
 }
 
 export async function deletePostHandler(
   request: FastifyRequest<{
-    Params: { id: string }
+    Params: {
+      id: string
+      name: string
+    }
   }>,
   reply: FastifyReply
 ) {
-  const { id } = await postIdWithNameParamsSchema.parseAsync(request.params)
+  const { id, name: paramsName } = await postIdWithNameParamsSchema.parseAsync(request.params)
   const { name } = request.user as UserProfile
+
+  if (name.toLowerCase() !== paramsName.toLowerCase()) {
+    throw new Forbidden("You do not have permission to delete this post")
+  }
 
   const post = await getPost(id, name)
 
   if (!post.data) {
     throw new NotFound("Post not found")
-  }
-
-  if (name.toLowerCase() !== post.data.author?.name.toLowerCase()) {
-    throw new Forbidden("You do not have permission to delete this post")
   }
 
   await deletePost(id)
@@ -104,13 +120,20 @@ export async function deletePostHandler(
 
 export async function updatePostHandler(
   request: FastifyRequest<{
-    Params: { id: string }
+    Params: {
+      id: string
+      name: string
+    }
     Body: CreatePostBaseSchema
   }>
 ) {
-  const { id } = await postIdWithNameParamsSchema.parseAsync(request.params)
+  const { id, name: paramsName } = await postIdWithNameParamsSchema.parseAsync(request.params)
   const { name } = request.user as UserProfile
   const { media } = request.body
+
+  if (name.toLowerCase() !== paramsName.toLowerCase()) {
+    throw new Forbidden("You do not have permission to update this post")
+  }
 
   if (media?.url) {
     await mediaGuard(media.url)
@@ -120,10 +143,6 @@ export async function updatePostHandler(
 
   if (!post.data) {
     throw new NotFound("Post not found")
-  }
-
-  if (name.toLowerCase() !== post.data.author?.name.toLowerCase()) {
-    throw new Forbidden("You do not have permission to edit this post")
   }
 
   const updatedPost = await updatePost(id, request.body)
