@@ -19,17 +19,17 @@ These endpoints support pagination and sorting. Read more about these features [
     title: { type: "string", description: "The title of the post." },
     body: { type: "string", description: "The body of the post." },
     tags: { type: "Array<string>", description: "A string array of tags." },
-    author: {
-      type: "Profile",
-      description: "The profile that created the post."
-    },
     media: {
       type: "object",
       typeDescription: "Instance of `Media` model.",
       description: "The image associated with post."
     },
     created: { type: "string", description: "The date the post was created." },
-    updated: { type: "string", description: "The date the post was last updated." }
+    updated: { type: "string", description: "The date the post was last updated." },
+    author: {
+      type: "Profile",
+      description: "The profile that created the post."
+    }
   }}
 />
 
