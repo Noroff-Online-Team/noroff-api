@@ -21,4 +21,5 @@ export default async function (fastify: FastifyInstance) {
   fastify.register(import("./holidaze/venues/venues.route"), { prefix: "holidaze/venues" })
   fastify.register(import("./holidaze/bookings/bookings.route"), { prefix: "holidaze/bookings" })
   fastify.register(import("./holidaze/profiles/profiles.route"), { prefix: "holidaze/profiles" })
+  fastify.register(import("./blog/posts/posts.route"), { prefix: "blog/posts" })
 }
