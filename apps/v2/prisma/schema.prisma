@@ -158,6 +158,8 @@ model Media {
   gameHubProductId    String?            @unique
   squareEyesProduct   SquareEyesProduct? @relation(fields: [squareEyesProductId], references: [id], onDelete: Cascade)
   squareEyesProductId String?            @unique
+  blogPost            BlogPost?          @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  blogPostId          String?            @unique
 }
 
 // User API Key
@@ -205,6 +207,9 @@ model UserProfile {
   venueManager Boolean              @default(false)
   venues       HolidazeVenue[]
   bookings     HolidazeBooking[]
+  // Blog
+  blogPosts    BlogPost[]
+  // API
   apiKeys      ApiKey[]
 }
 
@@ -327,4 +332,18 @@ model HolidazeBooking {
   venueId      String
   customer     UserProfile   @relation(fields: [customerName], references: [name], onDelete: Cascade)
   customerName String
+}
+
+// Blog
+model BlogPost {
+  id      String      @id @default(uuid())
+  title   String
+  body    String?
+  author  UserProfile @relation(fields: [owner], references: [name], onDelete: Cascade)
+  tags    String[]
+  media   Media?
+  owner   String
+  created DateTime    @default(now())
+  updated DateTime    @updatedAt
+  mediaId String?
 }
