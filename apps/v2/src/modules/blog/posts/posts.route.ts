@@ -11,9 +11,9 @@ import {
 import {
   createPostBaseSchema,
   displayPostSchema,
-  postIdParamsSchema,
+  postIdWithNameParamsSchema,
   postsQuerySchema,
-  queryFlagsSchema,
+  profileNameSchema,
   updatePostBodySchema
 } from "./posts.schema"
 
@@ -25,6 +25,7 @@ async function postsRoutes(server: FastifyInstance) {
       schema: {
         tags: ["blog-posts"],
         security: [{ bearerAuth: [] }],
+        params: profileNameSchema,
         querystring: postsQuerySchema,
         response: {
           200: createResponseSchema(displayPostSchema.array())
@@ -41,7 +42,7 @@ async function postsRoutes(server: FastifyInstance) {
       schema: {
         tags: ["blog-posts"],
         security: [{ bearerAuth: [] }],
-        querystring: queryFlagsSchema,
+        params: profileNameSchema,
         body: createPostBaseSchema,
         response: {
           201: createResponseSchema(displayPostSchema)
@@ -58,8 +59,7 @@ async function postsRoutes(server: FastifyInstance) {
       schema: {
         tags: ["blog-posts"],
         security: [{ bearerAuth: [] }],
-        querystring: queryFlagsSchema,
-        params: postIdParamsSchema,
+        params: postIdWithNameParamsSchema,
         body: updatePostBodySchema,
         response: {
           200: createResponseSchema(displayPostSchema)
@@ -76,7 +76,7 @@ async function postsRoutes(server: FastifyInstance) {
       schema: {
         tags: ["blog-posts"],
         security: [{ bearerAuth: [] }],
-        params: postIdParamsSchema
+        params: postIdWithNameParamsSchema
       }
     },
     deletePostHandler
@@ -89,8 +89,7 @@ async function postsRoutes(server: FastifyInstance) {
       schema: {
         tags: ["blog-posts"],
         security: [{ bearerAuth: [] }],
-        querystring: queryFlagsSchema,
-        params: postIdParamsSchema,
+        params: postIdWithNameParamsSchema,
         response: {
           200: createResponseSchema(displayPostSchema)
         }

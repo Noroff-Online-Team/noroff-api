@@ -13,16 +13,18 @@ const mediaCore = {
   media: z.object(mediaPropertiesWithErrors).nullish()
 }
 
-export const mediaSchema = z.object(mediaCore)
-
-export const profileNameSchema = z.object({
+const nameSchema = {
   name: z
     .string({
       required_error: "Name is required",
       invalid_type_error: "Name must be a string"
     })
     .trim()
-})
+}
+
+export const mediaSchema = z.object(mediaCore)
+
+export const profileNameSchema = z.object(nameSchema)
 
 const tagsAndMedia = {
   tags: z
@@ -82,14 +84,16 @@ const postId = {
   id: z.string().uuid()
 }
 
-export const postIdParamsSchema = z.object({
-  id: z
-    .string({
-      required_error: "ID is required",
-      invalid_type_error: "ID must be a string"
-    })
-    .uuid("ID must be a valid UUID")
-})
+export const postIdWithNameParamsSchema = z
+  .object({
+    id: z
+      .string({
+        required_error: "ID is required",
+        invalid_type_error: "ID must be a string"
+      })
+      .uuid("ID must be a valid UUID")
+  })
+  .extend(nameSchema)
 
 const postMeta = {
   created: z.date(),
@@ -121,20 +125,8 @@ export const displayPostSchema = z.object({
   author: z.object(profileCore).optional()
 })
 
-const queryFlagsCore = {}
-
-export const queryFlagsSchema = z.object(queryFlagsCore)
-
-export const postsQuerySchema = sortAndPaginationSchema
-  .extend({
-    _tag: z.string({ invalid_type_error: "Tag must be a string" }).optional()
-  })
-  .extend(queryFlagsCore)
-
-export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
-  q: z
-    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
-    .nonempty("Query cannot be empty")
+export const postsQuerySchema = sortAndPaginationSchema.extend({
+  _tag: z.string({ invalid_type_error: "Tag must be a string" }).optional()
 })
 
 export const emojiSchema = z.string().emoji("Must be a valid emoji")

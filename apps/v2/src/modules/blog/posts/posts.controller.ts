@@ -6,7 +6,7 @@ import { BadRequest, Forbidden, NotFound } from "http-errors"
 import {
   CreatePostBaseSchema,
   mediaSchema,
-  postIdParamsSchema,
+  postIdWithNameParamsSchema,
   postsQuerySchema,
   profileNameSchema
 } from "./posts.schema"
@@ -41,7 +41,7 @@ export async function getPostHandler(
     Params: { id: string }
   }>
 ) {
-  const { id } = await postIdParamsSchema.parseAsync(request.params)
+  const { id } = await postIdWithNameParamsSchema.parseAsync(request.params)
   const { name } = request.user as UserProfile
 
   const post = await getPost(id, name)
@@ -84,7 +84,7 @@ export async function deletePostHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { id } = await postIdParamsSchema.parseAsync(request.params)
+  const { id } = await postIdWithNameParamsSchema.parseAsync(request.params)
   const { name } = request.user as UserProfile
 
   const post = await getPost(id, name)
@@ -108,7 +108,7 @@ export async function updatePostHandler(
     Body: CreatePostBaseSchema
   }>
 ) {
-  const { id } = await postIdParamsSchema.parseAsync(request.params)
+  const { id } = await postIdWithNameParamsSchema.parseAsync(request.params)
   const { name } = request.user as UserProfile
   const { media } = request.body
 
