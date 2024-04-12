@@ -24,14 +24,9 @@ export async function getPostsHandler(
     }
   }>
 ) {
-  const { name: paramsName } = await profileNameSchema.parseAsync(request.params)
+  const { name } = await profileNameSchema.parseAsync(request.params)
   await postsQuerySchema.parseAsync(request.query)
   const { sort, sortOrder, limit, page, _tag } = request.query
-  const { name } = request.user as UserProfile
-
-  if (name.toLowerCase() !== paramsName.toLowerCase()) {
-    throw new Forbidden("You do not have permission to view this post")
-  }
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -50,12 +45,7 @@ export async function getPostHandler(
     }
   }>
 ) {
-  const { id, name: paramsName } = await postIdWithNameParamsSchema.parseAsync(request.params)
-  const { name } = request.user as UserProfile
-
-  if (name.toLowerCase() !== paramsName.toLowerCase()) {
-    throw new Forbidden("You do not have permission to view this post")
-  }
+  const { id, name } = await postIdWithNameParamsSchema.parseAsync(request.params)
 
   const post = await getPost(id, name)
 

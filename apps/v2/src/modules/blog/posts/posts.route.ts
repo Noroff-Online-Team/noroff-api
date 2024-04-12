@@ -21,10 +21,8 @@ async function postsRoutes(server: FastifyInstance) {
   server.get(
     "/:name",
     {
-      onRequest: [server.authenticate],
       schema: {
         tags: ["blog-posts"],
-        security: [{ bearerAuth: [] }],
         params: profileNameSchema,
         querystring: postsQuerySchema,
         response: {
@@ -85,10 +83,8 @@ async function postsRoutes(server: FastifyInstance) {
   server.get(
     "/:name/:id",
     {
-      onRequest: [server.authenticate],
       schema: {
         tags: ["blog-posts"],
-        security: [{ bearerAuth: [] }],
         params: postIdWithNameParamsSchema,
         response: {
           200: createResponseSchema(displayPostSchema)
