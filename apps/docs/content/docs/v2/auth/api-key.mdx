@@ -76,7 +76,7 @@ You use the API Key by sending it in the `X-Noroff-API-Key` header, along with t
 const options = {
   headers: {
     Authorization: `Bearer ${accessToken}`,
-    "X-Noroff-API-Key": apiKey
+    "X-Noroff-API-Key": apiKey.data.key
   }
 }
 
