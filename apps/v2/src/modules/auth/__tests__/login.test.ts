@@ -42,7 +42,29 @@ describe("[POST] /auth/login", () => {
     expect(res.data.name).toBe(TEST_USER_NAME)
     expect(res.data.email).toBe(TEST_USER_EMAIL)
     expect(res.data.bio).toBe(null)
+    expect(res.data.venueManager).not.toBeDefined()
     expect(res.data).not.toHaveProperty(TEST_USER_PASSWORD)
+    expect(res.meta).toBeDefined()
+    expect(res.meta).toStrictEqual({})
+  })
+
+  it("should include optional fields when providing query params", async () => {
+    const response = await server.inject({
+      url: "/auth/login?_holidaze=true",
+      method: "POST",
+      payload: {
+        email: TEST_USER_EMAIL,
+        password: TEST_USER_PASSWORD
+      }
+    })
+
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(200)
+    expect(res.data).toBeDefined()
+    expect(res.data).toHaveProperty("venueManager")
+    expect(res.data.venueManager).toBeDefined()
+    expect(res.data.venueManager).toBe(false)
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({})
   })
