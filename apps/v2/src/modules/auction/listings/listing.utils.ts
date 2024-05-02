@@ -35,7 +35,13 @@ export async function scheduleCreditsTransfer(listingId: string, endsAt: Date): 
     // Get listing
     const listing = (await getListing(listingId, { bids: true })) as ListingWithBids
 
-    if (listing && listing.data.bids.length > 0) {
+    // If listing does not exist, return.
+    // This happens when the listing is deleted before the job runs.
+    if (!listing?.data) {
+      return
+    }
+
+    if (listing.data?.bids?.length > 0) {
       // Get highest bid of listing
       const [winner, ...losers] = listing.data.bids.sort((a, b) => b.amount - a.amount)
 
