@@ -45,7 +45,8 @@ export const loginResponseSchema = z.object({
   bio: z.string().nullish(),
   avatar: z.object(mediaProperties).optional(),
   banner: z.object(mediaProperties).optional(),
-  accessToken: z.string()
+  accessToken: z.string(),
+  ...venueManager
 })
 
 export const profileMedia = {
@@ -107,6 +108,12 @@ export const createApiKeyResponseSchema = z.object({
   status: z.string(),
   key: z.string().uuid()
 })
+
+const queryFlagsCore = {
+  _holidaze: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+}
+
+export const loginQuerySchema = z.object(queryFlagsCore)
 
 export type LoginInput = z.infer<typeof loginBodySchema>
 export type CreateProfileInput = z.infer<typeof createProfileBodySchema>

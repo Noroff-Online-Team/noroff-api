@@ -9,9 +9,14 @@ import {
   createProfileBodySchema,
   CreateProfileInput,
   loginBodySchema,
-  LoginInput
+  LoginInput,
+  loginQuerySchema
 } from "./auth.schema"
 import { createApiKey, createProfile, findProfileByEmail, findProfileByEmailOrName } from "./auth.service"
+
+export interface AuthLoginIncludes {
+  holidaze?: boolean
+}
 
 export async function registerProfileHandler(
   request: FastifyRequest<{
@@ -42,11 +47,19 @@ export async function registerProfileHandler(
 export async function loginHandler(
   request: FastifyRequest<{
     Body: LoginInput
+    Querystring: {
+      _holidaze?: string
+    }
   }>
 ) {
   const body = await loginBodySchema.parseAsync(request.body)
+  const { _holidaze } = await loginQuerySchema.parseAsync(request.query)
 
-  const profile = await findProfileByEmail(body.email)
+  const includes: AuthLoginIncludes = {
+    holidaze: Boolean(_holidaze)
+  }
+
+  const profile = await findProfileByEmail(body.email, includes)
 
   if (!profile.data) {
     throw new Unauthorized("Invalid email or password")
@@ -63,16 +76,15 @@ export async function loginHandler(
     throw new Unauthorized("Invalid email or password")
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { password, salt, ...rest } = profile.data
+
   return {
     data: {
-      name: profile.data.name,
-      email: profile.data.email,
-      bio: profile.data.bio,
-      avatar: profile.data.avatar,
-      banner: profile.data.banner,
+      ...rest,
       accessToken: request.jwt.sign({
-        name: profile.data.name,
-        email: profile.data.email
+        name: rest.name,
+        email: rest.email
       })
     }
   }

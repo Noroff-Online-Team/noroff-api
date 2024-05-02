@@ -8,6 +8,7 @@ import {
   createProfileBodySchema,
   createProfileResponseSchema,
   loginBodySchema,
+  loginQuerySchema,
   loginResponseSchema
 } from "./auth.schema"
 
@@ -32,6 +33,7 @@ async function authRoutes(server: FastifyInstance) {
       schema: {
         tags: ["auth"],
         body: loginBodySchema,
+        querystring: loginQuerySchema,
         response: {
           200: createResponseSchema(loginResponseSchema)
         }

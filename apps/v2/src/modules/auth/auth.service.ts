@@ -2,6 +2,7 @@ import { hashPassword } from "@noroff/api-utils"
 
 import { db } from "@/utils"
 
+import { AuthLoginIncludes } from "./auth.controller"
 import { CreateProfileInput } from "./auth.schema"
 
 const DEFAULT_AVATAR = {
@@ -40,10 +41,21 @@ export async function createProfile(input: CreateProfileInput) {
   return { data: profile }
 }
 
-export async function findProfileByEmail(email: string) {
+export async function findProfileByEmail(email: string, includes: AuthLoginIncludes = {}) {
+  const includeHolidaze = includes.holidaze ? { venueManager: true } : {}
+
   const data = await db.userProfile.findUnique({
     where: { email },
-    include: { avatar: true, banner: true }
+    select: {
+      ...includeHolidaze,
+      name: true,
+      email: true,
+      bio: true,
+      avatar: true,
+      banner: true,
+      salt: true,
+      password: true
+    }
   })
 
   return { data }
