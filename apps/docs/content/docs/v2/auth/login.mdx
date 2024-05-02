@@ -3,6 +3,42 @@ title: Login
 description: Login a user
 ---
 
+## Query parameters
+
+Not all of the properties of a user are returned by default. You can use the following optional query parameters to include additional properties in the response.
+
+<TypeTable
+  type={{
+    _holidaze: {
+      type: "boolean",
+      default: "false",
+      description: "Include more information about the user related to Holidaze endpoints. E.g venueManager boolean."
+    }
+  }}
+/>
+
+```json title="Example with all optional query parameters"
+{
+  "data": {
+    "name": "my_username",
+    "email": "first.last@stud.noroff.no",
+    "avatar": {
+      "url": "https://img.service.com/avatar.jpg",
+      "alt": "My avatar alt text"
+    },
+    "banner": {
+      "url": "https://img.service.com/banner.jpg",
+      "alt": "My banner alt text"
+    },
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....",
+    "venueManager": true
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
 ## Login a user
 
 <EndpointDetails method="POST" path="/auth/login" />
