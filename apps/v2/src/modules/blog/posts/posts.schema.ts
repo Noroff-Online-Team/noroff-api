@@ -5,7 +5,7 @@ import { mediaPropertiesWithErrors, profileCore } from "../../auth/auth.schema"
 
 const POST_TITLE_MIN_LENGTH = 1
 const POST_TITLE_MAX_LENGTH = 280
-const POST_BODY_MAX_LENGTH = 10000
+const POST_BODY_MAX_LENGTH = 10_000
 const POST_TAGS_MAX_LENGTH = 24
 const POST_MAX_TAGS = 8
 
