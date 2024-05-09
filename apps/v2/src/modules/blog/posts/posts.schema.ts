@@ -5,7 +5,7 @@ import { mediaPropertiesWithErrors, profileCore } from "../../auth/auth.schema"
 
 const POST_TITLE_MIN_LENGTH = 1
 const POST_TITLE_MAX_LENGTH = 280
-const POST_BODY_MAX_LENGTH = 2000
+const POST_BODY_MAX_LENGTH = 10_000
 const POST_TAGS_MAX_LENGTH = 24
 const POST_MAX_TAGS = 8
 
@@ -51,7 +51,7 @@ export const postCore = {
     .string({
       invalid_type_error: "Body must be a string"
     })
-    .max(POST_BODY_MAX_LENGTH, "Body cannot be greater than 2000 characters")
+    .max(POST_BODY_MAX_LENGTH, `Body cannot be greater than ${POST_BODY_MAX_LENGTH} characters`)
     .trim()
     .nullish(),
   ...tagsAndMedia
@@ -70,7 +70,7 @@ const updatePostCore = {
     .string({
       invalid_type_error: "Body must be a string"
     })
-    .max(POST_BODY_MAX_LENGTH, "Body cannot be greater than 2000 characters")
+    .max(POST_BODY_MAX_LENGTH, `Body cannot be greater than ${POST_BODY_MAX_LENGTH} characters`)
     .trim()
     .nullish(),
   ...tagsAndMedia
