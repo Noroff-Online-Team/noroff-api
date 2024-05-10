@@ -4,9 +4,6 @@
   "version": "2.0.0",
   "private": true,
   "license": "UNLICENSED",
-  "engines": {
-    "node": ">=18.17.0"
-  },
   "scripts": {
     "dev": "tsx watch --clear-screen=false src/app.ts",
     "start": "node dist/app.js",

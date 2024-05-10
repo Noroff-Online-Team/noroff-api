@@ -4,6 +4,10 @@
   "private": true,
   "author": "Noroff School of Technology and Digital Media <https://noroff.no>",
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20.13.1"
+  },
+  "packageManager": "pnpm@9.1.0",
   "scripts": {
     "dev": "turbo dev --parallel",
     "build:v1": "turbo build -F v1...",
@@ -44,6 +48,5 @@
   "lint-staged": {
     "*": "prettier --ignore-unknown --write .",
     "*.ts": "eslint --cache --fix"
-  },
-  "packageManager": "pnpm@9.1.0"
+  }
 }
