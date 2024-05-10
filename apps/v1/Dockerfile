@@ -1,30 +1,42 @@
+# Base Stage
+FROM node:20.13.1-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
 # Builder Stage
-FROM node:18.17.0-alpine AS builder
+FROM base AS builder
 WORKDIR /app
-RUN yarn global add turbo && \
-    addgroup --system --gid 1001 noroff && \
-    adduser --system --uid 1001 noroff
+RUN npm install -g turbo
 COPY . .
-RUN turbo prune --scope=v1 --docker
+RUN turbo prune v1 --docker
 
 # Installer Stage
-FROM node:18.17.0-alpine AS installer
+FROM base AS installer
 WORKDIR /app
+RUN npm install -g turbo
 COPY .gitignore .gitignore
 COPY turbo.json turbo.json
 COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/yarn.lock ./yarn.lock
-RUN yarn install
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+RUN pnpm install
 COPY --from=builder /app/out/full/ .
-RUN yarn turbo run build --filter=v1...
+
+# Uncomment and use build args to enable remote caching
+# ARG TURBO_TEAM
+# ENV TURBO_TEAM=$TURBO_TEAM
+# ARG TURBO_TOKEN
+# ENV TURBO_TOKEN=$TURBO_TOKEN
+
+RUN turbo run build -F v1...
 
 # Runner Stage
-FROM node:18.17.0-alpine AS runner
+FROM base AS runner
 WORKDIR /app
 RUN addgroup --system --gid 1001 noroff && \
     adduser --system --uid 1001 noroff
 USER noroff
-COPY --from=installer /app .
+COPY --from=installer --chown=noroff:noroff /app .
 WORKDIR /app/apps/v1
 EXPOSE 3000
-CMD [ "yarn", "start:migrate:prod" ]
+CMD [ "pnpm", "start:migrate:prod" ]
