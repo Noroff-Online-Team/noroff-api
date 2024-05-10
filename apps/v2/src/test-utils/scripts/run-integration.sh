@@ -18,7 +18,7 @@ CONTAINER_STATUS=$(docker inspect -f '{{.State.Status}}' $POSTGRES_CONTAINER_NAM
 # If the container does not exist, create it. Otherwise, check its status.
 if [ -z "$CONTAINER_EXISTS" ]; then
   echo '🟡 - Container does not exist. Creating...'
-  yarn docker:up
+  pnpm docker:up
 elif [ "$CONTAINER_STATUS" != "running" ]; then
   echo '🟡 - Container exists but is not running. Starting...'
   docker start $POSTGRES_CONTAINER_NAME
@@ -41,7 +41,7 @@ done
 echo '🟢 - Database is ready!'
 
 # Apply migrations.
-yarn prisma migrate deploy
+pnpm prisma migrate deploy
 
 # Run tests.
 jest --runInBand --verbose --watch "$@"
