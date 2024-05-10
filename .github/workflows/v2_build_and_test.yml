@@ -1,5 +1,5 @@
 # .github/workflows/v2_build_and_test.yml
-name: API v2 build and test
+name: API v2
 
 on:
   pull_request:
@@ -16,18 +16,16 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
+      - name: Setup
+        uses: ./tooling/github/setup
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install
       - name: Build @noroff/api-utils
-        run: "yarn build:api-utils"
+        run: "pnpm build:api-utils"
       - name: Build @noroff/logger
-        run: "yarn build:logger"
+        run: "pnpm build:logger"
       - name: Build @noroff/api-v2
-        run: "yarn build:v2"
+        run: "pnpm build:v2"
 
   test:
     name: Test
@@ -52,19 +50,17 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
+      - name: Setup
+        uses: ./tooling/github/setup
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install
       - name: Build @noroff/api-utils
-        run: "yarn build:api-utils"
+        run: "pnpm build:api-utils"
       - name: Build @noroff/logger
-        run: "yarn build:logger"
+        run: "pnpm build:logger"
       - name: Run Prisma migrations
-        run: yarn prisma migrate deploy
+        run: pnpm prisma migrate deploy
         working-directory: apps/v2
       - name: Run tests
-        run: yarn test
+        run: pnpm test
         working-directory: apps/v2
