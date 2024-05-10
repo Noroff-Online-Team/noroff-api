@@ -1,5 +1,5 @@
 # .github/workflows/v1_build.yml
-name: API v1 build and test
+name: API v1
 
 on:
   pull_request:
@@ -16,15 +16,13 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
+      - name: Setup
+        uses: ./tooling/github/setup
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install
       - name: Build @noroff/api-utils
-        run: "yarn build:api-utils"
+        run: "pnpm build:api-utils"
       - name: Build @noroff/logger
-        run: "yarn build:logger"
+        run: "pnpm build:logger"
       - name: Build @noroff/api-v1
-        run: "yarn build:v1"
+        run: "pnpm build:v1"
