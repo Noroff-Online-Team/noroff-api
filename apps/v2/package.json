@@ -15,7 +15,8 @@
     "docker:up": "docker-compose -f ./docker-compose.tests.yml up -d",
     "docker:down": "docker-compose -f ./docker-compose.tests.yml down",
     "test:dev": "./src/test-utils/scripts/run-integration.sh",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@fastify/autoload": "^5.7.1",

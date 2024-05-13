@@ -10,7 +10,8 @@
     "src/index.ts"
   ],
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
     "pino": "^8.16.0",

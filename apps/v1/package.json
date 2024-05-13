@@ -10,7 +10,8 @@
     "start:migrate:prod": "pnpm prisma migrate deploy && pnpm start",
     "build": "tsup",
     "prebuild": "pnpm prisma generate",
-    "postinstall": "pnpm prisma generate"
+    "postinstall": "pnpm prisma generate",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@fastify/autoload": "^5.7.1",
