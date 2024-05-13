@@ -1,0 +1,6 @@
+packages:
+  - "apps/**"
+  - "packages/**"
+  - "tooling/**"
+  - "!**/.next/**" # Ignore Next.js build output
+  - "!**/dist/**" # Ignore TypeScript build output

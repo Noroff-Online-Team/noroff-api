@@ -4,22 +4,22 @@
   "private": true,
   "author": "Noroff School of Technology and Digital Media <https://noroff.no>",
   "license": "UNLICENSED",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "engines": {
+    "node": ">=20.13.1"
+  },
+  "packageManager": "pnpm@9.1.0",
   "scripts": {
-    "dev": "yarn turbo dev --parallel",
-    "build:v1": "yarn turbo build --filter=v1...",
-    "build:v2": "yarn turbo build --filter=v2...",
-    "build:docs": "yarn turbo build --filter=docs...",
-    "build:api-utils": "yarn turbo build --filter=@noroff/api-utils...",
-    "build:logger": "yarn turbo build --filter=@noroff/logger...",
-    "build": "yarn turbo build",
-    "start:v1": "yarn --cwd apps/v1 start",
-    "start:v2": "yarn --cwd apps/v2 start",
-    "start:docs": "yarn --cwd apps/docs start",
-    "start": "concurrently \"yarn start:v1\" \"yarn start:v2\" \"yarn start:docs\"",
+    "dev": "turbo dev --parallel",
+    "build:v1": "turbo build -F v1...",
+    "build:v2": "turbo build -F v2...",
+    "build:docs": "turbo build -F docs...",
+    "build:api-utils": "turbo build -F @noroff/api-utils...",
+    "build:logger": "turbo build -F @noroff/logger...",
+    "build": "turbo build",
+    "start:v1": "turbo start -F v1",
+    "start:v2": "turbo start -F v2",
+    "start:docs": "turbo start -F docs",
+    "start": "concurrently \"pnpm start:v1\" \"pnpm start:v2\" \"pnpm start:docs\"",
     "prepare": "husky install"
   },
   "devDependencies": {
@@ -36,9 +36,17 @@
     "prettier": "^3.0.3",
     "turbo": "^1.10.14"
   },
+  "resolutions": {
+    "@opentelemetry/api": "1.4.1",
+    "@opentelemetry/core": "1.13.0",
+    "@opentelemetry/exporter-trace-otlp-grpc": "0.39.1",
+    "@opentelemetry/resources": "1.13.0",
+    "@opentelemetry/sdk-trace-base": "1.13.0",
+    "@opentelemetry/sdk-trace-node": "1.13.0",
+    "@opentelemetry/semantic-conventions": "1.13.0"
+  },
   "lint-staged": {
     "*": "prettier --ignore-unknown --write .",
     "*.ts": "eslint --cache --fix"
-  },
-  "packageManager": "yarn@1.22.19"
+  }
 }

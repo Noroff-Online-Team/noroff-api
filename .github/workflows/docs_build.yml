@@ -1,5 +1,5 @@
 # .github/workflows/docs_build.yml
-name: API docs build and test
+name: API Docs
 
 on:
   pull_request:
@@ -16,11 +16,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
+      - name: Setup
+        uses: ./tooling/github/setup
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install
       - name: Build @noroff/api-docs
-        run: "yarn build:docs"
+        run: "pnpm build:docs"
