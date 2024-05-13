@@ -20,7 +20,8 @@
     "start:v2": "turbo start -F v2",
     "start:docs": "turbo start -F docs",
     "start": "concurrently \"pnpm start:v1\" \"pnpm start:v2\" \"pnpm start:docs\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "typecheck": "turbo typecheck"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
