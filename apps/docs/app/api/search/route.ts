@@ -1,13 +1,14 @@
-import { allDocs } from "contentlayer/generated"
-import { createSearchAPI } from "next-docs-zeta/search/server"
+import { createSearchAPI } from "fumadocs-core/search/server"
+
+import { utils } from "@/utils/source"
 
 export const { GET } = createSearchAPI("advanced", {
-  indexes: allDocs.map(docs => ({
-    id: docs._id,
-    title: docs.title,
-    url: `/docs/${docs.slug}`,
-    structuredData: docs.structuredData,
-    tag: docs._raw.flattenedPath.startsWith("docs/v1") ? "v1" : "v2"
+  indexes: utils.getPages().map(page => ({
+    id: page.url,
+    title: page.data.title,
+    url: page.url,
+    structuredData: page.data.exports.structuredData,
+    tag: page.url.startsWith("/docs/v1") ? "v1" : "v2"
   })),
   tag: true
 })
