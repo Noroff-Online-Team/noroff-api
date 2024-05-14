@@ -2,9 +2,7 @@ import { Inter } from "next/font/google"
 import type { Metadata, Viewport } from "next/types"
 import clsx from "clsx"
 
-import { Nav } from "@/components/nav"
-
-import "next-docs-ui/style.css"
+import "fumadocs-ui/style.css"
 import "./global.css"
 
 import { base_url } from "@/utils/metadata"
@@ -36,9 +34,8 @@ const inter = Inter({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" style={{ colorScheme: "dark" }} className={clsx(inter.className, "dark")} suppressHydrationWarning>
-      <body className="flex min-h-screen flex-col">
+      <body className="flex flex-col min-h-screen">
         <Provider>
-          <Nav />
           {children}
           <Footer />
         </Provider>
@@ -49,9 +46,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 function Footer() {
   return (
-    <footer className="bg-secondary/50 text-secondary-foreground mt-auto border-t py-6">
+    <footer className="py-6 mt-auto border-t bg-secondary/50 text-secondary-foreground">
       <div className="container flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <p className="flex flex-row items-center text-sm text-muted-foreground transition-colors">
+        <p className="flex flex-row items-center text-sm transition-colors text-muted-foreground">
           {new Date().getFullYear()} © Noroff.
         </p>
       </div>

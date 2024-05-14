@@ -1,7 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   darkMode: "class",
-  content: ["./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./content/**/*.mdx"],
+  content: [
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./content/**/*.mdx",
+    "./mdx-components.tsx",
+    "./node_modules/fumadocs-ui/dist/**/*.js"
+  ],
   theme: {
     container: {
       center: true,
