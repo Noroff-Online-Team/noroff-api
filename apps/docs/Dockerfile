@@ -36,7 +36,7 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 noroff && \
     adduser --system --uid 1001 noroff
 USER noroff
-COPY --from=installer /app/apps/docs/next.config.js .
+COPY --from=installer /app/apps/docs/next.config.mjs .
 COPY --from=installer /app/apps/docs/package.json .
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing

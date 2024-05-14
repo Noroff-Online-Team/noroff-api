@@ -46,16 +46,26 @@
   --ring: 216 34% 17%;
 }
 
+/* Remove header style on landing */
+body:not(.body-wrapper) > header {
+  --tw-backdrop-blur: 0;
+  backdrop-filter: none;
+  border-bottom-width: 0;
+  background-color: rgba(0, 0, 0, 0);
+}
+
 /* Full-width styles */
-.nd-container {
+body > header > nav,
+.body-wrapper > header > nav,
+.body-wrapper > div {
   max-width: none !important;
 }
 
-main > div:nth-of-type(2) > aside:nth-child(1) {
+.body-wrapper > div > aside {
   border-right-width: 1px;
 }
 
-main > div:nth-of-type(2) > div:nth-child(3) {
+.body-wrapper > div > div {
   width: 250px;
 }
 
@@ -63,12 +73,6 @@ article {
   margin-left: auto;
   margin-right: auto;
   max-width: 800px;
-}
-
-/* Code */
-[data-code-fragment="true"] {
-  margin-top: 0.75rem;
-  margin-bottom: 0.75rem;
 }
 
 /* Landing page cards hover styles */
