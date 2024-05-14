@@ -1,10 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
+import { useVersion } from "@/app/layout.client"
 import { cva } from "class-variance-authority"
-import { SearchDialog, type SharedProps } from "next-docs-ui/components/dialog/search"
-import { useDocsSearch } from "next-docs-zeta/search/client"
+import { useDocsSearch } from "fumadocs-core/search/client"
+import { SearchDialog, type SharedProps } from "fumadocs-ui/components/dialog/search"
 
 import { cn } from "@/utils/cn"
 import { versions } from "@/utils/versions"
@@ -18,36 +18,36 @@ const itemVariants = cva("border px-2 py-0.5 rounded-md text-xs text-muted-foreg
 })
 
 export default function CustomSearchDialog(props: SharedProps) {
-  const { version } = useParams()
-  const defaultTag = version === "v1" ? "v1" : "v2"
-  const [tag, setTag] = useState(defaultTag)
-  const { search, setSearch, query } = useDocsSearch(undefined, tag)
+  const currentVersion = useVersion()
+  const defaultVerion = currentVersion === "v1" ? "v1" : "v2"
+  const [version, setVersion] = useState(defaultVerion)
+  const { search, setSearch, query } = useDocsSearch(undefined, version)
 
   useEffect(() => {
-    setTag(defaultTag)
-  }, [defaultTag])
+    setVersion(defaultVerion)
+  }, [defaultVerion])
 
   return (
     <SearchDialog
       {...props}
       search={search}
       onSearchChange={setSearch}
-      data={query.data}
+      results={query.data ?? "empty"}
       footer={
-        <div className="flex flex-row items-center gap-1 p-4">
-          {versions.map(version => (
+        <div className="flex flex-row items-center gap-1">
+          {versions.map(ver => (
             <button
-              key={version.param}
-              className={cn(itemVariants({ active: tag === version.param }))}
-              onClick={() => setTag(version.param)}
+              key={ver.param}
+              className={cn(itemVariants({ active: version === ver.param }))}
+              onClick={() => setVersion(ver.param)}
               tabIndex={-1}
               aria-label={
-                tag === version.param
-                  ? `Currently searching ${version.version} docs`
-                  : `Switch to searching ${version.version} docs`
+                version === ver.param
+                  ? `Currently searching ${ver.version} docs`
+                  : `Switch to searching ${ver.version} docs`
               }
             >
-              {version.version}
+              {ver.version}
             </button>
           ))}
         </div>
