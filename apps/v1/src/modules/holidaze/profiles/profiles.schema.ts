@@ -35,8 +35,8 @@ export const profileCore = {
   name: z
     .string()
     .regex(/^[\w]+$/, "Name can only use a-Z, 0-9, and _")
-    .max(20, "Name cannot be greater than 20 characters")
-    .trim(),
+    .trim()
+    .max(20, "Name cannot be greater than 20 characters"),
   email: z
     .string({
       invalid_type_error: "Email must be a string"

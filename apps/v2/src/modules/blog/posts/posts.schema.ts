@@ -44,15 +44,15 @@ export const postCore = {
       invalid_type_error: "Title must be a string",
       required_error: "Title is required"
     })
+    .trim()
     .min(POST_TITLE_MIN_LENGTH, "Title cannot be empty")
-    .max(POST_TITLE_MAX_LENGTH, "Title cannot be greater than 280 characters")
-    .trim(),
+    .max(POST_TITLE_MAX_LENGTH, "Title cannot be greater than 280 characters"),
   body: z
     .string({
       invalid_type_error: "Body must be a string"
     })
-    .max(POST_BODY_MAX_LENGTH, `Body cannot be greater than ${POST_BODY_MAX_LENGTH} characters`)
     .trim()
+    .max(POST_BODY_MAX_LENGTH, `Body cannot be greater than ${POST_BODY_MAX_LENGTH} characters`)
     .nullish(),
   ...tagsAndMedia
 }
@@ -62,16 +62,16 @@ const updatePostCore = {
     .string({
       invalid_type_error: "Title must be a string"
     })
+    .trim()
     .min(POST_TITLE_MIN_LENGTH, "Title cannot be empty")
     .max(POST_TITLE_MAX_LENGTH, "Title cannot be greater than 280 characters")
-    .trim()
     .nullish(),
   body: z
     .string({
       invalid_type_error: "Body must be a string"
     })
-    .max(POST_BODY_MAX_LENGTH, `Body cannot be greater than ${POST_BODY_MAX_LENGTH} characters`)
     .trim()
+    .max(POST_BODY_MAX_LENGTH, `Body cannot be greater than ${POST_BODY_MAX_LENGTH} characters`)
     .nullish(),
   ...tagsAndMedia
 }
