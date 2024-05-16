@@ -55,7 +55,7 @@ export const profileMedia = {
 }
 
 export const profileBio = {
-  bio: z.string().max(160, "Bio cannot be greater than 160 characters").trim().nullish()
+  bio: z.string().trim().max(160, "Bio cannot be greater than 160 characters").nullish()
 }
 
 export const profileCore = {
@@ -65,8 +65,8 @@ export const profileCore = {
       invalid_type_error: "Name must be a string"
     })
     .regex(/^[\w]+$/, "Name can only use a-Z, 0-9, and _")
-    .max(20, "Name cannot be greater than 20 characters")
-    .trim(),
+    .trim()
+    .max(20, "Name cannot be greater than 20 characters"),
   email: z
     .string({
       required_error: "Email is required",
@@ -75,7 +75,7 @@ export const profileCore = {
     .email()
     .regex(/^[\w\-.]+@(stud\.)?noroff\.no$/, "Only stud.noroff.no emails are allowed to register")
     .trim(),
-  bio: z.string().max(160, "Bio cannot be greater than 160 characters").trim().nullish(),
+  bio: z.string().trim().max(160, "Bio cannot be greater than 160 characters").nullish(),
   ...profileMedia
 }
 
