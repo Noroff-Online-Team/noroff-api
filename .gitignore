@@ -135,5 +135,5 @@ dist
 # Turborepo
 .turbo
 
-# Contentlayer
-.contentlayer
+# Prisma client
+**/prisma/generated

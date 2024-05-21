@@ -1,5 +1,5 @@
 import type { FastifyError, FastifyReply, FastifyRequest } from "fastify"
-import { Prisma } from "@prisma/v2-client"
+import { Prisma } from "@/prisma/generated/v2-client"
 import { isHttpError } from "http-errors"
 import statuses from "statuses"
 import { ZodError, ZodIssueCode } from "zod"

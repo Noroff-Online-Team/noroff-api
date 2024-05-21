@@ -1,4 +1,4 @@
-import { Post } from "@prisma/v1-client"
+import { Post } from "@/prisma/generated/v1-client"
 
 import { prisma } from "@/utils"
 

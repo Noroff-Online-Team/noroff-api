@@ -1,5 +1,5 @@
 import { getRandomNumber } from "@noroff/api-utils"
-import { CatFact } from "@prisma/v2-client"
+import { CatFact } from "@/prisma/generated/v2-client"
 
 import { db } from "@/utils"
 
