@@ -199,8 +199,6 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
 
-  apps/v1/prisma/generated/v1-client: {}
-
   apps/v2:
     dependencies:
       "@fastify/autoload":
