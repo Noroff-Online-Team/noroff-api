@@ -1,4 +1,4 @@
-import { BlogPost } from "@prisma/v2-client"
+import { BlogPost } from "@/prisma/generated/v2-client"
 
 import { db } from "@/utils"
 

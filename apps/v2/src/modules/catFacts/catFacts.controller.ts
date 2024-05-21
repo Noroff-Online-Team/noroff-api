@@ -1,6 +1,6 @@
 import { FastifyRequest } from "fastify"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
-import { CatFact } from "@prisma/v2-client"
+import { CatFact } from "@/prisma/generated/v2-client"
 import { BadRequest, NotFound } from "http-errors"
 
 import { catFactParamsSchema } from "./catFacts.schema"

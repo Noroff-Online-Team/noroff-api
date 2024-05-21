@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { AuctionBid, AuctionListing, Prisma, UserProfile } from "@prisma/v2-client"
+import { AuctionBid, AuctionListing, Prisma, UserProfile } from "@/prisma/generated/v2-client"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { getProfile } from "./../profiles/profiles.service"

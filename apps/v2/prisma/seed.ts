@@ -1,5 +1,5 @@
+import type { UserProfile } from "@/prisma/generated/v2-client"
 import { faker } from "@faker-js/faker"
-import type { UserProfile } from "@prisma/v2-client"
 
 import { createListing, createListingBid } from "../src/modules/auction/listings/listings.service"
 import { createProfile } from "../src/modules/auth/auth.service"

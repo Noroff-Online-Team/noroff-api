@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/v2-client"
+import { Prisma } from "@/prisma/generated/v2-client"
 
 import { getProfile } from "./profiles.service"
 

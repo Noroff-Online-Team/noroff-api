@@ -1,6 +1,6 @@
 import { FastifyRequest } from "fastify"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
-import { NbaTeam } from "@prisma/v2-client"
+import { NbaTeam } from "@/prisma/generated/v2-client"
 import { BadRequest, NotFound } from "http-errors"
 
 import { nbaTeamParamsSchema } from "./nbaTeams.schema"
