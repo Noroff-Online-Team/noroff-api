@@ -21,6 +21,11 @@
     "typecheck": {
       "dependsOn": ["^topo", "^build"],
       "outputs": ["node_modules/.cache/tsbuildinfo.json"]
+    "format": {
+      "outputMode": "new-only"
+    },
+    "lint": {
+      "dependsOn": ["^topo"]
     }
   }
 }
