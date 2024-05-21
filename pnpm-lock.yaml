@@ -199,6 +199,8 @@ importers:
         specifier: ^5.2.2
         version: 5.2.2
 
+  apps/v1/prisma/generated/v1-client: {}
+
   apps/v2:
     dependencies:
       "@fastify/autoload":
@@ -313,6 +315,8 @@ importers:
       typescript:
         specifier: ^5.2.2
         version: 5.2.2
+
+  apps/v2/prisma/generated/v2-client: {}
 
   packages/api-utils:
     dependencies:
