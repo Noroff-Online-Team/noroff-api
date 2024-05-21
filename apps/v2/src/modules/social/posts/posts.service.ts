@@ -1,4 +1,4 @@
-import { SocialPost } from "@prisma/v2-client"
+import { SocialPost } from "@/prisma/generated/v2-client"
 
 import { db } from "@/utils"
 

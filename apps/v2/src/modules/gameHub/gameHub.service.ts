@@ -1,4 +1,4 @@
-import { GameHubProducts } from "@prisma/v2-client"
+import { GameHubProducts } from "@/prisma/generated/v2-client"
 
 import { db } from "@/utils"
 

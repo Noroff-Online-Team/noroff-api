@@ -1,6 +1,6 @@
 import { FastifyRequest } from "fastify"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
-import { Joke } from "@prisma/v2-client"
+import { Joke } from "@/prisma/generated/v2-client"
 import { BadRequest, NotFound } from "http-errors"
 
 import { jokeParamsSchema } from "./jokes.schema"

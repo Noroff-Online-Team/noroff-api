@@ -1,6 +1,6 @@
 import { FastifyRequest } from "fastify"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
-import { RainyDaysProduct } from "@prisma/v2-client"
+import { RainyDaysProduct } from "@/prisma/generated/v2-client"
 import { BadRequest, NotFound } from "http-errors"
 
 import { rainyDaysParamsSchema } from "./rainyDays.schema"
