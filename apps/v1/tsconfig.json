@@ -13,7 +13,8 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/prisma/*": ["../prisma/*"]
     }
   },
   "include": ["src/**/*", "types"],

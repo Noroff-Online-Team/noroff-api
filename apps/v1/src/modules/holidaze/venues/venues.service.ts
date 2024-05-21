@@ -1,4 +1,4 @@
-import { HolidazeVenue } from "@prisma/v1-client"
+import { HolidazeVenue } from "@/prisma/generated/v1-client"
 
 import { prisma } from "@/utils"
 
