@@ -1,6 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "pipeline": {
+    "topo": {
+      "dependsOn": ["^topo"]
+    },
     "dev": {
       "cache": false,
       "persistent": true
@@ -14,6 +17,12 @@
     },
     "test": {
       "cache": false
+    },
+    "format": {
+      "outputMode": "new-only"
+    },
+    "lint": {
+      "dependsOn": ["^topo"]
     }
   }
 }
