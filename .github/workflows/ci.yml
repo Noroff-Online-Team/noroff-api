@@ -14,9 +14,17 @@ jobs:
   typecheck:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: Setup
         uses: ./tooling/github/setup
       - name: Typecheck
         run: pnpm typecheck
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup
+        uses: ./tooling/github/setup
+      - name: Lint
+        run: pnpm lint && pnpm lint:ws
