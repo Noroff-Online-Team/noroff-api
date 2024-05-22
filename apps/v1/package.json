@@ -25,7 +25,7 @@
     "@fastify/swagger-ui": "^1.10.0",
     "@noroff/api-utils": "workspace:*",
     "@noroff/logger": "workspace:*",
-    "@prisma/client": "5.4.1",
+    "@prisma/client": "^5.4.1",
     "dotenv": "^16.3.1",
     "fastify": "^4.23.2",
     "fastify-metrics": "^10.3.2",
