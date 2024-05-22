@@ -10,7 +10,9 @@
   "scripts": {
     "build": "tsup",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "lint": "biome lint ."
+    "lint": "biome lint .",
+    "format": "biome format .",
+    "format:write": "biome format --write ."
   },
   "dependencies": {
     "http-errors": "^2.0.0",

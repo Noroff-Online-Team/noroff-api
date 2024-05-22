@@ -21,9 +21,12 @@
     "start:docs": "turbo start -F docs",
     "start": "concurrently \"pnpm start:v1\" \"pnpm start:v2\" \"pnpm start:docs\"",
     "prepare": "husky install",
+    "postinstall": "pnpm lint:ws",
     "typecheck": "turbo typecheck",
     "lint": "turbo lint",
-    "lint:ws": "pnpm dlx sherif@latest"
+    "lint:ws": "pnpm dlx sherif@latest",
+    "format": "turbo format",
+    "format:write": "turbo format:write"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.3",
