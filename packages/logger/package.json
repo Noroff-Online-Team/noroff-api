@@ -6,12 +6,11 @@
   "license": "UNLICENSED",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "src/index.ts"
-  ],
+  "files": ["src/index.ts"],
   "scripts": {
     "build": "tsup",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "lint": "biome lint ."
   },
   "dependencies": {
     "pino": "^8.16.0",

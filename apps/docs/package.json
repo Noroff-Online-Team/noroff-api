@@ -9,7 +9,8 @@
     "dev": "PORT=3002 next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint ."
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
