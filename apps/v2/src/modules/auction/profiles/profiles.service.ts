@@ -1,4 +1,4 @@
-import { AuctionBid, AuctionListing, UserProfile } from "@/prisma/generated/v2-client"
+import { AuctionBid, AuctionListing, UserProfile } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 

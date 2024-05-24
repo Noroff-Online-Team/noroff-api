@@ -7,7 +7,6 @@ const jestConfig: JestConfigWithTsJest = {
   testTimeout: 20000,
   setupFilesAfterEnv: ["<rootDir>/src/test-utils/server.ts"],
   moduleNameMapper: {
-    "^@/prisma/(.*)$": "<rootDir>/prisma/$1",
     "^@/(.*)$": "<rootDir>/src/$1"
   },
   workerIdleMemoryLimit: "512MB",

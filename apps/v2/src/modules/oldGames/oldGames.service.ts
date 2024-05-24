@@ -1,5 +1,5 @@
 import { getRandomNumber } from "@noroff/api-utils"
-import { OldGame } from "@/prisma/generated/v2-client"
+import { OldGame } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 

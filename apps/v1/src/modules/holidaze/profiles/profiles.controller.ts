@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { HolidazeBooking, HolidazeProfile, HolidazeVenue } from "@/prisma/generated/v1-client"
+import { HolidazeBooking, HolidazeProfile, HolidazeVenue } from "@prisma/v1-client"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { HolidazeBookingIncludes } from "../bookings/bookings.controller"

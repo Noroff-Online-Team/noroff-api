@@ -1,4 +1,4 @@
-import { OnlineShopProduct } from "@/prisma/generated/v2-client"
+import { OnlineShopProduct } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 
