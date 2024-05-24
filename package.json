@@ -7,7 +7,7 @@
   "engines": {
     "node": ">=20.13.1"
   },
-  "packageManager": "pnpm@9.1.0",
+  "packageManager": "pnpm@9.1.2",
   "scripts": {
     "dev": "turbo dev --parallel",
     "build:v1": "turbo build -F v1...",
