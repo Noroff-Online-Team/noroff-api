@@ -37,7 +37,7 @@
     "http-errors": "^2.0.0",
     "jest-mock-extended": "^3.0.5",
     "node-schedule": "^2.1.1",
-    "prisma-extension-pagination": "^0.5.0",
+    "prisma-extension-pagination": "^0.7.4",
     "qs": "^6.11.2",
     "statuses": "^2.0.1",
     "ts-node": "^10.9.1",

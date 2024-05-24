@@ -14,8 +14,7 @@
     "skipLibCheck": true,
     "types": ["@types/jest"],
     "paths": {
-      "@/*": ["./*"],
-      "@/prisma/*": ["../prisma/*"]
+      "@/*": ["./*"]
     }
   },
   "ts-node": {

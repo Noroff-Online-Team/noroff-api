@@ -1,6 +1,6 @@
 import { FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { SocialPost, UserProfile } from "@/prisma/generated/v2-client"
+import { SocialPost, UserProfile } from "@prisma/v2-client"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { SocialPostIncludes } from "../posts/posts.controller"
