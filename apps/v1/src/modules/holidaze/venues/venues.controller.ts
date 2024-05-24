@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { HolidazeProfile, HolidazeVenue } from "@/prisma/generated/v1-client"
+import { HolidazeProfile, HolidazeVenue } from "@prisma/v1-client"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { getProfile } from "../profiles/profiles.service"

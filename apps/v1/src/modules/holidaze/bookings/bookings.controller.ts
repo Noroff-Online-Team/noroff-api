@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify"
-import { HolidazeBooking, HolidazeProfile } from "@/prisma/generated/v1-client"
+import { HolidazeBooking, HolidazeProfile } from "@prisma/v1-client"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { getVenue } from "../venues/venues.service"
