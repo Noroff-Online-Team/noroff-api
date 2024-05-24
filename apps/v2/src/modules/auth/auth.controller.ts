@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard, verifyPassword } from "@noroff/api-utils"
-import { UserProfile } from "@/prisma/generated/v2-client"
+import { UserProfile } from "@prisma/v2-client"
 import { BadRequest, Unauthorized } from "http-errors"
 
 import {
