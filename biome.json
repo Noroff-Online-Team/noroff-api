@@ -8,7 +8,7 @@
       "dist",
       "pnpm-lock.yaml",
       ".turbo/**",
-      "configs/*"
+      "configs/**/*.json"
     ]
   },
   "formatter": {
