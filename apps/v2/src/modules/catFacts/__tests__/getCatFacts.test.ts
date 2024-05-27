@@ -35,7 +35,9 @@ describe("[GET] /cat-facts", () => {
     expect(res.data).toBeDefined()
     expect(res.data).toHaveLength(2)
     expect(res.data[0].id).toBeDefined()
-    expect(res.data[0].text).toBe("On average, cats spend 2/3 of every day sleeping")
+    expect(res.data[0].text).toBe(
+      "On average, cats spend 2/3 of every day sleeping"
+    )
     expect(res.data[1].id).toBeDefined()
     expect(res.data[1].text).toBe("Unlike dogs, cats do not have a sweet tooth")
     expect(res.meta).toBeDefined()
@@ -63,7 +65,9 @@ describe("[GET] /cat-facts", () => {
     expect(res.data[0].id).toBeDefined()
     expect(res.data[0].text).toBe("Unlike dogs, cats do not have a sweet tooth")
     expect(res.data[1].id).toBeDefined()
-    expect(res.data[1].text).toBe("On average, cats spend 2/3 of every day sleeping")
+    expect(res.data[1].text).toBe(
+      "On average, cats spend 2/3 of every day sleeping"
+    )
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
       isFirstPage: true,
@@ -87,7 +91,9 @@ describe("[GET] /cat-facts", () => {
     expect(res.data).toBeDefined()
     expect(res.data).toHaveLength(1)
     expect(res.data[0].id).toBeDefined()
-    expect(res.data[0].text).toBe("On average, cats spend 2/3 of every day sleeping")
+    expect(res.data[0].text).toBe(
+      "On average, cats spend 2/3 of every day sleeping"
+    )
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
       isFirstPage: true,

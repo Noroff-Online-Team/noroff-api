@@ -1,6 +1,9 @@
-import { FastifyInstance } from "fastify"
+import type { FastifyInstance } from "fastify"
 
-import { getGameHubProductHandler, getGameHubProductsHandler } from "./gameHub.controller"
+import {
+  getGameHubProductHandler,
+  getGameHubProductsHandler
+} from "./gameHub.controller"
 import { gameHubParamsSchema, gameHubResponseSchema } from "./gameHub.schema"
 
 async function gameHubRoutes(server: FastifyInstance) {

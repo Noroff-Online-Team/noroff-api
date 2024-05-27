@@ -3,7 +3,7 @@ import "dotenv/config"
 import buildServer from "./server"
 
 const server = buildServer()
-const PORT = parseInt(process.env.PORT as string, 10) || 3000
+const PORT = Number.parseInt(process.env.PORT as string, 10) || 3000
 
 // Main startup
 async function main() {

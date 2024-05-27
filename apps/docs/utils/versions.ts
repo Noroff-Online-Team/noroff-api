@@ -1,4 +1,4 @@
-import { Tally1Icon, Tally2Icon, type LucideIcon } from "lucide-react"
+import { type LucideIcon, Tally1Icon, Tally2Icon } from "lucide-react"
 
 export type Version = {
   param: string

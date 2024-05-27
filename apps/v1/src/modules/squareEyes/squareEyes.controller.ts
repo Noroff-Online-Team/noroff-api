@@ -1,7 +1,10 @@
-import { FastifyRequest } from "fastify"
+import type { FastifyRequest } from "fastify"
 import { NotFound } from "http-errors"
 
-import { getSquareEyesProduct, getSquareEyesProducts } from "./squareEyes.service"
+import {
+  getSquareEyesProduct,
+  getSquareEyesProducts
+} from "./squareEyes.service"
 
 export async function getSquareEyesProductsHandler() {
   const products = await getSquareEyesProducts()

@@ -1,7 +1,14 @@
-import { FastifyInstance } from "fastify"
-import { createResponseSchema, sortAndPaginationSchema } from "@noroff/api-utils"
+import {
+  createResponseSchema,
+  sortAndPaginationSchema
+} from "@noroff/api-utils"
+import type { FastifyInstance } from "fastify"
 
-import { getBookHandler, getBooksHandler, getRandomBookHandler } from "./books.controller"
+import {
+  getBookHandler,
+  getBooksHandler,
+  getRandomBookHandler
+} from "./books.controller"
 import { bookParamsSchema, bookSchema } from "./books.schema"
 
 async function bookRoutes(server: FastifyInstance) {

@@ -40,9 +40,15 @@ export const displayProfileSchema = z.object({
 })
 
 const queryFlagsCore = {
-  _followers: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _following: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _posts: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _followers: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _following: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _posts: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
@@ -53,10 +59,15 @@ export const profilesQuerySchema = sortAndPaginationSchema
   })
   .extend(queryFlagsCore)
 
-export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
-  q: z
-    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
-    .nonempty("Query cannot be empty")
-})
+export const searchQuerySchema = sortAndPaginationSchema
+  .extend(queryFlagsCore)
+  .extend({
+    q: z
+      .string({
+        required_error: "Query is required",
+        invalid_type_error: "Query must be a string"
+      })
+      .nonempty("Query cannot be empty")
+  })
 
 export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>

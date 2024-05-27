@@ -10,7 +10,8 @@ beforeEach(async () => {
     data: {
       id: PRODUCT_ID,
       title: "Vanilla Perfume",
-      description: "Women's perfume that smells a warm and sweet, with nuances of wood and jasmine.",
+      description:
+        "Women's perfume that smells a warm and sweet, with nuances of wood and jasmine.",
       price: 2599.99,
       discountedPrice: 2079.99,
       image: {
@@ -36,7 +37,8 @@ beforeEach(async () => {
   await db.onlineShopProduct.create({
     data: {
       title: "Toy car",
-      description: "A die-cast model of a toy car, perfect for displaying on your shelf.",
+      description:
+        "A die-cast model of a toy car, perfect for displaying on your shelf.",
       price: 499.95,
       discountedPrice: 449.95,
       image: {

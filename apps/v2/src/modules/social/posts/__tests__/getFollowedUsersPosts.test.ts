@@ -10,8 +10,14 @@ beforeEach(async () => {
   const USER_THREE_NAME = "test_user_three"
 
   const { bearerToken, apiKey } = await getAuthCredentials()
-  const { name: secondUserName } = await registerUser({ name: USER_TWO_NAME, email: "test_user_two@noroff.no" })
-  const { name: thirdUserName } = await registerUser({ name: USER_THREE_NAME, email: "test_user_three@noroff.no" })
+  const { name: secondUserName } = await registerUser({
+    name: USER_TWO_NAME,
+    email: "test_user_two@noroff.no"
+  })
+  const { name: thirdUserName } = await registerUser({
+    name: USER_THREE_NAME,
+    email: "test_user_three@noroff.no"
+  })
 
   BEARER_TOKEN = bearerToken
   API_KEY = apiKey
@@ -145,7 +151,7 @@ describe("[GET] /social/posts/following", () => {
 
   it("should return all posts that match a tag", async () => {
     const response = await server.inject({
-      url: `/social/posts/following?_tag=tag1`,
+      url: "/social/posts/following?_tag=tag1",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

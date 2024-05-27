@@ -1,5 +1,5 @@
-import { FastifyInstance } from "fastify"
 import { createResponseSchema } from "@noroff/api-utils"
+import type { FastifyInstance } from "fastify"
 
 import {
   listingQuerySchema,
@@ -12,8 +12,8 @@ import {
   getProfileCreditsHandler,
   getProfileHandler,
   getProfileListingsHandler,
-  getProfilesHandler,
   getProfileWinsHandler,
+  getProfilesHandler,
   searchProfilesHandler,
   updateProfileHandler
 } from "./profiles.controller"
@@ -86,7 +86,9 @@ async function profilesRoutes(server: FastifyInstance) {
         params: profileNameSchema,
         body: updateProfileSchema,
         response: {
-          200: createResponseSchema(displayProfileSchema.omit({ listings: true }))
+          200: createResponseSchema(
+            displayProfileSchema.omit({ listings: true })
+          )
         }
       }
     },

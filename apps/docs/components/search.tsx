@@ -1,21 +1,27 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { useVersion } from "@/app/layout.client"
 import { cva } from "class-variance-authority"
 import { useDocsSearch } from "fumadocs-core/search/client"
-import { SearchDialog, type SharedProps } from "fumadocs-ui/components/dialog/search"
+import {
+  SearchDialog,
+  type SharedProps
+} from "fumadocs-ui/components/dialog/search"
+import { useEffect, useState } from "react"
 
 import { cn } from "@/utils/cn"
 import { versions } from "@/utils/versions"
 
-const itemVariants = cva("border px-2 py-0.5 rounded-md text-xs text-muted-foreground font-medium transition-colors", {
-  variants: {
-    active: {
-      true: "text-accent-foreground bg-accent"
+const itemVariants = cva(
+  "border px-2 py-0.5 rounded-md text-xs text-muted-foreground font-medium transition-colors",
+  {
+    variants: {
+      active: {
+        true: "text-accent-foreground bg-accent"
+      }
     }
   }
-})
+)
 
 export default function CustomSearchDialog(props: SharedProps) {
   const currentVersion = useVersion()
@@ -38,6 +44,7 @@ export default function CustomSearchDialog(props: SharedProps) {
           {versions.map(ver => (
             <button
               key={ver.param}
+              type="button"
               className={cn(itemVariants({ active: version === ver.param }))}
               onClick={() => setVersion(ver.param)}
               tabIndex={-1}

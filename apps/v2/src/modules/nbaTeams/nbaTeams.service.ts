@@ -1,5 +1,5 @@
 import { getRandomNumber } from "@noroff/api-utils"
-import { NbaTeam } from "@prisma/v2-client"
+import type { NbaTeam } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 

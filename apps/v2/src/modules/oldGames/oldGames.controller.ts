@@ -1,6 +1,6 @@
-import { FastifyRequest } from "fastify"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
-import { OldGame } from "@prisma/v2-client"
+import type { OldGame } from "@prisma/v2-client"
+import type { FastifyRequest } from "fastify"
 import { BadRequest, NotFound } from "http-errors"
 
 import { oldGameParamsSchema } from "./oldGames.schema"

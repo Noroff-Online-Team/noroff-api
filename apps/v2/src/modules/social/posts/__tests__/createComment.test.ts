@@ -213,7 +213,7 @@ describe("[POST] /social/posts/:id/comment", () => {
 
   it("should throw 404 error when attempting to add a comment to a non-existent post", async () => {
     const response = await server.inject({
-      url: `/social/posts/3/comment`,
+      url: "/social/posts/3/comment",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

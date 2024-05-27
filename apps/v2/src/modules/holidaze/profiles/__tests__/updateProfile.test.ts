@@ -136,7 +136,7 @@ describe("[PUT] /holidaze/profiles/:id", () => {
 
   it("should throw 404 error when profile does not exist", async () => {
     const response = await server.inject({
-      url: `/holidaze/profiles/does_not_exist`,
+      url: "/holidaze/profiles/does_not_exist",
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -159,10 +159,13 @@ describe("[PUT] /holidaze/profiles/:id", () => {
   })
 
   it("should throw 403 error when attempting to update another user's profile", async () => {
-    await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
+    await registerUser({
+      name: "test_user_two",
+      email: "test_user_two@noroff.no"
+    })
 
     const response = await server.inject({
-      url: `/holidaze/profiles/test_user_two`,
+      url: "/holidaze/profiles/test_user_two",
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

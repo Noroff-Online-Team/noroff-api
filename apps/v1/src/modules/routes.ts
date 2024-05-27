@@ -8,18 +8,44 @@ export default async function (fastify: FastifyInstance) {
   fastify.register(import("./nbaTeams/nbaTeams.route"), { prefix: "nba-teams" })
   fastify.register(import("./oldGames/oldGames.route"), { prefix: "old-games" })
   fastify.register(import("./quotes/quotes.route"), { prefix: "quotes" })
-  fastify.register(import("./onlineShop/onlineShop.route"), { prefix: "online-shop" })
-  fastify.register(import("./rainyDays/rainyDays.route"), { prefix: "rainy-days" })
+  fastify.register(import("./onlineShop/onlineShop.route"), {
+    prefix: "online-shop"
+  })
+  fastify.register(import("./rainyDays/rainyDays.route"), {
+    prefix: "rainy-days"
+  })
   fastify.register(import("./gameHub/gameHub.route"), { prefix: "gamehub" })
-  fastify.register(import("./squareEyes/squareEyes.route"), { prefix: "square-eyes" })
-  fastify.register(import("./social/posts/posts.route"), { prefix: "social/posts" })
-  fastify.register(import("./social/profiles/profiles.route"), { prefix: "social/profiles" })
-  fastify.register(import("./social/auth/auth.route"), { prefix: "social/auth" })
-  fastify.register(import("./auction/auth/auth.route"), { prefix: "auction/auth" })
-  fastify.register(import("./auction/profiles/profiles.route"), { prefix: "auction/profiles" })
-  fastify.register(import("./auction/listings/listings.route"), { prefix: "auction/listings" })
-  fastify.register(import("./holidaze/auth/auth.route"), { prefix: "holidaze/auth" })
-  fastify.register(import("./holidaze/profiles/profiles.route"), { prefix: "holidaze/profiles" })
-  fastify.register(import("./holidaze/bookings/bookings.route"), { prefix: "holidaze/bookings" })
-  fastify.register(import("./holidaze/venues/venues.route"), { prefix: "holidaze/venues" })
+  fastify.register(import("./squareEyes/squareEyes.route"), {
+    prefix: "square-eyes"
+  })
+  fastify.register(import("./social/posts/posts.route"), {
+    prefix: "social/posts"
+  })
+  fastify.register(import("./social/profiles/profiles.route"), {
+    prefix: "social/profiles"
+  })
+  fastify.register(import("./social/auth/auth.route"), {
+    prefix: "social/auth"
+  })
+  fastify.register(import("./auction/auth/auth.route"), {
+    prefix: "auction/auth"
+  })
+  fastify.register(import("./auction/profiles/profiles.route"), {
+    prefix: "auction/profiles"
+  })
+  fastify.register(import("./auction/listings/listings.route"), {
+    prefix: "auction/listings"
+  })
+  fastify.register(import("./holidaze/auth/auth.route"), {
+    prefix: "holidaze/auth"
+  })
+  fastify.register(import("./holidaze/profiles/profiles.route"), {
+    prefix: "holidaze/profiles"
+  })
+  fastify.register(import("./holidaze/bookings/bookings.route"), {
+    prefix: "holidaze/bookings"
+  })
+  fastify.register(import("./holidaze/venues/venues.route"), {
+    prefix: "holidaze/venues"
+  })
 }

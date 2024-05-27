@@ -44,7 +44,7 @@ describe("[GET] /auction/profiles/:id/credits", () => {
 
   it("should throw 404 error when attempting to access profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/auction/profiles/does_not_exist/credits`,
+      url: "/auction/profiles/does_not_exist/credits",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -64,10 +64,13 @@ describe("[GET] /auction/profiles/:id/credits", () => {
   })
 
   it("should throw 400 error when attempting to access another user's credits", async () => {
-    await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
+    await registerUser({
+      name: "test_user_two",
+      email: "test_user_two@noroff.no"
+    })
 
     const response = await server.inject({
-      url: `/auction/profiles/test_user_two/credits`,
+      url: "/auction/profiles/test_user_two/credits",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

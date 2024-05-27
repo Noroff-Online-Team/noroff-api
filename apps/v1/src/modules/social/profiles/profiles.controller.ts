@@ -1,10 +1,10 @@
-import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { Post, Profile } from "@prisma/v1-client"
+import type { Post, Profile } from "@prisma/v1-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
-import { PostIncludes } from "../posts/posts.controller"
-import { ProfileMediaSchema } from "./profiles.schema"
+import type { PostIncludes } from "../posts/posts.controller"
+import type { ProfileMediaSchema } from "./profiles.schema"
 import {
   followProfile,
   getProfile,
@@ -35,7 +35,8 @@ export async function getProfilesHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { sort, sortOrder, limit, offset, _followers, _following, _posts } = request.query
+  const { sort, sortOrder, limit, offset, _followers, _following, _posts } =
+    request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -182,7 +183,8 @@ export async function getProfilePostsHandler(
   reply: FastifyReply
 ) {
   const { name } = request.params
-  const { sort, sortOrder, limit, offset, _author, _reactions, _comments } = request.query
+  const { sort, sortOrder, limit, offset, _author, _reactions, _comments } =
+    request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -200,6 +202,13 @@ export async function getProfilePostsHandler(
     comments: Boolean(_comments)
   }
 
-  const posts = await getProfilePosts(name, sort, sortOrder, limit, offset, includes)
+  const posts = await getProfilePosts(
+    name,
+    sort,
+    sortOrder,
+    limit,
+    offset,
+    includes
+  )
   reply.code(200).send(posts)
 }

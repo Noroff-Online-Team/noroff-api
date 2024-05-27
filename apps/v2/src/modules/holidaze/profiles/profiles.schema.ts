@@ -19,7 +19,9 @@ export const updateProfileSchema = z.object({
   ...profileBio
 })
 
-export const holidazeProfileSchema = z.object(profileCore).extend(profileVenueManager)
+export const holidazeProfileSchema = z
+  .object(profileCore)
+  .extend(profileVenueManager)
 
 export const createProfileSchema = z.object({
   ...profileCore,
@@ -62,18 +64,28 @@ export const displayProfileSchema = z.object({
 })
 
 const queryFlagsCore = {
-  _bookings: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _venues: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _bookings: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _venues: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
-export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
-  q: z
-    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
-    .nonempty("Query cannot be empty")
-})
+export const searchQuerySchema = sortAndPaginationSchema
+  .extend(queryFlagsCore)
+  .extend({
+    q: z
+      .string({
+        required_error: "Query is required",
+        invalid_type_error: "Query must be a string"
+      })
+      .nonempty("Query cannot be empty")
+  })
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
-export const profilesQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore)
+export const profilesQuerySchema =
+  sortAndPaginationSchema.extend(queryFlagsCore)
 
 export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>

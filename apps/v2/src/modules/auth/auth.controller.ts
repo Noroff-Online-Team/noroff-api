@@ -1,18 +1,23 @@
-import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard, verifyPassword } from "@noroff/api-utils"
-import { UserProfile } from "@prisma/v2-client"
+import type { UserProfile } from "@prisma/v2-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Unauthorized } from "http-errors"
 
 import {
-  CreateAPIKeyInput,
+  type CreateAPIKeyInput,
+  type CreateProfileInput,
+  type LoginInput,
   createApiKeySchema,
   createProfileBodySchema,
-  CreateProfileInput,
   loginBodySchema,
-  LoginInput,
   loginQuerySchema
 } from "./auth.schema"
-import { createApiKey, createProfile, findProfileByEmail, findProfileByEmailOrName } from "./auth.service"
+import {
+  createApiKey,
+  createProfile,
+  findProfileByEmail,
+  findProfileByEmailOrName
+} from "./auth.service"
 
 export interface AuthLoginIncludes {
   holidaze?: boolean
@@ -76,7 +81,6 @@ export async function loginHandler(
     throw new Unauthorized("Invalid email or password")
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { password, salt, ...rest } = profile.data
 
   return {

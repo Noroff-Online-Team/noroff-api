@@ -1,7 +1,10 @@
-import { FastifyRequest } from "fastify"
+import type { FastifyRequest } from "fastify"
 import { NotFound } from "http-errors"
 
-import { getOnlineShopProduct, getOnlineShopProducts } from "./onlineShop.service"
+import {
+  getOnlineShopProduct,
+  getOnlineShopProducts
+} from "./onlineShop.service"
 
 export async function getOnlineShopProductsHandler() {
   const products = await getOnlineShopProducts()

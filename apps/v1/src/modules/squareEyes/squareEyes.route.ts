@@ -1,7 +1,13 @@
-import { FastifyInstance } from "fastify"
+import type { FastifyInstance } from "fastify"
 
-import { getSquareEyesProductHandler, getSquareEyesProductsHandler } from "./squareEyes.controller"
-import { squareEyesParamsSchema, squareEyesResponseSchema } from "./squareEyes.schema"
+import {
+  getSquareEyesProductHandler,
+  getSquareEyesProductsHandler
+} from "./squareEyes.controller"
+import {
+  squareEyesParamsSchema,
+  squareEyesResponseSchema
+} from "./squareEyes.schema"
 
 async function squareEyesRoutes(server: FastifyInstance) {
   server.get(

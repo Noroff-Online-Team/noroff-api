@@ -1,11 +1,14 @@
-import { NextResponse, type NextRequest } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 
 const allowed = ["v1", "v2"]
 
 export default function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
 
-  if (pathname.startsWith("/docs/") && !allowed.includes(pathname.split("/")[2])) {
+  if (
+    pathname.startsWith("/docs/") &&
+    !allowed.includes(pathname.split("/")[2])
+  ) {
     // Redirect to v1 if the path starts with /docs/v1
     if (pathname.startsWith("/docs/v1")) {
       const url = new URL("/docs/v1/", req.url)

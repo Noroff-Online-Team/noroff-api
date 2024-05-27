@@ -1,9 +1,9 @@
-import { HolidazeVenue } from "@prisma/v2-client"
+import type { HolidazeVenue } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 
-import { HolidazeVenueIncludes } from "./venues.controller"
-import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
+import type { HolidazeVenueIncludes } from "./venues.controller"
+import type { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
 
 const DEFAULT_MEDIA = [
   {
@@ -19,9 +19,15 @@ export async function getVenues(
   page = 1,
   includes: HolidazeVenueIncludes = {}
 ) {
-  const withOwnerMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+  const withOwnerMedia = includes.owner
+    ? { owner: { include: { avatar: true, banner: true } } }
+    : {}
   const withBookingCustomer = includes.bookings
-    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    ? {
+        bookings: {
+          include: { customer: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const [data, meta] = await db.holidazeVenue
@@ -51,10 +57,19 @@ export async function getVenues(
   return { data, meta }
 }
 
-export async function getVenue(id: string, includes: HolidazeVenueIncludes = {}) {
-  const withOwnerMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+export async function getVenue(
+  id: string,
+  includes: HolidazeVenueIncludes = {}
+) {
+  const withOwnerMedia = includes.owner
+    ? { owner: { include: { avatar: true, banner: true } } }
+    : {}
   const withBookingCustomer = includes.bookings
-    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    ? {
+        bookings: {
+          include: { customer: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const [data] = await db.holidazeVenue
@@ -87,9 +102,15 @@ export async function createVenue(
   includes: HolidazeVenueIncludes = {}
 ) {
   const { meta, location, media, ...rest } = createData
-  const withOwnerMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+  const withOwnerMedia = includes.owner
+    ? { owner: { include: { avatar: true, banner: true } } }
+    : {}
   const withBookingCustomer = includes.bookings
-    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    ? {
+        bookings: {
+          include: { customer: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const venueMeta = await db.holidazeVenueMeta.create({
@@ -103,7 +124,9 @@ export async function createVenue(
   const data = await db.holidazeVenue.create({
     data: {
       ...rest,
-      media: media ? { createMany: { data: media } } : { createMany: { data: DEFAULT_MEDIA } },
+      media: media
+        ? { createMany: { data: media } }
+        : { createMany: { data: DEFAULT_MEDIA } },
       ownerName,
       metaId: venueMeta.id,
       locationId: venueLocation.id
@@ -126,11 +149,21 @@ export async function createVenue(
   return { data }
 }
 
-export async function updateVenue(id: string, updateData: UpdateVenueSchema, includes: HolidazeVenueIncludes = {}) {
+export async function updateVenue(
+  id: string,
+  updateData: UpdateVenueSchema,
+  includes: HolidazeVenueIncludes = {}
+) {
   const { meta, location, media, ...rest } = updateData
-  const withOwnerMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+  const withOwnerMedia = includes.owner
+    ? { owner: { include: { avatar: true, banner: true } } }
+    : {}
   const withBookingCustomer = includes.bookings
-    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    ? {
+        bookings: {
+          include: { customer: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const data = await db.holidazeVenue.update({
@@ -183,9 +216,15 @@ export async function searchVenues(
   query: string,
   includes: HolidazeVenueIncludes = {}
 ) {
-  const withOwnerMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+  const withOwnerMedia = includes.owner
+    ? { owner: { include: { avatar: true, banner: true } } }
+    : {}
   const withBookingCustomer = includes.bookings
-    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    ? {
+        bookings: {
+          include: { customer: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const [data, meta] = await db.holidazeVenue

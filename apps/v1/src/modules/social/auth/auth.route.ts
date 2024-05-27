@@ -1,6 +1,9 @@
-import { FastifyInstance } from "fastify"
+import type { FastifyInstance } from "fastify"
 
-import { createProfileResponseSchema, createProfileSchema } from "../profiles/profiles.schema"
+import {
+  createProfileResponseSchema,
+  createProfileSchema
+} from "../profiles/profiles.schema"
 import { loginHandler, registerProfileHandler } from "./auth.controller"
 import { loginResponseSchema, loginSchema } from "./auth.schema"
 

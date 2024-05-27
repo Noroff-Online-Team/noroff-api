@@ -15,7 +15,8 @@ beforeEach(async () => {
   await db.quote.createMany({
     data: [
       {
-        content: "The Superior Man is aware of Righteousness, the inferior man is aware of advantage.",
+        content:
+          "The Superior Man is aware of Righteousness, the inferior man is aware of advantage.",
         author: "Confucius",
         tags: ["famous-quotes"],
         authorId: "ropvZKOXYhLr",

@@ -1,11 +1,15 @@
-import { HolidazeBooking, HolidazeProfile, HolidazeVenue } from "@prisma/v1-client"
+import type {
+  HolidazeBooking,
+  HolidazeProfile,
+  HolidazeVenue
+} from "@prisma/v1-client"
 
 import { prisma } from "@/utils"
 
-import { HolidazeBookingIncludes } from "../bookings/bookings.controller"
-import { HolidazeVenueIncludes } from "../venues/venues.controller"
-import { HolidazeProfileIncludes } from "./profiles.controller"
-import { ProfileMediaSchema } from "./profiles.schema"
+import type { HolidazeBookingIncludes } from "../bookings/bookings.controller"
+import type { HolidazeVenueIncludes } from "../venues/venues.controller"
+import type { HolidazeProfileIncludes } from "./profiles.controller"
+import type { ProfileMediaSchema } from "./profiles.schema"
 
 export async function getProfiles(
   sort: keyof HolidazeProfile = "name",
@@ -14,7 +18,9 @@ export async function getProfiles(
   offset = 0,
   includes: HolidazeProfileIncludes = {}
 ) {
-  const venueMetaAndLocation = includes.venues ? { venues: { include: { meta: true, location: true } } } : {}
+  const venueMetaAndLocation = includes.venues
+    ? { venues: { include: { meta: true, location: true } } }
+    : {}
 
   return await prisma.holidazeProfile.findMany({
     orderBy: {
@@ -35,10 +41,19 @@ export async function getProfiles(
   })
 }
 
-export async function getProfile(name: string, includes: HolidazeProfileIncludes = {}) {
-  const venueMetaAndLocation = includes.venues ? { venues: { include: { meta: true, location: true } } } : {}
+export async function getProfile(
+  name: string,
+  includes: HolidazeProfileIncludes = {}
+) {
+  const venueMetaAndLocation = includes.venues
+    ? { venues: { include: { meta: true, location: true } } }
+    : {}
   const includeVenueIfBookings = includes.bookings
-    ? { bookings: { include: { venue: { include: { meta: true, location: true } } } } }
+    ? {
+        bookings: {
+          include: { venue: { include: { meta: true, location: true } } }
+        }
+      }
     : {}
 
   return await prisma.holidazeProfile.findUnique({
@@ -66,7 +81,10 @@ export async function updateProfile(name: string, venueManager: boolean) {
   })
 }
 
-export async function updateProfileMedia(name: string, { avatar }: ProfileMediaSchema) {
+export async function updateProfileMedia(
+  name: string,
+  { avatar }: ProfileMediaSchema
+) {
   return await prisma.holidazeProfile.update({
     where: { name },
     data: {
@@ -113,7 +131,9 @@ export async function getProfileBookings(
   offset = 0,
   includes: HolidazeBookingIncludes = {}
 ) {
-  const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
+  const venueMetaAndLocation = includes.venue
+    ? { venue: { include: { meta: true, location: true } } }
+    : {}
 
   return await prisma.holidazeBooking.findMany({
     where: {

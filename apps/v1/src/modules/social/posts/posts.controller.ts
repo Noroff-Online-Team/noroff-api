@@ -1,9 +1,9 @@
-import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { Comment, Post, Prisma, Profile } from "@prisma/v1-client"
+import type { Comment, Post, Prisma, Profile } from "@prisma/v1-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
-import { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
+import type { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"
 import {
   createComment,
   createPost,
@@ -23,7 +23,9 @@ export interface PostIncludes {
   comments?: boolean
 }
 
-type PostWithComments = Prisma.PromiseReturnType<typeof getPost> & { comments: Array<Comment> | [] }
+type PostWithComments = Prisma.PromiseReturnType<typeof getPost> & {
+  comments: Array<Comment> | []
+}
 
 export async function getPostsHandler(
   request: FastifyRequest<{
@@ -40,7 +42,16 @@ export async function getPostsHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { sort, sortOrder, limit, offset, _author, _reactions, _comments, _tag } = request.query
+  const {
+    sort,
+    sortOrder,
+    limit,
+    offset,
+    _author,
+    _reactions,
+    _comments,
+    _tag
+  } = request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -121,7 +132,10 @@ export async function createPostHandler(
   }
 }
 
-export async function deletePostHandler(request: FastifyRequest<{ Params: { id: number } }>, reply: FastifyReply) {
+export async function deletePostHandler(
+  request: FastifyRequest<{ Params: { id: number } }>,
+  reply: FastifyReply
+) {
   const { id } = request.params
   const { name } = request.user as Profile
   const post = await getPost(id)
@@ -225,7 +239,9 @@ export async function createCommentHandler(
   const { name } = request.user as Profile
   const { replyToId } = request.body
 
-  const post = (await getPost(id, { comments: true })) as PostWithComments | null
+  const post = (await getPost(id, {
+    comments: true
+  })) as PostWithComments | null
 
   if (!post) {
     throw new NotFound("Post not found")
@@ -238,7 +254,9 @@ export async function createCommentHandler(
       throw new NotFound("You can't reply to a comment that does not exist")
     }
 
-    const isRelatedToPost = post.comments?.find(comment => comment.id === replyToId)
+    const isRelatedToPost = post.comments?.find(
+      comment => comment.id === replyToId
+    )
 
     if (!isRelatedToPost) {
       throw new BadRequest("Comment is not related to this post")
@@ -278,7 +296,9 @@ export async function deleteCommentHandler(
     throw new NotFound("Comment not found")
   }
 
-  const isRelatedToPost = post.comments?.find(comment => comment.id === commentId)
+  const isRelatedToPost = post.comments?.find(
+    comment => comment.id === commentId
+  )
 
   if (!isRelatedToPost) {
     throw new BadRequest("Comment is not related to this post")
@@ -312,7 +332,16 @@ export async function getPostsOfFollowedUsersHandler(
   reply: FastifyReply
 ) {
   const { id } = request.user as Profile
-  const { sort, sortOrder, limit, offset, _author, _reactions, _comments, _tag } = request.query
+  const {
+    sort,
+    sortOrder,
+    limit,
+    offset,
+    _author,
+    _reactions,
+    _comments,
+    _tag
+  } = request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -325,7 +354,15 @@ export async function getPostsOfFollowedUsersHandler(
   }
 
   try {
-    const posts = await getPostsOfFollowedUsers(id, sort, sortOrder, limit, offset, includes, _tag)
+    const posts = await getPostsOfFollowedUsers(
+      id,
+      sort,
+      sortOrder,
+      limit,
+      offset,
+      includes,
+      _tag
+    )
     reply.code(200).send(posts)
   } catch (error) {
     reply.code(500).send(error)

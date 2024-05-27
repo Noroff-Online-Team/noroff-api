@@ -58,8 +58,12 @@ export const venueCore = {
 export const displayVenueSchema = z.object(venueCore)
 
 const queryFlagsCore = {
-  _owner: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _bookings: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _owner: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _bookings: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
@@ -77,7 +81,7 @@ export const venuesQuerySchema = z.object({
     .optional(),
   limit: z
     .preprocess(
-      val => parseInt(val as string, 10),
+      val => Number.parseInt(val as string, 10),
       z
         .number({
           invalid_type_error: "Limit must be a number"
@@ -88,7 +92,7 @@ export const venuesQuerySchema = z.object({
     .optional(),
   offset: z
     .preprocess(
-      val => parseInt(val as string, 10),
+      val => Number.parseInt(val as string, 10),
       z
         .number({
           invalid_type_error: "Offset must be a number"
@@ -308,7 +312,10 @@ const updateVenueCore = {
 
 export const updateVenueSchema = z
   .object(updateVenueCore)
-  .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
+  .refine(
+    data => Object.keys(data).length > 0,
+    "You must provide at least one field to update"
+  )
 
 export type CreateVenueSchema = z.infer<typeof createVenueSchema>
 

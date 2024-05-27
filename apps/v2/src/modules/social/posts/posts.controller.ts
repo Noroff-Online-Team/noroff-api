@@ -1,12 +1,12 @@
-import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { SocialPost, UserProfile } from "@prisma/v2-client"
+import type { SocialPost, UserProfile } from "@prisma/v2-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import {
+  type CreateCommentSchema,
+  type CreatePostBaseSchema,
   authorQuerySchema,
-  CreateCommentSchema,
-  CreatePostBaseSchema,
   deleteCommentSchema,
   emojiSchema,
   mediaSchema,
@@ -49,7 +49,8 @@ export async function getPostsHandler(
   }>
 ) {
   await postsQuerySchema.parseAsync(request.query)
-  const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } = request.query
+  const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } =
+    request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -237,7 +238,9 @@ export async function createCommentHandler(
       throw new NotFound("You can't reply to a comment that does not exist")
     }
 
-    const isRelatedToPost = post.data.comments?.find(comment => comment.id === replyToId)
+    const isRelatedToPost = post.data.comments?.find(
+      comment => comment.id === replyToId
+    )
 
     if (!isRelatedToPost) {
       throw new BadRequest("Comment is not related to this post")
@@ -268,7 +271,8 @@ export async function getPostsOfFollowedUsersHandler(
   }>
 ) {
   const { id } = request.user as UserProfile
-  const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } = request.query
+  const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } =
+    request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -280,7 +284,15 @@ export async function getPostsOfFollowedUsersHandler(
     comments: Boolean(_comments)
   }
 
-  const posts = await getPostsOfFollowedUsers(id, sort, sortOrder, limit, page, includes, _tag)
+  const posts = await getPostsOfFollowedUsers(
+    id,
+    sort,
+    sortOrder,
+    limit,
+    page,
+    includes,
+    _tag
+  )
 
   return posts
 }
@@ -300,7 +312,8 @@ export async function searchPostsHandler(
   }>
 ) {
   await searchQuerySchema.parseAsync(request.query)
-  const { sort, sortOrder, limit, page, _author, _reactions, _comments, q } = request.query
+  const { sort, sortOrder, limit, page, _author, _reactions, _comments, q } =
+    request.query
 
   const includes: SocialPostIncludes = {
     author: Boolean(_author),
@@ -337,7 +350,9 @@ export async function deleteCommentHandler(
     throw new NotFound("Comment not found")
   }
 
-  const isRelatedToPost = post.data.comments?.find(comment => comment.id === commentId)
+  const isRelatedToPost = post.data.comments?.find(
+    comment => comment.id === commentId
+  )
 
   if (!isRelatedToPost) {
     throw new BadRequest("Comment is not related to this post")
