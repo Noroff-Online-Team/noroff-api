@@ -9,20 +9,25 @@ import { NoroffLogo } from "@/components/noroff-logo"
 import { cn } from "@/utils/cn"
 import { versions } from "@/utils/versions"
 
-const itemVariants = cva("px-2 py-1 rounded-md transition-colors hover:text-accent-foreground", {
-  variants: {
-    active: {
-      true: "bg-border text-foreground dark:bg-accent dark:text-accent-foreground"
+const itemVariants = cva(
+  "px-2 py-1 rounded-md transition-colors hover:text-accent-foreground",
+  {
+    variants: {
+      active: {
+        true: "bg-border text-foreground dark:bg-accent dark:text-accent-foreground"
+      }
     }
   }
-})
+)
 
 export function useVersion(): string | undefined {
   const { slug } = useParams()
   return Array.isArray(slug) && slug.length > 0 ? slug[0] : undefined
 }
 
-export function Body({ children }: { children: ReactNode }): React.ReactElement {
+export function Body({
+  children
+}: { children: ReactNode }): React.ReactElement {
   const version = useVersion()
   return <div className={cn("body-wrapper", version)}>{children}</div>
 }
@@ -33,7 +38,9 @@ export function Title(): React.ReactElement {
       <NoroffLogo />
       <div className="flex-col hidden -space-y-1 sm:flex">
         <span className="font-bold">Noroff API</span>
-        <span className="text-xs font-normal text-muted-foreground">Documentation</span>
+        <span className="text-xs font-normal text-muted-foreground">
+          Documentation
+        </span>
       </div>
     </div>
   )
@@ -41,13 +48,21 @@ export function Title(): React.ReactElement {
 
 export function NavChildren(): React.ReactElement {
   const version = useVersion()
-  const [swaggerText, setSwaggerText] = useState<string | null>(version === "v1" ? "Swagger v1" : "Swagger v2")
+  const [swaggerText, setSwaggerText] = useState<string | null>(
+    version === "v1" ? "Swagger v1" : "Swagger v2"
+  )
   const [swaggerUrl, setSwaggerUrl] = useState<string>(
-    version === "v1" ? "https://api.noroff.dev/docs" : "https://v2.api.noroff.dev/docs"
+    version === "v1"
+      ? "https://api.noroff.dev/docs"
+      : "https://v2.api.noroff.dev/docs"
   )
 
   useEffect(() => {
-    setSwaggerUrl(version === "v1" ? "https://api.noroff.dev/docs" : "https://v2.api.noroff.dev/docs")
+    setSwaggerUrl(
+      version === "v1"
+        ? "https://api.noroff.dev/docs"
+        : "https://v2.api.noroff.dev/docs"
+    )
 
     if (version) {
       setSwaggerText(version === "v1" ? "Swagger v1" : "Swagger v2")
@@ -86,7 +101,8 @@ export function NavChildren(): React.ReactElement {
 
 export function SidebarBanner(): React.ReactElement {
   const version = useVersion()
-  const currentVersion = versions.find(item => item.param === version) ?? versions[0]
+  const currentVersion =
+    versions.find(item => item.param === version) ?? versions[0]
   const Icon = currentVersion.icon
 
   return (
@@ -94,15 +110,19 @@ export function SidebarBanner(): React.ReactElement {
       <Icon
         className={cn(
           "w-9 h-9 p-1.5 shrink-0 rounded-md text-primary bg-gradient-to-b from-primary/50 border border-primary/50",
-          version === "v1" && "[--primary:213_98%_48%] dark:[--primary:213_94%_68%]",
-          version === "v2" && "[--primary:270_95%_60%] dark:[--primary:270_95%_75%]"
+          version === "v1" &&
+            "[--primary:213_98%_48%] dark:[--primary:213_94%_68%]",
+          version === "v2" &&
+            "[--primary:270_95%_60%] dark:[--primary:270_95%_75%]"
         )}
       />
       <div>
         <p className="font-medium">
           {currentVersion.name} {currentVersion.version}
         </p>
-        <p className="text-xs text-muted-foreground">{currentVersion.description}</p>
+        <p className="text-xs text-muted-foreground">
+          {currentVersion.description}
+        </p>
       </div>
     </div>
   )

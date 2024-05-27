@@ -9,7 +9,7 @@ type Param = {
   slug: string[]
 }
 
-export default async function Page({ params }: { params: Param }) {
+export default async function DocsPageComponent({ params }: { params: Param }) {
   const page = utils.getPage(params.slug)
 
   if (page == null) {
@@ -37,10 +37,16 @@ export default async function Page({ params }: { params: Param }) {
       }}
     >
       <div className="mb-6 nd-not-prose">
-        <h1 className="mb-4 text-3xl font-semibold text-foreground sm:text-4xl">{page.data.title}</h1>
-        <p className="text-muted-foreground sm:text-lg">{page.data.description}</p>
+        <h1 className="mb-4 text-3xl font-semibold text-foreground sm:text-4xl">
+          {page.data.title}
+        </h1>
+        <p className="text-muted-foreground sm:text-lg">
+          {page.data.description}
+        </p>
       </div>
-      <DocsBody>{page.data.index ? <Category page={page} /> : <MDX />}</DocsBody>
+      <DocsBody>
+        {page.data.index ? <Category page={page} /> : <MDX />}
+      </DocsBody>
     </DocsPage>
   )
 }
@@ -48,7 +54,10 @@ export default async function Page({ params }: { params: Param }) {
 function Category({ page }: { page: Page }): React.ReactElement {
   const filtered = utils
     .getPages()
-    .filter(item => item.file.dirname === page.file.dirname && item.file.name !== "index")
+    .filter(
+      item =>
+        item.file.dirname === page.file.dirname && item.file.name !== "index"
+    )
 
   return (
     <Cards>

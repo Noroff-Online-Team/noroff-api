@@ -40,7 +40,8 @@ export function Callout({
    * a <p> tag is added for proper HTML structure. For JSX or complex React nodes,
    * the children are rendered as-is without additional wrapping.
    */
-  const shouldWrapInParagraph = typeof children === "string" || Array.isArray(children)
+  const shouldWrapInParagraph =
+    typeof children === "string" || Array.isArray(children)
 
   return (
     <Alert variant={variant} className="mb-1">

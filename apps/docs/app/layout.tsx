@@ -31,9 +31,16 @@ const inter = Inter({
   subsets: ["latin"]
 })
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children
+}: { children: React.ReactNode }) {
   return (
-    <html lang="en" style={{ colorScheme: "dark" }} className={clsx(inter.className, "dark")} suppressHydrationWarning>
+    <html
+      lang="en"
+      style={{ colorScheme: "dark" }}
+      className={clsx(inter.className, "dark")}
+      suppressHydrationWarning
+    >
       <body className="flex flex-col min-h-screen">
         <Provider>
           {children}

@@ -11,7 +11,8 @@ const alertVariants = cva(
         default: "bg-background text-foreground",
         info: "bg-blue-100 dark:bg-blue-800",
         warning: "bg-yellow-100 dark:bg-yellow-800",
-        destructive: "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive"
+        destructive:
+          "border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive"
       }
     },
     defaultVariants: {
@@ -24,22 +25,40 @@ const Alert = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
 >(({ className, variant, ...props }, ref) => (
-  <div ref={ref} role="alert" className={cn(alertVariants({ variant }), className)} {...props} />
+  <div
+    ref={ref}
+    role="alert"
+    className={cn(alertVariants({ variant }), className)}
+    {...props}
+  />
 ))
 Alert.displayName = "Alert"
 
-const AlertTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
-  ({ className, ...props }, ref) => (
-    <h5 ref={ref} className={cn("mb-1 font-medium leading-none tracking-tight", className)} {...props} />
-  )
-)
+const AlertTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h5
+    ref={ref}
+    className={cn("mb-1 font-medium leading-none tracking-tight", className)}
+    {...props}
+  />
+))
 AlertTitle.displayName = "AlertTitle"
 
-const AlertDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("text-sm [&_p]:leading-relaxed [&_p]:mt-0 [&_p]:-mb-2", className)} {...props} />
-  )
-)
+const AlertDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "text-sm [&_p]:leading-relaxed [&_p]:mt-0 [&_p]:-mb-2",
+      className
+    )}
+    {...props}
+  />
+))
 AlertDescription.displayName = "AlertDescription"
 
 export { Alert, AlertTitle, AlertDescription }
