@@ -10,7 +10,11 @@
     "start:migrate:prod": "pnpm prisma migrate deploy && pnpm start",
     "build": "tsup",
     "prebuild": "pnpm prisma generate",
-    "postinstall": "pnpm prisma generate"
+    "postinstall": "pnpm prisma generate",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint .",
+    "format": "biome format .",
+    "format:write": "biome format --write ."
   },
   "dependencies": {
     "@fastify/autoload": "^5.7.1",
@@ -21,7 +25,7 @@
     "@fastify/swagger-ui": "^1.10.0",
     "@noroff/api-utils": "workspace:*",
     "@noroff/logger": "workspace:*",
-    "@prisma/client": "5.4.1",
+    "@prisma/client": "^5.4.1",
     "dotenv": "^16.3.1",
     "fastify": "^4.23.2",
     "fastify-metrics": "^10.3.2",

@@ -8,7 +8,11 @@
   "types": "dist/index.d.ts",
   "files": ["src/index.ts"],
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "lint": "biome lint .",
+    "format": "biome format .",
+    "format:write": "biome format --write ."
   },
   "dependencies": {
     "http-errors": "^2.0.0",
