@@ -1,6 +1,10 @@
-import { FastifyInstance } from "fastify"
+import type { FastifyInstance } from "fastify"
 
-import { listingQuerySchema, listingResponseSchema, profileBidsResponseSchema } from "../listings/listings.schema"
+import {
+  listingQuerySchema,
+  listingResponseSchema,
+  profileBidsResponseSchema
+} from "../listings/listings.schema"
 import {
   getProfileBidsHandler,
   getProfileCreditsHandler,

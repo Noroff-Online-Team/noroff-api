@@ -1,6 +1,10 @@
-import { FastifyInstance } from "fastify"
+import type { FastifyInstance } from "fastify"
 
-import { getQuoteHandler, getQuotesHandler, getRandomQuoteHandler } from "./quotes.controller"
+import {
+  getQuoteHandler,
+  getQuotesHandler,
+  getRandomQuoteHandler
+} from "./quotes.controller"
 import { quoteParamsSchema, quoteResponseSchema } from "./quotes.schema"
 
 async function quotesRoutes(server: FastifyInstance) {

@@ -1,6 +1,10 @@
-import { FastifyInstance } from "fastify"
+import type { FastifyInstance } from "fastify"
 
-import { getCatFactHandler, getCatFactsHandler, getRandomCatFactHandler } from "./catFacts.controller"
+import {
+  getCatFactHandler,
+  getCatFactsHandler,
+  getRandomCatFactHandler
+} from "./catFacts.controller"
 import { catFactParamsSchema, catFactResponseSchema } from "./catFacts.schema"
 
 async function catFactsRoutes(server: FastifyInstance) {

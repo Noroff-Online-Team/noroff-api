@@ -1,10 +1,10 @@
-import { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/v1-client"
+import type { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/v1-client"
 
 import { prisma } from "@/utils"
 
-import { AuctionListingIncludes } from "../listings/listings.controller"
-import { AuctionProfileIncludes } from "./profiles.controller"
-import { ProfileMediaSchema } from "./profiles.schema"
+import type { AuctionListingIncludes } from "../listings/listings.controller"
+import type { AuctionProfileIncludes } from "./profiles.controller"
+import type { ProfileMediaSchema } from "./profiles.schema"
 
 export async function getProfiles(
   sort: keyof AuctionProfile = "name",
@@ -30,7 +30,10 @@ export async function getProfiles(
   })
 }
 
-export async function getProfile(name: string, includes: AuctionProfileIncludes = {}) {
+export async function getProfile(
+  name: string,
+  includes: AuctionProfileIncludes = {}
+) {
   return await prisma.auctionProfile.findUnique({
     where: { name },
     include: {
@@ -44,7 +47,10 @@ export async function getProfile(name: string, includes: AuctionProfileIncludes 
   })
 }
 
-export async function updateProfileMedia(name: string, { avatar }: ProfileMediaSchema) {
+export async function updateProfileMedia(
+  name: string,
+  { avatar }: ProfileMediaSchema
+) {
   return await prisma.auctionProfile.update({
     where: { name },
     data: {

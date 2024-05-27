@@ -1,11 +1,17 @@
-import { FastifyReply, FastifyRequest } from "fastify"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { HolidazeProfile, HolidazeVenue } from "@prisma/v1-client"
+import type { HolidazeProfile, HolidazeVenue } from "@prisma/v1-client"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { getProfile } from "../profiles/profiles.service"
-import { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
-import { createVenue, deleteVenue, getVenue, getVenues, updateVenue } from "./venues.service"
+import type { CreateVenueSchema, UpdateVenueSchema } from "./venues.schema"
+import {
+  createVenue,
+  deleteVenue,
+  getVenue,
+  getVenues,
+  updateVenue
+} from "./venues.service"
 
 export interface HolidazeVenueIncludes {
   owner?: boolean

@@ -1,4 +1,4 @@
-import { FastifyRequest } from "fastify"
+import type { FastifyRequest } from "fastify"
 import fp from "fastify-plugin"
 
 export default fp(async fastify => {

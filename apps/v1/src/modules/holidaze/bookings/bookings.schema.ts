@@ -28,8 +28,12 @@ export const bookingCore = {
 export const displayBookingSchema = z.object(bookingCore)
 
 const queryFlagsCore = {
-  _customer: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _venue: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _customer: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _venue: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
@@ -47,7 +51,7 @@ export const bookingsQuerySchema = z.object({
     .optional(),
   limit: z
     .preprocess(
-      val => parseInt(val as string, 10),
+      val => Number.parseInt(val as string, 10),
       z
         .number({
           invalid_type_error: "Limit must be a number"
@@ -58,7 +62,7 @@ export const bookingsQuerySchema = z.object({
     .optional(),
   offset: z
     .preprocess(
-      val => parseInt(val as string, 10),
+      val => Number.parseInt(val as string, 10),
       z
         .number({
           invalid_type_error: "Offset must be a number"

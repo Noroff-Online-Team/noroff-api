@@ -1,4 +1,4 @@
-import { FastifyRequest } from "fastify"
+import type { FastifyRequest } from "fastify"
 import { NotFound } from "http-errors"
 
 import { getRainyDaysProduct, getRainyDaysProducts } from "./rainyDays.service"

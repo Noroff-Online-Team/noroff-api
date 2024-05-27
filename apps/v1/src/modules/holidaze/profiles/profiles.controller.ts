@@ -1,11 +1,15 @@
-import { FastifyReply, FastifyRequest } from "fastify"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { HolidazeBooking, HolidazeProfile, HolidazeVenue } from "@prisma/v1-client"
+import type {
+  HolidazeBooking,
+  HolidazeProfile,
+  HolidazeVenue
+} from "@prisma/v1-client"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
-import { HolidazeBookingIncludes } from "../bookings/bookings.controller"
-import { HolidazeVenueIncludes } from "../venues/venues.controller"
-import { ProfileMediaSchema } from "./profiles.schema"
+import type { HolidazeBookingIncludes } from "../bookings/bookings.controller"
+import type { HolidazeVenueIncludes } from "../venues/venues.controller"
+import type { ProfileMediaSchema } from "./profiles.schema"
 import {
   getProfile,
   getProfileBookings,
@@ -159,7 +163,14 @@ export async function getProfileVenuesHandler(
     bookings: Boolean(_bookings)
   }
 
-  const venues = await getProfileVenues(name, sort, sortOrder, limit, offset, includes)
+  const venues = await getProfileVenues(
+    name,
+    sort,
+    sortOrder,
+    limit,
+    offset,
+    includes
+  )
   reply.code(200).send(venues)
 }
 
@@ -195,6 +206,13 @@ export async function getProfileBookingsHandler(
     venue: Boolean(_venue)
   }
 
-  const bookings = await getProfileBookings(name, sort, sortOrder, limit, offset, includes)
+  const bookings = await getProfileBookings(
+    name,
+    sort,
+    sortOrder,
+    limit,
+    offset,
+    includes
+  )
   reply.code(200).send(bookings)
 }

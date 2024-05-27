@@ -1,10 +1,13 @@
-import { AuctionListing } from "@prisma/v1-client"
+import type { AuctionListing } from "@prisma/v1-client"
 
 import { prisma } from "@/utils"
 
 import { scheduleCreditsTransfer } from "./listing.utils"
-import { AuctionListingIncludes } from "./listings.controller"
-import { CreateListingSchema, UpdateListingSchema } from "./listings.schema"
+import type { AuctionListingIncludes } from "./listings.controller"
+import type {
+  CreateListingSchema,
+  UpdateListingSchema
+} from "./listings.schema"
 
 export async function getListings(
   sort: keyof AuctionListing = "title",
@@ -39,7 +42,10 @@ export async function getListings(
   })
 }
 
-export async function getListing(id: string, includes: AuctionListingIncludes = {}) {
+export async function getListing(
+  id: string,
+  includes: AuctionListingIncludes = {}
+) {
   return await prisma.auctionListing.findUnique({
     where: { id },
     include: {
@@ -53,7 +59,11 @@ export async function getListing(id: string, includes: AuctionListingIncludes = 
   })
 }
 
-export async function createListing(data: CreateListingSchema, seller: string, includes: AuctionListingIncludes = {}) {
+export async function createListing(
+  data: CreateListingSchema,
+  seller: string,
+  includes: AuctionListingIncludes = {}
+) {
   const listing = await prisma.auctionListing.create({
     data: {
       ...data,
@@ -77,7 +87,11 @@ export async function createListing(data: CreateListingSchema, seller: string, i
   return listing
 }
 
-export async function updateListing(id: string, data: UpdateListingSchema, includes: AuctionListingIncludes = {}) {
+export async function updateListing(
+  id: string,
+  data: UpdateListingSchema,
+  includes: AuctionListingIncludes = {}
+) {
   return await prisma.auctionListing.update({
     where: { id },
     data: {
@@ -130,7 +144,11 @@ export async function deleteListing(id: string) {
   })
 }
 
-export async function createListingBid(id: string, bidderName: string, amount: number) {
+export async function createListingBid(
+  id: string,
+  bidderName: string,
+  amount: number
+) {
   await prisma.auctionProfile.update({
     where: { name: bidderName },
     data: { credits: { decrement: amount } }

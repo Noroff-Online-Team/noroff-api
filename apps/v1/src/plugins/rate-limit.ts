@@ -11,7 +11,9 @@ export default fp(async fastify => {
       const trueClientIp = (req.headers["true-client-ip"] as string) || req.ip
       const userAgent = req.headers["user-agent"] as string
 
-      return user ? `${trueClientIp}-${userAgent}-${user.name}` : `${trueClientIp}-${userAgent}`
+      return user
+        ? `${trueClientIp}-${userAgent}-${user.name}`
+        : `${trueClientIp}-${userAgent}`
     }
   })
 })

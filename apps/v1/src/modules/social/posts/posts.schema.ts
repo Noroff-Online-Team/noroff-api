@@ -75,7 +75,7 @@ const postId = {
 
 export const postIdParamsSchema = z.object({
   id: z.preprocess(
-    val => parseInt(val as string, 10),
+    val => Number.parseInt(val as string, 10),
     z
       .number({
         invalid_type_error: "Post ID must be a number"
@@ -101,7 +101,7 @@ export const reactionParamsSchema = z.object({
     .regex(/\p{Extended_Pictographic}/u, "Must be a valid emoji")
     .trim(),
   id: z.preprocess(
-    val => parseInt(val as string, 10),
+    val => Number.parseInt(val as string, 10),
     z
       .number({
         invalid_type_error: "ID must be a number",
@@ -164,7 +164,10 @@ export const createPostBaseSchema = z.object(postCore)
 
 export const updatePostBodySchema = z
   .object(updatePostCore)
-  .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
+  .refine(
+    data => Object.keys(data).length > 0,
+    "You must provide at least one field to update"
+  )
 
 export const createPostSchema = z.object({
   ...postOwner,
@@ -173,7 +176,7 @@ export const createPostSchema = z.object({
 
 export const deleteCommentSchema = postIdParamsSchema.extend({
   commentId: z.preprocess(
-    val => parseInt(val as string, 10),
+    val => Number.parseInt(val as string, 10),
     z
       .number({
         invalid_type_error: "Comment ID must be a number"
@@ -206,14 +209,23 @@ export const displayPostSchema = z.object({
 
 export const authorQuerySchema = z
   .object({
-    _author: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    _author: z.preprocess(
+      val => String(val).toLowerCase() === "true",
+      z.boolean()
+    )
   })
   .optional()
 
 const queryFlagsCore = {
-  _author: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _reactions: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _comments: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _author: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _reactions: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _comments: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
@@ -231,7 +243,7 @@ export const postsQuerySchema = z.object({
     .optional(),
   limit: z
     .preprocess(
-      val => parseInt(val as string, 10),
+      val => Number.parseInt(val as string, 10),
       z
         .number({
           invalid_type_error: "Limit must be a number"
@@ -242,7 +254,7 @@ export const postsQuerySchema = z.object({
     .optional(),
   offset: z
     .preprocess(
-      val => parseInt(val as string, 10),
+      val => Number.parseInt(val as string, 10),
       z
         .number({
           invalid_type_error: "Offset must be a number"

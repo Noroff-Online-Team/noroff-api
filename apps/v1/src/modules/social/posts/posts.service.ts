@@ -1,9 +1,13 @@
-import { Post } from "@prisma/v1-client"
+import type { Post } from "@prisma/v1-client"
 
 import { prisma } from "@/utils"
 
-import { PostIncludes } from "./posts.controller"
-import { CreateCommentSchema, CreatePostBaseSchema, CreatePostSchema } from "./posts.schema"
+import type { PostIncludes } from "./posts.controller"
+import type {
+  CreateCommentSchema,
+  CreatePostBaseSchema,
+  CreatePostSchema
+} from "./posts.schema"
 
 export async function getPosts(
   sort: keyof Post = "created",
@@ -13,7 +17,9 @@ export async function getPosts(
   includes: PostIncludes = {},
   tag: string | undefined
 ) {
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: true } } }
+    : {}
   const whereTag = tag ? { tags: { has: tag } } : {}
 
   return await prisma.post.findMany({
@@ -37,7 +43,9 @@ export async function getPosts(
 }
 
 export async function getPost(id: number, includes: PostIncludes = {}) {
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: true } } }
+    : {}
 
   return await prisma.post.findUnique({
     where: { id },
@@ -54,8 +62,13 @@ export async function getPost(id: number, includes: PostIncludes = {}) {
   })
 }
 
-export const createPost = async (data: CreatePostSchema, includes: PostIncludes = {}) => {
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+export const createPost = async (
+  data: CreatePostSchema,
+  includes: PostIncludes = {}
+) => {
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: true } } }
+    : {}
 
   return await prisma.post.create({
     data: {
@@ -76,8 +89,14 @@ export const createPost = async (data: CreatePostSchema, includes: PostIncludes 
   })
 }
 
-export const updatePost = async (id: number, data: CreatePostBaseSchema, includes: PostIncludes = {}) => {
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+export const updatePost = async (
+  id: number,
+  data: CreatePostBaseSchema,
+  includes: PostIncludes = {}
+) => {
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: true } } }
+    : {}
 
   return await prisma.post.update({
     data: {
@@ -136,7 +155,11 @@ export const createReaction = async (postId: number, symbol: string) => {
   return item
 }
 
-export const createComment = async (postId: number, owner: string, comment: CreateCommentSchema) =>
+export const createComment = async (
+  postId: number,
+  owner: string,
+  comment: CreateCommentSchema
+) =>
   await prisma.comment.create({
     data: {
       body: comment.body,
@@ -177,7 +200,9 @@ export const getPostsOfFollowedUsers = async (
   includes: PostIncludes = {},
   tag: string | undefined
 ) => {
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: true } } }
+    : {}
   const whereTag = tag ? { tags: { has: tag } } : {}
 
   return await prisma.post.findMany({

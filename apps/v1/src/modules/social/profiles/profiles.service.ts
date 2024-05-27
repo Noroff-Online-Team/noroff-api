@@ -1,10 +1,10 @@
-import { Post, Profile } from "@prisma/v1-client"
+import type { Post, Profile } from "@prisma/v1-client"
 
 import { prisma } from "@/utils"
 
-import { PostIncludes } from "../posts/posts.controller"
-import { ProfileIncludes } from "./profiles.controller"
-import { ProfileMediaSchema } from "./profiles.schema"
+import type { PostIncludes } from "../posts/posts.controller"
+import type { ProfileIncludes } from "./profiles.controller"
+import type { ProfileMediaSchema } from "./profiles.schema"
 
 export async function getProfiles(
   sort: keyof Profile = "name",
@@ -32,7 +32,10 @@ export async function getProfiles(
   })
 }
 
-export const getProfile = async (name: string, includes: ProfileIncludes = {}) =>
+export const getProfile = async (
+  name: string,
+  includes: ProfileIncludes = {}
+) =>
   await prisma.profile.findUnique({
     where: { name },
     include: {
@@ -47,7 +50,10 @@ export const getProfile = async (name: string, includes: ProfileIncludes = {}) =
     }
   })
 
-export const updateProfileMedia = async (name: string, { avatar, banner }: ProfileMediaSchema) => {
+export const updateProfileMedia = async (
+  name: string,
+  { avatar, banner }: ProfileMediaSchema
+) => {
   return await prisma.profile.update({
     where: { name },
     data: {
@@ -127,7 +133,9 @@ export const getProfilePosts = async (
   offset = 0,
   includes: PostIncludes = {}
 ) => {
-  const withCommentAuthor = includes.comments ? { comments: { include: { author: true } } } : {}
+  const withCommentAuthor = includes.comments
+    ? { comments: { include: { author: true } } }
+    : {}
 
   return await prisma.post.findMany({
     where: { owner: name },

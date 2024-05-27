@@ -1,11 +1,17 @@
-import { FastifyReply, FastifyRequest } from "fastify"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/v1-client"
+import type { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/v1-client"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
-import { AuctionListingIncludes } from "../listings/listings.controller"
-import { ProfileMediaSchema } from "./profiles.schema"
-import { getProfile, getProfileBids, getProfileListings, getProfiles, updateProfileMedia } from "./profiles.service"
+import type { AuctionListingIncludes } from "../listings/listings.controller"
+import type { ProfileMediaSchema } from "./profiles.schema"
+import {
+  getProfile,
+  getProfileBids,
+  getProfileListings,
+  getProfiles,
+  updateProfileMedia
+} from "./profiles.service"
 
 export interface AuctionProfileIncludes {
   listings?: boolean
@@ -106,7 +112,8 @@ export async function getProfileListingsHandler(
   reply: FastifyReply
 ) {
   const { name } = request.params
-  const { sort, sortOrder, limit, offset, _seller, _bids, _tag, _active } = request.query
+  const { sort, sortOrder, limit, offset, _seller, _bids, _tag, _active } =
+    request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -123,7 +130,16 @@ export async function getProfileListingsHandler(
     seller: Boolean(_seller)
   }
 
-  const listings = await getProfileListings(name, sort, sortOrder, limit, offset, includes, _tag, _active)
+  const listings = await getProfileListings(
+    name,
+    sort,
+    sortOrder,
+    limit,
+    offset,
+    includes,
+    _tag,
+    _active
+  )
   reply.code(200).send(listings)
 }
 
@@ -142,7 +158,9 @@ export async function getProfileCreditsHandler(
   }
 
   if (reqName.toLowerCase() !== name.toLowerCase()) {
-    throw new Forbidden("You do not have permission to view another user's credits")
+    throw new Forbidden(
+      "You do not have permission to view another user's credits"
+    )
   }
 
   reply.code(200).send({ credits: profile.credits })
@@ -178,6 +196,13 @@ export async function getProfileBidsHandler(
     listing: Boolean(_listings)
   }
 
-  const bids = await getProfileBids(name, sort, sortOrder, limit, offset, includes)
+  const bids = await getProfileBids(
+    name,
+    sort,
+    sortOrder,
+    limit,
+    offset,
+    includes
+  )
   reply.code(200).send(bids)
 }

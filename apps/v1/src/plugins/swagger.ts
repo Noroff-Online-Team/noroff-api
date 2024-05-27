@@ -26,15 +26,36 @@ export default fp(async fastify => {
         { name: "quotes", description: "Quotes related endpoints" },
         { name: "online-shop", description: "Online shop related endpoints" },
         { name: "social-auth", description: "Social auth related endpoints" },
-        { name: "social-profiles", description: "Social profiles related endpoints" },
+        {
+          name: "social-profiles",
+          description: "Social profiles related endpoints"
+        },
         { name: "social-posts", description: "Social posts related endpoints" },
         { name: "auction-auth", description: "Auction auth related endpoints" },
-        { name: "auction-profiles", description: "Auction profiles related endpoints" },
-        { name: "auction-listings", description: "Auction listings related endpoints" },
-        { name: "holidaze-auth", description: "Holidaze auth related endpoints" },
-        { name: "holidaze-profiles", description: "Holidaze profiles related endpoints" },
-        { name: "holidaze-venues", description: "Holidaze venues related endpoints" },
-        { name: "holidaze-bookings", description: "Holidaze bookings related endpoints" }
+        {
+          name: "auction-profiles",
+          description: "Auction profiles related endpoints"
+        },
+        {
+          name: "auction-listings",
+          description: "Auction listings related endpoints"
+        },
+        {
+          name: "holidaze-auth",
+          description: "Holidaze auth related endpoints"
+        },
+        {
+          name: "holidaze-profiles",
+          description: "Holidaze profiles related endpoints"
+        },
+        {
+          name: "holidaze-venues",
+          description: "Holidaze venues related endpoints"
+        },
+        {
+          name: "holidaze-bookings",
+          description: "Holidaze bookings related endpoints"
+        }
       ],
       securityDefinitions: {
         bearerAuth: {
