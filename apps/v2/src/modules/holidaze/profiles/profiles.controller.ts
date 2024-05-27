@@ -1,16 +1,16 @@
-import { FastifyRequest } from "fastify"
+import type { FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { HolidazeBooking, HolidazeVenue, UserProfile } from "@prisma/v2-client"
+import type { HolidazeBooking, HolidazeVenue, UserProfile } from "@prisma/v2-client"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
-import { HolidazeBookingIncludes } from "../bookings/bookings.controller"
-import { HolidazeVenueIncludes } from "../venues/venues.controller"
+import type { HolidazeBookingIncludes } from "../bookings/bookings.controller"
+import type { HolidazeVenueIncludes } from "../venues/venues.controller"
 import {
   profileNameSchema,
   profilesQuerySchema,
   queryFlagsSchema,
   searchQuerySchema,
-  UpdateProfileSchema,
+  type UpdateProfileSchema,
   updateProfileSchema
 } from "./profiles.schema"
 import {
@@ -66,7 +66,9 @@ export async function getProfileHandler(
   }>
 ) {
   const { name } = await profileNameSchema.parseAsync(request.params)
-  const { _venues, _bookings } = await queryFlagsSchema.parseAsync(request.query)
+  const { _venues, _bookings } = await queryFlagsSchema.parseAsync(
+    request.query
+  )
 
   const includes: HolidazeProfileIncludes = {
     venues: Boolean(_venues),
@@ -88,8 +90,12 @@ export async function updateProfileHandler(
     Body: UpdateProfileSchema
   }>
 ) {
-  const { banner, avatar, ...rest } = await updateProfileSchema.parseAsync(request.body)
-  const { name: profileToUpdate } = await profileNameSchema.parseAsync(request.params)
+  const { banner, avatar, ...rest } = await updateProfileSchema.parseAsync(
+    request.body
+  )
+  const { name: profileToUpdate } = await profileNameSchema.parseAsync(
+    request.params
+  )
   const { name: requesterProfile } = request.user as UserProfile
 
   const profile = await getProfile(profileToUpdate)
@@ -109,7 +115,11 @@ export async function updateProfileHandler(
     await mediaGuard(banner.url)
   }
 
-  const updatedProfile = await updateProfile(profileToUpdate, { banner, avatar, ...rest })
+  const updatedProfile = await updateProfile(profileToUpdate, {
+    banner,
+    avatar,
+    ...rest
+  })
 
   return updatedProfile
 }
@@ -145,7 +155,14 @@ export async function getProfileVenuesHandler(
     bookings: Boolean(_bookings)
   }
 
-  const venues = await getProfileVenues(name, sort, sortOrder, limit, page, includes)
+  const venues = await getProfileVenues(
+    name,
+    sort,
+    sortOrder,
+    limit,
+    page,
+    includes
+  )
 
   return venues
 }
@@ -181,7 +198,14 @@ export async function getProfileBookingsHandler(
     venue: Boolean(_venue)
   }
 
-  const bookings = await getProfileBookings(name, sort, sortOrder, limit, page, includes)
+  const bookings = await getProfileBookings(
+    name,
+    sort,
+    sortOrder,
+    limit,
+    page,
+    includes
+  )
 
   return bookings
 }
@@ -207,7 +231,14 @@ export async function searchProfilesHandler(
     bookings: Boolean(_bookings)
   }
 
-  const results = await searchProfiles(sort, sortOrder, limit, page, q, includes)
+  const results = await searchProfiles(
+    sort,
+    sortOrder,
+    limit,
+    page,
+    q,
+    includes
+  )
 
   return results
 }

@@ -159,7 +159,10 @@ describe("[PUT] /holidaze/profiles/:id", () => {
   })
 
   it("should throw 403 error when attempting to update another user's profile", async () => {
-    await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
+    await registerUser({
+      name: "test_user_two",
+      email: "test_user_two@noroff.no"
+    })
 
     const response = await server.inject({
       url: `/holidaze/profiles/test_user_two`,

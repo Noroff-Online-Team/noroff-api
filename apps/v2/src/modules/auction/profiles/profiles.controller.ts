@@ -1,9 +1,9 @@
-import { FastifyRequest } from "fastify"
+import type { FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { AuctionBid, AuctionListing, UserProfile } from "@prisma/v2-client"
+import type { AuctionBid, AuctionListing, UserProfile } from "@prisma/v2-client"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
-import { AuctionListingIncludes } from "../listings/listings.controller"
+import type { AuctionListingIncludes } from "../listings/listings.controller"
 import { listingQuerySchema } from "../listings/listings.schema"
 import {
   profileNameSchema,
@@ -11,7 +11,7 @@ import {
   queryFlagsSchema,
   searchQuerySchema,
   updateProfileSchema,
-  UpdateProfileSchema
+  type UpdateProfileSchema
 } from "./profiles.schema"
 import {
   getProfile,
@@ -88,8 +88,12 @@ export async function updateProfileHandler(
     Body: UpdateProfileSchema
   }>
 ) {
-  const { avatar, banner, ...rest } = await updateProfileSchema.parseAsync(request.body)
-  const { name: profileToUpdate } = await profileNameSchema.parseAsync(request.params)
+  const { avatar, banner, ...rest } = await updateProfileSchema.parseAsync(
+    request.body
+  )
+  const { name: profileToUpdate } = await profileNameSchema.parseAsync(
+    request.params
+  )
   const { name: requesterProfile } = request.user as UserProfile
 
   const profileExists = await getProfile(profileToUpdate)
@@ -109,7 +113,11 @@ export async function updateProfileHandler(
     await mediaGuard(banner.url)
   }
 
-  const profile = await updateProfile(profileToUpdate, { avatar, banner, ...rest })
+  const profile = await updateProfile(profileToUpdate, {
+    avatar,
+    banner,
+    ...rest
+  })
 
   return profile
 }
@@ -131,7 +139,8 @@ export async function getProfileListingsHandler(
 ) {
   const { name } = await profileNameSchema.parseAsync(request.params)
   await listingQuerySchema.parseAsync(request.query)
-  const { sort, sortOrder, limit, page, _seller, _bids, _tag, _active } = request.query
+  const { sort, sortOrder, limit, page, _seller, _bids, _tag, _active } =
+    request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -148,7 +157,16 @@ export async function getProfileListingsHandler(
     seller: Boolean(_seller)
   }
 
-  const listings = await getProfileListings(name, sort, sortOrder, limit, page, includes, _tag, _active)
+  const listings = await getProfileListings(
+    name,
+    sort,
+    sortOrder,
+    limit,
+    page,
+    includes,
+    _tag,
+    _active
+  )
 
   return listings
 }
@@ -168,7 +186,9 @@ export async function getProfileCreditsHandler(
   }
 
   if (reqName.toLowerCase() !== name.toLowerCase()) {
-    throw new Forbidden("You do not have permission to view another user's credits")
+    throw new Forbidden(
+      "You do not have permission to view another user's credits"
+    )
   }
 
   return {
@@ -208,7 +228,14 @@ export async function getProfileBidsHandler(
     listing: Boolean(_listings)
   }
 
-  const bids = await getProfileBids(name, sort, sortOrder, limit, page, includes)
+  const bids = await getProfileBids(
+    name,
+    sort,
+    sortOrder,
+    limit,
+    page,
+    includes
+  )
 
   return bids
 }
@@ -245,7 +272,14 @@ export async function getProfileWinsHandler(
     seller: Boolean(_seller)
   }
 
-  const listings = await getProfileWins(name, sort, sortOrder, limit, page, includes)
+  const listings = await getProfileWins(
+    name,
+    sort,
+    sortOrder,
+    limit,
+    page,
+    includes
+  )
 
   return listings
 }
@@ -271,7 +305,14 @@ export async function searchProfilesHandler(
     wins: Boolean(_wins)
   }
 
-  const results = await searchProfiles(sort, sortOrder, limit, page, q, includes)
+  const results = await searchProfiles(
+    sort,
+    sortOrder,
+    limit,
+    page,
+    q,
+    includes
+  )
 
   return results
 }

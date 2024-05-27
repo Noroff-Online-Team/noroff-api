@@ -1,10 +1,17 @@
 import { faker } from "@faker-js/faker"
 
-import { createListing, createListingBid } from "../src/modules/auction/listings/listings.service"
+import {
+  createListing,
+  createListingBid
+} from "../src/modules/auction/listings/listings.service"
 import { createProfile } from "../src/modules/auth/auth.service"
 import { createBooking } from "../src/modules/holidaze/bookings/booking.service"
 import { createVenue } from "../src/modules/holidaze/venues/venues.service"
-import { createComment, createOrDeleteReaction, createPost } from "../src/modules/social/posts/posts.service"
+import {
+  createComment,
+  createOrDeleteReaction,
+  createPost
+} from "../src/modules/social/posts/posts.service"
 import { db } from "../src/utils"
 import type { UserProfile } from "./generated/v2-client"
 
@@ -41,13 +48,20 @@ function getRandomSocialPostTitle() {
 function getRandomSocialPostBody() {
   const socialPosts = [
     () => faker.lorem.sentence(),
-    () => `What's everyone's favorite ${faker.commerce.product()}? Looking for recommendations!`,
+    () =>
+      `What's everyone's favorite ${faker.commerce.product()}? Looking for recommendations!`,
     () =>
       `Just started a new job as a ${faker.person.jobTitle()} at ${faker.company.name()}. Excited for this new chapter!`,
     () =>
       `Had a great time visiting ${faker.location.city()}! The ${faker.commerce.productMaterial()} landscapes were breathtaking. 🌄`,
-    () => `Just watched ${faker.lorem.words(2)} on ${faker.company.name()}. Highly recommend! 🎥`,
-    () => `Why do ${faker.animal.cat()}s always ${faker.lorem.words(3)}? Just a thought.`
+    () =>
+      `Just watched ${faker.lorem.words(
+        2
+      )} on ${faker.company.name()}. Highly recommend! 🎥`,
+    () =>
+      `Why do ${faker.animal.cat()}s always ${faker.lorem.words(
+        3
+      )}? Just a thought.`
   ]
 
   return getRandomArrayElement(socialPosts)()
@@ -72,7 +86,10 @@ function getRandomSocialPostTags() {
   return [...new Set(tags)]
 }
 
-async function createSampleSocialPost(userOne: UserProfile, userTwo: UserProfile) {
+async function createSampleSocialPost(
+  userOne: UserProfile,
+  userTwo: UserProfile
+) {
   // Create post
   const { data: post } = await createPost({
     title: getRandomSocialPostTitle(),
@@ -90,12 +107,20 @@ async function createSampleSocialPost(userOne: UserProfile, userTwo: UserProfile
   await createOrDeleteReaction(post.id, "😎", userTwo.name)
 
   // Create comment
-  const { data: postComment } = await createComment(post.id, userTwo.name, { body: "Haha, good one!" })
+  const { data: postComment } = await createComment(post.id, userTwo.name, {
+    body: "Haha, good one!"
+  })
   // Reply to comment
-  await createComment(post.id, userOne.name, { body: "Thanks, glad you liked it!", replyToId: postComment.id })
+  await createComment(post.id, userOne.name, {
+    body: "Thanks, glad you liked it!",
+    replyToId: postComment.id
+  })
 }
 
-async function createSampleAuctionListings(userOne: UserProfile, userTwo: UserProfile) {
+async function createSampleAuctionListings(
+  userOne: UserProfile,
+  userTwo: UserProfile
+) {
   // Create listing
   const { data: listing } = await createListing(
     {
@@ -121,11 +146,22 @@ async function createSampleAuctionListings(userOne: UserProfile, userTwo: UserPr
 }
 
 function getRandomVenueContinent() {
-  const continents = ["Africa", "Antarctica", "Asia", "Europe", "North America", "Australia", "South America"]
+  const continents = [
+    "Africa",
+    "Antarctica",
+    "Asia",
+    "Europe",
+    "North America",
+    "Australia",
+    "South America"
+  ]
   return getRandomArrayElement(continents)
 }
 
-async function createSampleHolidazeData(userOne: UserProfile, userTwo: UserProfile) {
+async function createSampleHolidazeData(
+  userOne: UserProfile,
+  userTwo: UserProfile
+) {
   // Create venue
   const { data: venue } = await createVenue(userOne.name, {
     name: `${faker.word.adjective()} ${faker.commerce.productMaterial()}`,
@@ -172,10 +208,17 @@ async function createSampleHolidazeData(userOne: UserProfile, userTwo: UserProfi
 
 async function createUser() {
   const name = faker.person.firstName()
-  const email = faker.internet.email({ firstName: name, provider: "stud.noroff.no" })
+  const email = faker.internet.email({
+    firstName: name,
+    provider: "stud.noroff.no"
+  })
 
   // Create user
-  const { data: user } = await createProfile({ name, email, password: "keyboardcat" })
+  const { data: user } = await createProfile({
+    name,
+    email,
+    password: "keyboardcat"
+  })
   return user as UserProfile
 }
 

@@ -1,18 +1,24 @@
-import { FastifyReply, FastifyRequest } from "fastify"
-import { HolidazeBooking, UserProfile } from "@prisma/v2-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
+import type { HolidazeBooking, UserProfile } from "@prisma/v2-client"
 import { BadRequest, Conflict, Forbidden, NotFound } from "http-errors"
 
 import { getVenue } from "../venues/venues.service"
-import { createBooking, deleteBooking, getBooking, getBookings, updateBooking } from "./booking.service"
+import {
+  createBooking,
+  deleteBooking,
+  getBooking,
+  getBookings,
+  updateBooking
+} from "./booking.service"
 import { checkForOverlappingBookings } from "./booking.utils"
 import {
   bookingIdSchema,
   bookingsQuerySchema,
   createBookingSchema,
-  CreateBookingSchema,
+  type CreateBookingSchema,
   queryFlagsSchema,
   updateBookingSchema,
-  UpdateBookingSchema
+  type UpdateBookingSchema
 } from "./bookings.schema"
 
 export interface HolidazeBookingIncludes {

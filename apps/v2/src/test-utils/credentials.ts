@@ -21,7 +21,11 @@ export async function getAuthCredentials(user: User = {}): Promise<{
   email: string
   password: string
 }> {
-  const { name = TEST_USER_NAME, email = TEST_USER_EMAIL, password = TEST_USER_PASSWORD } = user
+  const {
+    name = TEST_USER_NAME,
+    email = TEST_USER_EMAIL,
+    password = TEST_USER_PASSWORD
+  } = user
 
   try {
     // Register user
@@ -51,8 +55,14 @@ export async function getAuthCredentials(user: User = {}): Promise<{
  * Register user. Uses default user credentials if none are provided.
  * @returns Registered user's name and email
  */
-export async function registerUser(user: User = {}): Promise<{ name: string; email: string; password: string }> {
-  const { name = TEST_USER_NAME, email = TEST_USER_EMAIL, password = TEST_USER_PASSWORD } = user
+export async function registerUser(
+  user: User = {}
+): Promise<{ name: string; email: string; password: string }> {
+  const {
+    name = TEST_USER_NAME,
+    email = TEST_USER_EMAIL,
+    password = TEST_USER_PASSWORD
+  } = user
 
   try {
     await server.inject({

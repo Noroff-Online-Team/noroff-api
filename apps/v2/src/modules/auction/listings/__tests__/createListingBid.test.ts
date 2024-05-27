@@ -13,7 +13,10 @@ beforeEach(async () => {
   // Register user
   const { name } = await registerUser()
   // Register second user
-  const { bearerToken, apiKey } = await getAuthCredentials({ name: BIDDER_USER_NAME, email: BIDDER_USER_EMAIL })
+  const { bearerToken, apiKey } = await getAuthCredentials({
+    name: BIDDER_USER_NAME,
+    email: BIDDER_USER_EMAIL
+  })
 
   BEARER_TOKEN = bearerToken
   API_KEY = apiKey

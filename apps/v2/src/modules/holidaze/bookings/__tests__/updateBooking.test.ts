@@ -12,7 +12,10 @@ beforeEach(async () => {
     name: bookingUser,
     bearerToken: bookingBearerToken,
     apiKey: bookingApiKey
-  } = await getAuthCredentials({ name: "bidder_user", email: "bidder_user@noroff.no" })
+  } = await getAuthCredentials({
+    name: "bidder_user",
+    email: "bidder_user@noroff.no"
+  })
 
   BEARER_TOKEN = bookingBearerToken
   API_KEY = bookingApiKey

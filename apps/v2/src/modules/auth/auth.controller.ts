@@ -1,18 +1,23 @@
-import { FastifyReply, FastifyRequest } from "fastify"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard, verifyPassword } from "@noroff/api-utils"
-import { UserProfile } from "@prisma/v2-client"
+import type { UserProfile } from "@prisma/v2-client"
 import { BadRequest, Unauthorized } from "http-errors"
 
 import {
-  CreateAPIKeyInput,
+  type CreateAPIKeyInput,
   createApiKeySchema,
   createProfileBodySchema,
-  CreateProfileInput,
+  type CreateProfileInput,
   loginBodySchema,
-  LoginInput,
+  type LoginInput,
   loginQuerySchema
 } from "./auth.schema"
-import { createApiKey, createProfile, findProfileByEmail, findProfileByEmailOrName } from "./auth.service"
+import {
+  createApiKey,
+  createProfile,
+  findProfileByEmail,
+  findProfileByEmailOrName
+} from "./auth.service"
 
 export interface AuthLoginIncludes {
   holidaze?: boolean

@@ -10,10 +10,11 @@ let SECOND_API_KEY = ""
 
 beforeEach(async () => {
   const { name, bearerToken, apiKey } = await getAuthCredentials()
-  const { bearerToken: secondBearerToken, apiKey: secondApiKey } = await getAuthCredentials({
-    name: "test_user_two",
-    email: "test_user_two@noroff.no"
-  })
+  const { bearerToken: secondBearerToken, apiKey: secondApiKey } =
+    await getAuthCredentials({
+      name: "test_user_two",
+      email: "test_user_two@noroff.no"
+    })
 
   BEARER_TOKEN = bearerToken
   API_KEY = apiKey

@@ -1,7 +1,11 @@
 import path from "path"
 import Fastify from "fastify"
 import autoLoad from "@fastify/autoload"
-import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod"
+import {
+  serializerCompiler,
+  validatorCompiler,
+  type ZodTypeProvider
+} from "fastify-type-provider-zod"
 
 import errorHandler from "./exceptions/errorHandler"
 import notFoundHandler from "./exceptions/notFoundHandler"

@@ -169,7 +169,10 @@ export const createPostBaseSchema = z.object(postCore)
 
 export const updatePostBodySchema = z
   .object(updatePostCore)
-  .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
+  .refine(
+    data => Object.keys(data).length > 0,
+    "You must provide at least one field to update"
+  )
 
 export const createPostSchema = z.object({
   ...postOwner,
@@ -192,13 +195,21 @@ export const displayPostSchema = z.object({
 })
 
 export const authorQuerySchema = z.object({
-  _author: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _author: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 })
 
 const queryFlagsCore = {
-  _author: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _reactions: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _comments: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _author: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _reactions: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _comments: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
@@ -209,11 +220,16 @@ export const postsQuerySchema = sortAndPaginationSchema
   })
   .extend(queryFlagsCore)
 
-export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
-  q: z
-    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
-    .nonempty("Query cannot be empty")
-})
+export const searchQuerySchema = sortAndPaginationSchema
+  .extend(queryFlagsCore)
+  .extend({
+    q: z
+      .string({
+        required_error: "Query is required",
+        invalid_type_error: "Query must be a string"
+      })
+      .nonempty("Query cannot be empty")
+  })
 
 export const emojiSchema = z.string().emoji("Must be a valid emoji")
 

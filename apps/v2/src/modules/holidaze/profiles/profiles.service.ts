@@ -1,11 +1,11 @@
-import { HolidazeBooking, HolidazeVenue, UserProfile } from "@prisma/v2-client"
+import type { HolidazeBooking, HolidazeVenue, UserProfile } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 
-import { HolidazeBookingIncludes } from "../bookings/bookings.controller"
-import { HolidazeVenueIncludes } from "../venues/venues.controller"
-import { HolidazeProfileIncludes } from "./profiles.controller"
-import { UpdateProfileSchema } from "./profiles.schema"
+import type { HolidazeBookingIncludes } from "../bookings/bookings.controller"
+import type { HolidazeVenueIncludes } from "../venues/venues.controller"
+import type { HolidazeProfileIncludes } from "./profiles.controller"
+import type { UpdateProfileSchema } from "./profiles.schema"
 
 export async function getProfiles(
   sort: keyof UserProfile = "name",
@@ -18,7 +18,13 @@ export async function getProfiles(
     ? { venues: { include: { media: true, meta: true, location: true } } }
     : {}
   const includeVenueIfBookings = includes.bookings
-    ? { bookings: { include: { venue: { include: { media: true, meta: true, location: true } } } } }
+    ? {
+        bookings: {
+          include: {
+            venue: { include: { media: true, meta: true, location: true } }
+          }
+        }
+      }
     : {}
 
   const [data, meta] = await db.userProfile
@@ -48,12 +54,21 @@ export async function getProfiles(
   return { data, meta }
 }
 
-export async function getProfile(name: string, includes: HolidazeProfileIncludes = {}) {
+export async function getProfile(
+  name: string,
+  includes: HolidazeProfileIncludes = {}
+) {
   const venueMetaAndLocation = includes.venues
     ? { venues: { include: { media: true, meta: true, location: true } } }
     : {}
   const includeVenueIfBookings = includes.bookings
-    ? { bookings: { include: { venue: { include: { media: true, meta: true, location: true } } } } }
+    ? {
+        bookings: {
+          include: {
+            venue: { include: { media: true, meta: true, location: true } }
+          }
+        }
+      }
     : {}
 
   const [data] = await db.userProfile
@@ -80,7 +95,10 @@ export async function getProfile(name: string, includes: HolidazeProfileIncludes
   return { data: data[0] }
 }
 
-export async function updateProfile(name: string, { avatar, banner, ...updateData }: UpdateProfileSchema) {
+export async function updateProfile(
+  name: string,
+  { avatar, banner, ...updateData }: UpdateProfileSchema
+) {
   const data = await db.userProfile.update({
     where: { name },
     data: {
@@ -111,9 +129,15 @@ export async function getProfileVenues(
   page = 1,
   includes: HolidazeVenueIncludes = {}
 ) {
-  const withProfileMedia = includes.owner ? { owner: { include: { avatar: true, banner: true } } } : {}
+  const withProfileMedia = includes.owner
+    ? { owner: { include: { avatar: true, banner: true } } }
+    : {}
   const withBookings = includes.bookings
-    ? { bookings: { include: { customer: { include: { avatar: true, banner: true } } } } }
+    ? {
+        bookings: {
+          include: { customer: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const [data, meta] = await db.holidazeVenue
@@ -152,8 +176,12 @@ export async function getProfileBookings(
   page = 1,
   includes: HolidazeBookingIncludes = {}
 ) {
-  const venueMetaAndLocation = includes.venue ? { venue: { include: { media: true, meta: true, location: true } } } : {}
-  const withProfileMedia = includes.customer ? { customer: { include: { avatar: true, banner: true } } } : {}
+  const venueMetaAndLocation = includes.venue
+    ? { venue: { include: { media: true, meta: true, location: true } } }
+    : {}
+  const withProfileMedia = includes.customer
+    ? { customer: { include: { avatar: true, banner: true } } }
+    : {}
 
   const [data, meta] = await db.holidazeBooking
     .paginate({
@@ -187,13 +215,22 @@ export async function searchProfiles(
     ? { venues: { include: { media: true, meta: true, location: true } } }
     : {}
   const includeVenueIfBookings = includes.bookings
-    ? { bookings: { include: { venue: { include: { media: true, meta: true, location: true } } } } }
+    ? {
+        bookings: {
+          include: {
+            venue: { include: { media: true, meta: true, location: true } }
+          }
+        }
+      }
     : {}
 
   const [data, meta] = await db.userProfile
     .paginate({
       where: {
-        OR: [{ name: { contains: query, mode: "insensitive" } }, { bio: { contains: query, mode: "insensitive" } }]
+        OR: [
+          { name: { contains: query, mode: "insensitive" } },
+          { bio: { contains: query, mode: "insensitive" } }
+        ]
       },
       include: {
         ...includes,

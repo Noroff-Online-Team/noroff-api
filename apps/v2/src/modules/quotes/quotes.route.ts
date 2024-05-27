@@ -1,7 +1,14 @@
-import { FastifyInstance } from "fastify"
-import { createResponseSchema, sortAndPaginationSchema } from "@noroff/api-utils"
+import type { FastifyInstance } from "fastify"
+import {
+  createResponseSchema,
+  sortAndPaginationSchema
+} from "@noroff/api-utils"
 
-import { getQuoteHandler, getQuotesHandler, getRandomQuoteHandler } from "./quotes.controller"
+import {
+  getQuoteHandler,
+  getQuotesHandler,
+  getRandomQuoteHandler
+} from "./quotes.controller"
 import { quoteParamsSchema, quoteSchema } from "./quotes.schema"
 
 async function quotesRoutes(server: FastifyInstance) {

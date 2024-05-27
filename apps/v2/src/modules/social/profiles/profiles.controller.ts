@@ -1,15 +1,15 @@
-import { FastifyRequest } from "fastify"
+import type { FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { SocialPost, UserProfile } from "@prisma/v2-client"
+import type { SocialPost, UserProfile } from "@prisma/v2-client"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
-import { SocialPostIncludes } from "../posts/posts.controller"
+import type { SocialPostIncludes } from "../posts/posts.controller"
 import {
   profileNameSchema,
   profilesQuerySchema,
   queryFlagsSchema,
   searchQuerySchema,
-  UpdateProfileSchema,
+  type UpdateProfileSchema,
   updateProfileSchema
 } from "./profiles.schema"
 import {
@@ -43,7 +43,8 @@ export async function getProfilesHandler(
   }>
 ) {
   await profilesQuerySchema.parseAsync(request.query)
-  const { sort, sortOrder, limit, page, _followers, _following, _posts } = request.query
+  const { sort, sortOrder, limit, page, _followers, _following, _posts } =
+    request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -75,7 +76,9 @@ export async function getProfileHandler(
   }>
 ) {
   const { name } = profileNameSchema.parse(request.params)
-  const { _followers, _following, _posts } = queryFlagsSchema.parse(request.query)
+  const { _followers, _following, _posts } = queryFlagsSchema.parse(
+    request.query
+  )
 
   const includes: ProfileIncludes = {
     posts: Boolean(_posts),
@@ -119,7 +122,11 @@ export async function updateProfileHandler(
     await mediaGuard(banner.url)
   }
 
-  const profile = await updateProfile(profileToUpdate, { avatar, banner, ...rest })
+  const profile = await updateProfile(profileToUpdate, {
+    avatar,
+    banner,
+    ...rest
+  })
 
   return profile
 }
@@ -199,7 +206,8 @@ export async function getProfilePostsHandler(
 ) {
   await profilesQuerySchema.parseAsync(request.query)
   const { name } = profileNameSchema.parse(request.params)
-  const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } = request.query
+  const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } =
+    request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -217,7 +225,15 @@ export async function getProfilePostsHandler(
     comments: Boolean(_comments)
   }
 
-  const posts = await getProfilePosts(name, sort, sortOrder, limit, page, includes, _tag)
+  const posts = await getProfilePosts(
+    name,
+    sort,
+    sortOrder,
+    limit,
+    page,
+    includes,
+    _tag
+  )
 
   return posts
 }
@@ -237,7 +253,8 @@ export async function searchProfilesHandler(
   }>
 ) {
   await searchQuerySchema.parseAsync(request.query)
-  const { sort, sortOrder, limit, page, _posts, _followers, _following, q } = request.query
+  const { sort, sortOrder, limit, page, _posts, _followers, _following, q } =
+    request.query
 
   const includes: ProfileIncludes = {
     posts: Boolean(_posts),
@@ -245,7 +262,14 @@ export async function searchProfilesHandler(
     following: Boolean(_following)
   }
 
-  const results = await searchProfiles(sort, sortOrder, limit, page, q, includes)
+  const results = await searchProfiles(
+    sort,
+    sortOrder,
+    limit,
+    page,
+    q,
+    includes
+  )
 
   return results
 }

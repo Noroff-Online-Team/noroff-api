@@ -1,7 +1,9 @@
 import { z } from "zod"
 
 const venueManager = {
-  venueManager: z.boolean({ invalid_type_error: "Venue manager must be a boolean" }).optional()
+  venueManager: z
+    .boolean({ invalid_type_error: "Venue manager must be a boolean" })
+    .optional()
 }
 
 export const mediaProperties = {
@@ -55,7 +57,11 @@ export const profileMedia = {
 }
 
 export const profileBio = {
-  bio: z.string().trim().max(160, "Bio cannot be greater than 160 characters").nullish()
+  bio: z
+    .string()
+    .trim()
+    .max(160, "Bio cannot be greater than 160 characters")
+    .nullish()
 }
 
 export const profileCore = {
@@ -73,9 +79,16 @@ export const profileCore = {
       invalid_type_error: "Email must be a string"
     })
     .email()
-    .regex(/^[\w\-.]+@(stud\.)?noroff\.no$/, "Only stud.noroff.no emails are allowed to register")
+    .regex(
+      /^[\w\-.]+@(stud\.)?noroff\.no$/,
+      "Only stud.noroff.no emails are allowed to register"
+    )
     .trim(),
-  bio: z.string().trim().max(160, "Bio cannot be greater than 160 characters").nullish(),
+  bio: z
+    .string()
+    .trim()
+    .max(160, "Bio cannot be greater than 160 characters")
+    .nullish(),
   ...profileMedia
 }
 
@@ -90,7 +103,9 @@ export const createProfileBodySchema = z.object({
     .min(8, "Password must be at least 8 characters")
 })
 
-export const createProfileResponseSchema = z.object(profileCore).extend(venueManager)
+export const createProfileResponseSchema = z
+  .object(profileCore)
+  .extend(venueManager)
 
 export const profileMediaSchema = z.object(profileMedia)
 
@@ -110,7 +125,9 @@ export const createApiKeyResponseSchema = z.object({
 })
 
 const queryFlagsCore = {
-  _holidaze: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _holidaze: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
 export const loginQuerySchema = z.object(queryFlagsCore)

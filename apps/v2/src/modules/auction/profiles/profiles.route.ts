@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify"
+import type { FastifyInstance } from "fastify"
 import { createResponseSchema } from "@noroff/api-utils"
 
 import {
@@ -86,7 +86,9 @@ async function profilesRoutes(server: FastifyInstance) {
         params: profileNameSchema,
         body: updateProfileSchema,
         response: {
-          200: createResponseSchema(displayProfileSchema.omit({ listings: true }))
+          200: createResponseSchema(
+            displayProfileSchema.omit({ listings: true })
+          )
         }
       }
     },

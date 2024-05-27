@@ -52,7 +52,10 @@ export const postCore = {
       invalid_type_error: "Body must be a string"
     })
     .trim()
-    .max(POST_BODY_MAX_LENGTH, `Body cannot be greater than ${POST_BODY_MAX_LENGTH} characters`)
+    .max(
+      POST_BODY_MAX_LENGTH,
+      `Body cannot be greater than ${POST_BODY_MAX_LENGTH} characters`
+    )
     .nullish(),
   ...tagsAndMedia
 }
@@ -71,7 +74,10 @@ const updatePostCore = {
       invalid_type_error: "Body must be a string"
     })
     .trim()
-    .max(POST_BODY_MAX_LENGTH, `Body cannot be greater than ${POST_BODY_MAX_LENGTH} characters`)
+    .max(
+      POST_BODY_MAX_LENGTH,
+      `Body cannot be greater than ${POST_BODY_MAX_LENGTH} characters`
+    )
     .nullish(),
   ...tagsAndMedia
 }
@@ -111,7 +117,10 @@ export const createPostBaseSchema = z.object(postCore)
 
 export const updatePostBodySchema = z
   .object(updatePostCore)
-  .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
+  .refine(
+    data => Object.keys(data).length > 0,
+    "You must provide at least one field to update"
+  )
 
 export const createPostSchema = z.object({
   ...postOwner,

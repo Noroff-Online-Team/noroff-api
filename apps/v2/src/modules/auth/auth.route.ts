@@ -1,7 +1,11 @@
-import { FastifyInstance } from "fastify"
+import type { FastifyInstance } from "fastify"
 import { createResponseSchema } from "@noroff/api-utils"
 
-import { createApiKeyHandler, loginHandler, registerProfileHandler } from "./auth.controller"
+import {
+  createApiKeyHandler,
+  loginHandler,
+  registerProfileHandler
+} from "./auth.controller"
 import {
   createApiKeyResponseSchema,
   createApiKeySchema,

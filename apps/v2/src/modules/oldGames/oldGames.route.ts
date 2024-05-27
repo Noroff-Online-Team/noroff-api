@@ -1,7 +1,14 @@
-import { FastifyInstance } from "fastify"
-import { createResponseSchema, sortAndPaginationSchema } from "@noroff/api-utils"
+import type { FastifyInstance } from "fastify"
+import {
+  createResponseSchema,
+  sortAndPaginationSchema
+} from "@noroff/api-utils"
 
-import { getOldGameHandler, getOldGamesHandler, getRandomOldGameHandler } from "./oldGames.controller"
+import {
+  getOldGameHandler,
+  getOldGamesHandler,
+  getRandomOldGameHandler
+} from "./oldGames.controller"
 import { oldGameParamsSchema, oldGameSchema } from "./oldGames.schema"
 
 async function oldGameRoutes(server: FastifyInstance) {

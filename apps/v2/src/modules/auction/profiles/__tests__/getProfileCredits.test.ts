@@ -64,7 +64,10 @@ describe("[GET] /auction/profiles/:id/credits", () => {
   })
 
   it("should throw 400 error when attempting to access another user's credits", async () => {
-    await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
+    await registerUser({
+      name: "test_user_two",
+      email: "test_user_two@noroff.no"
+    })
 
     const response = await server.inject({
       url: `/auction/profiles/test_user_two/credits`,

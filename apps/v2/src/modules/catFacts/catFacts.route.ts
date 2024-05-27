@@ -1,7 +1,14 @@
-import { FastifyInstance } from "fastify"
-import { createResponseSchema, sortAndPaginationSchema } from "@noroff/api-utils"
+import type { FastifyInstance } from "fastify"
+import {
+  createResponseSchema,
+  sortAndPaginationSchema
+} from "@noroff/api-utils"
 
-import { getCatFactHandler, getCatFactsHandler, getRandomCatFactHandler } from "./catFacts.controller"
+import {
+  getCatFactHandler,
+  getCatFactsHandler,
+  getRandomCatFactHandler
+} from "./catFacts.controller"
 import { catFactParamsSchema, catFactSchema } from "./catFacts.schema"
 
 async function catFactsRoutes(server: FastifyInstance) {

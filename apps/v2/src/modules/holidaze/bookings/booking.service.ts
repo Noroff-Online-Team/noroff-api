@@ -1,9 +1,9 @@
-import { HolidazeBooking } from "@prisma/v2-client"
+import type { HolidazeBooking } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 
-import { HolidazeBookingIncludes } from "./bookings.controller"
-import { CreateBookingSchema, UpdateBookingSchema } from "./bookings.schema"
+import type { HolidazeBookingIncludes } from "./bookings.controller"
+import type { CreateBookingSchema, UpdateBookingSchema } from "./bookings.schema"
 
 export async function getBookings(
   sort: keyof HolidazeBooking = "id",
@@ -12,11 +12,18 @@ export async function getBookings(
   page = 1,
   includes: HolidazeBookingIncludes = {}
 ) {
-  const withCustomerMedia = includes.customer ? { customer: { include: { avatar: true, banner: true } } } : {}
+  const withCustomerMedia = includes.customer
+    ? { customer: { include: { avatar: true, banner: true } } }
+    : {}
   const withVenue = includes.venue
     ? {
         venue: {
-          include: { media: true, meta: true, location: true, owner: { include: { avatar: true, banner: true } } }
+          include: {
+            media: true,
+            meta: true,
+            location: true,
+            owner: { include: { avatar: true, banner: true } }
+          }
         }
       }
     : {}
@@ -40,12 +47,22 @@ export async function getBookings(
   return { data, meta }
 }
 
-export async function getBooking(id: string, includes: HolidazeBookingIncludes = {}) {
-  const withCustomerMedia = includes.customer ? { customer: { include: { avatar: true, banner: true } } } : {}
+export async function getBooking(
+  id: string,
+  includes: HolidazeBookingIncludes = {}
+) {
+  const withCustomerMedia = includes.customer
+    ? { customer: { include: { avatar: true, banner: true } } }
+    : {}
   const withVenue = includes.venue
     ? {
         venue: {
-          include: { media: true, meta: true, location: true, owner: { include: { avatar: true, banner: true } } }
+          include: {
+            media: true,
+            meta: true,
+            location: true,
+            owner: { include: { avatar: true, banner: true } }
+          }
         }
       }
     : {}
@@ -70,11 +87,18 @@ export async function createBooking(
   createData: CreateBookingSchema & { customerName: string },
   includes: HolidazeBookingIncludes = {}
 ) {
-  const withCustomerMedia = includes.customer ? { customer: { include: { avatar: true, banner: true } } } : {}
+  const withCustomerMedia = includes.customer
+    ? { customer: { include: { avatar: true, banner: true } } }
+    : {}
   const withVenue = includes.venue
     ? {
         venue: {
-          include: { media: true, meta: true, location: true, owner: { include: { avatar: true, banner: true } } }
+          include: {
+            media: true,
+            meta: true,
+            location: true,
+            owner: { include: { avatar: true, banner: true } }
+          }
         }
       }
     : {}
@@ -98,11 +122,18 @@ export async function updateBooking(
   updateData: UpdateBookingSchema,
   includes: HolidazeBookingIncludes = {}
 ) {
-  const withCustomerMedia = includes.customer ? { customer: { include: { avatar: true, banner: true } } } : {}
+  const withCustomerMedia = includes.customer
+    ? { customer: { include: { avatar: true, banner: true } } }
+    : {}
   const withVenue = includes.venue
     ? {
         venue: {
-          include: { media: true, meta: true, location: true, owner: { include: { avatar: true, banner: true } } }
+          include: {
+            media: true,
+            meta: true,
+            location: true,
+            owner: { include: { avatar: true, banner: true } }
+          }
         }
       }
     : {}

@@ -1,7 +1,11 @@
 import { sortAndPaginationSchema } from "@noroff/api-utils"
 import { z } from "zod"
 
-import { mediaProperties, mediaPropertiesWithErrors, profileCore } from "../../auth/auth.schema"
+import {
+  mediaProperties,
+  mediaPropertiesWithErrors,
+  profileCore
+} from "../../auth/auth.schema"
 import { displayProfileSchema } from "../profiles/profiles.schema"
 
 const LISTING_TITLE_MIN_LENGTH = 1
@@ -18,7 +22,11 @@ const bidCore = {
 }
 
 const mediaCore = {
-  media: z.object(mediaPropertiesWithErrors).array().max(8, "You cannot have more than 8 images").nullish()
+  media: z
+    .object(mediaPropertiesWithErrors)
+    .array()
+    .max(8, "You cannot have more than 8 images")
+    .nullish()
 }
 
 export const mediaSchema = z.object(mediaCore)
@@ -33,7 +41,9 @@ export const listingCore = {
   updated: z.date(),
   endsAt: z.date(),
   bids: z.object(bidCore).array().optional(),
-  seller: displayProfileSchema.omit({ credits: true, listings: true, _count: true }).optional(),
+  seller: displayProfileSchema
+    .omit({ credits: true, listings: true, _count: true })
+    .optional(),
   _count: z
     .object({
       bids: z.number().int().optional()
@@ -45,7 +55,9 @@ export const listingResponseSchema = z.object(listingCore)
 
 export const profileBidsResponseSchema = z.object({
   ...bidCore,
-  listing: listingResponseSchema.omit({ bids: true, seller: true, _count: true }).optional()
+  listing: listingResponseSchema
+    .omit({ bids: true, seller: true, _count: true })
+    .optional()
 })
 
 const tagsAndMedia = {
@@ -57,7 +69,11 @@ const tagsAndMedia = {
     .array()
     .max(LISTING_MAX_TAGS, "You cannot have more than 8 tags")
     .optional(),
-  media: z.object(mediaPropertiesWithErrors).array().max(8, "You cannot have more than 8 images").nullish()
+  media: z
+    .object(mediaPropertiesWithErrors)
+    .array()
+    .max(8, "You cannot have more than 8 images")
+    .nullish()
 }
 
 export const createListingSchema = z.object({
@@ -68,13 +84,19 @@ export const createListingSchema = z.object({
     })
     .trim()
     .min(LISTING_TITLE_MIN_LENGTH, "Title cannot be empty")
-    .max(LISTING_TITLE_MAX_LENGTH, "Title cannot be greater than 280 characters"),
+    .max(
+      LISTING_TITLE_MAX_LENGTH,
+      "Title cannot be greater than 280 characters"
+    ),
   description: z
     .string({
       invalid_type_error: "Description must be a string"
     })
     .trim()
-    .max(LISTING_DESCRIPTION_MAX_LENGTH, "Description cannot be greater than 280 characters")
+    .max(
+      LISTING_DESCRIPTION_MAX_LENGTH,
+      "Description cannot be greater than 280 characters"
+    )
     .nullish(),
   endsAt: z
     .preprocess(
@@ -86,7 +108,9 @@ export const createListingSchema = z.object({
     .refine(
       date => {
         const today = new Date()
-        const oneYearFromToday = new Date(today.setFullYear(today.getFullYear() + 1))
+        const oneYearFromToday = new Date(
+          today.setFullYear(today.getFullYear() + 1)
+        )
         const now = new Date()
         if (date > oneYearFromToday || date < now) {
           return false
@@ -107,25 +131,38 @@ export const updateListingCore = {
     })
     .trim()
     .min(LISTING_TITLE_MIN_LENGTH, "Title cannot be empty")
-    .max(LISTING_TITLE_MAX_LENGTH, "Title cannot be greater than 280 characters")
+    .max(
+      LISTING_TITLE_MAX_LENGTH,
+      "Title cannot be greater than 280 characters"
+    )
     .nullish(),
   description: z
     .string({
       invalid_type_error: "Description must be a string"
     })
     .trim()
-    .max(LISTING_DESCRIPTION_MAX_LENGTH, "Description cannot be greater than 280 characters")
+    .max(
+      LISTING_DESCRIPTION_MAX_LENGTH,
+      "Description cannot be greater than 280 characters"
+    )
     .nullish(),
   ...tagsAndMedia
 }
 
 export const updateListingSchema = z
   .object(updateListingCore)
-  .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
+  .refine(
+    data => Object.keys(data).length > 0,
+    "You must provide at least one field to update"
+  )
 
 const queryFlagsCore = {
-  _seller: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _bids: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _seller: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _bids: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
@@ -141,10 +178,14 @@ export const listingIdParamsSchema = z.object({
     })
 })
 
-export const listingQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
-  _tag: z.string({ invalid_type_error: "Tag must be a string" }).optional(),
-  _active: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
-})
+export const listingQuerySchema = sortAndPaginationSchema
+  .extend(queryFlagsCore)
+  .extend({
+    _tag: z.string({ invalid_type_error: "Tag must be a string" }).optional(),
+    _active: z
+      .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+      .optional()
+  })
 
 export const bidBodySchema = z.object({
   amount: z
@@ -156,13 +197,19 @@ export const bidBodySchema = z.object({
     .positive("Amount must be a positive number")
 })
 
-export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
-  q: z
-    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
-    .nonempty("Query cannot be empty")
-})
+export const searchQuerySchema = sortAndPaginationSchema
+  .extend(queryFlagsCore)
+  .extend({
+    q: z
+      .string({
+        required_error: "Query is required",
+        invalid_type_error: "Query must be a string"
+      })
+      .nonempty("Query cannot be empty")
+  })
 
-export const listingWinsQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore)
+export const listingWinsQuerySchema =
+  sortAndPaginationSchema.extend(queryFlagsCore)
 
 export type CreateListingSchema = z.infer<typeof createListingSchema>
 

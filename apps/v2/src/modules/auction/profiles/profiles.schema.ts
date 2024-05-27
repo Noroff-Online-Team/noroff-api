@@ -1,7 +1,12 @@
 import { sortAndPaginationSchema } from "@noroff/api-utils"
 import { z } from "zod"
 
-import { mediaProperties, profileBio, profileCore, profileMedia } from "../../auth/auth.schema"
+import {
+  mediaProperties,
+  profileBio,
+  profileCore,
+  profileMedia
+} from "../../auth/auth.schema"
 
 export const updateProfileSchema = z.object({
   ...profileMedia,
@@ -83,18 +88,28 @@ export const displayProfileSchema = z.object({
 })
 
 const queryFlagsCore = {
-  _listings: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _wins: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _listings: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _wins: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
-export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
-  q: z
-    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
-    .nonempty("Query cannot be empty")
-})
+export const searchQuerySchema = sortAndPaginationSchema
+  .extend(queryFlagsCore)
+  .extend({
+    q: z
+      .string({
+        required_error: "Query is required",
+        invalid_type_error: "Query must be a string"
+      })
+      .nonempty("Query cannot be empty")
+  })
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
-export const profilesQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore)
+export const profilesQuerySchema =
+  sortAndPaginationSchema.extend(queryFlagsCore)
 
 export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>

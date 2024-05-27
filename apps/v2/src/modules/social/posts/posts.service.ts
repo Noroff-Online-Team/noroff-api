@@ -1,9 +1,15 @@
-import { SocialPost } from "@prisma/v2-client"
+import type { SocialPost } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 
-import { SocialPostIncludes } from "./posts.controller"
-import { CreateCommentSchema, CreatePostBaseSchema, CreatePostSchema, DisplaySocialPost, Media } from "./posts.schema"
+import type { SocialPostIncludes } from "./posts.controller"
+import type {
+  CreateCommentSchema,
+  CreatePostBaseSchema,
+  CreatePostSchema,
+  DisplaySocialPost,
+  Media
+} from "./posts.schema"
 
 export async function getPosts(
   sort: keyof SocialPost = "created",
@@ -14,10 +20,16 @@ export async function getPosts(
   tag: string | undefined
 ) {
   const withCommentAuthor = includes.comments
-    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    ? {
+        comments: {
+          include: { author: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
   const whereTag = tag ? { tags: { has: tag } } : {}
-  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
+  const withAuthorMedia = includes.author
+    ? { author: { include: { avatar: true, banner: true } } }
+    : {}
 
   const [data, meta] = await db.socialPost
     .paginate({
@@ -54,7 +66,10 @@ export async function getPosts(
         }
       }
 
-      const enrichedPost: DisplaySocialPost = { ...post, media: transformedMedia }
+      const enrichedPost: DisplaySocialPost = {
+        ...post,
+        media: transformedMedia
+      }
 
       if (includes.reactions) {
         enrichedPost.reactions = await fetchReactionCounts(post.id)
@@ -69,9 +84,15 @@ export async function getPosts(
 
 export async function getPost(id: number, includes: SocialPostIncludes = {}) {
   const withCommentAuthor = includes.comments
-    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    ? {
+        comments: {
+          include: { author: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
-  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
+  const withAuthorMedia = includes.author
+    ? { author: { include: { avatar: true, banner: true } } }
+    : {}
 
   const [data] = await db.socialPost
     .paginate({
@@ -117,12 +138,21 @@ export async function getPost(id: number, includes: SocialPostIncludes = {}) {
   return { data: enrichedPost }
 }
 
-export const createPost = async (createPostData: CreatePostSchema, includes: SocialPostIncludes = {}) => {
+export const createPost = async (
+  createPostData: CreatePostSchema,
+  includes: SocialPostIncludes = {}
+) => {
   const { media, ...restData } = createPostData
   const withCommentAuthor = includes.comments
-    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    ? {
+        comments: {
+          include: { author: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
-  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
+  const withAuthorMedia = includes.author
+    ? { author: { include: { avatar: true, banner: true } } }
+    : {}
 
   const data = await db.socialPost.create({
     data: {
@@ -143,7 +173,9 @@ export const createPost = async (createPostData: CreatePostSchema, includes: Soc
     }
   })
 
-  const enrichedData = includes.reactions ? { ...data, reactions: await fetchReactionCounts(data.id) } : data
+  const enrichedData = includes.reactions
+    ? { ...data, reactions: await fetchReactionCounts(data.id) }
+    : data
 
   return { data: enrichedData }
 }
@@ -155,7 +187,11 @@ export const updatePost = async (
 ) => {
   const { media, ...restData } = updatePostData
   const withCommentAuthor = includes.comments
-    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    ? {
+        comments: {
+          include: { author: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const data = await db.socialPost.update({
@@ -177,7 +213,9 @@ export const updatePost = async (
     }
   })
 
-  const enrichedData = includes.reactions ? { ...data, reactions: await fetchReactionCounts(id) } : data
+  const enrichedData = includes.reactions
+    ? { ...data, reactions: await fetchReactionCounts(id) }
+    : data
 
   return { data: enrichedData }
 }
@@ -195,28 +233,33 @@ async function fetchReactionCounts(postId: number) {
   })
 
   // Transform reactions into a more efficient structure for processing
-  const reactionSummary = reactions.reduce<{ [key: string]: { count: number; reactors: string[] } }>(
-    (acc, reaction) => {
-      const { symbol, owner } = reaction
-      if (!acc[symbol]) {
-        acc[symbol] = { count: 0, reactors: [] }
-      }
-      acc[symbol].count += 1
-      acc[symbol].reactors.push(owner)
-      return acc
-    },
-    {}
-  )
+  const reactionSummary = reactions.reduce<{
+    [key: string]: { count: number; reactors: string[] }
+  }>((acc, reaction) => {
+    const { symbol, owner } = reaction
+    if (!acc[symbol]) {
+      acc[symbol] = { count: 0, reactors: [] }
+    }
+    acc[symbol].count += 1
+    acc[symbol].reactors.push(owner)
+    return acc
+  }, {})
 
   // Convert the summary object back into the desired array format
-  return Object.entries(reactionSummary).map(([symbol, { count, reactors }]) => ({
-    symbol,
-    count,
-    reactors
-  }))
+  return Object.entries(reactionSummary).map(
+    ([symbol, { count, reactors }]) => ({
+      symbol,
+      count,
+      reactors
+    })
+  )
 }
 
-export const createOrDeleteReaction = async (postId: number, symbol: string, owner: string) => {
+export const createOrDeleteReaction = async (
+  postId: number,
+  symbol: string,
+  owner: string
+) => {
   const userReactionQuery = {
     postId_symbol_owner: {
       postId,
@@ -262,7 +305,9 @@ export const createComment = async (
   comment: CreateCommentSchema,
   includes: { author?: boolean } = {}
 ) => {
-  const withAuthor = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
+  const withAuthor = includes.author
+    ? { author: { include: { avatar: true, banner: true } } }
+    : {}
 
   const data = await db.socialPostComment.create({
     data: {
@@ -300,10 +345,16 @@ export const getPostsOfFollowedUsers = async (
   tag: string | undefined
 ) => {
   const withCommentAuthor = includes.comments
-    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    ? {
+        comments: {
+          include: { author: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
   const whereTag = tag ? { tags: { has: tag } } : {}
-  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
+  const withAuthorMedia = includes.author
+    ? { author: { include: { avatar: true, banner: true } } }
+    : {}
 
   const [data, meta] = await db.socialPost
     .paginate({
@@ -337,7 +388,12 @@ export const getPostsOfFollowedUsers = async (
     })
 
   const enrichedData = includes.reactions
-    ? await Promise.all(data.map(async post => ({ ...post, reactions: await fetchReactionCounts(post.id) })))
+    ? await Promise.all(
+        data.map(async post => ({
+          ...post,
+          reactions: await fetchReactionCounts(post.id)
+        }))
+      )
     : data
 
   return { data: enrichedData, meta }
@@ -352,14 +408,23 @@ export const searchPosts = async (
   includes: SocialPostIncludes = {}
 ) => {
   const withCommentAuthor = includes.comments
-    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    ? {
+        comments: {
+          include: { author: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
-  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
+  const withAuthorMedia = includes.author
+    ? { author: { include: { avatar: true, banner: true } } }
+    : {}
 
   const [data, meta] = await db.socialPost
     .paginate({
       where: {
-        OR: [{ title: { contains: query, mode: "insensitive" } }, { body: { contains: query, mode: "insensitive" } }]
+        OR: [
+          { title: { contains: query, mode: "insensitive" } },
+          { body: { contains: query, mode: "insensitive" } }
+        ]
       },
       include: {
         ...includes,
@@ -383,7 +448,12 @@ export const searchPosts = async (
     })
 
   const enrichedData = includes.reactions
-    ? await Promise.all(data.map(async post => ({ ...post, reactions: await fetchReactionCounts(post.id) })))
+    ? await Promise.all(
+        data.map(async post => ({
+          ...post,
+          reactions: await fetchReactionCounts(post.id)
+        }))
+      )
     : data
 
   return { data: enrichedData, meta }

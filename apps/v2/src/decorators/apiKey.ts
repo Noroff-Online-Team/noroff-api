@@ -1,4 +1,4 @@
-import { FastifyRequest } from "fastify"
+import type { FastifyRequest } from "fastify"
 import fp from "fastify-plugin"
 import { BadRequest, Forbidden, Unauthorized } from "http-errors"
 

@@ -8,7 +8,10 @@ let USER_NAME = ""
 let SECOND_USER_NAME = ""
 
 beforeEach(async () => {
-  const { name: secondUserName } = await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
+  const { name: secondUserName } = await registerUser({
+    name: "test_user_two",
+    email: "test_user_two@noroff.no"
+  })
   const { bearerToken, apiKey, name } = await getAuthCredentials()
 
   BEARER_TOKEN = bearerToken

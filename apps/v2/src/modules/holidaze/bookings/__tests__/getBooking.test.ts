@@ -8,7 +8,10 @@ let API_KEY = ""
 
 beforeEach(async () => {
   const { name, bearerToken, apiKey } = await getAuthCredentials()
-  const { name: bookingUser } = await registerUser({ name: "bidder_user", email: "bidder_user@noroff.no" })
+  const { name: bookingUser } = await registerUser({
+    name: "bidder_user",
+    email: "bidder_user@noroff.no"
+  })
 
   BEARER_TOKEN = bearerToken
   API_KEY = apiKey
