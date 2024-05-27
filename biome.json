@@ -26,7 +26,8 @@
     "rules": {
       "recommended": true,
       "style": {
-        "noNonNullAssertion": "off"
+        "noNonNullAssertion": "off",
+        "useDefaultParameterLast": "off"
       },
       "a11y": {
         "noSvgWithoutTitle": "off"
