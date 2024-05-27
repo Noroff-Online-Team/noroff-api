@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useState, type ReactNode } from "react"
+import { cva } from "class-variance-authority"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { cva } from "class-variance-authority"
+import { type ReactNode, useEffect, useState } from "react"
 
 import { NoroffLogo } from "@/components/noroff-logo"
 import { cn } from "@/utils/cn"

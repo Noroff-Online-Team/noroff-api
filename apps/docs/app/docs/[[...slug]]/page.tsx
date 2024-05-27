@@ -1,9 +1,9 @@
-import { notFound } from "next/navigation"
 import { Card, Cards } from "fumadocs-ui/components/card"
 import { DocsBody, DocsPage } from "fumadocs-ui/page"
 import { ExternalLinkIcon } from "lucide-react"
+import { notFound } from "next/navigation"
 
-import { utils, type Page } from "@/utils/source"
+import { type Page, utils } from "@/utils/source"
 
 type Param = {
   slug: string[]

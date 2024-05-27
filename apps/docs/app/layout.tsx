@@ -1,6 +1,6 @@
+import clsx from "clsx"
 import { Inter } from "next/font/google"
 import type { Metadata, Viewport } from "next/types"
-import clsx from "clsx"
 
 import "fumadocs-ui/style.css"
 import "./global.css"

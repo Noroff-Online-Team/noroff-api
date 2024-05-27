@@ -1,5 +1,5 @@
-import Link from "next/link"
 import { Tally1Icon, Tally2Icon } from "lucide-react"
+import Link from "next/link"
 
 import { NoroffLogo } from "@/components/noroff-logo"
 

@@ -1,16 +1,13 @@
-import type { HTMLAttributes } from "react"
 import {
   CodeBlock,
-  Pre,
-  type CodeBlockProps
+  type CodeBlockProps,
+  Pre
 } from "fumadocs-ui/components/codeblock"
-import {
-  ImageZoom,
-  type ImageZoomProps
-} from "fumadocs-ui/components/image-zoom"
+import { ImageZoom } from "fumadocs-ui/components/image-zoom"
 import { TypeTable } from "fumadocs-ui/components/type-table"
 import defaultComponents from "fumadocs-ui/mdx"
 import type { MDXComponents } from "mdx/types"
+import type { HTMLAttributes } from "react"
 
 import { Callout } from "@/components/callout"
 import { EndpointDetails } from "@/components/endpoint-details"

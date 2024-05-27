@@ -1,7 +1,7 @@
-import type { ReactNode } from "react"
-import Image from "next/image"
 import { layoutOptions } from "@/app/layout.config"
 import { DocsLayout } from "fumadocs-ui/layout"
+import Image from "next/image"
+import type { ReactNode } from "react"
 
 import { Body } from "../layout.client"
 

@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { useVersion } from "@/app/layout.client"
 import { cva } from "class-variance-authority"
 import { useDocsSearch } from "fumadocs-core/search/client"
@@ -8,6 +7,7 @@ import {
   SearchDialog,
   type SharedProps
 } from "fumadocs-ui/components/dialog/search"
+import { useEffect, useState } from "react"
 
 import { cn } from "@/utils/cn"
 import { versions } from "@/utils/versions"
