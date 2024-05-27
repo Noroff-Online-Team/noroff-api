@@ -1,23 +1,27 @@
-import type { FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import type { HolidazeBooking, HolidazeVenue, UserProfile } from "@prisma/v2-client"
+import type {
+  HolidazeBooking,
+  HolidazeVenue,
+  UserProfile
+} from "@prisma/v2-client"
+import type { FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import type { HolidazeBookingIncludes } from "../bookings/bookings.controller"
 import type { HolidazeVenueIncludes } from "../venues/venues.controller"
 import {
+  type UpdateProfileSchema,
   profileNameSchema,
   profilesQuerySchema,
   queryFlagsSchema,
   searchQuerySchema,
-  type UpdateProfileSchema,
   updateProfileSchema
 } from "./profiles.schema"
 import {
   getProfile,
   getProfileBookings,
-  getProfiles,
   getProfileVenues,
+  getProfiles,
   searchProfiles,
   updateProfile
 } from "./profiles.service"

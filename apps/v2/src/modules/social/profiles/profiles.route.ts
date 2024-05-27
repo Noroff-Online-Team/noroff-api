@@ -1,5 +1,5 @@
-import type { FastifyInstance } from "fastify"
 import { createResponseSchema } from "@noroff/api-utils"
+import type { FastifyInstance } from "fastify"
 
 import { displayPostSchema, postsQuerySchema } from "../posts/posts.schema"
 import {

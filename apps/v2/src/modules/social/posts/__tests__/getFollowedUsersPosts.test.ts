@@ -151,7 +151,7 @@ describe("[GET] /social/posts/following", () => {
 
   it("should return all posts that match a tag", async () => {
     const response = await server.inject({
-      url: `/social/posts/following?_tag=tag1`,
+      url: "/social/posts/following?_tag=tag1",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

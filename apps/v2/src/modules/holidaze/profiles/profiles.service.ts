@@ -1,4 +1,8 @@
-import type { HolidazeBooking, HolidazeVenue, UserProfile } from "@prisma/v2-client"
+import type {
+  HolidazeBooking,
+  HolidazeVenue,
+  UserProfile
+} from "@prisma/v2-client"
 
 import { db } from "@/utils"
 

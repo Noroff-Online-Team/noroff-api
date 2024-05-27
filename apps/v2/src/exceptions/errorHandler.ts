@@ -1,5 +1,5 @@
-import type { FastifyError, FastifyReply, FastifyRequest } from "fastify"
 import { Prisma } from "@prisma/v2-client"
+import type { FastifyError, FastifyReply, FastifyRequest } from "fastify"
 import { isHttpError } from "http-errors"
 import statuses from "statuses"
 import { ZodError, type ZodIssueCode } from "zod"
@@ -124,19 +124,22 @@ const prismaErrorHandler: ErrorHandlerStrategy = error => {
       statusCode,
       errors: [{ message: customMessage }]
     }
-  } else if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+  }
+  if (error instanceof Prisma.PrismaClientUnknownRequestError) {
     return {
       statusCode: 500,
       errors: [{ message: "An unknown database error occurred." }]
     }
-  } else if (error instanceof Prisma.PrismaClientInitializationError) {
+  }
+  if (error instanceof Prisma.PrismaClientInitializationError) {
     return {
       statusCode: 500,
       errors: [
         { message: "Database initialization failed. Is the database running?" }
       ]
     }
-  } else if (error instanceof Prisma.PrismaClientRustPanicError) {
+  }
+  if (error instanceof Prisma.PrismaClientRustPanicError) {
     return {
       statusCode: 500,
       errors: [{ message: "A critical error occurred in the database engine." }]

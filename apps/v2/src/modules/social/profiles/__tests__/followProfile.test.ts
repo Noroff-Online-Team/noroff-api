@@ -103,7 +103,7 @@ describe("[PUT] /social/profiles/:id/follow", () => {
 
   it("should throw 404 error when profile does not exist", async () => {
     const response = await server.inject({
-      url: `/social/profiles/does_not_exist/follow`,
+      url: "/social/profiles/does_not_exist/follow",
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

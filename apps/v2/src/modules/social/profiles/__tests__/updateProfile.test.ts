@@ -136,7 +136,7 @@ describe("[PUT] /social/profiles/:id", () => {
 
   it("should throw 404 error when profile does not exist", async () => {
     const response = await server.inject({
-      url: `/social/profiles/does_not_exist`,
+      url: "/social/profiles/does_not_exist",
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -165,7 +165,7 @@ describe("[PUT] /social/profiles/:id", () => {
     })
 
     const response = await server.inject({
-      url: `/social/profiles/test_user_two`,
+      url: "/social/profiles/test_user_two",
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

@@ -1,4 +1,4 @@
-import type { SocialPost } from "@prisma/v2-client"
+import type { SocialPost, SocialPostReaction } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 
@@ -272,7 +272,7 @@ export const createOrDeleteReaction = async (
     where: userReactionQuery
   })
 
-  let reactionDetails
+  let reactionDetails: SocialPostReaction
 
   if (userReaction) {
     reactionDetails = await db.socialPostReaction.delete({

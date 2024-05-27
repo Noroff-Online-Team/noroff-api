@@ -1,16 +1,16 @@
-import type { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
 import type { HolidazeVenue, UserProfile } from "@prisma/v2-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { getProfile } from "../profiles/profiles.service"
 import {
-  createVenueSchema,
   type CreateVenueSchema,
+  type UpdateVenueSchema,
+  createVenueSchema,
   queryFlagsSchema,
   searchQuerySchema,
   updateVenueSchema,
-  type UpdateVenueSchema,
   venueIdSchema,
   venuesQuerySchema
 } from "./venues.schema"

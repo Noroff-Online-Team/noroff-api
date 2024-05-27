@@ -1,5 +1,5 @@
-import type { FastifyInstance } from "fastify"
 import { createResponseSchema } from "@noroff/api-utils"
+import type { FastifyInstance } from "fastify"
 
 import {
   listingQuerySchema,
@@ -12,8 +12,8 @@ import {
   getProfileCreditsHandler,
   getProfileHandler,
   getProfileListingsHandler,
-  getProfilesHandler,
   getProfileWinsHandler,
+  getProfilesHandler,
   searchProfilesHandler,
   updateProfileHandler
 } from "./profiles.controller"

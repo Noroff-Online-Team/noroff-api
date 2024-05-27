@@ -107,7 +107,7 @@ describe("[GET] /holidaze/profiles/:id/bookings", () => {
 
   it("should throw 404 error when attempting to access bookings for profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/holidaze/profiles/does_not_exist/bookings`,
+      url: "/holidaze/profiles/does_not_exist/bookings",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

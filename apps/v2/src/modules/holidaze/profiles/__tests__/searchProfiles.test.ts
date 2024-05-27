@@ -27,7 +27,7 @@ afterEach(async () => {
 describe("[GET] /holidaze/profiles/search", () => {
   it("should return profiles that contain query in either name or bio", async () => {
     const response = await server.inject({
-      url: `/holidaze/profiles/search?q=two`,
+      url: "/holidaze/profiles/search?q=two",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -43,7 +43,7 @@ describe("[GET] /holidaze/profiles/search", () => {
 
   it("should return empty array if no profiles match query", async () => {
     const response = await server.inject({
-      url: `/holidaze/profiles/search?q=random`,
+      url: "/holidaze/profiles/search?q=random",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -58,7 +58,7 @@ describe("[GET] /holidaze/profiles/search", () => {
 
   it("should return profiles with pagination and sort", async () => {
     const response = await server.inject({
-      url: `/holidaze/profiles/search?q=user&sort=name&sortOrder=desc&limit=1&page=1`,
+      url: "/holidaze/profiles/search?q=user&sort=name&sortOrder=desc&limit=1&page=1",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -83,7 +83,7 @@ describe("[GET] /holidaze/profiles/search", () => {
 
   it("should throw zod error if query param is missing", async () => {
     const response = await server.inject({
-      url: `/holidaze/profiles/search`,
+      url: "/holidaze/profiles/search",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -104,7 +104,7 @@ describe("[GET] /holidaze/profiles/search", () => {
 
   it("should throw zod error if query param is empty", async () => {
     const response = await server.inject({
-      url: `/holidaze/profiles/search?q=`,
+      url: "/holidaze/profiles/search?q=",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -125,7 +125,7 @@ describe("[GET] /holidaze/profiles/search", () => {
 
   it("should throw 401 error when attempting to access without API key", async () => {
     const response = await server.inject({
-      url: `/holidaze/profiles/search?q=two`,
+      url: "/holidaze/profiles/search?q=two",
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -145,7 +145,7 @@ describe("[GET] /holidaze/profiles/search", () => {
 
   it("should throw 401 error when attempting to access without Bearer token", async () => {
     const response = await server.inject({
-      url: `/holidaze/profiles/search?q=two`,
+      url: "/holidaze/profiles/search?q=two",
       method: "PUT",
       headers: {
         "X-Noroff-API-Key": API_KEY

@@ -1,6 +1,6 @@
-import type { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
 import type { BlogPost, UserProfile } from "@prisma/v2-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import {

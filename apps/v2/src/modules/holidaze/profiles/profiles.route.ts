@@ -1,5 +1,5 @@
-import type { FastifyInstance } from "fastify"
 import { createResponseSchema } from "@noroff/api-utils"
+import type { FastifyInstance } from "fastify"
 
 import {
   bookingsQuerySchema,
@@ -9,8 +9,8 @@ import { displayVenueSchema, venuesQuerySchema } from "../venues/venues.schema"
 import {
   getProfileBookingsHandler,
   getProfileHandler,
-  getProfilesHandler,
   getProfileVenuesHandler,
+  getProfilesHandler,
   searchProfilesHandler,
   updateProfileHandler
 } from "./profiles.controller"

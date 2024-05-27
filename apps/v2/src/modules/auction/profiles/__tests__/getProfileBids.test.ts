@@ -77,7 +77,7 @@ describe("[GET] /auction/profiles/:id/bids", () => {
 
   it("should throw 404 error when attempting to access profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/auction/profiles/does_not_exist/bids`,
+      url: "/auction/profiles/does_not_exist/bids",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

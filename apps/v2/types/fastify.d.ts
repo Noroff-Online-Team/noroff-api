@@ -13,9 +13,9 @@ declare module "fastify" {
     jwt: JWT
   }
   export interface FastifyInstance {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny:
     authenticate: any
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny:
     apiKey: any
   }
 }

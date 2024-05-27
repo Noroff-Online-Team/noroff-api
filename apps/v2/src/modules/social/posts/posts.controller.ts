@@ -1,12 +1,12 @@
-import type { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
 import type { SocialPost, UserProfile } from "@prisma/v2-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import {
-  authorQuerySchema,
   type CreateCommentSchema,
   type CreatePostBaseSchema,
+  authorQuerySchema,
   deleteCommentSchema,
   emojiSchema,
   mediaSchema,

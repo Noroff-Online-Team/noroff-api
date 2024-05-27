@@ -1,15 +1,15 @@
-import type { FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
 import type { SocialPost, UserProfile } from "@prisma/v2-client"
+import type { FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import type { SocialPostIncludes } from "../posts/posts.controller"
 import {
+  type UpdateProfileSchema,
   profileNameSchema,
   profilesQuerySchema,
   queryFlagsSchema,
   searchQuerySchema,
-  type UpdateProfileSchema,
   updateProfileSchema
 } from "./profiles.schema"
 import {

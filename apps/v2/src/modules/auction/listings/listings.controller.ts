@@ -1,4 +1,3 @@
-import type { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
 import type {
   AuctionBid,
@@ -6,18 +5,19 @@ import type {
   Prisma,
   UserProfile
 } from "@prisma/v2-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { getProfile } from "./../profiles/profiles.service"
 import {
-  bidBodySchema,
   type CreateListingSchema,
+  type UpdateListingSchema,
+  bidBodySchema,
   listingIdParamsSchema,
   listingQuerySchema,
   mediaSchema,
   queryFlagsSchema,
-  searchQuerySchema,
-  type UpdateListingSchema
+  searchQuerySchema
 } from "./listings.schema"
 import {
   createListing,

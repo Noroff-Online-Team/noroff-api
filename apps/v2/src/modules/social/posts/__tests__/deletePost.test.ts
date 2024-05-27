@@ -57,7 +57,7 @@ describe("[DELETE] /social/posts/:id", () => {
 
   it("should throw 404 error if post does not exist", async () => {
     const response = await server.inject({
-      url: `/social/posts/3`,
+      url: "/social/posts/3",
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

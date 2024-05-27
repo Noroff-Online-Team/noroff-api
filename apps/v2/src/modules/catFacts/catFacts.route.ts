@@ -1,8 +1,8 @@
-import type { FastifyInstance } from "fastify"
 import {
   createResponseSchema,
   sortAndPaginationSchema
 } from "@noroff/api-utils"
+import type { FastifyInstance } from "fastify"
 
 import {
   getCatFactHandler,

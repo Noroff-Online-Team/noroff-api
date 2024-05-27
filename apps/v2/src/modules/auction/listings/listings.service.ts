@@ -4,7 +4,10 @@ import { db } from "@/utils"
 
 import { scheduleCreditsTransfer } from "./listing.utils"
 import type { AuctionListingIncludes } from "./listings.controller"
-import type { CreateListingSchema, UpdateListingSchema } from "./listings.schema"
+import type {
+  CreateListingSchema,
+  UpdateListingSchema
+} from "./listings.schema"
 
 export async function getListings(
   sort: keyof AuctionListing = "title",

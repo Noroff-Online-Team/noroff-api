@@ -1,6 +1,6 @@
-import type { FastifyRequest } from "fastify"
 import { sortAndPaginationSchema } from "@noroff/api-utils"
 import type { OnlineShopProduct } from "@prisma/v2-client"
+import type { FastifyRequest } from "fastify"
 import { BadRequest, NotFound } from "http-errors"
 
 import { onlineShopParamsSchema } from "./onlineShop.schema"
