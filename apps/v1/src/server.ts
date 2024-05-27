@@ -1,10 +1,10 @@
-import path from "path"
-import Fastify from "fastify"
+import path from "node:path"
 import autoLoad from "@fastify/autoload"
+import Fastify from "fastify"
 import {
+  type ZodTypeProvider,
   serializerCompiler,
-  validatorCompiler,
-  type ZodTypeProvider
+  validatorCompiler
 } from "fastify-type-provider-zod"
 
 import errorHandler from "./exceptions/errorHandler"

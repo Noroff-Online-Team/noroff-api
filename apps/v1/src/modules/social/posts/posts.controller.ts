@@ -1,6 +1,6 @@
-import type { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
 import type { Comment, Post, Prisma, Profile } from "@prisma/v1-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import type { CreateCommentSchema, CreatePostBaseSchema } from "./posts.schema"

@@ -1,4 +1,8 @@
-import type { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/v1-client"
+import type {
+  AuctionBid,
+  AuctionListing,
+  AuctionProfile
+} from "@prisma/v1-client"
 
 import { prisma } from "@/utils"
 

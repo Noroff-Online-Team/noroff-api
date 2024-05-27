@@ -8,8 +8,8 @@ import { displayVenueSchema, venuesQuerySchema } from "../venues/venues.schema"
 import {
   getProfileBookingsHandler,
   getProfileHandler,
-  getProfilesHandler,
   getProfileVenuesHandler,
+  getProfilesHandler,
   updateProfileHandler,
   updateProfileMediaHandler
 } from "./profiles.controller"
@@ -17,8 +17,8 @@ import {
   displayProfileSchema,
   profileMediaSchema,
   profileNameSchema,
-  profilesQuerySchema,
   profileVenueManagerSchema,
+  profilesQuerySchema,
   queryFlagsSchema
 } from "./profiles.schema"
 

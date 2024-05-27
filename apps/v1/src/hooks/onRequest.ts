@@ -14,7 +14,7 @@ export default fp(async fastify => {
 
     // Convert glob pattern to regex pattern
     const patterns = TARGET_ENDPOINTS.map(
-      pattern => new RegExp("^" + pattern.replace(/\*/g, "[^/]+") + "$")
+      pattern => new RegExp(`^${pattern.replace(/\*/g, "[^/]+")}$`)
     )
     const shouldRemoveHeader = patterns.some(pattern => pattern.test(url))
     const isTargetMethod = TARGET_METHODS.includes(method)
@@ -24,6 +24,7 @@ export default fp(async fastify => {
       shouldRemoveHeader &&
       isTargetMethod
     ) {
+      // biome-ignore lint/performance/noDelete: Using delete rather than setting to undefined
       delete req.headers["content-type"]
     }
 

@@ -1,5 +1,5 @@
-import type { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard, verifyPassword } from "@noroff/api-utils"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Unauthorized } from "http-errors"
 
 import type { CreateProfileInput } from "../profiles/profiles.schema"
@@ -52,9 +52,7 @@ export async function loginHandler(
   })
 
   if (correctPassword) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, salt, ...rest } = profile
-    // generate access token
     return reply.code(200).send({
       accessToken: request.jwt.sign(rest),
       name: profile.name,

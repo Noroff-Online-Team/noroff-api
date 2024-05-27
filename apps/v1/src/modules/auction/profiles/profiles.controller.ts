@@ -1,6 +1,10 @@
-import type { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import type { AuctionBid, AuctionListing, AuctionProfile } from "@prisma/v1-client"
+import type {
+  AuctionBid,
+  AuctionListing,
+  AuctionProfile
+} from "@prisma/v1-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import type { AuctionListingIncludes } from "../listings/listings.controller"

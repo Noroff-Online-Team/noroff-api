@@ -1,5 +1,5 @@
-import type { FastifyReply, FastifyRequest } from "fastify"
 import type { HolidazeBooking, HolidazeProfile } from "@prisma/v1-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { getVenue } from "../venues/venues.service"
@@ -10,7 +10,10 @@ import {
   getBookings,
   updateBooking
 } from "./booking.service"
-import type { CreateBookingSchema, UpdateBookingSchema } from "./bookings.schema"
+import type {
+  CreateBookingSchema,
+  UpdateBookingSchema
+} from "./bookings.schema"
 
 export interface HolidazeBookingIncludes {
   customer?: boolean

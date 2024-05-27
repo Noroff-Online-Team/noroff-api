@@ -3,7 +3,10 @@ import type { HolidazeBooking } from "@prisma/v1-client"
 import { prisma } from "@/utils"
 
 import type { HolidazeBookingIncludes } from "./bookings.controller"
-import type { CreateBookingSchema, UpdateBookingSchema } from "./bookings.schema"
+import type {
+  CreateBookingSchema,
+  UpdateBookingSchema
+} from "./bookings.schema"
 
 export async function getBookings(
   sort: keyof HolidazeBooking = "id",
