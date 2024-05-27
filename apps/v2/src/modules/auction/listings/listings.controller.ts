@@ -1,18 +1,23 @@
-import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { AuctionBid, AuctionListing, Prisma, UserProfile } from "@prisma/v2-client"
+import type {
+  AuctionBid,
+  AuctionListing,
+  Prisma,
+  UserProfile
+} from "@prisma/v2-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { getProfile } from "./../profiles/profiles.service"
 import {
+  type CreateListingSchema,
+  type UpdateListingSchema,
   bidBodySchema,
-  CreateListingSchema,
   listingIdParamsSchema,
   listingQuerySchema,
   mediaSchema,
   queryFlagsSchema,
-  searchQuerySchema,
-  UpdateListingSchema
+  searchQuerySchema
 } from "./listings.schema"
 import {
   createListing,
@@ -50,7 +55,8 @@ export async function getListingsHandler(
   }>
 ) {
   await listingQuerySchema.parseAsync(request.query)
-  const { sort, sortOrder, limit, page, _bids, _seller, _tag, _active } = request.query
+  const { sort, sortOrder, limit, page, _bids, _seller, _tag, _active } =
+    request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -61,7 +67,15 @@ export async function getListingsHandler(
     seller: Boolean(_seller)
   }
 
-  const listings = await getListings(sort, sortOrder, limit, page, includes, _tag, _active)
+  const listings = await getListings(
+    sort,
+    sortOrder,
+    limit,
+    page,
+    includes,
+    _tag,
+    _active
+  )
 
   return listings
 }
@@ -227,7 +241,10 @@ export async function createListingBidHandler(
     throw new BadRequest("You do not have enough balance to bid this amount")
   }
 
-  const currentHighestBid = Math.max(...listing.data.bids.map(bid => bid.amount), 0)
+  const currentHighestBid = Math.max(
+    ...listing.data.bids.map(bid => bid.amount),
+    0
+  )
   if (currentHighestBid >= amount) {
     throw new BadRequest("Your bid must be higher than the current bid")
   }
@@ -260,7 +277,14 @@ export async function searchListingsHandler(
     seller: Boolean(_seller)
   }
 
-  const results = await searchListings(sort, sortOrder, limit, page, q, includes)
+  const results = await searchListings(
+    sort,
+    sortOrder,
+    limit,
+    page,
+    q,
+    includes
+  )
 
   return results
 }

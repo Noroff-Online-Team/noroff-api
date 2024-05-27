@@ -1,8 +1,13 @@
-import { BlogPost } from "@prisma/v2-client"
+import type { BlogPost } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 
-import { CreatePostBaseSchema, CreatePostSchema, DisplayBlogPost, Media } from "./posts.schema"
+import type {
+  CreatePostBaseSchema,
+  CreatePostSchema,
+  DisplayBlogPost,
+  Media
+} from "./posts.schema"
 
 export async function getPosts(
   sort: keyof BlogPost = "created",
@@ -96,7 +101,9 @@ export async function getPost(id: string, name: string) {
     }
   }
 
-  return { data: { ...post, media: transformedMedia } } as { data: DisplayBlogPost }
+  return { data: { ...post, media: transformedMedia } } as {
+    data: DisplayBlogPost
+  }
 }
 
 export async function createPost(createPostData: CreatePostSchema) {
@@ -121,7 +128,10 @@ export async function createPost(createPostData: CreatePostSchema) {
   return { data }
 }
 
-export async function updatePost(id: string, updatePostData: CreatePostBaseSchema) {
+export async function updatePost(
+  id: string,
+  updatePostData: CreatePostBaseSchema
+) {
   const { media, ...restData } = updatePostData
 
   const data = await db.blogPost.update({

@@ -125,7 +125,11 @@ describe("[POST] /auth/register", () => {
     await server.inject({
       url: "/auth/register",
       method: "POST",
-      payload: { name: TEST_USER_NAME, email: TEST_USER_EMAIL, password: TEST_USER_PASSWORD }
+      payload: {
+        name: TEST_USER_NAME,
+        email: TEST_USER_EMAIL,
+        password: TEST_USER_PASSWORD
+      }
     })
     const response = await server.inject({
       url: "/auth/register",

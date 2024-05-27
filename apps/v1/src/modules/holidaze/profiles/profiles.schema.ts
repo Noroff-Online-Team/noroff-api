@@ -42,7 +42,10 @@ export const profileCore = {
       invalid_type_error: "Email must be a string"
     })
     .email()
-    .regex(/^[\w\-.]+@(stud\.)?noroff\.no$/, "Only noroff.no emails are allowed to register")
+    .regex(
+      /^[\w\-.]+@(stud\.)?noroff\.no$/,
+      "Only noroff.no emails are allowed to register"
+    )
     .trim(),
   ...profileMedia,
   ...profileVenueManager
@@ -87,8 +90,12 @@ export const displayProfileSchema = z.object({
 })
 
 const queryFlagsCore = {
-  _bookings: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _venues: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _bookings: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _venues: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
@@ -106,7 +113,7 @@ export const profilesQuerySchema = z.object({
     .optional(),
   limit: z
     .preprocess(
-      val => parseInt(val as string, 10),
+      val => Number.parseInt(val as string, 10),
       z
         .number({
           invalid_type_error: "Limit must be a number"
@@ -117,7 +124,7 @@ export const profilesQuerySchema = z.object({
     .optional(),
   offset: z
     .preprocess(
-      val => parseInt(val as string, 10),
+      val => Number.parseInt(val as string, 10),
       z
         .number({
           invalid_type_error: "Offset must be a number"

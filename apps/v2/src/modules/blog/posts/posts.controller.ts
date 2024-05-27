@@ -1,16 +1,22 @@
-import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { BlogPost, UserProfile } from "@prisma/v2-client"
+import type { BlogPost, UserProfile } from "@prisma/v2-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import {
-  CreatePostBaseSchema,
+  type CreatePostBaseSchema,
   mediaSchema,
   postIdWithNameParamsSchema,
   postsQuerySchema,
   profileNameSchema
 } from "./posts.schema"
-import { createPost, deletePost, getPost, getPosts, updatePost } from "./posts.service"
+import {
+  createPost,
+  deletePost,
+  getPost,
+  getPosts,
+  updatePost
+} from "./posts.service"
 
 export async function getPostsHandler(
   request: FastifyRequest<{
@@ -45,7 +51,9 @@ export async function getPostHandler(
     }
   }>
 ) {
-  const { id, name } = await postIdWithNameParamsSchema.parseAsync(request.params)
+  const { id, name } = await postIdWithNameParamsSchema.parseAsync(
+    request.params
+  )
 
   const post = await getPost(id, name)
 
@@ -63,13 +71,17 @@ export async function createPostHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { name: paramsName } = await profileNameSchema.parseAsync(request.params)
+  const { name: paramsName } = await profileNameSchema.parseAsync(
+    request.params
+  )
   await mediaSchema.parseAsync(request.body)
   const { name } = request.user as UserProfile
   const { media } = request.body
 
   if (name.toLowerCase() !== paramsName.toLowerCase()) {
-    throw new Forbidden("You do not have permission to create a post for another user")
+    throw new Forbidden(
+      "You do not have permission to create a post for another user"
+    )
   }
 
   if (media?.url) {
@@ -90,7 +102,9 @@ export async function deletePostHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { id, name: paramsName } = await postIdWithNameParamsSchema.parseAsync(request.params)
+  const { id, name: paramsName } = await postIdWithNameParamsSchema.parseAsync(
+    request.params
+  )
   const { name } = request.user as UserProfile
 
   if (name.toLowerCase() !== paramsName.toLowerCase()) {
@@ -117,7 +131,9 @@ export async function updatePostHandler(
     Body: CreatePostBaseSchema
   }>
 ) {
-  const { id, name: paramsName } = await postIdWithNameParamsSchema.parseAsync(request.params)
+  const { id, name: paramsName } = await postIdWithNameParamsSchema.parseAsync(
+    request.params
+  )
   const { name } = request.user as UserProfile
   const { media } = request.body
 

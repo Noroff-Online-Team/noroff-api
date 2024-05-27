@@ -1,7 +1,14 @@
-import { FastifyInstance } from "fastify"
-import { createResponseSchema, sortAndPaginationSchema } from "@noroff/api-utils"
+import {
+  createResponseSchema,
+  sortAndPaginationSchema
+} from "@noroff/api-utils"
+import type { FastifyInstance } from "fastify"
 
-import { getJokeHandler, getJokesHandler, getRandomJokeHandler } from "./jokes.controller"
+import {
+  getJokeHandler,
+  getJokesHandler,
+  getRandomJokeHandler
+} from "./jokes.controller"
 import { jokeParamsSchema, jokeSchema } from "./jokes.schema"
 
 async function jokeRoutes(server: FastifyInstance) {

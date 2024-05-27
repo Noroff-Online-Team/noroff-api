@@ -24,13 +24,18 @@ export const bookingCore = {
 export const displayBookingSchema = z.object(bookingCore)
 
 const queryFlagsCore = {
-  _customer: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _venue: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _customer: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _venue: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
 
-export const bookingsQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore)
+export const bookingsQuerySchema =
+  sortAndPaginationSchema.extend(queryFlagsCore)
 
 export const createBookingSchema = z.object({
   dateFrom: z.preprocess(

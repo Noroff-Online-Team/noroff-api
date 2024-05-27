@@ -2,7 +2,7 @@ import { hashPassword } from "@noroff/api-utils"
 
 import { prisma } from "@/utils"
 
-import { CreateProfileInput } from "../profiles/profiles.schema"
+import type { CreateProfileInput } from "../profiles/profiles.schema"
 
 const DEFAULT_CREDITS = 1000
 

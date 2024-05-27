@@ -1,9 +1,13 @@
-import type { HTMLAttributes } from "react"
-import { CodeBlock, Pre, type CodeBlockProps } from "fumadocs-ui/components/codeblock"
+import {
+  CodeBlock,
+  type CodeBlockProps,
+  Pre
+} from "fumadocs-ui/components/codeblock"
 import { ImageZoom } from "fumadocs-ui/components/image-zoom"
 import { TypeTable } from "fumadocs-ui/components/type-table"
 import defaultComponents from "fumadocs-ui/mdx"
 import type { MDXComponents } from "mdx/types"
+import type { HTMLAttributes } from "react"
 
 import { Callout } from "@/components/callout"
 import { EndpointDetails } from "@/components/endpoint-details"
@@ -33,6 +37,7 @@ type EndpointDetailsType = {
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     ...defaultComponents,
+    // biome-ignore lint/suspicious/noExplicitAny: type mismatch between ImageZoomProps and props. Any works fine here.
     img: (props: any) => <ImageZoom {...props} />,
     pre: ({ title, className, icon, allowCopy, ...props }: CodeBlockProps) => (
       <CodeBlock title={title} icon={icon} allowCopy={allowCopy}>
@@ -40,12 +45,22 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       </CodeBlock>
     ),
     blockquote: (props: React.QuoteHTMLAttributes<HTMLQuoteElement>) => (
-      <div className="px-3 my-4 text-sm border rounded-lg shadow-md">{props.children}</div>
+      <div className="px-3 my-4 text-sm border rounded-lg shadow-md">
+        {props.children}
+      </div>
     ),
-    Hr: (props: HTMLAttributes<HTMLHRElement>) => <hr {...props} className="my-8 border-[hsl(var(--border))]" />,
-    EndpointDetails: (props: HTMLAttributes<HTMLDivElement> & EndpointDetailsType) => <EndpointDetails {...props} />,
-    TypeTable: (props: HTMLAttributes<HTMLDivElement> & { type: TypeTableObjectType }) => <TypeTable {...props} />,
-    Callout: (props: HTMLAttributes<HTMLDivElement> & CalloutType) => <Callout {...props}>{props.children}</Callout>,
+    Hr: (props: HTMLAttributes<HTMLHRElement>) => (
+      <hr {...props} className="my-8 border-[hsl(var(--border))]" />
+    ),
+    EndpointDetails: (
+      props: HTMLAttributes<HTMLDivElement> & EndpointDetailsType
+    ) => <EndpointDetails {...props} />,
+    TypeTable: (
+      props: HTMLAttributes<HTMLDivElement> & { type: TypeTableObjectType }
+    ) => <TypeTable {...props} />,
+    Callout: (props: HTMLAttributes<HTMLDivElement> & CalloutType) => (
+      <Callout {...props}>{props.children}</Callout>
+    ),
     ...components
   }
 }

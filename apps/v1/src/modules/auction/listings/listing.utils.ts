@@ -2,7 +2,7 @@ import schedule from "node-schedule"
 
 import { prisma } from "@/utils"
 
-import { ListingWithBids } from "./listings.controller"
+import type { ListingWithBids } from "./listings.controller"
 import { getListing } from "./listings.service"
 
 /**
@@ -11,7 +11,11 @@ import { getListing } from "./listings.service"
  * @param increment amount of credits to award
  * @param max maximum amount of credits that is allowed
  */
-export async function awardCreditsOrCap(name: string, increment: number, max = 1_000_000) {
+export async function awardCreditsOrCap(
+  name: string,
+  increment: number,
+  max = 1_000_000
+) {
   const user = await prisma.auctionProfile.findUnique({
     where: { name }
   })
@@ -30,14 +34,21 @@ export async function awardCreditsOrCap(name: string, increment: number, max = 1
  * @param listingId id of the listing to schedule
  * @param endsAt date when listing ends
  */
-export async function scheduleCreditsTransfer(listingId: string, endsAt: Date): Promise<void> {
+export async function scheduleCreditsTransfer(
+  listingId: string,
+  endsAt: Date
+): Promise<void> {
   schedule.scheduleJob(endsAt, async () => {
     // Get listing
-    const listing = (await getListing(listingId, { bids: true })) as ListingWithBids
+    const listing = (await getListing(listingId, {
+      bids: true
+    })) as ListingWithBids
 
     if (listing && listing.bids.length > 0) {
       // Get highest bid of listing
-      const [winner, ...losers] = listing.bids.sort((a, b) => b.amount - a.amount)
+      const [winner, ...losers] = listing.bids.sort(
+        (a, b) => b.amount - a.amount
+      )
 
       // Add listing id to winner wins
       await prisma.auctionProfile.update({
@@ -51,7 +62,9 @@ export async function scheduleCreditsTransfer(listingId: string, endsAt: Date): 
       await awardCreditsOrCap(listing.sellerName, winner.amount)
 
       // Transfer all non-winning bids back to their bidders
-      await Promise.all(losers.map(bid => awardCreditsOrCap(bid.bidderName, bid.amount)))
+      await Promise.all(
+        losers.map(bid => awardCreditsOrCap(bid.bidderName, bid.amount))
+      )
     }
   })
 }

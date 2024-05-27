@@ -125,7 +125,7 @@ describe("[GET] /social/profiles/:id/posts", () => {
 
   it("should throw 404 error when attempting to access profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/social/profiles/does_not_exist/posts`,
+      url: "/social/profiles/does_not_exist/posts",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

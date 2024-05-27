@@ -1,4 +1,12 @@
 {
   "title": "Basic",
-  "pages": ["books", "cat-facts", "jokes", "nba-teams", "old-games", "online-shop", "quotes"]
+  "pages": [
+    "books",
+    "cat-facts",
+    "jokes",
+    "nba-teams",
+    "old-games",
+    "online-shop",
+    "quotes"
+  ]
 }

@@ -1,10 +1,18 @@
-import { FastifyReply, FastifyRequest } from "fastify"
 import { mediaGuard } from "@noroff/api-utils"
-import { AuctionBid, AuctionListing, AuctionProfile, Prisma } from "@prisma/v1-client"
+import type {
+  AuctionBid,
+  AuctionListing,
+  AuctionProfile,
+  Prisma
+} from "@prisma/v1-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { getProfile } from "../profiles/profiles.service"
-import { CreateListingSchema, UpdateListingSchema } from "./listings.schema"
+import type {
+  CreateListingSchema,
+  UpdateListingSchema
+} from "./listings.schema"
 import {
   createListing,
   createListingBid,
@@ -14,7 +22,9 @@ import {
   updateListing
 } from "./listings.service"
 
-export type ListingWithBids = Prisma.PromiseReturnType<typeof getListing> & { bids: Array<AuctionBid> | [] }
+export type ListingWithBids = Prisma.PromiseReturnType<typeof getListing> & {
+  bids: Array<AuctionBid> | []
+}
 
 export interface AuctionListingIncludes {
   bids?: boolean
@@ -36,7 +46,8 @@ export async function getListingsHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { sort, sortOrder, limit, offset, _bids, _seller, _tag, _active } = request.query
+  const { sort, sortOrder, limit, offset, _bids, _seller, _tag, _active } =
+    request.query
 
   if (limit && limit > 100) {
     throw new BadRequest("Limit cannot be greater than 100")
@@ -47,7 +58,15 @@ export async function getListingsHandler(
     seller: Boolean(_seller)
   }
 
-  const listings = await getListings(sort, sortOrder, limit, offset, includes, _tag, _active)
+  const listings = await getListings(
+    sort,
+    sortOrder,
+    limit,
+    offset,
+    includes,
+    _tag,
+    _active
+  )
   reply.code(200).send(listings)
 }
 

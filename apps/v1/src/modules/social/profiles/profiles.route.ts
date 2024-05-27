@@ -1,4 +1,4 @@
-import { FastifyInstance } from "fastify"
+import type { FastifyInstance } from "fastify"
 
 import { displayPostSchema, postsQuerySchema } from "../posts/posts.schema"
 import {

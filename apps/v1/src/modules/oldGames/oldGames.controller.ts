@@ -1,4 +1,4 @@
-import { FastifyRequest } from "fastify"
+import type { FastifyRequest } from "fastify"
 import { NotFound } from "http-errors"
 
 import { getOldGame, getOldGames, getRandomOldGame } from "./oldGames.service"

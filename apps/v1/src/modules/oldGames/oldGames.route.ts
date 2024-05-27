@@ -1,6 +1,10 @@
-import { FastifyInstance } from "fastify"
+import type { FastifyInstance } from "fastify"
 
-import { getOldGameHandler, getOldGamesHandler, getRandomOldGameHandler } from "./oldGames.controller"
+import {
+  getOldGameHandler,
+  getOldGamesHandler,
+  getRandomOldGameHandler
+} from "./oldGames.controller"
 import { oldGameParamsSchema, oldGameResponseSchema } from "./oldGames.schema"
 
 async function oldGameRoutes(server: FastifyInstance) {

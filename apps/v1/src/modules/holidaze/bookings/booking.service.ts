@@ -1,9 +1,12 @@
-import { HolidazeBooking } from "@prisma/v1-client"
+import type { HolidazeBooking } from "@prisma/v1-client"
 
 import { prisma } from "@/utils"
 
-import { HolidazeBookingIncludes } from "./bookings.controller"
-import { CreateBookingSchema, UpdateBookingSchema } from "./bookings.schema"
+import type { HolidazeBookingIncludes } from "./bookings.controller"
+import type {
+  CreateBookingSchema,
+  UpdateBookingSchema
+} from "./bookings.schema"
 
 export async function getBookings(
   sort: keyof HolidazeBooking = "id",
@@ -12,7 +15,9 @@ export async function getBookings(
   offset = 0,
   includes: HolidazeBookingIncludes = {}
 ) {
-  const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
+  const venueMetaAndLocation = includes.venue
+    ? { venue: { include: { meta: true, location: true } } }
+    : {}
 
   return await prisma.holidazeBooking.findMany({
     orderBy: {
@@ -27,8 +32,13 @@ export async function getBookings(
   })
 }
 
-export async function getBooking(id: string, includes: HolidazeBookingIncludes = {}) {
-  const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
+export async function getBooking(
+  id: string,
+  includes: HolidazeBookingIncludes = {}
+) {
+  const venueMetaAndLocation = includes.venue
+    ? { venue: { include: { meta: true, location: true } } }
+    : {}
 
   return await prisma.holidazeBooking.findUnique({
     where: { id },
@@ -39,8 +49,13 @@ export async function getBooking(id: string, includes: HolidazeBookingIncludes =
   })
 }
 
-export async function createBooking(data: CreateBookingSchema, includes: HolidazeBookingIncludes = {}) {
-  const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
+export async function createBooking(
+  data: CreateBookingSchema,
+  includes: HolidazeBookingIncludes = {}
+) {
+  const venueMetaAndLocation = includes.venue
+    ? { venue: { include: { meta: true, location: true } } }
+    : {}
 
   return await prisma.holidazeBooking.create({
     data: {
@@ -55,8 +70,14 @@ export async function createBooking(data: CreateBookingSchema, includes: Holidaz
   })
 }
 
-export async function updateBooking(id: string, data: UpdateBookingSchema, includes: HolidazeBookingIncludes = {}) {
-  const venueMetaAndLocation = includes.venue ? { venue: { include: { meta: true, location: true } } } : {}
+export async function updateBooking(
+  id: string,
+  data: UpdateBookingSchema,
+  includes: HolidazeBookingIncludes = {}
+) {
+  const venueMetaAndLocation = includes.venue
+    ? { venue: { include: { meta: true, location: true } } }
+    : {}
 
   return await prisma.holidazeBooking.update({
     where: { id },

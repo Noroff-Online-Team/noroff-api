@@ -8,7 +8,10 @@ let USER_NAME = ""
 let SECOND_USER_NAME = ""
 
 beforeEach(async () => {
-  const { name: secondUserName } = await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
+  const { name: secondUserName } = await registerUser({
+    name: "test_user_two",
+    email: "test_user_two@noroff.no"
+  })
   const { bearerToken, apiKey, name } = await getAuthCredentials()
 
   BEARER_TOKEN = bearerToken
@@ -100,7 +103,7 @@ describe("[PUT] /social/profiles/:id/follow", () => {
 
   it("should throw 404 error when profile does not exist", async () => {
     const response = await server.inject({
-      url: `/social/profiles/does_not_exist/follow`,
+      url: "/social/profiles/does_not_exist/follow",
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

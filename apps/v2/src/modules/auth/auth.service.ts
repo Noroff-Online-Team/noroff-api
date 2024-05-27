@@ -2,8 +2,8 @@ import { hashPassword } from "@noroff/api-utils"
 
 import { db } from "@/utils"
 
-import { AuthLoginIncludes } from "./auth.controller"
-import { CreateProfileInput } from "./auth.schema"
+import type { AuthLoginIncludes } from "./auth.controller"
+import type { CreateProfileInput } from "./auth.schema"
 
 const DEFAULT_AVATAR = {
   url: "https://images.unsplash.com/photo-1579547945413-497e1b99dac0?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&h=400&w=400",
@@ -41,7 +41,10 @@ export async function createProfile(input: CreateProfileInput) {
   return { data: profile }
 }
 
-export async function findProfileByEmail(email: string, includes: AuthLoginIncludes = {}) {
+export async function findProfileByEmail(
+  email: string,
+  includes: AuthLoginIncludes = {}
+) {
   const includeHolidaze = includes.holidaze ? { venueManager: true } : {}
 
   const data = await db.userProfile.findUnique({

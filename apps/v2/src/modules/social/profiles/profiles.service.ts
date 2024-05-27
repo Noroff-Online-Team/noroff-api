@@ -1,10 +1,10 @@
-import { SocialPost, UserProfile } from "@prisma/v2-client"
+import type { SocialPost, UserProfile } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 
-import { SocialPostIncludes } from "../posts/posts.controller"
-import { ProfileIncludes } from "./profiles.controller"
-import { UpdateProfileSchema } from "./profiles.schema"
+import type { SocialPostIncludes } from "../posts/posts.controller"
+import type { ProfileIncludes } from "./profiles.controller"
+import type { UpdateProfileSchema } from "./profiles.schema"
 
 export async function getProfiles(
   sort: keyof UserProfile = "name",
@@ -13,9 +13,15 @@ export async function getProfiles(
   page = 1,
   includes: ProfileIncludes = {}
 ) {
-  const withFollowersMedia = includes.followers ? { followers: { include: { avatar: true, banner: true } } } : {}
-  const withFollowingMedia = includes.following ? { following: { include: { avatar: true, banner: true } } } : {}
-  const withPostMedia = includes.posts ? { posts: { include: { media: true } } } : {}
+  const withFollowersMedia = includes.followers
+    ? { followers: { include: { avatar: true, banner: true } } }
+    : {}
+  const withFollowingMedia = includes.following
+    ? { following: { include: { avatar: true, banner: true } } }
+    : {}
+  const withPostMedia = includes.posts
+    ? { posts: { include: { media: true } } }
+    : {}
 
   const [data, meta] = await db.userProfile
     .paginate({
@@ -46,10 +52,19 @@ export async function getProfiles(
   return { data, meta }
 }
 
-export const getProfile = async (name: string, includes: ProfileIncludes = {}) => {
-  const withFollowersMedia = includes.followers ? { followers: { include: { avatar: true, banner: true } } } : {}
-  const withFollowingMedia = includes.following ? { following: { include: { avatar: true, banner: true } } } : {}
-  const withPostMedia = includes.posts ? { posts: { include: { media: true } } } : {}
+export const getProfile = async (
+  name: string,
+  includes: ProfileIncludes = {}
+) => {
+  const withFollowersMedia = includes.followers
+    ? { followers: { include: { avatar: true, banner: true } } }
+    : {}
+  const withFollowingMedia = includes.following
+    ? { following: { include: { avatar: true, banner: true } } }
+    : {}
+  const withPostMedia = includes.posts
+    ? { posts: { include: { media: true } } }
+    : {}
 
   const [data] = await db.userProfile
     .paginate({
@@ -77,7 +92,10 @@ export const getProfile = async (name: string, includes: ProfileIncludes = {}) =
   return { data: data[0] }
 }
 
-export const updateProfile = async (name: string, { avatar, banner, ...updateData }: UpdateProfileSchema) => {
+export const updateProfile = async (
+  name: string,
+  { avatar, banner, ...updateData }: UpdateProfileSchema
+) => {
   const data = await db.userProfile.update({
     where: { name },
     data: {
@@ -163,9 +181,15 @@ export const getProfilePosts = async (
   tag: string | undefined
 ) => {
   const whereTag = tag ? { tags: { has: tag } } : {}
-  const withAuthorMedia = includes.author ? { author: { include: { avatar: true, banner: true } } } : {}
+  const withAuthorMedia = includes.author
+    ? { author: { include: { avatar: true, banner: true } } }
+    : {}
   const withCommentAuthor = includes.comments
-    ? { comments: { include: { author: { include: { avatar: true, banner: true } } } } }
+    ? {
+        comments: {
+          include: { author: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const [data, meta] = await db.socialPost
@@ -206,14 +230,23 @@ export async function searchProfiles(
   query: string,
   includes: ProfileIncludes = {}
 ) {
-  const withFollowersMedia = includes.followers ? { followers: { include: { avatar: true, banner: true } } } : {}
-  const withFollowingMedia = includes.following ? { following: { include: { avatar: true, banner: true } } } : {}
-  const withPostMedia = includes.posts ? { posts: { include: { media: true } } } : {}
+  const withFollowersMedia = includes.followers
+    ? { followers: { include: { avatar: true, banner: true } } }
+    : {}
+  const withFollowingMedia = includes.following
+    ? { following: { include: { avatar: true, banner: true } } }
+    : {}
+  const withPostMedia = includes.posts
+    ? { posts: { include: { media: true } } }
+    : {}
 
   const [data, meta] = await db.userProfile
     .paginate({
       where: {
-        OR: [{ name: { contains: query, mode: "insensitive" } }, { bio: { contains: query, mode: "insensitive" } }]
+        OR: [
+          { name: { contains: query, mode: "insensitive" } },
+          { bio: { contains: query, mode: "insensitive" } }
+        ]
       },
       include: {
         ...includes,

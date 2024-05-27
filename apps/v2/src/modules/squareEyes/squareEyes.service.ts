@@ -1,4 +1,4 @@
-import { SquareEyesProduct } from "@prisma/v2-client"
+import type { SquareEyesProduct } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 

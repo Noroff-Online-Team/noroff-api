@@ -69,7 +69,10 @@ describe("[POST] /auction/listings", () => {
     })
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({})
-    expect(scheduleCreditsTransfer).toHaveBeenCalledWith(expect.any(String), expect.any(Date))
+    expect(scheduleCreditsTransfer).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.any(Date)
+    )
   })
 
   it("should throw zod errors if data is invalid", async () => {

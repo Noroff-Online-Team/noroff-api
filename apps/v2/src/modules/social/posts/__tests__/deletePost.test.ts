@@ -10,10 +10,11 @@ let SECOND_API_KEY = ""
 
 beforeEach(async () => {
   const { name, bearerToken, apiKey } = await getAuthCredentials()
-  const { bearerToken: secondBearerToken, apiKey: secondApiKey } = await getAuthCredentials({
-    name: "test_user_two",
-    email: "test_user_two@noroff.no"
-  })
+  const { bearerToken: secondBearerToken, apiKey: secondApiKey } =
+    await getAuthCredentials({
+      name: "test_user_two",
+      email: "test_user_two@noroff.no"
+    })
 
   BEARER_TOKEN = bearerToken
   API_KEY = apiKey
@@ -56,7 +57,7 @@ describe("[DELETE] /social/posts/:id", () => {
 
   it("should throw 404 error if post does not exist", async () => {
     const response = await server.inject({
-      url: `/social/posts/3`,
+      url: "/social/posts/3",
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

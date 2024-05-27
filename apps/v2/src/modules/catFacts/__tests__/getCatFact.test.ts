@@ -34,7 +34,9 @@ describe("[GET] /cat-facts/:id", () => {
     expect(response.statusCode).toBe(200)
     expect(res.data).toBeDefined()
     expect(res.data.id).toBeDefined()
-    expect(res.data.text).toBe("On average, cats spend 2/3 of every day sleeping")
+    expect(res.data.text).toBe(
+      "On average, cats spend 2/3 of every day sleeping"
+    )
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({})
   })

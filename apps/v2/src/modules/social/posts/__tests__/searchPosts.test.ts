@@ -40,7 +40,7 @@ afterEach(async () => {
 describe("[GET] /social/posts/search", () => {
   it("should return posts that contain query in either title or body", async () => {
     const response = await server.inject({
-      url: `/social/posts/search?q=awesome`,
+      url: "/social/posts/search?q=awesome",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -56,7 +56,7 @@ describe("[GET] /social/posts/search", () => {
 
   it("should return empty array if no posts match query", async () => {
     const response = await server.inject({
-      url: `/social/posts/search?q=random`,
+      url: "/social/posts/search?q=random",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -71,7 +71,7 @@ describe("[GET] /social/posts/search", () => {
 
   it("should return posts with pagination and sort", async () => {
     const response = await server.inject({
-      url: `/social/posts/search?q=post&sort=title&sortOrder=asc&limit=1&page=1`,
+      url: "/social/posts/search?q=post&sort=title&sortOrder=asc&limit=1&page=1",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -96,7 +96,7 @@ describe("[GET] /social/posts/search", () => {
 
   it("should throw zod error if query param is missing", async () => {
     const response = await server.inject({
-      url: `/social/posts/search`,
+      url: "/social/posts/search",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -117,7 +117,7 @@ describe("[GET] /social/posts/search", () => {
 
   it("should throw zod error if query param is empty", async () => {
     const response = await server.inject({
-      url: `/social/posts/search?q=`,
+      url: "/social/posts/search?q=",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

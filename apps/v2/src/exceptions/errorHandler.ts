@@ -1,16 +1,24 @@
-import type { FastifyError, FastifyReply, FastifyRequest } from "fastify"
 import { Prisma } from "@prisma/v2-client"
+import type { FastifyError, FastifyReply, FastifyRequest } from "fastify"
 import { isHttpError } from "http-errors"
 import statuses from "statuses"
-import { ZodError, ZodIssueCode } from "zod"
+import { ZodError, type ZodIssueCode } from "zod"
 
 type ErrorHandlerStrategy = (error: FastifyError) => {
   statusCode: number
-  errors: Array<{ message: string; code?: ZodIssueCode; path?: Array<string | number> }>
+  errors: Array<{
+    message: string
+    code?: ZodIssueCode
+    path?: Array<string | number>
+  }>
 } | null
 
 interface ErrorResponse {
-  errors: Array<{ message: string; code?: ZodIssueCode; path?: Array<string | number> }>
+  errors: Array<{
+    message: string
+    code?: ZodIssueCode
+    path?: Array<string | number>
+  }>
   status: string
   statusCode: number
 }
@@ -55,7 +63,8 @@ const jwtErrorHandler: ErrorHandlerStrategy = error => {
         break
       case "FST_JWT_BAD_REQUEST":
         statusCode = 400
-        customMessage = "Bad format in request authorization header. Correct format is Authorization: Bearer [token]"
+        customMessage =
+          "Bad format in request authorization header. Correct format is Authorization: Bearer [token]"
         break
       default:
         statusCode = 401
@@ -115,17 +124,22 @@ const prismaErrorHandler: ErrorHandlerStrategy = error => {
       statusCode,
       errors: [{ message: customMessage }]
     }
-  } else if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+  }
+  if (error instanceof Prisma.PrismaClientUnknownRequestError) {
     return {
       statusCode: 500,
       errors: [{ message: "An unknown database error occurred." }]
     }
-  } else if (error instanceof Prisma.PrismaClientInitializationError) {
+  }
+  if (error instanceof Prisma.PrismaClientInitializationError) {
     return {
       statusCode: 500,
-      errors: [{ message: "Database initialization failed. Is the database running?" }]
+      errors: [
+        { message: "Database initialization failed. Is the database running?" }
+      ]
     }
-  } else if (error instanceof Prisma.PrismaClientRustPanicError) {
+  }
+  if (error instanceof Prisma.PrismaClientRustPanicError) {
     return {
       statusCode: 500,
       errors: [{ message: "A critical error occurred in the database engine." }]
@@ -142,7 +156,11 @@ const errorHandlers: ErrorHandlerStrategy[] = [
   prismaErrorHandler
 ]
 
-export default async function (error: FastifyError, request: FastifyRequest, reply: FastifyReply): Promise<void> {
+export default async function (
+  error: FastifyError,
+  request: FastifyRequest,
+  reply: FastifyReply
+): Promise<void> {
   let handledError = null
 
   for (const handler of errorHandlers) {

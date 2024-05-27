@@ -39,7 +39,9 @@ describe("[GET] /jokes", () => {
     expect(res.data).toBeDefined()
     expect(res.data).toHaveLength(2)
     expect(res.data[0].id).toBeDefined()
-    expect(res.data[0].setup).toBe("What did the fish say when it hit the wall?")
+    expect(res.data[0].setup).toBe(
+      "What did the fish say when it hit the wall?"
+    )
     expect(res.data[1].id).toBeDefined()
     expect(res.data[1].setup).toBe("How do you make a tissue dance?")
     expect(res.meta).toBeDefined()
@@ -65,7 +67,9 @@ describe("[GET] /jokes", () => {
     expect(res.data).toBeDefined()
     expect(res.data).toHaveLength(2)
     expect(res.data[0].id).toBeDefined()
-    expect(res.data[0].setup).toBe("What did the fish say when it hit the wall?")
+    expect(res.data[0].setup).toBe(
+      "What did the fish say when it hit the wall?"
+    )
     expect(res.data[1].id).toBeDefined()
     expect(res.data[1].setup).toBe("How do you make a tissue dance?")
     expect(res.meta).toBeDefined()
@@ -91,7 +95,9 @@ describe("[GET] /jokes", () => {
     expect(res.data).toBeDefined()
     expect(res.data).toHaveLength(1)
     expect(res.data[0].id).toBeDefined()
-    expect(res.data[0].setup).toBe("What did the fish say when it hit the wall?")
+    expect(res.data[0].setup).toBe(
+      "What did the fish say when it hit the wall?"
+    )
     expect(res.meta).toBeDefined()
     expect(res.meta).toStrictEqual({
       isFirstPage: true,

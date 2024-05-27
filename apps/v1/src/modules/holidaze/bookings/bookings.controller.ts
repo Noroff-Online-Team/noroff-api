@@ -1,10 +1,19 @@
-import { FastifyReply, FastifyRequest } from "fastify"
-import { HolidazeBooking, HolidazeProfile } from "@prisma/v1-client"
+import type { HolidazeBooking, HolidazeProfile } from "@prisma/v1-client"
+import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
 import { getVenue } from "../venues/venues.service"
-import { createBooking, deleteBooking, getBooking, getBookings, updateBooking } from "./booking.service"
-import { CreateBookingSchema, UpdateBookingSchema } from "./bookings.schema"
+import {
+  createBooking,
+  deleteBooking,
+  getBooking,
+  getBookings,
+  updateBooking
+} from "./booking.service"
+import type {
+  CreateBookingSchema,
+  UpdateBookingSchema
+} from "./bookings.schema"
 
 export interface HolidazeBookingIncludes {
   customer?: boolean

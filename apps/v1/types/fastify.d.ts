@@ -1,4 +1,4 @@
-import { JWT } from "@fastify/jwt"
+import type { JWT } from "@fastify/jwt"
 
 declare module "fastify" {
   interface FastifySchema {
@@ -13,9 +13,9 @@ declare module "fastify" {
     jwt: JWT
   }
   export interface FastifyInstance {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny:
     authenticate: any
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny:
     apiKey: any
   }
 }

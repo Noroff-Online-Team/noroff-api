@@ -1,9 +1,14 @@
 import { getRandomNumber } from "@noroff/api-utils"
-import { Book } from "@prisma/v2-client"
+import type { Book } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 
-export async function getBooks(sort: keyof Book = "id", sortOrder: "asc" | "desc" = "asc", limit = 100, page = 1) {
+export async function getBooks(
+  sort: keyof Book = "id",
+  sortOrder: "asc" | "desc" = "asc",
+  limit = 100,
+  page = 1
+) {
   const [data, meta] = await db.book
     .paginate({
       orderBy: {

@@ -30,7 +30,9 @@ export const listingCore = {
   updated: z.date(),
   endsAt: z.date(),
   bids: z.object(bidCore).array().optional(),
-  seller: displayProfileSchema.omit({ credits: true, listings: true, _count: true }).optional(),
+  seller: displayProfileSchema
+    .omit({ credits: true, listings: true, _count: true })
+    .optional(),
   _count: z
     .object({
       bids: z.number().int().optional()
@@ -42,7 +44,9 @@ export const listingResponseSchema = z.object(listingCore)
 
 export const profileBidsResponseSchema = z.object({
   ...bidCore,
-  listing: listingResponseSchema.omit({ bids: true, seller: true, _count: true }).optional()
+  listing: listingResponseSchema
+    .omit({ bids: true, seller: true, _count: true })
+    .optional()
 })
 
 const tagsAndMedia = {
@@ -75,13 +79,19 @@ export const createListingSchema = z.object({
     })
     .trim()
     .min(LISTING_TITLE_MIN_LENGTH, "Title cannot be empty")
-    .max(LISTING_TITLE_MAX_LENGTH, "Title cannot be greater than 280 characters"),
+    .max(
+      LISTING_TITLE_MAX_LENGTH,
+      "Title cannot be greater than 280 characters"
+    ),
   description: z
     .string({
       invalid_type_error: "Description must be a string"
     })
     .trim()
-    .max(LISTING_DESCRIPTION_MAX_LENGTH, "Description cannot be greater than 280 characters")
+    .max(
+      LISTING_DESCRIPTION_MAX_LENGTH,
+      "Description cannot be greater than 280 characters"
+    )
     .nullish(),
   endsAt: z
     .preprocess(
@@ -93,7 +103,9 @@ export const createListingSchema = z.object({
     .refine(
       date => {
         const today = new Date()
-        const oneYearFromToday = new Date(today.setFullYear(today.getFullYear() + 1))
+        const oneYearFromToday = new Date(
+          today.setFullYear(today.getFullYear() + 1)
+        )
         const now = new Date()
         if (date > oneYearFromToday || date < now) {
           return false
@@ -114,25 +126,38 @@ export const updateListingCore = {
     })
     .trim()
     .min(LISTING_TITLE_MIN_LENGTH, "Title cannot be empty")
-    .max(LISTING_TITLE_MAX_LENGTH, "Title cannot be greater than 280 characters")
+    .max(
+      LISTING_TITLE_MAX_LENGTH,
+      "Title cannot be greater than 280 characters"
+    )
     .nullish(),
   description: z
     .string({
       invalid_type_error: "Description must be a string"
     })
     .trim()
-    .max(LISTING_DESCRIPTION_MAX_LENGTH, "Description cannot be greater than 280 characters")
+    .max(
+      LISTING_DESCRIPTION_MAX_LENGTH,
+      "Description cannot be greater than 280 characters"
+    )
     .nullish(),
   ...tagsAndMedia
 }
 
 export const updateListingSchema = z
   .object(updateListingCore)
-  .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
+  .refine(
+    data => Object.keys(data).length > 0,
+    "You must provide at least one field to update"
+  )
 
 const queryFlagsCore = {
-  _seller: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _bids: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _seller: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _bids: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
@@ -152,7 +177,7 @@ export const listingQuerySchema = z.object({
     .optional(),
   limit: z
     .preprocess(
-      val => parseInt(val as string, 10),
+      val => Number.parseInt(val as string, 10),
       z
         .number({
           invalid_type_error: "Limit must be a number"
@@ -163,7 +188,7 @@ export const listingQuerySchema = z.object({
     .optional(),
   offset: z
     .preprocess(
-      val => parseInt(val as string, 10),
+      val => Number.parseInt(val as string, 10),
       z
         .number({
           invalid_type_error: "Offset must be a number"
@@ -176,7 +201,9 @@ export const listingQuerySchema = z.object({
       invalid_type_error: "Tag must be a string"
     })
     .optional(),
-  _active: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
+  _active: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
   ...queryFlagsCore
 })
 

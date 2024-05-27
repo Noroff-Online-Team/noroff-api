@@ -1,10 +1,13 @@
-import { AuctionListing } from "@prisma/v2-client"
+import type { AuctionListing } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 
 import { scheduleCreditsTransfer } from "./listing.utils"
-import { AuctionListingIncludes } from "./listings.controller"
-import { CreateListingSchema, UpdateListingSchema } from "./listings.schema"
+import type { AuctionListingIncludes } from "./listings.controller"
+import type {
+  CreateListingSchema,
+  UpdateListingSchema
+} from "./listings.schema"
 
 export async function getListings(
   sort: keyof AuctionListing = "title",
@@ -17,9 +20,15 @@ export async function getListings(
 ) {
   const whereTag = tag ? { tags: { has: tag } } : {}
   const whereActive = active ? { endsAt: { gte: new Date() } } : {}
-  const withSellerMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+  const withSellerMedia = includes.seller
+    ? { seller: { include: { avatar: true, banner: true } } }
+    : {}
   const withBidderMedia = includes.bids
-    ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } }
+    ? {
+        bids: {
+          include: { bidder: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const [data, meta] = await db.auctionListing
@@ -51,10 +60,19 @@ export async function getListings(
   return { data, meta }
 }
 
-export async function getListing(id: string, includes: AuctionListingIncludes = {}) {
-  const withSellerMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+export async function getListing(
+  id: string,
+  includes: AuctionListingIncludes = {}
+) {
+  const withSellerMedia = includes.seller
+    ? { seller: { include: { avatar: true, banner: true } } }
+    : {}
   const withBidderMedia = includes.bids
-    ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } }
+    ? {
+        bids: {
+          include: { bidder: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const [data] = await db.auctionListing
@@ -79,10 +97,20 @@ export async function getListing(id: string, includes: AuctionListingIncludes = 
   return { data: data[0] }
 }
 
-export async function createListing(data: CreateListingSchema, seller: string, includes: AuctionListingIncludes = {}) {
-  const withSellerMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+export async function createListing(
+  data: CreateListingSchema,
+  seller: string,
+  includes: AuctionListingIncludes = {}
+) {
+  const withSellerMedia = includes.seller
+    ? { seller: { include: { avatar: true, banner: true } } }
+    : {}
   const withBidderMedia = includes.bids
-    ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } }
+    ? {
+        bids: {
+          include: { bidder: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const listing = await db.auctionListing.create({
@@ -115,9 +143,15 @@ export async function updateListing(
   updateData: UpdateListingSchema,
   includes: AuctionListingIncludes = {}
 ) {
-  const withSellerMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+  const withSellerMedia = includes.seller
+    ? { seller: { include: { avatar: true, banner: true } } }
+    : {}
   const withBidderMedia = includes.bids
-    ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } }
+    ? {
+        bids: {
+          include: { bidder: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const data = await db.auctionListing.update({
@@ -126,7 +160,9 @@ export async function updateListing(
       ...updateData,
       title: updateData.title || undefined,
       tags: updateData.tags || undefined,
-      media: updateData.media ? { deleteMany: {}, create: updateData.media } : undefined
+      media: updateData.media
+        ? { deleteMany: {}, create: updateData.media }
+        : undefined
     },
     include: {
       ...includes,
@@ -174,7 +210,11 @@ export async function deleteListing(id: string) {
   })
 }
 
-export async function createListingBid(id: string, bidderName: string, amount: number) {
+export async function createListingBid(
+  id: string,
+  bidderName: string,
+  amount: number
+) {
   await db.userProfile.update({
     where: { name: bidderName },
     data: { credits: { decrement: amount } }
@@ -197,9 +237,15 @@ export async function searchListings(
   query: string,
   includes: AuctionListingIncludes = {}
 ) {
-  const withSellerMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+  const withSellerMedia = includes.seller
+    ? { seller: { include: { avatar: true, banner: true } } }
+    : {}
   const withBidderMedia = includes.bids
-    ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } }
+    ? {
+        bids: {
+          include: { bidder: { include: { avatar: true, banner: true } } }
+        }
+      }
     : {}
 
   const [data, meta] = await db.auctionListing

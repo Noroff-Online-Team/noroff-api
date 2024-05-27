@@ -227,7 +227,7 @@ describe("[POST] /social/posts/:id/comment", () => {
 
   it("should throw 404 error when attempting to delete a comment on a non-existent post", async () => {
     const response = await server.inject({
-      url: `/social/posts/3/comment/1`,
+      url: "/social/posts/3/comment/1",
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

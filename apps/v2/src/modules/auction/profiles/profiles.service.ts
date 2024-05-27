@@ -1,10 +1,10 @@
-import { AuctionBid, AuctionListing, UserProfile } from "@prisma/v2-client"
+import type { AuctionBid, AuctionListing, UserProfile } from "@prisma/v2-client"
 
 import { db } from "@/utils"
 
-import { AuctionListingIncludes } from "../listings/listings.controller"
-import { AuctionProfileIncludes } from "./profiles.controller"
-import { UpdateProfileSchema } from "./profiles.schema"
+import type { AuctionListingIncludes } from "../listings/listings.controller"
+import type { AuctionProfileIncludes } from "./profiles.controller"
+import type { UpdateProfileSchema } from "./profiles.schema"
 
 export async function getProfiles(
   sort: keyof UserProfile = "name",
@@ -13,8 +13,12 @@ export async function getProfiles(
   page = 1,
   includes: AuctionProfileIncludes = {}
 ) {
-  const withListingMedia = includes.listings ? { listings: { include: { media: true } } } : {}
-  const withWinsMedia = includes.wins ? { wins: { include: { media: true } } } : {}
+  const withListingMedia = includes.listings
+    ? { listings: { include: { media: true } } }
+    : {}
+  const withWinsMedia = includes.wins
+    ? { wins: { include: { media: true } } }
+    : {}
 
   const [data, meta] = await db.userProfile
     .paginate({
@@ -43,9 +47,16 @@ export async function getProfiles(
   return { data, meta }
 }
 
-export async function getProfile(name: string, includes: AuctionProfileIncludes = {}) {
-  const withListingMedia = includes.listings ? { listings: { include: { media: true } } } : {}
-  const withWinsMedia = includes.wins ? { wins: { include: { media: true } } } : {}
+export async function getProfile(
+  name: string,
+  includes: AuctionProfileIncludes = {}
+) {
+  const withListingMedia = includes.listings
+    ? { listings: { include: { media: true } } }
+    : {}
+  const withWinsMedia = includes.wins
+    ? { wins: { include: { media: true } } }
+    : {}
 
   const [data] = await db.userProfile
     .paginate({
@@ -71,7 +82,10 @@ export async function getProfile(name: string, includes: AuctionProfileIncludes 
   return { data: data[0] }
 }
 
-export const updateProfile = async (name: string, { avatar, banner, ...updateData }: UpdateProfileSchema) => {
+export const updateProfile = async (
+  name: string,
+  { avatar, banner, ...updateData }: UpdateProfileSchema
+) => {
   const data = await db.userProfile.update({
     where: { name },
     data: {
@@ -97,8 +111,16 @@ export async function getProfileListings(
 ) {
   const whereTag = tag ? { tags: { has: tag } } : {}
   const whereActive = active ? { endsAt: { gte: new Date() } } : {}
-  const withBidder = includes.bids ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } } : {}
-  const withProfileMedia = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
+  const withBidder = includes.bids
+    ? {
+        bids: {
+          include: { bidder: { include: { avatar: true, banner: true } } }
+        }
+      }
+    : {}
+  const withProfileMedia = includes.seller
+    ? { seller: { include: { avatar: true, banner: true } } }
+    : {}
 
   const [data, meta] = await db.auctionListing
     .paginate({
@@ -183,8 +205,16 @@ export async function getProfileWins(
   page = 1,
   includes: AuctionListingIncludes = {}
 ) {
-  const withListingSeller = includes.seller ? { seller: { include: { avatar: true, banner: true } } } : {}
-  const withBidder = includes.bids ? { bids: { include: { bidder: { include: { avatar: true, banner: true } } } } } : {}
+  const withListingSeller = includes.seller
+    ? { seller: { include: { avatar: true, banner: true } } }
+    : {}
+  const withBidder = includes.bids
+    ? {
+        bids: {
+          include: { bidder: { include: { avatar: true, banner: true } } }
+        }
+      }
+    : {}
 
   const [data, meta] = await db.auctionListing
     .paginate({
@@ -223,13 +253,20 @@ export async function searchProfiles(
   query: string,
   includes: AuctionProfileIncludes = {}
 ) {
-  const withListingMedia = includes.listings ? { listings: { include: { media: true } } } : {}
-  const withWinsMedia = includes.wins ? { wins: { include: { media: true } } } : {}
+  const withListingMedia = includes.listings
+    ? { listings: { include: { media: true } } }
+    : {}
+  const withWinsMedia = includes.wins
+    ? { wins: { include: { media: true } } }
+    : {}
 
   const [data, meta] = await db.userProfile
     .paginate({
       where: {
-        OR: [{ name: { contains: query, mode: "insensitive" } }, { bio: { contains: query, mode: "insensitive" } }]
+        OR: [
+          { name: { contains: query, mode: "insensitive" } },
+          { bio: { contains: query, mode: "insensitive" } }
+        ]
       },
       include: {
         ...includes,

@@ -30,7 +30,8 @@ beforeEach(async () => {
   await db.gameHubProducts.create({
     data: {
       title: "Super Duper",
-      description: "Celebrate some of the world's supe duper Superheroes with augmented reality.",
+      description:
+        "Celebrate some of the world's supe duper Superheroes with augmented reality.",
       genre: "Adventure",
       released: "2006",
       ageRating: "3+",

@@ -1,7 +1,11 @@
 import { sortAndPaginationSchema } from "@noroff/api-utils"
 import { z } from "zod"
 
-import { mediaProperties, mediaPropertiesWithErrors, profileCore } from "../../auth/auth.schema"
+import {
+  mediaProperties,
+  mediaPropertiesWithErrors,
+  profileCore
+} from "../../auth/auth.schema"
 
 const venueId = {
   id: z.string().uuid()
@@ -18,8 +22,12 @@ const venueMeta = {
 
 const venueMetaWithErrors = {
   wifi: z.boolean({ invalid_type_error: "Wifi must be a boolean" }).optional(),
-  parking: z.boolean({ invalid_type_error: "Parking must be a boolean" }).optional(),
-  breakfast: z.boolean({ invalid_type_error: "Breakfast must be a boolean" }).optional(),
+  parking: z
+    .boolean({ invalid_type_error: "Parking must be a boolean" })
+    .optional(),
+  breakfast: z
+    .boolean({ invalid_type_error: "Breakfast must be a boolean" })
+    .optional(),
   pets: z.boolean({ invalid_type_error: "Pets must be a boolean" }).optional()
 }
 
@@ -34,11 +42,17 @@ const venueLocation = {
 }
 
 const venueLocationWithErrors = {
-  address: z.string({ invalid_type_error: "Address must be a string" }).nullish(),
+  address: z
+    .string({ invalid_type_error: "Address must be a string" })
+    .nullish(),
   city: z.string({ invalid_type_error: "City must be a string" }).nullish(),
   zip: z.string({ invalid_type_error: "Zip must be a string" }).nullish(),
-  country: z.string({ invalid_type_error: "Country must be a string" }).nullish(),
-  continent: z.string({ invalid_type_error: "Continent must be a string" }).nullish(),
+  country: z
+    .string({ invalid_type_error: "Country must be a string" })
+    .nullish(),
+  continent: z
+    .string({ invalid_type_error: "Continent must be a string" })
+    .nullish(),
   lat: z
     .number({ invalid_type_error: "Latitude must be a number" })
     .min(-90, "Latitude must be between -90 and 90")
@@ -86,8 +100,12 @@ export const venueCore = {
 export const displayVenueSchema = z.object(venueCore)
 
 const queryFlagsCore = {
-  _owner: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional(),
-  _bookings: z.preprocess(val => String(val).toLowerCase() === "true", z.boolean()).optional()
+  _owner: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional(),
+  _bookings: z
+    .preprocess(val => String(val).toLowerCase() === "true", z.boolean())
+    .optional()
 }
 
 export const queryFlagsSchema = z.object(queryFlagsCore)
@@ -103,7 +121,11 @@ export const createVenueSchema = z.object({
     invalid_type_error: "Description must be a string",
     required_error: "Description is required"
   }),
-  media: z.object(mediaPropertiesWithErrors).array().max(8, "You cannot have more than 8 images").optional(),
+  media: z
+    .object(mediaPropertiesWithErrors)
+    .array()
+    .max(8, "You cannot have more than 8 images")
+    .optional(),
   price: z
     .number({
       invalid_type_error: "Price must be a number",
@@ -141,7 +163,11 @@ const updateVenueCore = {
       invalid_type_error: "Description must be a string"
     })
     .optional(),
-  media: z.object(mediaPropertiesWithErrors).array().max(8, "You cannot have more than 8 images").optional(),
+  media: z
+    .object(mediaPropertiesWithErrors)
+    .array()
+    .max(8, "You cannot have more than 8 images")
+    .optional(),
   price: z
     .number({
       invalid_type_error: "Price must be a number"
@@ -170,13 +196,21 @@ const updateVenueCore = {
 
 export const updateVenueSchema = z
   .object(updateVenueCore)
-  .refine(data => Object.keys(data).length > 0, "You must provide at least one field to update")
+  .refine(
+    data => Object.keys(data).length > 0,
+    "You must provide at least one field to update"
+  )
 
-export const searchQuerySchema = sortAndPaginationSchema.extend(queryFlagsCore).extend({
-  q: z
-    .string({ required_error: "Query is required", invalid_type_error: "Query must be a string" })
-    .nonempty("Query cannot be empty")
-})
+export const searchQuerySchema = sortAndPaginationSchema
+  .extend(queryFlagsCore)
+  .extend({
+    q: z
+      .string({
+        required_error: "Query is required",
+        invalid_type_error: "Query must be a string"
+      })
+      .nonempty("Query cannot be empty")
+  })
 
 export type CreateVenueSchema = z.infer<typeof createVenueSchema>
 

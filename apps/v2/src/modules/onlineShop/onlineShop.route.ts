@@ -1,7 +1,13 @@
-import { FastifyInstance } from "fastify"
-import { createResponseSchema, sortAndPaginationSchema } from "@noroff/api-utils"
+import {
+  createResponseSchema,
+  sortAndPaginationSchema
+} from "@noroff/api-utils"
+import type { FastifyInstance } from "fastify"
 
-import { getOnlineShopProductHandler, getOnlineShopProductsHandler } from "./onlineShop.controller"
+import {
+  getOnlineShopProductHandler,
+  getOnlineShopProductsHandler
+} from "./onlineShop.controller"
 import { onlineShopParamsSchema, onlineShopSchema } from "./onlineShop.schema"
 
 async function onlineShopRoutes(server: FastifyInstance) {

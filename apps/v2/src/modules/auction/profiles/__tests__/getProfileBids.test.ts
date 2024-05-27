@@ -11,7 +11,10 @@ beforeEach(async () => {
   // Register user
   const { bearerToken, apiKey, name } = await getAuthCredentials()
   // Register second user
-  const { name: userTwoName } = await registerUser({ name: "test_user_two", email: "test_user_two@noroff.no" })
+  const { name: userTwoName } = await registerUser({
+    name: "test_user_two",
+    email: "test_user_two@noroff.no"
+  })
 
   TEST_USER_NAME = name
   BEARER_TOKEN = bearerToken
@@ -74,7 +77,7 @@ describe("[GET] /auction/profiles/:id/bids", () => {
 
   it("should throw 404 error when attempting to access profile that does not exist", async () => {
     const response = await server.inject({
-      url: `/auction/profiles/does_not_exist/bids`,
+      url: "/auction/profiles/does_not_exist/bids",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

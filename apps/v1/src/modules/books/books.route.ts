@@ -1,6 +1,10 @@
-import { FastifyInstance } from "fastify"
+import type { FastifyInstance } from "fastify"
 
-import { getBookHandler, getBooksHandler, getRandomBookHandler } from "./books.controller"
+import {
+  getBookHandler,
+  getBooksHandler,
+  getRandomBookHandler
+} from "./books.controller"
 import { bookParamsSchema, bookResponseSchema } from "./books.schema"
 
 async function bookRoutes(server: FastifyInstance) {
