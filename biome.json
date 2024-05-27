@@ -1,7 +1,15 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "ignore": ["**/*.config.js", "**/*.config.mjs", ".next/**", "dist", "pnpm-lock.yaml", ".turbo/**"]
+    "ignore": [
+      "**/*.config.js",
+      "**/*.config.mjs",
+      ".next/**",
+      "dist",
+      "pnpm-lock.yaml",
+      ".turbo/**",
+      "configs/*"
+    ]
   },
   "formatter": {
     "enabled": true,
