@@ -37,7 +37,7 @@
     "turbo": "^1.13.3"
   },
   "lint-staged": {
-    "*": "biome format --write --no-errors-on-unmatched",
-    "*.ts": "biome lint --apply --no-errors-on-unmatched"
+    "*": "biome check --no-errors-on-unmatched --files-ignore-unknown=true",
+    "*.{ts,tsx,mdx,json}": "biome lint --apply --no-errors-on-unmatched"
   }
 }
