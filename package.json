@@ -38,6 +38,6 @@
   },
   "lint-staged": {
     "*": "biome format --write --no-errors-on-unmatched",
-    "*.ts": "biome lint --apply --no-errors-on-unmatched"
+    "*.{ts,tsx,mdx,json}": "biome lint --apply --no-errors-on-unmatched"
   }
 }
