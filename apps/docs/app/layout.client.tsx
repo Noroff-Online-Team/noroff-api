@@ -127,3 +127,22 @@ export function SidebarBanner(): React.ReactElement {
     </div>
   )
 }
+
+export function DeprecatedBanner(): React.ReactElement | null {
+  const version = useVersion()
+  const currentVersion =
+    versions.find(item => item.param === version) ?? versions[0]
+
+  if (currentVersion.version === "v1") {
+    return (
+      <div className="flex items-center justify-center p-2 text-white bg-destructive/80">
+        <p className="text-sm font-medium">
+          This version is deprecated and will be removed in the future, please
+          use v2 instead.
+        </p>
+      </div>
+    )
+  }
+
+  return null
+}

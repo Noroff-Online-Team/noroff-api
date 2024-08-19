@@ -85,5 +85,5 @@ article {
 
 .animated-border::before {
   content: "";
-  @apply animate-infinite-rotate absolute left-[50%] top-[50%] block w-[600px] translate-x-[-50%] translate-y-[-50%] bg-[conic-gradient(var(--tw-gradient-stops))] from-purple-400 via-pink-400 pb-[600px];
+  @apply animate-infinite-rotate absolute left-[50%] top-[50%] block w-[800px] translate-x-[-50%] translate-y-[-50%] bg-[conic-gradient(var(--tw-gradient-stops))] from-purple-400 via-pink-400 pb-[800px];
 }
