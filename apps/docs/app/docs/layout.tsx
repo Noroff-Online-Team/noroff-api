@@ -3,7 +3,7 @@ import { DocsLayout } from "fumadocs-ui/layout"
 import Image from "next/image"
 import type { ReactNode } from "react"
 
-import { Body } from "../layout.client"
+import { Body, DeprecatedBanner } from "../layout.client"
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -24,6 +24,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         />
       </div>
       <Body>
+        <DeprecatedBanner />
         <DocsLayout {...layoutOptions}>{children}</DocsLayout>
       </Body>
     </main>
