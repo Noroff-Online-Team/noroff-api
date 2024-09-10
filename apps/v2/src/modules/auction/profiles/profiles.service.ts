@@ -173,6 +173,10 @@ export async function getProfileBids(
   page = 1,
   includes: { listing?: boolean } = {}
 ) {
+  const withListingMedia = includes.listing
+    ? { listing: { include: { media: true } } }
+    : {}
+
   const [data, meta] = await db.auctionBid
     .paginate({
       where: { bidderName: name },
@@ -181,6 +185,7 @@ export async function getProfileBids(
       },
       include: {
         ...includes,
+        ...withListingMedia,
         bidder: {
           include: {
             avatar: true,
