@@ -3,6 +3,7 @@ import type { AuctionBid, AuctionListing, UserProfile } from "@prisma/v2-client"
 import type { FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
+import type { RequestUser } from "@/types/api"
 import type { AuctionListingIncludes } from "../listings/listings.controller"
 import { listingQuerySchema } from "../listings/listings.schema"
 import {
@@ -94,7 +95,7 @@ export async function updateProfileHandler(
   const { name: profileToUpdate } = await profileNameSchema.parseAsync(
     request.params
   )
-  const { name: requesterProfile } = request.user as UserProfile
+  const { name: requesterProfile } = request.user as RequestUser
 
   const profileExists = await getProfile(profileToUpdate)
 
@@ -177,7 +178,7 @@ export async function getProfileCreditsHandler(
   }>
 ) {
   const { name } = await profileNameSchema.parseAsync(request.params)
-  const { name: reqName } = request.user as UserProfile
+  const { name: reqName } = request.user as RequestUser
 
   const profile = await getProfile(name)
 

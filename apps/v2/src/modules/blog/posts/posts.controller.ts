@@ -1,8 +1,9 @@
 import { mediaGuard } from "@noroff/api-utils"
-import type { BlogPost, UserProfile } from "@prisma/v2-client"
+import type { BlogPost } from "@prisma/v2-client"
 import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
+import type { RequestUser } from "@/types/api"
 import {
   type CreatePostBaseSchema,
   mediaSchema,
@@ -75,7 +76,7 @@ export async function createPostHandler(
     request.params
   )
   await mediaSchema.parseAsync(request.body)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { media } = request.body
 
   if (name.toLowerCase() !== paramsName.toLowerCase()) {
@@ -105,7 +106,7 @@ export async function deletePostHandler(
   const { id, name: paramsName } = await postIdWithNameParamsSchema.parseAsync(
     request.params
   )
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
 
   if (name.toLowerCase() !== paramsName.toLowerCase()) {
     throw new Forbidden("You do not have permission to delete this post")
@@ -134,7 +135,7 @@ export async function updatePostHandler(
   const { id, name: paramsName } = await postIdWithNameParamsSchema.parseAsync(
     request.params
   )
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { media } = request.body
 
   if (name.toLowerCase() !== paramsName.toLowerCase()) {

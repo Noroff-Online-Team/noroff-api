@@ -8,6 +8,7 @@ import type {
 import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
+import type { RequestUser } from "@/types/api"
 import { getProfile } from "./../profiles/profiles.service"
 import {
   type CreateListingSchema,
@@ -116,7 +117,7 @@ export async function createListingHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { media } = await mediaSchema.parseAsync(request.body)
   const { _bids, _seller } = await queryFlagsSchema.parseAsync(request.query)
 
@@ -149,7 +150,7 @@ export async function updateListingHandler(
   const { id } = await listingIdParamsSchema.parseAsync(request.params)
   const { _bids, _seller } = await queryFlagsSchema.parseAsync(request.query)
   const { media } = await mediaSchema.parseAsync(request.body)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
 
   const includes: AuctionListingIncludes = {
     bids: Boolean(_bids),
@@ -184,7 +185,7 @@ export async function deleteListingHandler(
   reply: FastifyReply
 ) {
   const { id } = await listingIdParamsSchema.parseAsync(request.params)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
 
   const listing = await getListing(id)
 
@@ -214,7 +215,7 @@ export async function createListingBidHandler(
 ) {
   const { id } = await listingIdParamsSchema.parseAsync(request.params)
   const { amount } = await bidBodySchema.parseAsync(request.body)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { _bids, _seller } = await queryFlagsSchema.parseAsync(request.query)
 
   const includes: AuctionListingIncludes = {
