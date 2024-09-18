@@ -7,6 +7,7 @@ import type {
 import type { FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
+import type { RequestUser } from "@/types/api"
 import type { HolidazeBookingIncludes } from "../bookings/bookings.controller"
 import type { HolidazeVenueIncludes } from "../venues/venues.controller"
 import {
@@ -100,7 +101,7 @@ export async function updateProfileHandler(
   const { name: profileToUpdate } = await profileNameSchema.parseAsync(
     request.params
   )
-  const { name: requesterProfile } = request.user as UserProfile
+  const { name: requesterProfile } = request.user as RequestUser
 
   const profile = await getProfile(profileToUpdate)
 

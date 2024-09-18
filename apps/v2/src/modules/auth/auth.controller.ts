@@ -1,8 +1,8 @@
 import { mediaGuard, verifyPassword } from "@noroff/api-utils"
-import type { UserProfile } from "@prisma/v2-client"
 import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Unauthorized } from "http-errors"
 
+import type { RequestUser } from "@/types/api"
 import {
   type CreateAPIKeyInput,
   type CreateProfileInput,
@@ -86,6 +86,7 @@ export async function loginHandler(
   return {
     data: {
       ...rest,
+      // accessToken should match RequestUser type from types/api.ts
       accessToken: request.jwt.sign({
         name: rest.name,
         email: rest.email
@@ -101,7 +102,7 @@ export async function createApiKeyHandler(
   reply: FastifyReply
 ) {
   await createApiKeySchema.parseAsync(request.body)
-  const { name: userName } = request.user as UserProfile
+  const { name: userName } = request.user as RequestUser
 
   const apiKey = await createApiKey(userName, request.body?.name)
 

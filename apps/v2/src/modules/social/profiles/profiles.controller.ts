@@ -3,6 +3,7 @@ import type { SocialPost, UserProfile } from "@prisma/v2-client"
 import type { FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
+import type { RequestUser } from "@/types/api"
 import type { SocialPostIncludes } from "../posts/posts.controller"
 import {
   type UpdateProfileSchema,
@@ -103,7 +104,7 @@ export async function updateProfileHandler(
 ) {
   const { avatar, banner, ...rest } = updateProfileSchema.parse(request.body)
   const { name: profileToUpdate } = profileNameSchema.parse(request.params)
-  const { name: requesterProfile } = request.user as UserProfile
+  const { name: requesterProfile } = request.user as RequestUser
 
   const profileExists = await getProfile(profileToUpdate)
 
@@ -137,7 +138,7 @@ export async function followProfileHandler(
   }>
 ) {
   const { name: target } = profileNameSchema.parse(request.params)
-  const { name: follower } = request.user as UserProfile
+  const { name: follower } = request.user as RequestUser
 
   if (target.toLowerCase() === follower.toLowerCase()) {
     throw new BadRequest("You can't follow yourself")
@@ -166,7 +167,7 @@ export async function unfollowProfileHandler(
   }>
 ) {
   const { name: target } = profileNameSchema.parse(request.params)
-  const { name: follower } = request.user as UserProfile
+  const { name: follower } = request.user as RequestUser
 
   if (target.toLowerCase() === follower.toLowerCase()) {
     throw new BadRequest("You can't unfollow yourself")

@@ -1,8 +1,9 @@
 import { mediaGuard } from "@noroff/api-utils"
-import type { HolidazeVenue, UserProfile } from "@prisma/v2-client"
+import type { HolidazeVenue } from "@prisma/v2-client"
 import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
+import type { RequestUser } from "@/types/api"
 import { getProfile } from "../profiles/profiles.service"
 import {
   type CreateVenueSchema,
@@ -93,7 +94,7 @@ export async function createVenueHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { media } = await createVenueSchema.parseAsync(request.body)
   const { _owner, _bookings } = await queryFlagsSchema.parseAsync(request.query)
 
@@ -133,7 +134,7 @@ export async function updateVenueHandler(
     }
   }>
 ) {
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { id } = await venueIdSchema.parseAsync(request.params)
   const { media } = await updateVenueSchema.parseAsync(request.body)
   const { _owner, _bookings } = await queryFlagsSchema.parseAsync(request.query)
@@ -176,7 +177,7 @@ export async function deleteVenueHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { id } = await venueIdSchema.parseAsync(request.params)
 
   const venue = await getVenue(id)

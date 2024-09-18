@@ -1,7 +1,8 @@
-import type { HolidazeBooking, UserProfile } from "@prisma/v2-client"
+import type { HolidazeBooking } from "@prisma/v2-client"
 import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Conflict, Forbidden, NotFound } from "http-errors"
 
+import type { RequestUser } from "@/types/api"
 import { getVenue } from "../venues/venues.service"
 import {
   createBooking,
@@ -92,7 +93,7 @@ export async function createBookingHandler(
   reply: FastifyReply
 ) {
   await createBookingSchema.parseAsync(request.body)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { _customer, _venue } = await queryFlagsSchema.parseAsync(request.query)
 
   const includes: HolidazeBookingIncludes = {
@@ -142,7 +143,7 @@ export async function updateBookingHandler(
   }>
 ) {
   const { guests } = await updateBookingSchema.parseAsync(request.body)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { id } = await bookingIdSchema.parseAsync(request.params)
   const { _customer, _venue } = request.query
 
@@ -180,7 +181,7 @@ export async function deleteBookingHandler(
   }>,
   reply: FastifyReply
 ) {
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { id } = await bookingIdSchema.parseAsync(request.params)
 
   const booking = await getBooking(id)

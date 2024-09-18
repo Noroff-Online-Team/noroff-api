@@ -1,8 +1,9 @@
 import { mediaGuard } from "@noroff/api-utils"
-import type { SocialPost, UserProfile } from "@prisma/v2-client"
+import type { SocialPost } from "@prisma/v2-client"
 import type { FastifyReply, FastifyRequest } from "fastify"
 import { BadRequest, Forbidden, NotFound } from "http-errors"
 
+import type { RequestUser } from "@/types/api"
 import {
   type CreateCommentSchema,
   type CreatePostBaseSchema,
@@ -107,7 +108,7 @@ export async function createPostHandler(
   reply: FastifyReply
 ) {
   await mediaSchema.parseAsync(request.body)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { media } = request.body
   const { _author, _reactions, _comments } = request.query
 
@@ -133,7 +134,7 @@ export async function deletePostHandler(
   reply: FastifyReply
 ) {
   const { id } = await postIdParamsSchema.parseAsync(request.params)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
 
   const post = await getPost(id, { author: true })
 
@@ -162,7 +163,7 @@ export async function updatePostHandler(
   }>
 ) {
   const { id } = await postIdParamsSchema.parseAsync(request.params)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { media } = request.body
   const { _author, _reactions, _comments } = request.query
 
@@ -199,7 +200,7 @@ export async function createOrDeleteReactionHandler(
   const { id } = await postIdParamsSchema.parseAsync(request.params)
   const { symbol } = request.params
   await emojiSchema.parseAsync(symbol)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
 
   const post = await getPost(id)
 
@@ -222,7 +223,7 @@ export async function createCommentHandler(
 ) {
   const { id } = await postIdParamsSchema.parseAsync(request.params)
   const { _author } = await authorQuerySchema.parseAsync(request.query)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { replyToId } = request.body
 
   const post = await getPost(id, { comments: true })
@@ -270,7 +271,7 @@ export async function getPostsOfFollowedUsersHandler(
     }
   }>
 ) {
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
   const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } =
     request.query
 
@@ -336,7 +337,7 @@ export async function deleteCommentHandler(
   reply: FastifyReply
 ) {
   const { id, commentId } = await deleteCommentSchema.parseAsync(request.params)
-  const { name } = request.user as UserProfile
+  const { name } = request.user as RequestUser
 
   const post = await getPost(id, { comments: true })
 
