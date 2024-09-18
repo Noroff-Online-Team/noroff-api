@@ -270,7 +270,7 @@ export async function getPostsOfFollowedUsersHandler(
     }
   }>
 ) {
-  const { id } = request.user as UserProfile
+  const { name } = request.user as UserProfile
   const { sort, sortOrder, limit, page, _author, _reactions, _comments, _tag } =
     request.query
 
@@ -285,7 +285,7 @@ export async function getPostsOfFollowedUsersHandler(
   }
 
   const posts = await getPostsOfFollowedUsers(
-    id,
+    name,
     sort,
     sortOrder,
     limit,

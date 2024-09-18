@@ -336,7 +336,7 @@ export const getComment = async (id: number) => {
 }
 
 export const getPostsOfFollowedUsers = async (
-  id: number,
+  name: string,
   sort: keyof SocialPost = "created",
   sortOrder: "asc" | "desc" = "desc",
   limit = 100,
@@ -362,7 +362,7 @@ export const getPostsOfFollowedUsers = async (
         ...whereTag,
         author: {
           followers: {
-            some: { id }
+            some: { name }
           }
         }
       },
