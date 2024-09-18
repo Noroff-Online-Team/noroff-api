@@ -19,7 +19,7 @@
     "lineWidth": 80
   },
   "organizeImports": {
-    "enabled": true
+    "enabled": false
   },
   "linter": {
     "enabled": true,
@@ -36,7 +36,7 @@
   },
   "javascript": {
     "formatter": {
-      "trailingComma": "none",
+      "trailingCommas": "none",
       "semicolons": "asNeeded",
       "arrowParentheses": "asNeeded"
     }
