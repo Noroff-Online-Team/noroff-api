@@ -85,15 +85,13 @@ export function NavChildren(): React.ReactElement {
         ))}
       </div>
       {swaggerText && (
-        <>
-          <Link
-            href={swaggerUrl}
-            target="_blank"
-            className="text-sm transition-colors text-muted-foreground max-md:hidden hover:text-accent-foreground"
-          >
-            {swaggerText}
-          </Link>
-        </>
+        <Link
+          href={swaggerUrl}
+          target="_blank"
+          className="text-sm transition-colors text-muted-foreground max-md:hidden hover:text-accent-foreground"
+        >
+          {swaggerText}
+        </Link>
       )}
     </>
   )
