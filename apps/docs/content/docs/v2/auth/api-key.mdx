@@ -2,6 +2,7 @@
 title: API Key
 description: Create and use an API Key to access the Noroff API.
 ---
+import { APIKeyTool } from "@/components/api-key-tool.tsx"
 
 ## The API Key model
 
@@ -83,3 +84,7 @@ const options = {
 const response = await fetch(`${NOROFF_API_URL}/social/posts`, options)
 const data = await response.json()
 ```
+
+## API Key Tool
+
+<APIKeyTool/>
