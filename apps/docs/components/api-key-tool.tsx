@@ -1,9 +1,6 @@
 "use client"
 
-import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import {
   Card,
   CardContent,
@@ -11,9 +8,12 @@ import {
   CardFooter,
   CardHeader
 } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { AlertCircle, Copy, Loader2 } from "lucide-react"
 import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock"
+import { AlertCircle, Copy, Loader2 } from "lucide-react"
+import { useState } from "react"
 
 const API_URL = "https://v2.api.noroff.dev"
 
@@ -162,8 +162,8 @@ export function APIKeyTool() {
         </CardHeader>
         <CardContent>
           {isGettingApiKey ? (
-            <div className="flex justify-center items-center h-64">
-              <Loader2 className="h-8 w-8 animate-spin" />
+            <div className="flex items-center justify-center h-64">
+              <Loader2 className="w-8 h-8 animate-spin" />
             </div>
           ) : !apiKey ? (
             <Tabs value={activeTab} onValueChange={setActiveTab}>
