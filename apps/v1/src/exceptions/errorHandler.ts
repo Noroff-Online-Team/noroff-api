@@ -14,7 +14,7 @@ export default async function (
   }
 
   const statusCode = error?.statusCode || 500
-  let errors = [error] || "Something went wrong"
+  let errors = [error]
 
   if (error instanceof ZodError) {
     const parsedErrors = JSON.parse(error?.message).map((err: ParsedError) => ({

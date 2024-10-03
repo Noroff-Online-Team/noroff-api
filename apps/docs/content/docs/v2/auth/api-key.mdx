@@ -5,7 +5,10 @@ description: Create and use an API Key to access the Noroff API.
 import { APIKeyTool } from "@/components/api-key-tool.tsx"
 
 <Callout variant="warning">
-  This is an authenticated endpoint. You can visit [authentication](./authentication) to get an access token.
+  This is an authenticated endpoint. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+<Callout variant="info">
+  You only need to create a single API Key for your application. This key can be used for all your requests, regardless of which user is logged in. To simplify the process, use the [API Key Tool](#api-key-tool) provided below.
 </Callout>
 
 ## The API Key model
