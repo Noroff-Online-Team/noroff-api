@@ -1,4 +1,8 @@
-import { getAuthCredentials, server } from "@/test-utils"
+import {
+  AUTHORIZATION_HEADER_NOT_FOUND,
+  getAuthCredentials,
+  server
+} from "@/test-utils"
 
 import { db } from "@/utils"
 
@@ -124,7 +128,7 @@ describe("[POST] /blog/posts/:name", () => {
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      message: "No authorization header was found"
+      message: AUTHORIZATION_HEADER_NOT_FOUND
     })
   })
 })

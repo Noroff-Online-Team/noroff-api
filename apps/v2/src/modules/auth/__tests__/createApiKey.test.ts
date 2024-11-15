@@ -1,4 +1,8 @@
-import { registerUser, server } from "@/test-utils"
+import {
+  AUTHORIZATION_HEADER_NOT_FOUND,
+  registerUser,
+  server
+} from "@/test-utils"
 
 import { db } from "@/utils"
 
@@ -64,7 +68,7 @@ describe("[POST] /auth/create-api-key", () => {
     expect(res.meta).not.toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors).toContainEqual({
-      message: "No authorization header was found"
+      message: AUTHORIZATION_HEADER_NOT_FOUND
     })
   })
 

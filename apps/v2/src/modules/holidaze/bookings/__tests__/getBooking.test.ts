@@ -1,4 +1,10 @@
-import { getAuthCredentials, registerUser, server } from "@/test-utils"
+import {
+  API_KEY_HEADER_NOT_FOUND,
+  AUTHORIZATION_HEADER_NOT_FOUND,
+  getAuthCredentials,
+  registerUser,
+  server
+} from "@/test-utils"
 
 import { db } from "@/utils"
 
@@ -133,7 +139,7 @@ describe("[GET] /holidaze/bookings/:id", () => {
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      message: "No API key header was found"
+      message: API_KEY_HEADER_NOT_FOUND
     })
   })
 
@@ -153,7 +159,7 @@ describe("[GET] /holidaze/bookings/:id", () => {
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      message: "No authorization header was found"
+      message: AUTHORIZATION_HEADER_NOT_FOUND
     })
   })
 })

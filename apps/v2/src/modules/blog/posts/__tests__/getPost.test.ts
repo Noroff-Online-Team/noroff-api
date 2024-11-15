@@ -1,4 +1,8 @@
-import { getAuthCredentials, server } from "@/test-utils"
+import {
+  createMediaExpectation,
+  getAuthCredentials,
+  server
+} from "@/test-utils"
 
 import { db } from "@/utils"
 
@@ -64,14 +68,8 @@ describe("[GET] /blog/posts/:name/:id", () => {
         name: expect.any(String),
         email: expect.any(String),
         bio: null,
-        avatar: {
-          url: expect.any(String),
-          alt: expect.any(String)
-        },
-        banner: {
-          url: expect.any(String),
-          alt: expect.any(String)
-        }
+        avatar: createMediaExpectation(),
+        banner: createMediaExpectation()
       }
     })
     expect(res.meta).toBeDefined()

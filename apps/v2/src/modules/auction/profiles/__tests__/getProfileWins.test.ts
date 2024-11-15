@@ -1,4 +1,10 @@
-import { getAuthCredentials, server } from "@/test-utils"
+import {
+  API_KEY_HEADER_NOT_FOUND,
+  AUTHORIZATION_HEADER_NOT_FOUND,
+  createMediaExpectation,
+  getAuthCredentials,
+  server
+} from "@/test-utils"
 
 import { db } from "@/utils"
 
@@ -112,14 +118,8 @@ describe("[GET] /auction/profiles/:name/wins", () => {
           name: TEST_USER_NAME,
           email: TEST_USER_EMAIL,
           bio: null,
-          avatar: expect.objectContaining({
-            url: expect.any(String),
-            alt: expect.any(String)
-          }),
-          banner: expect.objectContaining({
-            url: expect.any(String),
-            alt: expect.any(String)
-          })
+          avatar: createMediaExpectation(),
+          banner: createMediaExpectation()
         }),
         _count: {
           bids: expect.any(Number)
@@ -175,7 +175,7 @@ describe("[GET] /auction/profiles/:name/wins", () => {
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      message: "No API key header was found"
+      message: API_KEY_HEADER_NOT_FOUND
     })
   })
 
@@ -195,7 +195,7 @@ describe("[GET] /auction/profiles/:name/wins", () => {
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
     expect(res.errors[0]).toStrictEqual({
-      message: "No authorization header was found"
+      message: AUTHORIZATION_HEADER_NOT_FOUND
     })
   })
 })
