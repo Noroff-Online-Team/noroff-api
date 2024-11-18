@@ -27,7 +27,11 @@ export default function CustomSearchDialog(props: SharedProps) {
   const currentVersion = useVersion()
   const defaultVerion = currentVersion === "v1" ? "v1" : "v2"
   const [version, setVersion] = useState(defaultVerion)
-  const { search, setSearch, query } = useDocsSearch(undefined, version)
+  const { search, setSearch, query } = useDocsSearch(
+    { type: "fetch" },
+    undefined,
+    version
+  )
 
   useEffect(() => {
     setVersion(defaultVerion)

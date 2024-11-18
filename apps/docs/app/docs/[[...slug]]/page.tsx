@@ -1,80 +1,119 @@
-import { Card, Cards } from "fumadocs-ui/components/card"
-import { DocsBody, DocsPage } from "fumadocs-ui/page"
-import { ExternalLinkIcon } from "lucide-react"
+import { Callout } from "@/components/callout"
+import { EndpointDetails } from "@/components/endpoint-details"
+import { cn } from "@/utils/cn"
+import { source } from "@/utils/source"
+import {
+  CodeBlock,
+  type CodeBlockProps,
+  Pre
+} from "fumadocs-ui/components/codeblock"
+import { TypeTable } from "fumadocs-ui/components/type-table"
+import defaultComponents from "fumadocs-ui/mdx"
+import {
+  DocsBody,
+  DocsCategory,
+  DocsDescription,
+  DocsPage,
+  DocsTitle
+} from "fumadocs-ui/page"
 import { notFound } from "next/navigation"
+import type { ReactElement } from "react"
+import type { HTMLAttributes } from "react"
 
-import { type Page, utils } from "@/utils/source"
-
-type Param = {
-  slug: string[]
+type TypeTableObjectType = {
+  [name: string]: {
+    description?: string
+    type: string
+    typeDescription?: string
+    typeDescriptionLink?: string
+    default?: string
+  }
 }
 
-export default async function DocsPageComponent({ params }: { params: Param }) {
-  const page = utils.getPage(params.slug)
+type CalloutType = {
+  variant?: "default" | "info" | "warning" | "destructive"
+  noIcon?: boolean
+}
+
+type EndpointDetailsType = {
+  method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
+  path: string
+}
+
+export default async function DocsPageComponent(props: {
+  params: Promise<{ slug: string[] }>
+}): Promise<ReactElement> {
+  const params = await props.params
+  const page = source.getPage(params.slug)
 
   if (page == null) {
     notFound()
   }
 
   const path = `apps/docs/content/docs/${page.file.path}`
-  const MDX = page.data.exports.default
+  const MDX = page.data.body
 
   return (
     <DocsPage
-      toc={page.data.exports.toc}
+      toc={page.data.toc}
+      full={page.data.full}
       tableOfContent={{
-        enabled: page.data.toc,
-        footer: (
-          <a
-            href={`https://github.com/Noroff-Online-Team/noroff-api/blob/main/${path}`}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="inline-flex items-center text-xs text-muted-foreground hover:text-foreground"
-          >
-            Edit on Github <ExternalLinkIcon className="w-3 h-3 ml-1" />
-          </a>
-        )
+        style: "clerk",
+        single: false
+      }}
+      editOnGithub={{
+        repo: "noroff-api",
+        owner: "Noroff-Online-Team",
+        sha: "main",
+        path: path
       }}
     >
-      <div className="mb-6 nd-not-prose">
-        <h1 className="mb-4 text-3xl font-semibold text-foreground sm:text-4xl">
-          {page.data.title}
-        </h1>
-        <p className="text-muted-foreground sm:text-lg">
-          {page.data.description}
-        </p>
-      </div>
+      <DocsTitle>{page.data.title}</DocsTitle>
+      <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
-        {page.data.index ? <Category page={page} /> : <MDX />}
+        <MDX
+          components={{
+            ...defaultComponents,
+            pre: ({
+              title,
+              className,
+              icon,
+              allowCopy,
+              ...props
+            }: CodeBlockProps) => (
+              <CodeBlock title={title} icon={icon} allowCopy={allowCopy}>
+                <Pre className={cn("max-h-[400px]", className)} {...props} />
+              </CodeBlock>
+            ),
+            blockquote: (
+              props: React.QuoteHTMLAttributes<HTMLQuoteElement>
+            ) => (
+              <div className="px-3 my-4 text-sm border rounded-lg shadow-md">
+                {props.children}
+              </div>
+            ),
+            Hr: (props: HTMLAttributes<HTMLHRElement>) => (
+              <hr {...props} className="my-8 border-[hsl(var(--border))]" />
+            ),
+            EndpointDetails: (
+              props: HTMLAttributes<HTMLDivElement> & EndpointDetailsType
+            ) => <EndpointDetails {...props} />,
+            TypeTable: (
+              props: HTMLAttributes<HTMLDivElement> & {
+                type: TypeTableObjectType
+              }
+            ) => <TypeTable {...props} />,
+            Callout: (props: HTMLAttributes<HTMLDivElement> & CalloutType) => (
+              <Callout {...props}>{props.children}</Callout>
+            )
+          }}
+        />
+        {page.data.index ? <DocsCategory page={page} from={source} /> : null}
       </DocsBody>
     </DocsPage>
   )
 }
 
-function Category({ page }: { page: Page }): React.ReactElement {
-  const filtered = utils
-    .getPages()
-    .filter(
-      item =>
-        item.file.dirname === page.file.dirname && item.file.name !== "index"
-    )
-
-  return (
-    <Cards>
-      {filtered.map(item => (
-        <Card
-          key={item.url}
-          title={item.data.title}
-          description={item.data.description ?? "No Description"}
-          href={item.url}
-        />
-      ))}
-    </Cards>
-  )
-}
-
-export function generateStaticParams(): Param[] {
-  return utils.getPages().map<Param>(page => ({
-    slug: page.slugs
-  }))
+export function generateStaticParams(): { slug: string[] }[] {
+  return source.generateParams()
 }

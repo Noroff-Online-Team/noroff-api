@@ -1,19 +1,21 @@
-import { map } from "@/.map"
+import { docs, meta } from "@/.source"
+import { IconContainer } from "@/components/ui/icon"
 import type { InferMetaType, InferPageType } from "fumadocs-core/source"
 import { loader } from "fumadocs-core/source"
-import { createMDXSource, defaultSchemas } from "fumadocs-mdx"
-import { z } from "zod"
+import { createMDXSource } from "fumadocs-mdx"
+import { icons } from "lucide-react"
+import { createElement } from "react"
 
-const frontmatterSchema = defaultSchemas.frontmatter.extend({
-  toc: z.boolean().default(true),
-  index: z.boolean().default(false)
-})
-
-export const utils = loader({
+export const source = loader({
   baseUrl: "/docs",
-  rootDir: "docs",
-  source: createMDXSource(map, { schema: { frontmatter: frontmatterSchema } })
+  icon(icon) {
+    if (icon && icon in icons)
+      return createElement(IconContainer, {
+        icon: icons[icon as keyof typeof icons]
+      })
+  },
+  source: createMDXSource(docs, meta)
 })
 
-export type Page = InferPageType<typeof utils>
-export type Meta = InferMetaType<typeof utils>
+export type Page = InferPageType<typeof source>
+export type Meta = InferMetaType<typeof source>

@@ -137,3 +137,6 @@ dist
 
 # Prisma client
 **/prisma/generated
+
+# Fumadocs
+.source/
