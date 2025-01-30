@@ -19,6 +19,7 @@ COPY .gitignore .gitignore
 COPY turbo.json turbo.json
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=builder /app/apps/docs/source.config.ts ./apps/docs/source.config.ts
 RUN pnpm install
 COPY --from=builder /app/out/full/ .
 
