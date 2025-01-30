@@ -17,7 +17,6 @@ import {
   DocsTitle
 } from "fumadocs-ui/page"
 import { notFound } from "next/navigation"
-import type { ReactElement } from "react"
 import type { HTMLAttributes } from "react"
 
 type TypeTableObjectType = {
@@ -40,15 +39,13 @@ type EndpointDetailsType = {
   path: string
 }
 
-export default async function DocsPageComponent(props: {
+export default async function DocsPageComponent({
+  params
+}: {
   params: Promise<{ slug: string[] }>
-}): Promise<ReactElement> {
-  const params = await props.params
-  const page = source.getPage(params.slug)
-
-  if (page == null) {
-    notFound()
-  }
+}) {
+  const page = source.getPage((await params).slug)
+  if (!page) notFound()
 
   const path = `apps/docs/content/docs/${page.file.path}`
   const MDX = page.data.body
@@ -108,7 +105,6 @@ export default async function DocsPageComponent(props: {
             )
           }}
         />
-        {page.data.index ? <DocsCategory page={page} from={source} /> : null}
       </DocsBody>
     </DocsPage>
   )
