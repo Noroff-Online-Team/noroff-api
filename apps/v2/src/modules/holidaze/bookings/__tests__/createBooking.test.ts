@@ -242,6 +242,11 @@ describe("[POST] /holidaze/bookings", () => {
         path: ["dateFrom"]
       },
       {
+        code: "invalid_date",
+        message: "Invalid date",
+        path: ["dateTo"]
+      },
+      {
         code: "invalid_type",
         message: "Guests must be a number",
         path: ["guests"]

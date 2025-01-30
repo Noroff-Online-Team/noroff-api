@@ -32,7 +32,7 @@ export default fp(async fastify => {
       url: req.url,
       method: req.method,
       statusCode: reply.statusCode,
-      responseTime: reply.getResponseTime()
+      responseTime: reply.elapsedTime
     })
     return next()
   })

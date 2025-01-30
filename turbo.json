@@ -1,6 +1,6 @@
 {
-  "$schema": "https://turbo.build/schema.v1.json",
-  "pipeline": {
+  "$schema": "https://turbo.build/schema.v2.json",
+  "tasks": {
     "topo": {
       "dependsOn": ["^topo"]
     },
@@ -19,11 +19,14 @@
       "cache": false
     },
     "typecheck": {
-      "dependsOn": ["^topo", "^build"],
-      "outputs": ["node_modules/.cache/tsbuildinfo.json"]
+      "dependsOn": ["^topo", "^build", "prisma:generate"],
+      "outputs": []
+    },
+    "prisma:generate": {
+      "cache": false
     },
     "format": {
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     },
     "lint": {
       "dependsOn": ["^topo", "^build"]

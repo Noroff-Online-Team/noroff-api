@@ -101,6 +101,11 @@ describe("[POST] /auction/listings", () => {
         path: ["title"]
       },
       {
+        code: "invalid_date",
+        message: "Invalid date",
+        path: ["endsAt"]
+      },
+      {
         code: "invalid_type",
         message: "Tags must be an array of strings",
         path: ["tags"]

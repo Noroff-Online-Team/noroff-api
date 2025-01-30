@@ -10,7 +10,7 @@
     "start:migrate:prod": "pnpm prisma migrate deploy && pnpm start",
     "build": "tsup",
     "prebuild": "pnpm prisma generate",
-    "postinstall": "pnpm prisma generate",
+    "prisma:generate": "pnpm prisma generate",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint .",
     "format": "biome format .",
