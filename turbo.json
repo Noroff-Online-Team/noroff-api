@@ -19,8 +19,11 @@
       "cache": false
     },
     "typecheck": {
-      "dependsOn": ["^topo", "^build"],
+      "dependsOn": ["^topo", "^build", "prisma:generate"],
       "outputs": []
+    },
+    "prisma:generate": {
+      "cache": false
     },
     "format": {
       "outputLogs": "new-only"
