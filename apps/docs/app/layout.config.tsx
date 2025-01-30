@@ -1,18 +1,10 @@
-import { NavChildren, SidebarBanner, Title } from "@/app/layout.client"
-import type { DocsLayoutProps } from "fumadocs-ui/layout"
+import { Title } from "@/app/layout.client"
+import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared"
 
-import { utils } from "@/utils/source"
-
-export const layoutOptions: Omit<DocsLayoutProps, "children"> = {
-  tree: utils.pageTree,
+export const baseOptions: BaseLayoutProps = {
   nav: {
     transparentMode: "none",
-    title: <Title />,
-    children: <NavChildren />,
-    githubUrl: "https://github.com/Noroff-Online-Team/noroff-api"
+    title: <Title />
   },
-  sidebar: {
-    defaultOpenLevel: 0,
-    banner: <SidebarBanner />
-  }
+  links: []
 }

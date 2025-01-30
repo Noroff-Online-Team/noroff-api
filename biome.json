@@ -8,7 +8,8 @@
       "dist",
       "pnpm-lock.yaml",
       ".turbo/**",
-      "configs/**/*.json"
+      "configs/**/*.json",
+      ".source/**"
     ]
   },
   "formatter": {
@@ -36,7 +37,7 @@
   },
   "javascript": {
     "formatter": {
-      "trailingComma": "none",
+      "trailingCommas": "none",
       "semicolons": "asNeeded",
       "arrowParentheses": "asNeeded"
     }

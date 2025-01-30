@@ -1,5 +1,7 @@
 {
-  "title": "Docs",
+  "title": "Version 1 (Deprecated)",
+  "description": "Version 1 of the Noroff API",
+  "icon": "Tally1",
   "root": true,
   "pages": [
     "---Introduction---",

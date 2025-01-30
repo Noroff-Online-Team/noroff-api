@@ -22,6 +22,6 @@ jobs:
       - name: Setup
         uses: ./tooling/github/setup
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --filter=docs...
       - name: Build @noroff/api-docs
-        run: "pnpm build:docs"
+        run: pnpm turbo run build --filter=docs...
