@@ -57,6 +57,9 @@ jobs:
         run: "pnpm build:api-utils"
       - name: Build @noroff/logger
         run: "pnpm build:logger"
+      - name: Generate Prisma Client
+        run: pnpm prisma generate
+        working-directory: apps/v2
       - name: Run Prisma migrations
         run: pnpm prisma migrate deploy
         working-directory: apps/v2
