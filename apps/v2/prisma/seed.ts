@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker"
 
+import type { UserProfile } from "@prisma/v2-client"
 import {
   createListing,
   createListingBid
@@ -13,7 +14,6 @@ import {
   createPost
 } from "../src/modules/social/posts/posts.service"
 import { db } from "../src/utils"
-import type { UserProfile } from "./generated/v2-client"
 
 // Run the seed function and exit when done
 main()
