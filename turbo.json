@@ -1,6 +1,6 @@
 {
-  "$schema": "https://turbo.build/schema.v1.json",
-  "pipeline": {
+  "$schema": "https://turbo.build/schema.v2.json",
+  "tasks": {
     "topo": {
       "dependsOn": ["^topo"]
     },
@@ -23,7 +23,7 @@
       "outputs": ["node_modules/.cache/tsbuildinfo.json"]
     },
     "format": {
-      "outputMode": "new-only"
+      "outputLogs": "new-only"
     },
     "lint": {
       "dependsOn": ["^topo", "^build"]
