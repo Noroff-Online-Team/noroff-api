@@ -20,7 +20,7 @@
     },
     "typecheck": {
       "dependsOn": ["^topo", "^build"],
-      "outputs": ["node_modules/.cache/tsbuildinfo.json"]
+      "outputs": []
     },
     "format": {
       "outputLogs": "new-only"
