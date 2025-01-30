@@ -22,13 +22,9 @@ jobs:
       - name: Setup
         uses: ./tooling/github/setup
       - name: Install dependencies
-        run: pnpm install
-      - name: Build @noroff/api-utils
-        run: "pnpm build:api-utils"
-      - name: Build @noroff/logger
-        run: "pnpm build:logger"
+        run: pnpm install --filter=v2...
       - name: Build @noroff/api-v2
-        run: "pnpm build:v2"
+        run: pnpm turbo run build --filter=v2...
 
   test:
     name: Test
