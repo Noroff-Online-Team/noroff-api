@@ -2,6 +2,9 @@
 FROM node:22.14.0-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+# Update system and install openssl
+RUN apk update && apk upgrade && \
+    apk add --no-cache openssl
 RUN corepack enable
 
 # Builder Stage
