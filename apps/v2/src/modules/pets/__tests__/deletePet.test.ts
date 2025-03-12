@@ -33,7 +33,6 @@ beforeEach(async () => {
       description: "A friendly dog who loves playing fetch",
       adoptionStatus: "Available",
       location: "Oslo Animal Shelter",
-      dateAdded: new Date(),
       ownerName: USER_NAME
     }
   })

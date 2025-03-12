@@ -48,7 +48,6 @@ beforeEach(async () => {
       description: "A friendly dog who loves playing fetch",
       adoptionStatus: "Available",
       location: "Oslo Animal Shelter",
-      dateAdded: new Date(),
       image: { create: DEFAULT_IMAGE },
       owner: { connect: { name: USER_NAME } }
     }

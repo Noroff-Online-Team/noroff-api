@@ -28,7 +28,6 @@ beforeEach(async () => {
       description: "A friendly dog who loves playing fetch",
       adoptionStatus: "Available",
       location: "Oslo Animal Shelter",
-      dateAdded: new Date(),
       image: { create: DEFAULT_IMAGE },
       owner: { connect: { name: USER_NAME } }
     }
@@ -46,7 +45,6 @@ beforeEach(async () => {
       description: "A curious cat who loves to explore",
       adoptionStatus: "Available",
       location: "Bergen Pet Center",
-      dateAdded: new Date(),
       image: { create: DEFAULT_IMAGE },
       owner: { connect: { name: USER_NAME } }
     }
