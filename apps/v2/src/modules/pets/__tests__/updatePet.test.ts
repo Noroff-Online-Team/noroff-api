@@ -79,13 +79,26 @@ describe("[PUT] /pets/:id", () => {
     const res = await response.json()
 
     expect(response.statusCode).toBe(200)
-    expect(res.data).toBeDefined()
-    expect(res.data.id).toBe(PET_ID)
-    expect(res.data.name).toBe("Fluffy Jr.")
-    expect(res.data.age).toBe(4)
-    expect(res.data.adoptionStatus).toBe("Adopted")
-    expect(res.data.species).toBe("Dog")
-    expect(res.meta).toBeDefined()
+    expect(res.data).toMatchObject({
+      id: PET_ID,
+      name: "Fluffy Jr.",
+      age: 4,
+      adoptionStatus: "Adopted",
+      species: "Dog",
+      breed: "Golden Retriever",
+      gender: "Male",
+      size: "Large",
+      color: "Golden",
+      description: "A friendly dog who loves playing fetch",
+      location: "Oslo Animal Shelter",
+      image: {
+        url: DEFAULT_IMAGE.url,
+        alt: DEFAULT_IMAGE.alt
+      },
+      owner: {
+        name: USER_NAME
+      }
+    })
     expect(res.meta).toStrictEqual({})
   })
 
@@ -186,5 +199,32 @@ describe("[PUT] /pets/:id", () => {
         path: []
       }
     ])
+  })
+
+  it("should validate image URL when updating", async () => {
+    const response = await server.inject({
+      url: `/pets/${PET_ID}`,
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        image: {
+          url: "invalid-url",
+          alt: "Invalid URL test"
+        }
+      }
+    })
+
+    expect(response.statusCode).toBe(400)
+    const res = await response.json()
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toHaveLength(1)
+    expect(res.errors[0]).toStrictEqual({
+      code: "invalid_string",
+      message: "Image URL must be valid URL",
+      path: ["image", "url"]
+    })
   })
 })

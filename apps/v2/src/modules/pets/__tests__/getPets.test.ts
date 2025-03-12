@@ -69,13 +69,44 @@ describe("[GET] /pets", () => {
     const res = await response.json()
 
     expect(response.statusCode).toBe(200)
-    expect(res.data).toBeDefined()
     expect(res.data).toHaveLength(2)
-    expect(res.data[0].id).toBeDefined()
-    expect(res.data[0].name).toBe("Whiskers")
-    expect(res.data[1].id).toBeDefined()
-    expect(res.data[1].name).toBe("Fluffy")
-    expect(res.meta).toBeDefined()
+    expect(res.data[0]).toMatchObject({
+      id: "c4f7e5e9-1b22-5f75-9573-d17340e202f2",
+      name: "Whiskers",
+      species: "Cat",
+      breed: "Siamese",
+      age: 2,
+      gender: "Female",
+      size: "Medium",
+      color: "Cream",
+      description: "A curious cat who loves to explore",
+      adoptionStatus: "Available",
+      location: "Bergen Pet Center",
+      image: {
+        url: DEFAULT_IMAGE.url,
+        alt: DEFAULT_IMAGE.alt
+      },
+      owner: {
+        name: USER_NAME
+      }
+    })
+    expect(res.data[1]).toMatchObject({
+      id: "b8e7e4e6-9a11-4f64-8462-c16250d101e1",
+      name: "Fluffy",
+      species: "Dog",
+      breed: "Golden Retriever",
+      age: 3,
+      gender: "Male",
+      size: "Large",
+      color: "Golden",
+      description: "A friendly dog who loves playing fetch",
+      adoptionStatus: "Available",
+      location: "Oslo Animal Shelter",
+      image: {
+        url: DEFAULT_IMAGE.url,
+        alt: DEFAULT_IMAGE.alt
+      }
+    })
     expect(res.meta).toMatchObject({
       isFirstPage: true,
       isLastPage: true,
@@ -95,7 +126,6 @@ describe("[GET] /pets", () => {
     const res = await response.json()
 
     expect(response.statusCode).toBe(200)
-    expect(res.data).toBeDefined()
     expect(res.data).toHaveLength(2)
     expect(res.data[0].name).toBe("Fluffy")
     expect(res.data[1].name).toBe("Whiskers")
@@ -109,7 +139,6 @@ describe("[GET] /pets", () => {
     const res = await response.json()
 
     expect(response.statusCode).toBe(200)
-    expect(res.data).toBeDefined()
     expect(res.data).toHaveLength(1)
     expect(res.meta).toMatchObject({
       isFirstPage: true,

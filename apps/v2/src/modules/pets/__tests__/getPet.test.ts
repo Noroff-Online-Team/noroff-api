@@ -54,13 +54,26 @@ describe("[GET] /pets/:id", () => {
     const res = await response.json()
 
     expect(response.statusCode).toBe(200)
-    expect(res.data).toBeDefined()
-    expect(res.data.id).toBe(PET_ID)
-    expect(res.data.name).toBe("Fluffy")
-    expect(res.data.species).toBe("Dog")
-    expect(res.data.breed).toBe("Golden Retriever")
-    expect(res.data.age).toBe(3)
-    expect(res.meta).toBeDefined()
+    expect(res.data).toMatchObject({
+      id: PET_ID,
+      name: "Fluffy",
+      species: "Dog",
+      breed: "Golden Retriever",
+      age: 3,
+      gender: "Male",
+      size: "Large",
+      color: "Golden",
+      description: "A friendly dog who loves playing fetch",
+      adoptionStatus: "Available",
+      location: "Oslo Animal Shelter",
+      image: {
+        url: DEFAULT_IMAGE.url,
+        alt: DEFAULT_IMAGE.alt
+      },
+      owner: {
+        name: USER_NAME
+      }
+    })
     expect(res.meta).toStrictEqual({})
   })
 
@@ -93,9 +106,9 @@ describe("[GET] /pets/:id", () => {
     expect(res.meta).not.toBeDefined()
     expect(res.errors).toBeDefined()
     expect(res.errors).toHaveLength(1)
-    expect(res.errors[0]).toMatchObject({
+    expect(res.errors[0]).toStrictEqual({
       code: "invalid_string",
-      message: expect.stringContaining("Invalid uuid"),
+      message: "Invalid uuid",
       path: ["id"]
     })
   })

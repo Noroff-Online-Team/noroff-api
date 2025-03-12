@@ -123,4 +123,23 @@ describe("[DELETE] /pets/:id", () => {
 
     expect(response.statusCode).toBe(401)
   })
+
+  it("should require valid API key", async () => {
+    const response = await server.inject({
+      url: `/pets/${PET_ID}`,
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`
+        // Missing API key
+      }
+    })
+
+    expect(response.statusCode).toBe(401)
+    const res = await response.json()
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toHaveLength(1)
+    expect(res.errors[0]).toStrictEqual({
+      message: "No API key header was found"
+    })
+  })
 })

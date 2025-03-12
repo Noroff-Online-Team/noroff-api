@@ -56,14 +56,26 @@ describe("[POST] /pets", () => {
     const res = await response.json()
 
     expect(response.statusCode).toBe(201)
-    expect(res.data).toBeDefined()
-    expect(res.data.id).toBeDefined()
-    expect(res.data.name).toBe("Rex")
-    expect(res.data.species).toBe("Dog")
-    expect(res.data.breed).toBe("German Shepherd")
-    expect(res.data.age).toBe(2)
-    expect(res.data.owner.name).toBe(USER_NAME)
-    expect(res.meta).toBeDefined()
+    expect(res.data).toMatchObject({
+      id: expect.any(String),
+      name: "Rex",
+      species: "Dog",
+      breed: "German Shepherd",
+      age: 2,
+      gender: "Male",
+      size: "Large",
+      color: "Black and Tan",
+      description: "A loyal and intelligent dog",
+      adoptionStatus: "Available",
+      location: "Trondheim Pet Shelter",
+      image: {
+        url: createData.image.url,
+        alt: createData.image.alt
+      },
+      owner: {
+        name: USER_NAME
+      }
+    })
     expect(res.meta).toStrictEqual({})
   })
 
@@ -132,5 +144,56 @@ describe("[POST] /pets", () => {
     })
 
     expect(response.statusCode).toBe(401)
+  })
+
+  it("should require valid API key", async () => {
+    const response = await server.inject({
+      url: "/pets",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`
+        // Missing API key
+      },
+      payload: {
+        ...createData
+      }
+    })
+
+    expect(response.statusCode).toBe(401)
+    const res = await response.json()
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toHaveLength(1)
+    expect(res.errors[0]).toStrictEqual({
+      message: "No API key header was found"
+    })
+  })
+
+  it("should validate image URL", async () => {
+    const { image, ...rest } = createData
+    const response = await server.inject({
+      url: "/pets",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        ...rest,
+        image: {
+          url: "invalid-url",
+          alt: "Invalid URL test"
+        }
+      }
+    })
+
+    expect(response.statusCode).toBe(400)
+    const res = await response.json()
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toHaveLength(1)
+    expect(res.errors[0]).toStrictEqual({
+      code: "invalid_string",
+      message: "Invalid url",
+      path: ["image", "url"]
+    })
   })
 })
