@@ -1,0 +1,312 @@
+---
+title: Pets
+description: Pets endpoint for Pet Adoption
+---
+
+<Callout variant="warning">
+  Some of these are authenticated endpoints. You can visit [authentication](../auth/register) to get an access token.
+</Callout>
+
+These endpoints allow you to create, read, update and delete pets.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Pet model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique identifier for the pet." },
+    name: { type: "string", description: "The name of the pet." },
+    species: { type: "string", description: "The species of the pet." },
+    breed: { type: "string", description: "The breed of the pet." },
+    age: { type: "number", description: "The age of the pet." },
+    gender: { type: "string", description: "The gender of the pet." },
+    size: { type: "string", description: "The size of the pet." },
+    color: { type: "string", description: "The color of the pet." },
+    description: { type: "string", description: "The description of the pet." },
+    adoptionStatus: { type: "string", default: "Available", description: "The adoption status of the pet." },
+    location: { type: "string", description: "The location of the pet." },
+    image: {
+      type: "object",
+      typeDescription: "Instance of `Media` model.",
+      description: "The image associated with pet."
+    },
+    created: { type: "Date", description: "The date the pet was created." },
+    updated: { type: "Date", description: "The date the pet was last updated." },
+    owner: {
+      type: "Profile",
+      description: "The profile that created the pet."
+    }
+  }}
+/>
+
+<Hr />
+
+## All pets
+
+<EndpointDetails path="/pets" />
+
+Retrieve all pets.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": "string",
+      "name": "string",
+      "species": "string",
+      "breed": "string",
+      "age": 0,
+      "gender": "string",
+      "size": "string",
+      "color": "string",
+      "description": "string",
+      "adoptionStatus": "string",
+      "location": "string",
+      "image": {
+        "url": "string",
+        "alt": "string"
+      },
+      "created": "2025-01-01T12:00:00.000Z",
+      "updated": "2025-01-01T12:00:00.000Z",
+      "owner": {
+        "name": "string",
+        "email": "string",
+        "bio": "string",
+        "avatar": {
+          "url": "string",
+          "alt": "string"
+        },
+        "banner": {
+          "url": "string",
+          "alt": "string"
+        }
+      }
+    },
+    {
+      "id": "string",
+      "name": "string",
+      "species": "string",
+      "breed": "string",
+      "age": 0,
+      "gender": "string",
+      "size": "string",
+      "color": "string",
+      "description": "string",
+      "adoptionStatus": "string",
+      "location": "string",
+      "image": {
+        "url": "string",
+        "alt": "string"
+      },
+      "created": "2025-01-01T12:00:00.000Z",
+      "updated": "2025-01-01T12:00:00.000Z",
+      "owner": {
+        "name": "string",
+        "email": "string",
+        "bio": "string",
+        "avatar": {
+          "url": "string",
+          "alt": "string"
+        },
+        "banner": {
+          "url": "string",
+          "alt": "string"
+        }
+      }
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Single pet
+
+<EndpointDetails path="/pets/<id>" />
+
+Retrieve a single pet by its id.
+
+```json title="Response"
+{
+  "data": {
+    "id": "string",
+    "name": "string",
+    "species": "string",
+    "breed": "string",
+    "age": 0,
+    "gender": "string",
+    "size": "string",
+    "color": "string",
+    "description": "string",
+    "adoptionStatus": "string",
+    "location": "string",
+    "image": {
+      "url": "string",
+      "alt": "string"
+    },
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:00:00.000Z",
+    "owner": {
+      "name": "string",
+      "email": "string",
+      "bio": "string",
+      "avatar": {
+        "url": "string",
+        "alt": "string"
+      },
+      "banner": {
+        "url": "string",
+        "alt": "string"
+      }
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Create pet
+
+<EndpointDetails method="POST" path="/pets" />
+
+Create a new pet.
+
+> Please note that the `image.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+{
+  "name": "string",
+  "species": "string",
+  "breed": "string",
+  "age": 0,
+  "gender": "string",
+  "size": "string",
+  "color": "string",
+  "description": "string",
+  "adoptionStatus": "string", // Optional. Defaults to "Available".
+  "location": "string",
+  "image": {
+    "url": "string",
+    "alt": "string"
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "string",
+    "name": "string",
+    "species": "string",
+    "breed": "string",
+    "age": 0,
+    "gender": "string",
+    "size": "string",
+    "color": "string",
+    "description": "string",
+    "adoptionStatus": "string",
+    "location": "string",
+    "image": {
+      "url": "string",
+      "alt": "string"
+    },
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:00:00.000Z",
+    "owner": {
+      "name": "string",
+      "email": "string",
+      "bio": "string",
+      "avatar": {
+        "url": "string",
+        "alt": "string"
+      },
+      "banner": {
+        "url": "string",
+        "alt": "string"
+      }
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Update pet
+
+<EndpointDetails method="PUT" path="/pets/<id>" />
+
+Update a pet by its id. This endpoint returns the updated pet.
+
+> Please note that the `image.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+// You can update any amount of the properties of the pet.
+{
+  "adoptionStatus": "Pending",
+  "image": {
+    "url": "https://example.com/image.jpg",
+    "alt": "string"
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "string",
+    "name": "string",
+    "species": "string",
+    "breed": "string",
+    "age": 0,
+    "gender": "string",
+    "size": "string",
+    "color": "string",
+    "description": "string",
+    "adoptionStatus": "string",
+    "location": "string",
+    "image": {
+      "url": "string",
+      "alt": "string"
+    },
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:00:00.000Z",
+    "owner": {
+      "name": "string",
+      "email": "string",
+      "bio": "string",
+      "avatar": {
+        "url": "string",
+        "alt": "string"
+      },
+      "banner": {
+        "url": "string",
+        "alt": "string"
+      }
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Delete pet
+
+<EndpointDetails method="DELETE" path="/pets/<id>" />
+
+Delete a pet by its id.
+
+Returns an empty `204 No Content` response on success.

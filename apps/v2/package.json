@@ -8,6 +8,7 @@
     "dev": "tsx watch --clear-screen=false src/app.ts",
     "start": "node dist/app.js",
     "start:migrate:prod": "pnpm prisma migrate deploy && pnpm start",
+    "migrate:dev": "pnpm prisma migrate dev",
     "build": "tsup",
     "prebuild": "pnpm prisma generate",
     "prisma:generate": "pnpm prisma generate",

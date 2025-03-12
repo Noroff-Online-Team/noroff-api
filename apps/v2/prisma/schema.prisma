@@ -160,6 +160,8 @@ model Media {
   squareEyesProductId String?            @unique
   blogPost            BlogPost?          @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
   blogPostId          String?            @unique
+  pet                 Pet?               @relation(fields: [petId], references: [id], onDelete: Cascade)
+  petId               String?            @unique
 }
 
 // User API Key
@@ -211,6 +213,8 @@ model UserProfile {
   blogPosts    BlogPost[]
   // API
   apiKeys      ApiKey[]
+  // Pets
+  pets         Pet[]
 }
 
 // Social
@@ -346,4 +350,24 @@ model BlogPost {
   created DateTime    @default(now())
   updated DateTime    @updatedAt
   mediaId String?
+}
+
+// Pets
+model Pet {
+  id             String      @id @default(uuid())
+  name           String
+  species        String
+  breed          String
+  age            Int
+  gender         String
+  size           String
+  color          String
+  description    String
+  adoptionStatus String      @default("Available")
+  location       String
+  image          Media?
+  created        DateTime    @default(now())
+  updated        DateTime    @updatedAt
+  owner          UserProfile @relation(fields: [ownerName], references: [name], onDelete: Cascade)
+  ownerName      String
 }

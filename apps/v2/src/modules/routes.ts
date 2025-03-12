@@ -42,4 +42,5 @@ export default async function (fastify: FastifyInstance) {
     prefix: "holidaze/profiles"
   })
   fastify.register(import("./blog/posts/posts.route"), { prefix: "blog/posts" })
+  fastify.register(import("./pets/pets.route"), { prefix: "pets" })
 }
