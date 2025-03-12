@@ -366,7 +366,8 @@ model Pet {
   adoptionStatus String      @default("Available")
   location       String
   image          Media?
-  dateAdded      DateTime    @default(now())
+  created        DateTime    @default(now())
+  updated        DateTime    @updatedAt
   owner          UserProfile @relation(fields: [ownerName], references: [name], onDelete: Cascade)
   ownerName      String
 }
