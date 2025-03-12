@@ -26,7 +26,8 @@ export const petCore = {
   adoptionStatus: z.string().nullish(),
   location: z.string(),
   image: z.object(mediaProperties),
-  dateAdded: z.date(),
+  created: z.date(),
+  updated: z.date(),
   owner: z.object(profileCore)
 }
 
