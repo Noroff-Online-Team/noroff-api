@@ -1,0 +1,290 @@
+---
+title: Artworks
+description: Artworks endpoint
+---
+
+<Callout variant="warning">
+  Some of these are authenticated endpoints. You can visit [authentication](../auth/register) to get an access token.
+</Callout>
+
+These endpoints allow you to create, read, update and delete artworks.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Artwork model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique identifier for the artwork." },
+    title: { type: "string", description: "The title of the artwork." },
+    artist: { type: "string", description: "The artist of the artwork." },
+    year: { type: "number", description: "The year of the artwork." },
+    medium: { type: "string", description: "The medium of the artwork." },
+    description: { type: "string", description: "The description of the artwork." },
+    location: { type: "string", description: "The location of the artwork." },
+    image: {
+      type: "object",
+      typeDescription: "Instance of `Media` model.",
+      description: "The image associated with artwork."
+    },
+    created: { type: "Date", description: "The date the artwork was created." },
+    updated: { type: "Date", description: "The date the artwork was last updated." },
+    owner: {
+      type: "Profile",
+      description: "The profile that created the artwork."
+    }
+  }}
+/>
+
+<Hr />
+
+## All artworks
+
+<EndpointDetails path="/artworks" />
+
+Retrieve all artworks.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": "string",
+      "title": "string",
+      "artist": "string",
+      "year": 0,
+      "medium": "string",
+      "description": "string",
+      "location": "string",
+      "image": {
+        "url": "string",
+        "alt": "string"
+      },
+      "created": "2025-01-01T12:00:00.000Z",
+      "updated": "2025-01-01T12:00:00.000Z",
+      "owner": {
+        "name": "string",
+        "email": "string",
+        "bio": "string",
+        "avatar": {
+          "url": "string",
+          "alt": "string"
+        },
+        "banner": {
+          "url": "string",
+          "alt": "string"
+        }
+      }
+    },
+    {
+      "id": "string",
+      "title": "string",
+      "artist": "string",
+      "year": 0,
+      "medium": "string",
+      "description": "string",
+      "location": "string",
+      "image": {
+        "url": "string",
+        "alt": "string"
+      },
+      "created": "2025-01-01T12:00:00.000Z",
+      "updated": "2025-01-01T12:00:00.000Z",
+      "owner": {
+        "name": "string",
+        "email": "string",
+        "bio": "string",
+        "avatar": {
+          "url": "string",
+          "alt": "string"
+        },
+        "banner": {
+          "url": "string",
+          "alt": "string"
+        }
+      }
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Single artwork
+
+<EndpointDetails path="/artworks/<id>" />
+
+Retrieve a single artwork by its id.
+
+```json title="Response"
+{
+  "data": {
+    "id": "string",
+    "title": "string",
+    "artist": "string",
+    "year": 0,
+    "medium": "string",
+    "description": "string",
+    "location": "string",
+    "image": {
+      "url": "string",
+      "alt": "string"
+    },
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:00:00.000Z",
+    "owner": {
+      "name": "string",
+      "email": "string",
+      "bio": "string",
+      "avatar": {
+        "url": "string",
+        "alt": "string"
+      },
+      "banner": {
+        "url": "string",
+        "alt": "string"
+      }
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Create artwork
+
+<EndpointDetails method="POST" path="/artworks" />
+
+Create a new artwork.
+
+> Please note that the `image.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+{
+  "title": "string",
+  "artist": "string",
+  "year": 0,
+  "medium": "string",
+  "description": "string",
+  "location": "string",
+  "image": {
+    "url": "string",
+    "alt": "string"
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "string",
+    "title": "string",
+    "artist": "string",
+    "year": 0,
+    "medium": "string",
+    "description": "string",
+    "location": "string",
+    "image": {
+      "url": "string",
+      "alt": "string"
+    },
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:00:00.000Z",
+    "owner": {
+      "name": "string",
+      "email": "string",
+      "bio": "string",
+      "avatar": {
+        "url": "string",
+        "alt": "string"
+      },
+      "banner": {
+        "url": "string",
+        "alt": "string"
+      }
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Update artwork
+
+<EndpointDetails method="PUT" path="/artworks/<id>" />
+
+Update an artwork by its id. This endpoint returns the updated artwork.
+
+> Please note that the `image.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+// You can update any amount of the properties of the artwork.
+{
+  "title": "string",
+  "description": "string",
+  "location": "string",
+  "image": {
+    "url": "https://example.com/image.jpg",
+    "alt": "string"
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "string",
+    "title": "string",
+    "artist": "string",
+    "year": 0,
+    "medium": "string",
+    "description": "string",
+    "location": "string",
+    "image": {
+      "url": "string",
+      "alt": "string"
+    },
+    "image": {
+      "url": "string",
+      "alt": "string"
+    },
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:00:00.000Z",
+    "owner": {
+      "name": "string",
+      "email": "string",
+      "bio": "string",
+      "avatar": {
+        "url": "string",
+        "alt": "string"
+      },
+      "banner": {
+        "url": "string",
+        "alt": "string"
+      }
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Delete artwork
+
+<EndpointDetails method="DELETE" path="/artworks/<id>" />
+
+Delete an artwork by its id.
+
+Returns an empty `204 No Content` response on success.
