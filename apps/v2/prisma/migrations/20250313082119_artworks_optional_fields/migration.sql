@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Artwork" ALTER COLUMN "year" DROP NOT NULL,
+ALTER COLUMN "location" DROP NOT NULL;

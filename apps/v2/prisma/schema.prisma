@@ -162,6 +162,8 @@ model Media {
   blogPostId          String?            @unique
   pet                 Pet?               @relation(fields: [petId], references: [id], onDelete: Cascade)
   petId               String?            @unique
+  artwork             Artwork?           @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  artworkId           String?            @unique
 }
 
 // User API Key
@@ -215,6 +217,8 @@ model UserProfile {
   apiKeys      ApiKey[]
   // Pets
   pets         Pet[]
+  // Artworks
+  artworks     Artwork[]
 }
 
 // Social
@@ -370,4 +374,20 @@ model Pet {
   updated        DateTime    @updatedAt
   owner          UserProfile @relation(fields: [ownerName], references: [name], onDelete: Cascade)
   ownerName      String
+}
+
+// Artworks
+model Artwork {
+  id          String      @id @default(uuid())
+  title       String
+  artist      String
+  year        Int?
+  medium      String
+  description String
+  location    String?
+  image       Media?
+  created     DateTime    @default(now())
+  updated     DateTime    @updatedAt
+  owner       UserProfile @relation(fields: [ownerName], references: [name], onDelete: Cascade)
+  ownerName   String
 }
