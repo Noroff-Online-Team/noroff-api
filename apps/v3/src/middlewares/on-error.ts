@@ -1,6 +1,5 @@
 import env from "@/env"
 import * as HttpStatusCodes from "@/helpers/http-status-codes"
-import * as HttpStatusPhrases from "@/helpers/http-status-phrases"
 import type { ErrorHandler } from "hono"
 import { HTTPException } from "hono/http-exception"
 import type { StatusCode } from "hono/utils/http-status"
