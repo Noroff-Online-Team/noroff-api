@@ -34,7 +34,7 @@ async function profilesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: profilesQuerySchema,
         response: {
           200: createResponseSchema(displayProfileSchema.array())
@@ -50,7 +50,7 @@ async function profilesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: queryFlagsSchema,
         params: profileNameSchema,
         response: {
@@ -82,7 +82,7 @@ async function profilesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: profileNameSchema,
         body: updateProfileSchema,
         response: {
@@ -101,7 +101,7 @@ async function profilesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: listingQuerySchema,
         params: profileNameSchema,
         response: {
@@ -118,7 +118,7 @@ async function profilesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: profilesQuerySchema,
         params: profileNameSchema,
         response: {
@@ -135,7 +135,7 @@ async function profilesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: listingWinsQuerySchema,
         params: profileNameSchema,
         response: {
@@ -152,7 +152,7 @@ async function profilesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-profiles"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: profileNameSchema,
         response: {
           200: createResponseSchema(profileCreditsSchema)
