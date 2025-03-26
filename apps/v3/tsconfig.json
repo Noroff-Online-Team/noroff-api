@@ -1,7 +1,14 @@
 {
   "compilerOptions": {
+    "module": "ESNext",
+    "allowSyntheticDefaultImports": true,
     "target": "ESNext",
-    "module": "NodeNext",
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "dist",
+    "baseUrl": "src",
     "strict": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
