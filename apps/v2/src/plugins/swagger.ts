@@ -49,6 +49,18 @@ export default fp(async fastify => {
         {
           name: "holidaze-bookings",
           description: "Holidaze bookings related endpoints"
+        },
+        {
+          name: "blog-posts",
+          description: "Blog posts related endpoints"
+        },
+        {
+          name: "pets",
+          description: "Pets related endpoints"
+        },
+        {
+          name: "artworks",
+          description: "Artworks related endpoints"
         }
       ],
       securityDefinitions: {
