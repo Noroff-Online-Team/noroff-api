@@ -1,0 +1,29 @@
+{
+  "name": "v3",
+  "description": "Noroff API server",
+  "version": "3.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false src/index.ts",
+    "start": "node dist/src/index.js",
+    "start:migrate:prod": "pnpm prisma migrate deploy && pnpm start",
+    "migrate:dev": "pnpm prisma migrate dev",
+    "build": "tsup",
+    "prebuild": "pnpm prisma generate",
+    "prisma:generate": "pnpm prisma generate",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint .",
+    "format": "biome format .",
+    "format:write": "biome format --write ."
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.0",
+    "hono": "^4.7.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.11",
+    "tsx": "^4.1.4"
+  }
+}
