@@ -54,9 +54,9 @@ export default fp(async fastify => {
       securityDefinitions: {
         apiKey: {
           type: "apiKey",
-          name: "API Key",
+          name: "X-Noroff-API-Key",
           in: "header",
-          description: 'Format "X-Noroff-API-Key [key]"'
+          description: "Only paste the API key, no other text"
         },
         bearerAuth: {
           type: "apiKey",
