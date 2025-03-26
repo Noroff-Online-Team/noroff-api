@@ -39,7 +39,7 @@ async function postsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate],
       schema: {
         tags: ["blog-posts"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: profileNameSchema,
         body: createPostBaseSchema,
         response: {
@@ -56,7 +56,7 @@ async function postsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate],
       schema: {
         tags: ["blog-posts"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: postIdWithNameParamsSchema,
         body: updatePostBodySchema,
         response: {
@@ -73,7 +73,7 @@ async function postsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate],
       schema: {
         tags: ["blog-posts"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: postIdWithNameParamsSchema
       }
     },

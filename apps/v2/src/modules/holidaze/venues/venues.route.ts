@@ -69,7 +69,7 @@ async function venuesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-venues"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: queryFlagsSchema,
         body: createVenueSchema,
         response: {
@@ -86,7 +86,7 @@ async function venuesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-venues"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: venueIdSchema,
         querystring: queryFlagsSchema,
         body: updateVenueSchema,
@@ -104,7 +104,7 @@ async function venuesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-venues"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: venueIdSchema
       }
     },

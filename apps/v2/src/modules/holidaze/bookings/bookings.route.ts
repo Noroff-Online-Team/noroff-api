@@ -24,7 +24,7 @@ async function bookingsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-bookings"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: bookingsQuerySchema,
         response: {
           200: createResponseSchema(displayBookingSchema.array())
@@ -40,7 +40,7 @@ async function bookingsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-bookings"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: queryFlagsSchema,
         params: bookingIdSchema,
         response: {
@@ -57,7 +57,7 @@ async function bookingsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-bookings"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: queryFlagsSchema,
         body: createBookingSchema,
         response: {
@@ -74,7 +74,7 @@ async function bookingsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-bookings"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: queryFlagsSchema,
         params: bookingIdSchema,
         body: updateBookingSchema,
@@ -92,7 +92,7 @@ async function bookingsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["holidaze-bookings"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: bookingIdSchema
       }
     },

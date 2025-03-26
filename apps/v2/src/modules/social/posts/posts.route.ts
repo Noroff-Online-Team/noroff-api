@@ -36,7 +36,7 @@ async function postsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: postsQuerySchema,
         response: {
           200: createResponseSchema(displayPostSchema.array())
@@ -52,7 +52,7 @@ async function postsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: postsQuerySchema,
         response: {
           200: createResponseSchema(displayPostSchema.array())
@@ -83,7 +83,7 @@ async function postsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: queryFlagsSchema,
         body: createPostBaseSchema,
         response: {
@@ -100,7 +100,7 @@ async function postsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: queryFlagsSchema,
         params: postIdParamsSchema,
         body: updatePostBodySchema,
@@ -131,7 +131,7 @@ async function postsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: queryFlagsSchema,
         params: postIdParamsSchema,
         response: {
@@ -148,7 +148,7 @@ async function postsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: reactionParamsSchema,
         response: {
           200: createResponseSchema(reactionSchema)
@@ -164,7 +164,7 @@ async function postsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: authorQuerySchema,
         params: postIdParamsSchema,
         body: createCommentSchema,
@@ -182,7 +182,7 @@ async function postsRoutes(server: FastifyInstance) {
       preHandler: [server.authenticate, server.apiKey],
       schema: {
         tags: ["social-posts"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: deleteCommentSchema
       }
     },
