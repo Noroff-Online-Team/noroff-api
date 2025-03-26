@@ -49,14 +49,26 @@ export default fp(async fastify => {
         {
           name: "holidaze-bookings",
           description: "Holidaze bookings related endpoints"
+        },
+        {
+          name: "blog-posts",
+          description: "Blog posts related endpoints"
+        },
+        {
+          name: "pets",
+          description: "Pets related endpoints"
+        },
+        {
+          name: "artworks",
+          description: "Artworks related endpoints"
         }
       ],
       securityDefinitions: {
         apiKey: {
           type: "apiKey",
-          name: "API Key",
+          name: "X-Noroff-API-Key",
           in: "header",
-          description: 'Format "X-Noroff-API-Key [key]"'
+          description: "Only paste the API key, no other text"
         },
         bearerAuth: {
           type: "apiKey",

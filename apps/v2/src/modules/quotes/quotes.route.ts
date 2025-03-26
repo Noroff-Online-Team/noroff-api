@@ -18,7 +18,7 @@ async function quotesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["quotes"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: sortAndPaginationSchema,
         response: {
           200: createResponseSchema(quoteSchema.array())
@@ -34,7 +34,7 @@ async function quotesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["quotes"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         response: {
           200: createResponseSchema(quoteSchema)
         }
@@ -49,7 +49,7 @@ async function quotesRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["quotes"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: quoteParamsSchema,
         response: {
           200: createResponseSchema(quoteSchema)

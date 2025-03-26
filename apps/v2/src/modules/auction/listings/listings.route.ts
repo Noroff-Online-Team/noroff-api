@@ -71,7 +71,7 @@ async function listingsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-listings"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         body: createListingSchema,
         response: {
           201: createResponseSchema(listingResponseSchema)
@@ -87,7 +87,7 @@ async function listingsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-listings"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         body: updateListingSchema,
         querystring: queryFlagsSchema,
         params: listingIdParamsSchema,
@@ -105,7 +105,7 @@ async function listingsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-listings"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: listingIdParamsSchema
       }
     },
@@ -118,7 +118,7 @@ async function listingsRoutes(server: FastifyInstance) {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["auction-listings"],
-        security: [{ bearerAuth: [] }],
+        security: [{ bearerAuth: [], apiKey: [] }],
         params: listingIdParamsSchema,
         querystring: queryFlagsSchema,
         body: bidBodySchema,
