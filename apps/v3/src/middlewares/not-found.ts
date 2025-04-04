@@ -1,6 +1,6 @@
-import * as HttpStatusCodes from "@/helpers/http-status-codes"
 import type { NotFoundHandler } from "hono"
 import statuses from "statuses"
+import * as HttpStatusCodes from "stoker/http-status-codes"
 
 export const notFound: NotFoundHandler = c => {
   const statusCode = HttpStatusCodes.NOT_FOUND

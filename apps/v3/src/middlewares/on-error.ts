@@ -1,10 +1,10 @@
 import env from "@/env"
-import * as HttpStatusCodes from "@/helpers/http-status-codes"
 import type { ErrorHandler } from "hono"
 import { HTTPException } from "hono/http-exception"
 import type { StatusCode } from "hono/utils/http-status"
 import { isHttpError } from "http-errors"
 import statuses from "statuses"
+import * as HttpStatusCodes from "stoker/http-status-codes"
 import { ZodError } from "zod"
 
 /**
