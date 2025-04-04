@@ -9,7 +9,7 @@ export default function configureOpenAPI(app: AppOpenAPI) {
     openapi: "3.0.0",
     info: {
       version: packageJSON.version,
-      title: "Noroff API"
+      title: "Noroff API v3"
     }
   })
 
