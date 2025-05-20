@@ -9,6 +9,11 @@
     "dev": "tsx watch --clear-screen=false src/index.ts",
     "start": "node dist/src/index.js",
     "build": "tsup",
+    "start:migrate:prod": "pnpm prisma migrate deploy && pnpm start",
+    "migrate:dev": "pnpm prisma migrate dev",
+    "prebuild": "pnpm prisma:generate && pnpm prisma:generate:zod",
+    "prisma:generate": "pnpm prisma generate",
+    "prisma:generate:zod": "pnpm prisma generate zod",
     "typecheck": "tsc --noEmit",
     "lint": "biome lint .",
     "format": "biome format .",
@@ -17,6 +22,8 @@
   "dependencies": {
     "@hono/node-server": "^1.14.0",
     "@hono/zod-openapi": "^0.19.2",
+    "@noroff/api-utils": "workspace:*",
+    "@prisma/client": "^5.4.1",
     "@scalar/hono-api-reference": "^0.7.2",
     "dotenv": "^16.3.1",
     "dotenv-expand": "^12.0.1",
@@ -25,14 +32,17 @@
     "http-errors": "^2.0.0",
     "pino": "^8.16.0",
     "pino-pretty": "^13.0.0",
+    "prisma-extension-pagination": "^0.7.4",
     "statuses": "^2.0.1",
     "stoker": "^1.4.2",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "zod-prisma-types": "^3.2.4"
   },
   "devDependencies": {
     "@types/http-errors": "^2.0.2",
     "@types/node": "^20.12.11",
     "@types/statuses": "^2.0.2",
+    "prisma": "^5.4.1",
     "tsup": "^7.2.0",
     "tsx": "^4.1.4"
   }

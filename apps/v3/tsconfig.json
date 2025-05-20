@@ -10,13 +10,15 @@
     "outDir": "dist",
     "baseUrl": "src",
     "strict": true,
-    "verbatimModuleSyntax": true,
     "skipLibCheck": true,
+    "strictNullChecks": true,
+    "verbatimModuleSyntax": true,
     "types": ["node"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/prisma/generated/*": ["../prisma/generated/*"]
     }
   },
   "include": ["src/**/*"],
