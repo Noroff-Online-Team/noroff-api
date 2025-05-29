@@ -601,6 +601,6 @@ Update a review by its id. Only the author of the review can update it. You must
 
 <EndpointDetails method="DELETE" path="/library-books/<id>/reviews/<reviewId>" />
 
-Delete a review by its id. Only the author of the review can delete it.
+Delete a review by its id. Only the author of the review or the owner of the book can delete it.
 
 Returns an empty `204 No Content` response on success.
