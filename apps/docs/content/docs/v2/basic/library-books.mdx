@@ -1,0 +1,606 @@
+---
+title: Library Books
+description: Library Books endpoint for Personal Digital Book Library (PDBL)
+---
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](../auth/register) to get an access token.
+</Callout>
+
+These endpoints allow you to create, read, update and delete library books and their reviews. Perfect for building a Personal Digital Book Library (PDBL) application where users can manage their book collections and reviews.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Library Book model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique identifier for the library book." },
+    title: { type: "string", description: "The title of the book." },
+    description: { type: "string", description: "A description of the book." },
+    metadata: {
+      type: "object",
+      description: "Detailed book information including author, publication details, and more.",
+      properties: {
+        author: { type: "string", description: "The author of the book." },
+        isbn: { type: "string", description: "The ISBN of the book (optional)." },
+        publicationDate: { type: "Date", description: "The publication date of the book." },
+        publisher: { type: "string", description: "The publisher of the book (optional)." },
+        pageCount: { type: "number", description: "The number of pages in the book (optional)." },
+        language: { type: "string", default: "English", description: "The language of the book." },
+        genres: { type: "string[]", description: "Array of genres (optional)." },
+        format: { type: "string", default: "Paperback", description: "The format of the book (Hardcover, Paperback, eBook, Audiobook)." }
+      }
+    },
+    image: {
+      type: "object",
+      typeDescription: "Instance of `Media` model.",
+      description: "The cover image of the book."
+    },
+    reviews: {
+      type: "array",
+      typeDescription: "Array of `LibraryBookReview` objects.",
+      description: "Reviews associated with this book."
+    },
+    created: { type: "Date", description: "The date the book was added to the library." },
+    updated: { type: "Date", description: "The date the book was last updated." },
+    owner: {
+      type: "Profile",
+      description: "The profile that added the book to the library."
+    }
+  }}
+/>
+
+## The Library Book Review model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique identifier for the review." },
+    comment: { type: "string", description: "The review comment (max 280 characters)." },
+    rating: { type: "number", description: "The rating from 1 to 5." },
+    reviewer: {
+      type: "Profile",
+      description: "The profile that wrote the review."
+    },
+    book: {
+      type: "LibraryBook",
+      description: "The book this review is for."
+    },
+    created: { type: "Date", description: "The date the review was created." },
+    updated: { type: "Date", description: "The date the review was last updated." }
+  }}
+/>
+
+<Hr />
+
+## Get all library books
+
+<EndpointDetails path="/library-books" />
+
+Retrieve all library books.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "title": "The Great Gatsby",
+      "description": "A classic American novel set in the Jazz Age, exploring themes of wealth, love, and the American Dream.",
+      "metadata": {
+        "author": "F. Scott Fitzgerald",
+        "isbn": "9780743273565",
+        "publicationDate": "1925-04-10T00:00:00.000Z",
+        "publisher": "Charles Scribner's Sons",
+        "pageCount": 180,
+        "language": "English",
+        "genres": ["Fiction", "Classic Literature"],
+        "format": "Hardcover"
+      },
+      "image": {
+        "url": "https://example.com/gatsby-cover.jpg",
+        "alt": "The Great Gatsby book cover"
+      },
+      "reviews": [
+        {
+          "id": "review-id",
+          "comment": "A masterpiece of American literature!",
+          "rating": 5,
+          "reviewer": {
+            "name": "john_doe",
+            "email": "john@example.com",
+            "avatar": {
+              "url": "https://example.com/avatar.jpg",
+              "alt": "John's avatar"
+            }
+          },
+          "created": "2025-01-01T12:00:00.000Z",
+          "updated": "2025-01-01T12:00:00.000Z"
+        }
+      ],
+      "created": "2025-01-01T12:00:00.000Z",
+      "updated": "2025-01-01T12:00:00.000Z",
+      "owner": {
+        "name": "admin",
+        "email": "admin@example.com",
+        "bio": "Book library administrator",
+        "avatar": {
+          "url": "https://example.com/admin-avatar.jpg",
+          "alt": "Admin avatar"
+        },
+        "banner": {
+          "url": "https://example.com/admin-banner.jpg",
+          "alt": "Admin banner"
+        }
+      }
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 1
+  }
+}
+```
+
+<Hr />
+
+## Get single library book
+
+<EndpointDetails path="/library-books/<id>" />
+
+Retrieve a single library book by its id, including all associated reviews.
+
+```json title="Response"
+{
+  "data": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "title": "The Great Gatsby",
+    "description": "A classic American novel set in the Jazz Age, exploring themes of wealth, love, and the American Dream.",
+    "metadata": {
+      "author": "F. Scott Fitzgerald",
+      "isbn": "9780743273565",
+      "publicationDate": "1925-04-10T00:00:00.000Z",
+      "publisher": "Charles Scribner's Sons",
+      "pageCount": 180,
+      "language": "English",
+      "genres": ["Fiction", "Classic Literature"],
+      "format": "Hardcover"
+    },
+    "image": {
+      "url": "https://example.com/gatsby-cover.jpg",
+      "alt": "The Great Gatsby book cover"
+    },
+    "reviews": [
+      {
+        "id": "review-id",
+        "comment": "A masterpiece of American literature!",
+        "rating": 5,
+        "reviewer": {
+          "name": "john_doe",
+          "email": "john@example.com",
+          "avatar": {
+            "url": "https://example.com/avatar.jpg",
+            "alt": "John's avatar"
+          }
+        },
+        "created": "2025-01-01T12:00:00.000Z",
+        "updated": "2025-01-01T12:00:00.000Z"
+      }
+    ],
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:00:00.000Z",
+    "owner": {
+      "name": "admin",
+      "email": "admin@example.com",
+      "bio": "Book library administrator",
+      "avatar": {
+        "url": "https://example.com/admin-avatar.jpg",
+        "alt": "Admin avatar"
+      },
+      "banner": {
+        "url": "https://example.com/admin-banner.jpg",
+        "alt": "Admin banner"
+      }
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Create library book
+
+<EndpointDetails method="POST" path="/library-books" />
+
+Create a new library book entry. Only authenticated users can create books.
+
+> Please note that the `image.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+{
+  "title": "To Kill a Mockingbird",
+  "description": "A gripping tale of racial injustice and childhood innocence.",
+  "metadata": {
+    "author": "Harper Lee",
+    "isbn": "9780061120084",
+    "publicationDate": "1960-07-11T00:00:00.000Z",
+    "publisher": "J.B. Lippincott & Co.",
+    "pageCount": 376,
+    "language": "English",
+    "genres": ["Fiction", "Classic", "Historical Fiction"],
+    "format": "Paperback"
+  },
+  "image": {
+    "url": "https://example.com/mockingbird-cover.jpg",
+    "alt": "To Kill a Mockingbird book cover"
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "title": "To Kill a Mockingbird",
+    "description": "A gripping tale of racial injustice and childhood innocence.",
+    "metadata": {
+      "author": "Harper Lee",
+      "isbn": "9780061120084",
+      "publicationDate": "1960-07-11T00:00:00.000Z",
+      "publisher": "J.B. Lippincott & Co.",
+      "pageCount": 376,
+      "language": "English",
+      "genres": ["Fiction", "Classic", "Historical Fiction"],
+      "format": "Paperback"
+    },
+    "image": {
+      "url": "https://example.com/mockingbird-cover.jpg",
+      "alt": "To Kill a Mockingbird book cover"
+    },
+    "reviews": [],
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:00:00.000Z",
+    "owner": {
+      "name": "admin",
+      "email": "admin@example.com",
+      "bio": "Book library administrator",
+      "avatar": {
+        "url": "https://example.com/admin-avatar.jpg",
+        "alt": "Admin avatar"
+      },
+      "banner": {
+        "url": "https://example.com/admin-banner.jpg",
+        "alt": "Admin banner"
+      }
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Update library book
+
+<EndpointDetails method="PUT" path="/library-books/<id>" />
+
+Update a library book by its id. Only the owner of the book can update it. You must provide at least one field to update.
+
+> Please note that the `image.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+// You can update any combination of the properties of the book.
+{
+  "description": "An updated description of this classic novel about moral courage.",
+  "metadata": {
+    "pageCount": 281,
+    "format": "eBook",
+    "genres": ["Fiction", "Classic", "Historical Fiction", "Coming of Age"]
+  },
+  "image": {
+    "url": "https://example.com/new-mockingbird-cover.jpg",
+    "alt": "Updated To Kill a Mockingbird cover"
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "title": "To Kill a Mockingbird",
+    "description": "An updated description of this classic novel about moral courage.",
+    "metadata": {
+      "author": "Harper Lee",
+      "isbn": "9780061120084",
+      "publicationDate": "1960-07-11T00:00:00.000Z",
+      "publisher": "J.B. Lippincott & Co.",
+      "pageCount": 281,
+      "language": "English",
+      "genres": ["Fiction", "Classic", "Historical Fiction", "Coming of Age"],
+      "format": "eBook"
+    },
+    "image": {
+      "url": "https://example.com/new-mockingbird-cover.jpg",
+      "alt": "Updated To Kill a Mockingbird cover"
+    },
+    "reviews": [],
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:30:00.000Z",
+    "owner": {
+      "name": "admin",
+      "email": "admin@example.com",
+      "bio": "Book library administrator",
+      "avatar": {
+        "url": "https://example.com/admin-avatar.jpg",
+        "alt": "Admin avatar"
+      },
+      "banner": {
+        "url": "https://example.com/admin-banner.jpg",
+        "alt": "Admin banner"
+      }
+    }
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Delete library book
+
+<EndpointDetails method="DELETE" path="/library-books/<id>" />
+
+Delete a library book by its id. Only the owner of the book can delete it. This will also delete all associated reviews.
+
+Returns an empty `204 No Content` response on success.
+
+<Hr />
+
+## Get all reviews for a book
+
+<EndpointDetails path="/library-books/<id>/reviews" />
+
+Retrieve all reviews for a specific library book.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": "review-id-1",
+      "comment": "Absolutely loved this book! A must-read classic that deals with important themes.",
+      "rating": 5,
+      "reviewer": {
+        "name": "jane_smith",
+        "email": "jane@example.com",
+        "bio": "Avid reader and literature enthusiast",
+        "avatar": {
+          "url": "https://example.com/jane-avatar.jpg",
+          "alt": "Jane's avatar"
+        },
+        "banner": {
+          "url": "https://example.com/jane-banner.jpg",
+          "alt": "Jane's banner"
+        }
+      },
+      "book": {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "title": "To Kill a Mockingbird",
+        "image": {
+          "url": "https://example.com/mockingbird-cover.jpg",
+          "alt": "Book cover"
+        },
+        "owner": {
+          "name": "admin",
+          "email": "admin@example.com"
+        }
+      },
+      "created": "2025-01-01T12:00:00.000Z",
+      "updated": "2025-01-01T12:00:00.000Z"
+    },
+    {
+      "id": "review-id-2",
+      "comment": "Great story, though some parts felt a bit slow. Still worth reading.",
+      "rating": 4,
+      "reviewer": {
+        "name": "book_lover",
+        "email": "reader@example.com",
+        "bio": "Reading 100 books this year!",
+        "avatar": {
+          "url": "https://example.com/reader-avatar.jpg",
+          "alt": "Reader's avatar"
+        }
+      },
+      "book": {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "title": "To Kill a Mockingbird",
+        "owner": {
+          "name": "admin",
+          "email": "admin@example.com"
+        }
+      },
+      "created": "2025-01-02T08:30:00.000Z",
+      "updated": "2025-01-02T08:30:00.000Z"
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 2
+  }
+}
+```
+
+<Hr />
+
+## Get single review
+
+<EndpointDetails path="/library-books/<id>/reviews/<reviewId>" />
+
+Retrieve a single review by its id for a specific book.
+
+```json title="Response"
+{
+  "data": {
+    "id": "review-id-1",
+    "comment": "Absolutely loved this book! A must-read classic that deals with important themes.",
+    "rating": 5,
+    "reviewer": {
+      "name": "jane_smith",
+      "email": "jane@example.com",
+      "bio": "Avid reader and literature enthusiast",
+      "avatar": {
+        "url": "https://example.com/jane-avatar.jpg",
+        "alt": "Jane's avatar"
+      },
+      "banner": {
+        "url": "https://example.com/jane-banner.jpg",
+        "alt": "Jane's banner"
+      }
+    },
+    "book": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "title": "To Kill a Mockingbird",
+      "image": {
+        "url": "https://example.com/mockingbird-cover.jpg",
+        "alt": "Book cover"
+      },
+      "owner": {
+        "name": "admin",
+        "email": "admin@example.com"
+      }
+    },
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:00:00.000Z"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Create review
+
+<EndpointDetails method="POST" path="/library-books/<id>/reviews" />
+
+Create a new review for a library book. Only authenticated users can create reviews.
+
+```json title="Request"
+{
+  "comment": "This book changed my perspective on so many things. The character development is incredible and the themes are still relevant today.",
+  "rating": 5
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "new-review-id",
+    "comment": "This book changed my perspective on so many things. The character development is incredible and the themes are still relevant today.",
+    "rating": 5,
+    "reviewer": {
+      "name": "current_user",
+      "email": "user@example.com",
+      "bio": "Literature student",
+      "avatar": {
+        "url": "https://example.com/user-avatar.jpg",
+        "alt": "User's avatar"
+      },
+      "banner": {
+        "url": "https://example.com/user-banner.jpg",
+        "alt": "User's banner"
+      }
+    },
+    "book": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "title": "To Kill a Mockingbird",
+      "image": {
+        "url": "https://example.com/mockingbird-cover.jpg",
+        "alt": "Book cover"
+      },
+      "owner": {
+        "name": "admin",
+        "email": "admin@example.com"
+      }
+    },
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:00:00.000Z"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Update review
+
+<EndpointDetails method="PUT" path="/library-books/<id>/reviews/<reviewId>" />
+
+Update a review by its id. Only the author of the review can update it. You must provide at least one field to update.
+
+```json title="Request"
+// You can update any combination of the properties of the review.
+{
+  "comment": "After re-reading this book, I appreciate it even more. The symbolism is masterful.",
+  "rating": 5
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "review-id",
+    "comment": "After re-reading this book, I appreciate it even more. The symbolism is masterful.",
+    "rating": 5,
+    "reviewer": {
+      "name": "current_user",
+      "email": "user@example.com",
+      "bio": "Literature student",
+      "avatar": {
+        "url": "https://example.com/user-avatar.jpg",
+        "alt": "User's avatar"
+      },
+      "banner": {
+        "url": "https://example.com/user-banner.jpg",
+        "alt": "User's banner"
+      }
+    },
+    "book": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "title": "To Kill a Mockingbird",
+      "image": {
+        "url": "https://example.com/mockingbird-cover.jpg",
+        "alt": "Book cover"
+      },
+      "owner": {
+        "name": "admin",
+        "email": "admin@example.com"
+      }
+    },
+    "created": "2025-01-01T12:00:00.000Z",
+    "updated": "2025-01-01T12:30:00.000Z"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Delete review
+
+<EndpointDetails method="DELETE" path="/library-books/<id>/reviews/<reviewId>" />
+
+Delete a review by its id. Only the author of the review can delete it.
+
+Returns an empty `204 No Content` response on success.
