@@ -19,6 +19,8 @@ const GENRES_MAX_CHAR_LENGTH = 24
 const MAX_GENRES = 8
 const PAGE_COUNT_MIN = 1
 const PAGE_COUNT_MAX = 10000
+const PRICE_MIN = 0
+const PRICE_MAX = 99999.99
 const REVIEW_BODY_MAX_LENGTH = 280
 const REVIEW_RATING_MIN = 1
 const REVIEW_RATING_MAX = 5
@@ -104,7 +106,14 @@ const libraryBookMetadata = {
     .enum(FORMAT_OPTIONS, {
       message: "Format must be one of: Hardcover, Paperback, eBook, Audiobook"
     })
-    .default("Paperback")
+    .default("Paperback"),
+  price: z
+    .number({
+      invalid_type_error: "Price must be a number"
+    })
+    .min(PRICE_MIN, "Price cannot be negative")
+    .max(PRICE_MAX, "Price cannot exceed $99,999.99")
+    .optional()
 }
 
 const libraryBookCore = {
@@ -250,7 +259,14 @@ export const createLibraryBookSchema = z.object({
       .enum(FORMAT_OPTIONS, {
         message: "Format must be one of: Hardcover, Paperback, eBook, Audiobook"
       })
-      .default("Paperback")
+      .default("Paperback"),
+    price: z
+      .number({
+        invalid_type_error: "Price must be a number"
+      })
+      .min(PRICE_MIN, "Price cannot be negative")
+      .max(PRICE_MAX, "Price cannot exceed $99,999.99")
+      .optional()
   })
 })
 
@@ -370,6 +386,13 @@ const updateLibraryBookCore = {
           message:
             "Format must be one of: Hardcover, Paperback, eBook, Audiobook"
         })
+        .optional(),
+      price: z
+        .number({
+          invalid_type_error: "Price must be a number"
+        })
+        .min(PRICE_MIN, "Price cannot be negative")
+        .max(PRICE_MAX, "Price cannot exceed $99,999.99")
         .optional()
     })
     .optional()

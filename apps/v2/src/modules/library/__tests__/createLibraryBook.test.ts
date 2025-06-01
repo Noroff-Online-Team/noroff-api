@@ -18,7 +18,8 @@ const createData = {
     pageCount: 180,
     language: "English",
     genres: ["Fiction", "Classic Literature"],
-    format: "Hardcover"
+    format: "Hardcover",
+    price: 12.99
   },
   image: {
     url: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&fit=crop",
@@ -72,7 +73,8 @@ describe("[POST] /library", () => {
         pageCount: 180,
         language: "English",
         genres: ["Fiction", "Classic Literature"],
-        format: "Hardcover"
+        format: "Hardcover",
+        price: 12.99
       },
       image: {
         url: createData.image.url,
@@ -364,6 +366,93 @@ describe("[POST] /library", () => {
       code: "too_big",
       message: "Array must contain at most 8 element(s)",
       path: ["metadata", "genres"]
+    })
+  })
+
+  it("should validate price is not negative", async () => {
+    const invalidData = {
+      ...createData,
+      metadata: {
+        ...createData.metadata,
+        price: -5.99
+      }
+    }
+
+    const response = await server.inject({
+      url: "/library",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: invalidData
+    })
+
+    const res = await response.json()
+    expect(response.statusCode).toBe(400)
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toContainEqual({
+      code: "too_small",
+      message: "Price cannot be negative",
+      path: ["metadata", "price"]
+    })
+  })
+
+  it("should validate price does not exceed maximum", async () => {
+    const invalidData = {
+      ...createData,
+      metadata: {
+        ...createData.metadata,
+        price: 100000
+      }
+    }
+
+    const response = await server.inject({
+      url: "/library",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: invalidData
+    })
+
+    const res = await response.json()
+    expect(response.statusCode).toBe(400)
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toContainEqual({
+      code: "too_big",
+      message: "Price cannot exceed $99,999.99",
+      path: ["metadata", "price"]
+    })
+  })
+
+  it("should validate price is a number", async () => {
+    const invalidData = {
+      ...createData,
+      metadata: {
+        ...createData.metadata,
+        price: "not-a-number"
+      }
+    }
+
+    const response = await server.inject({
+      url: "/library",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: invalidData
+    })
+
+    const res = await response.json()
+    expect(response.statusCode).toBe(400)
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toContainEqual({
+      code: "invalid_type",
+      message: "Price must be a number",
+      path: ["metadata", "price"]
     })
   })
 })

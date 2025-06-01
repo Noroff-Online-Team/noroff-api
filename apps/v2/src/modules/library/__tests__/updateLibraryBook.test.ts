@@ -24,7 +24,8 @@ const originalData = {
     pageCount: 180,
     language: "English",
     genres: ["Fiction", "Classic Literature"],
-    format: "Hardcover"
+    format: "Hardcover",
+    price: 12.99
   }
 }
 
@@ -35,7 +36,8 @@ const updateData = {
   metadata: {
     publisher: "Scribner",
     pageCount: 200,
-    genres: ["Fiction", "Classic Literature", "American Literature"]
+    genres: ["Fiction", "Classic Literature", "American Literature"],
+    price: 15.99
   }
 }
 
@@ -99,7 +101,8 @@ describe("[PUT] /library/:id", () => {
         pageCount: 200,
         language: "English",
         genres: ["Fiction", "Classic Literature", "American Literature"],
-        format: "Hardcover"
+        format: "Hardcover",
+        price: 15.99
       },
       image: {
         url: DEFAULT_IMAGE.url,
@@ -370,5 +373,79 @@ describe("[PUT] /library/:id", () => {
     expect(res.errors[0]).toStrictEqual({
       message: "No API key header was found"
     })
+  })
+
+  it("should validate price is not negative when updating", async () => {
+    const response = await server.inject({
+      url: `/library/${BOOK_ID}`,
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        metadata: {
+          price: -5.99
+        }
+      }
+    })
+
+    expect(response.statusCode).toBe(400)
+    const res = await response.json()
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toContainEqual({
+      code: "too_small",
+      message: "Price cannot be negative",
+      path: ["metadata", "price"]
+    })
+  })
+
+  it("should validate price does not exceed maximum when updating", async () => {
+    const response = await server.inject({
+      url: `/library/${BOOK_ID}`,
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: {
+        metadata: {
+          price: 100000
+        }
+      }
+    })
+
+    expect(response.statusCode).toBe(400)
+    const res = await response.json()
+    expect(res.errors).toBeDefined()
+    expect(res.errors).toContainEqual({
+      code: "too_big",
+      message: "Price cannot exceed $99,999.99",
+      path: ["metadata", "price"]
+    })
+  })
+
+  it("should update metadata price independently", async () => {
+    const priceUpdate = {
+      metadata: {
+        price: 25.99
+      }
+    }
+
+    const response = await server.inject({
+      url: `/library/${BOOK_ID}`,
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: priceUpdate
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(200)
+    expect(res.data.metadata.price).toBe(25.99)
+    expect(res.data.metadata.author).toBe(originalData.metadata.author)
+    expect(res.data.metadata.isbn).toBe(originalData.metadata.isbn)
   })
 })

@@ -29,7 +29,8 @@ These endpoints support pagination and sorting. Read more about these features [
         pageCount: { type: "number", description: "The number of pages in the book (optional)." },
         language: { type: "string", default: "English", description: "The language of the book." },
         genres: { type: "string[]", description: "Array of genres (optional)." },
-        format: { type: "string", default: "Paperback", description: "The format of the book (Hardcover, Paperback, eBook, Audiobook)." }
+        format: { type: "string", default: "Paperback", description: "The format of the book (Hardcover, Paperback, eBook, Audiobook)." },
+        price: { type: "number", description: "The price of the book (optional, 0-$99,999.99)." }
       }
     },
     image: {
@@ -94,7 +95,8 @@ Retrieve all library books.
         "pageCount": 180,
         "language": "English",
         "genres": ["Fiction", "Classic Literature"],
-        "format": "Hardcover"
+        "format": "Hardcover",
+        "price": 12.99
       },
       "image": {
         "url": "https://example.com/gatsby-cover.jpg",
@@ -169,7 +171,8 @@ Retrieve a single library book by its id, including all associated reviews.
       "pageCount": 180,
       "language": "English",
       "genres": ["Fiction", "Classic Literature"],
-      "format": "Hardcover"
+      "format": "Hardcover",
+      "price": 12.99
     },
     "image": {
       "url": "https://example.com/gatsby-cover.jpg",
@@ -234,7 +237,8 @@ Create a new library book entry. Only authenticated users can create books.
     "pageCount": 376,
     "language": "English",
     "genres": ["Fiction", "Classic", "Historical Fiction"],
-    "format": "Paperback"
+    "format": "Paperback",
+    "price": 15.99
   },
   "image": {
     "url": "https://example.com/mockingbird-cover.jpg",
@@ -257,7 +261,8 @@ Create a new library book entry. Only authenticated users can create books.
       "pageCount": 376,
       "language": "English",
       "genres": ["Fiction", "Classic", "Historical Fiction"],
-      "format": "Paperback"
+      "format": "Paperback",
+      "price": 15.99
     },
     "image": {
       "url": "https://example.com/mockingbird-cover.jpg",
@@ -301,7 +306,8 @@ Update a library book by its id. Only the owner of the book can update it. You m
   "metadata": {
     "pageCount": 281,
     "format": "eBook",
-    "genres": ["Fiction", "Classic", "Historical Fiction", "Coming of Age"]
+    "genres": ["Fiction", "Classic", "Historical Fiction", "Coming of Age"],
+    "price": 19.99
   },
   "image": {
     "url": "https://example.com/new-mockingbird-cover.jpg",
@@ -324,7 +330,8 @@ Update a library book by its id. Only the owner of the book can update it. You m
       "pageCount": 281,
       "language": "English",
       "genres": ["Fiction", "Classic", "Historical Fiction", "Coming of Age"],
-      "format": "eBook"
+      "format": "eBook",
+      "price": 19.99
     },
     "image": {
       "url": "https://example.com/new-mockingbird-cover.jpg",

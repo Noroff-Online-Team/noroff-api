@@ -21,7 +21,8 @@ const DEFAULT_METADATA = {
   pageCount: 180,
   language: "English",
   genres: ["Fiction", "Classic Literature"],
-  format: "Hardcover"
+  format: "Hardcover",
+  price: 12.99
 }
 
 beforeEach(async () => {
@@ -80,7 +81,8 @@ describe("[GET] /library/:id", () => {
         pageCount: 180,
         language: "English",
         genres: ["Fiction", "Classic Literature"],
-        format: "Hardcover"
+        format: "Hardcover",
+        price: 12.99
       },
       image: {
         url: DEFAULT_IMAGE.url,

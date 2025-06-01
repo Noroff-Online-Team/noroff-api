@@ -45,7 +45,8 @@ beforeEach(async () => {
           pageCount: 180,
           language: "English",
           genres: ["Fiction", "Classic Literature"],
-          format: "Hardcover"
+          format: "Hardcover",
+          price: 12.99
         },
         ownerName: USER_NAME
       },
@@ -61,7 +62,8 @@ beforeEach(async () => {
           pageCount: 328,
           language: "English",
           genres: ["Science Fiction", "Dystopian"],
-          format: "Paperback"
+          format: "Paperback",
+          price: 14.99
         },
         ownerName: SECOND_USER_NAME
       },
@@ -77,7 +79,8 @@ beforeEach(async () => {
           pageCount: 281,
           language: "English",
           genres: ["Fiction", "Drama"],
-          format: "Paperback"
+          format: "Paperback",
+          price: 13.99
         },
         ownerName: USER_NAME
       }

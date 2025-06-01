@@ -26,7 +26,8 @@ const testBookData = {
     pageCount: 180,
     language: "English",
     genres: ["Fiction", "Classic Literature"],
-    format: "Hardcover"
+    format: "Hardcover",
+    price: 12.99
   }
 }
 
