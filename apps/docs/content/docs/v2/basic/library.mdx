@@ -1,6 +1,6 @@
 ---
-title: Library Books
-description: Library Books endpoint for Personal Digital Book Library (PDBL)
+title: Library
+description: Library endpoint for Personal Digital Book Library (PDBL)
 ---
 
 <Callout variant="warning">
@@ -75,7 +75,7 @@ These endpoints support pagination and sorting. Read more about these features [
 
 ## Get all library books
 
-<EndpointDetails path="/library-books" />
+<EndpointDetails path="/library" />
 
 Retrieve all library books.
 
@@ -151,7 +151,7 @@ Retrieve all library books.
 
 ## Get single library book
 
-<EndpointDetails path="/library-books/<id>" />
+<EndpointDetails path="/library/<id>" />
 
 Retrieve a single library book by its id, including all associated reviews.
 
@@ -216,7 +216,7 @@ Retrieve a single library book by its id, including all associated reviews.
 
 ## Create library book
 
-<EndpointDetails method="POST" path="/library-books" />
+<EndpointDetails method="POST" path="/library" />
 
 Create a new library book entry. Only authenticated users can create books.
 
@@ -288,7 +288,7 @@ Create a new library book entry. Only authenticated users can create books.
 
 ## Update library book
 
-<EndpointDetails method="PUT" path="/library-books/<id>" />
+<EndpointDetails method="PUT" path="/library/<id>" />
 
 Update a library book by its id. Only the owner of the book can update it. You must provide at least one field to update.
 
@@ -355,7 +355,7 @@ Update a library book by its id. Only the owner of the book can update it. You m
 
 ## Delete library book
 
-<EndpointDetails method="DELETE" path="/library-books/<id>" />
+<EndpointDetails method="DELETE" path="/library/<id>" />
 
 Delete a library book by its id. Only the owner of the book can delete it. This will also delete all associated reviews.
 
@@ -363,136 +363,9 @@ Returns an empty `204 No Content` response on success.
 
 <Hr />
 
-## Get all reviews for a book
-
-<EndpointDetails path="/library-books/<id>/reviews" />
-
-Retrieve all reviews for a specific library book.
-
-```json title="Response"
-{
-  "data": [
-    {
-      "id": "review-id-1",
-      "comment": "Absolutely loved this book! A must-read classic that deals with important themes.",
-      "rating": 5,
-      "reviewer": {
-        "name": "jane_smith",
-        "email": "jane@example.com",
-        "bio": "Avid reader and literature enthusiast",
-        "avatar": {
-          "url": "https://example.com/jane-avatar.jpg",
-          "alt": "Jane's avatar"
-        },
-        "banner": {
-          "url": "https://example.com/jane-banner.jpg",
-          "alt": "Jane's banner"
-        }
-      },
-      "book": {
-        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "title": "To Kill a Mockingbird",
-        "image": {
-          "url": "https://example.com/mockingbird-cover.jpg",
-          "alt": "Book cover"
-        },
-        "owner": {
-          "name": "admin",
-          "email": "admin@example.com"
-        }
-      },
-      "created": "2025-01-01T12:00:00.000Z",
-      "updated": "2025-01-01T12:00:00.000Z"
-    },
-    {
-      "id": "review-id-2",
-      "comment": "Great story, though some parts felt a bit slow. Still worth reading.",
-      "rating": 4,
-      "reviewer": {
-        "name": "book_lover",
-        "email": "reader@example.com",
-        "bio": "Reading 100 books this year!",
-        "avatar": {
-          "url": "https://example.com/reader-avatar.jpg",
-          "alt": "Reader's avatar"
-        }
-      },
-      "book": {
-        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "title": "To Kill a Mockingbird",
-        "owner": {
-          "name": "admin",
-          "email": "admin@example.com"
-        }
-      },
-      "created": "2025-01-02T08:30:00.000Z",
-      "updated": "2025-01-02T08:30:00.000Z"
-    }
-    // ...
-  ],
-  "meta": {
-    "isFirstPage": true,
-    "isLastPage": true,
-    "currentPage": 1,
-    "previousPage": null,
-    "nextPage": null,
-    "pageCount": 1,
-    "totalCount": 2
-  }
-}
-```
-
-<Hr />
-
-## Get single review
-
-<EndpointDetails path="/library-books/<id>/reviews/<reviewId>" />
-
-Retrieve a single review by its id for a specific book.
-
-```json title="Response"
-{
-  "data": {
-    "id": "review-id-1",
-    "comment": "Absolutely loved this book! A must-read classic that deals with important themes.",
-    "rating": 5,
-    "reviewer": {
-      "name": "jane_smith",
-      "email": "jane@example.com",
-      "bio": "Avid reader and literature enthusiast",
-      "avatar": {
-        "url": "https://example.com/jane-avatar.jpg",
-        "alt": "Jane's avatar"
-      },
-      "banner": {
-        "url": "https://example.com/jane-banner.jpg",
-        "alt": "Jane's banner"
-      }
-    },
-    "book": {
-      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "title": "To Kill a Mockingbird",
-      "image": {
-        "url": "https://example.com/mockingbird-cover.jpg",
-        "alt": "Book cover"
-      },
-      "owner": {
-        "name": "admin",
-        "email": "admin@example.com"
-      }
-    },
-    "created": "2025-01-01T12:00:00.000Z",
-    "updated": "2025-01-01T12:00:00.000Z"
-  },
-  "meta": {}
-}
-```
-
-<Hr />
-
 ## Create review
 
-<EndpointDetails method="POST" path="/library-books/<id>/reviews" />
+<EndpointDetails method="POST" path="/library/<id>/reviews" />
 
 Create a new review for a library book. Only authenticated users can create reviews.
 
@@ -545,7 +418,7 @@ Create a new review for a library book. Only authenticated users can create revi
 
 ## Update review
 
-<EndpointDetails method="PUT" path="/library-books/<id>/reviews/<reviewId>" />
+<EndpointDetails method="PUT" path="/library/<id>/reviews/<reviewId>" />
 
 Update a review by its id. Only the author of the review can update it. You must provide at least one field to update.
 
@@ -599,7 +472,7 @@ Update a review by its id. Only the author of the review can update it. You must
 
 ## Delete review
 
-<EndpointDetails method="DELETE" path="/library-books/<id>/reviews/<reviewId>" />
+<EndpointDetails method="DELETE" path="/library/<id>/reviews/<reviewId>" />
 
 Delete a review by its id. Only the author of the review or the owner of the book can delete it.
 
