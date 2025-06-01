@@ -43,10 +43,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[POST] /library-books", () => {
+describe("[POST] /library", () => {
   it("should return 201 when successfully created a library book", async () => {
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -97,7 +97,7 @@ describe("[POST] /library-books", () => {
     }
 
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -127,7 +127,7 @@ describe("[POST] /library-books", () => {
   it("should throw zod errors if required data is missing", async () => {
     const { title, ...rest } = createData
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -160,7 +160,7 @@ describe("[POST] /library-books", () => {
     }
 
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -196,7 +196,7 @@ describe("[POST] /library-books", () => {
     }
 
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -225,7 +225,7 @@ describe("[POST] /library-books", () => {
     }
 
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -254,7 +254,7 @@ describe("[POST] /library-books", () => {
     }
 
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -275,7 +275,7 @@ describe("[POST] /library-books", () => {
 
   it("should require authentication", async () => {
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "POST",
       headers: {
         "X-Noroff-API-Key": API_KEY
@@ -290,7 +290,7 @@ describe("[POST] /library-books", () => {
 
   it("should require valid API key", async () => {
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`
@@ -312,7 +312,7 @@ describe("[POST] /library-books", () => {
   it("should validate image URL", async () => {
     const { image, ...rest } = createData
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -348,7 +348,7 @@ describe("[POST] /library-books", () => {
     }
 
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "POST",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,

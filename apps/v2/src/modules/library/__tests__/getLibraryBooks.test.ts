@@ -103,10 +103,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /library-books", () => {
+describe("[GET] /library", () => {
   it("should return all library books", async () => {
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -142,7 +142,7 @@ describe("[GET] /library-books", () => {
 
   it("should support pagination", async () => {
     const response = await server.inject({
-      url: "/library-books?limit=2&page=1",
+      url: "/library?limit=2&page=1",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -166,7 +166,7 @@ describe("[GET] /library-books", () => {
 
   it("should support sorting by title", async () => {
     const response = await server.inject({
-      url: "/library-books?sort=title&sortOrder=desc",
+      url: "/library?sort=title&sortOrder=desc",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -184,7 +184,7 @@ describe("[GET] /library-books", () => {
 
   it("should validate pagination parameters", async () => {
     const response = await server.inject({
-      url: "/library-books?page=0",
+      url: "/library?page=0",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -199,7 +199,7 @@ describe("[GET] /library-books", () => {
 
   it("should require authentication", async () => {
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY
@@ -211,7 +211,7 @@ describe("[GET] /library-books", () => {
 
   it("should require valid API key", async () => {
     const response = await server.inject({
-      url: "/library-books",
+      url: "/library",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`

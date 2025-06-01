@@ -54,10 +54,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /library-books/:id", () => {
+describe("[GET] /library/:id", () => {
   it("should return single library book based on id", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -105,7 +105,7 @@ describe("[GET] /library-books/:id", () => {
     })
 
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -128,7 +128,7 @@ describe("[GET] /library-books/:id", () => {
 
   it("should return 404 if library book not found", async () => {
     const response = await server.inject({
-      url: `/library-books/${NONEXISTENT_BOOK_ID}`,
+      url: `/library/${NONEXISTENT_BOOK_ID}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -149,7 +149,7 @@ describe("[GET] /library-books/:id", () => {
 
   it("should throw zod error if id is not a valid UUID", async () => {
     const response = await server.inject({
-      url: "/library-books/invalid_id",
+      url: "/library/invalid_id",
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -172,7 +172,7 @@ describe("[GET] /library-books/:id", () => {
 
   it("should require authentication", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "GET",
       headers: {
         "X-Noroff-API-Key": API_KEY
@@ -184,7 +184,7 @@ describe("[GET] /library-books/:id", () => {
 
   it("should require valid API key", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "GET",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`

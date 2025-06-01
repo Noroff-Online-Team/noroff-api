@@ -7,12 +7,10 @@ import {
   deleteLibraryBookHandler,
   deleteLibraryBookReviewHandler,
   getLibraryBookHandler,
-  getLibraryBookReviewHandler,
-  getLibraryBookReviewsHandler,
   getLibraryBooksHandler,
   updateLibraryBookHandler,
   updateLibraryBookReviewHandler
-} from "./libraryBooks.controller"
+} from "./library.controller"
 import {
   createLibraryBookReviewSchema,
   createLibraryBookSchema,
@@ -20,11 +18,10 @@ import {
   displayLibraryBookSchema,
   libraryBookParamsSchema,
   libraryBookReviewParamsSchema,
-  libraryBookReviewsQuerySchema,
   libraryBooksQuerySchema,
   updateLibraryBookReviewSchema,
   updateLibraryBookSchema
-} from "./libraryBooks.schema"
+} from "./library.schema"
 
 async function libraryBooksRoutes(server: FastifyInstance) {
   server.get(
@@ -103,39 +100,6 @@ async function libraryBooksRoutes(server: FastifyInstance) {
       }
     },
     deleteLibraryBookHandler
-  )
-
-  server.get(
-    "/:id/reviews",
-    {
-      onRequest: [server.authenticate, server.apiKey],
-      schema: {
-        tags: ["library-books"],
-        security: [{ bearerAuth: [], apiKey: [] }],
-        params: libraryBookParamsSchema,
-        querystring: libraryBookReviewsQuerySchema,
-        response: {
-          200: createResponseSchema(displayLibraryBookReviewSchema.array())
-        }
-      }
-    },
-    getLibraryBookReviewsHandler
-  )
-
-  server.get(
-    "/:id/reviews/:reviewId",
-    {
-      onRequest: [server.authenticate, server.apiKey],
-      schema: {
-        tags: ["library-books"],
-        security: [{ bearerAuth: [], apiKey: [] }],
-        params: libraryBookReviewParamsSchema,
-        response: {
-          200: createResponseSchema(displayLibraryBookReviewSchema)
-        }
-      }
-    },
-    getLibraryBookReviewHandler
   )
 
   server.post(

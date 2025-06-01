@@ -13,11 +13,10 @@ import {
   createLibraryBookSchema,
   libraryBookParamsSchema,
   libraryBookReviewParamsSchema,
-  libraryBookReviewsQuerySchema,
   libraryBooksQuerySchema,
   updateLibraryBookReviewSchema,
   updateLibraryBookSchema
-} from "./libraryBooks.schema"
+} from "./library.schema"
 
 import {
   createLibraryBook,
@@ -30,7 +29,7 @@ import {
   getLibraryBooks,
   updateLibraryBook,
   updateLibraryBookReview
-} from "./libraryBooks.service"
+} from "./library.service"
 
 export async function getLibraryBooksHandler(
   request: FastifyRequest<{
@@ -145,62 +144,6 @@ export async function deleteLibraryBookHandler(
   await deleteLibraryBook(id)
 
   reply.code(204)
-}
-
-export async function getLibraryBookReviewsHandler(
-  request: FastifyRequest<{
-    Params: { id: string }
-    Querystring: {
-      limit?: number
-      page?: number
-      sort?: keyof LibraryBookReview
-      sortOrder?: "asc" | "desc"
-    }
-  }>
-) {
-  const { id } = await libraryBookParamsSchema.parseAsync(request.params)
-  await libraryBookReviewsQuerySchema.parseAsync(request.query)
-  const { sort, sortOrder, limit, page } = request.query
-
-  if (limit && limit > 100) {
-    throw new BadRequest("Limit cannot be greater than 100")
-  }
-
-  const libraryBook = await getLibraryBook(id)
-  if (!libraryBook.data) {
-    throw new NotFound("No library book with such ID")
-  }
-
-  const reviews = await getLibraryBookReviews(id, sort, sortOrder, limit, page)
-
-  return reviews
-}
-
-export async function getLibraryBookReviewHandler(
-  request: FastifyRequest<{
-    Params: { id: string; reviewId: string }
-  }>
-) {
-  const { id, reviewId } = await libraryBookReviewParamsSchema.parseAsync(
-    request.params
-  )
-
-  const libraryBook = await getLibraryBook(id)
-  if (!libraryBook.data) {
-    throw new NotFound("No library book with such ID")
-  }
-
-  const review = await getLibraryBookReview(reviewId)
-
-  if (!review.data) {
-    throw new NotFound("No review with such ID")
-  }
-
-  if (review.data.bookId.toLowerCase() !== id.toLowerCase()) {
-    throw new NotFound("No review with such ID")
-  }
-
-  return review
 }
 
 export async function createLibraryBookReviewHandler(

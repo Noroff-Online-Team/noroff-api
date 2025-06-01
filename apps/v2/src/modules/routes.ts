@@ -44,7 +44,5 @@ export default async function (fastify: FastifyInstance) {
   fastify.register(import("./blog/posts/posts.route"), { prefix: "blog/posts" })
   fastify.register(import("./pets/pets.route"), { prefix: "pets" })
   fastify.register(import("./artworks/artworks.route"), { prefix: "artworks" })
-  fastify.register(import("./libraryBooks/libraryBooks.route"), {
-    prefix: "library-books"
-  })
+  fastify.register(import("./library/library.route"), { prefix: "library" })
 }

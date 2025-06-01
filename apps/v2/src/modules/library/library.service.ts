@@ -6,7 +6,7 @@ import type {
   CreateLibraryBookSchema,
   UpdateLibraryBookReviewSchema,
   UpdateLibraryBookSchema
-} from "./libraryBooks.schema"
+} from "./library.schema"
 
 export async function getLibraryBooks(
   sort: keyof LibraryBook = "created",

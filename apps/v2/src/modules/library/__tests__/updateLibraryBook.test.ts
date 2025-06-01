@@ -70,10 +70,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[PUT] /library-books/:id", () => {
+describe("[PUT] /library/:id", () => {
   it("should return 200 when successfully updated a library book", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -118,7 +118,7 @@ describe("[PUT] /library-books/:id", () => {
     }
 
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -142,7 +142,7 @@ describe("[PUT] /library-books/:id", () => {
     }
 
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -160,7 +160,7 @@ describe("[PUT] /library-books/:id", () => {
 
   it("should return 404 if library book does not exist", async () => {
     const response = await server.inject({
-      url: "/library-books/a9f8e5d4-3c2b-1f0e-9d8c-7b6a5e4d3c2b",
+      url: "/library/a9f8e5d4-3c2b-1f0e-9d8c-7b6a5e4d3c2b",
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -184,7 +184,7 @@ describe("[PUT] /library-books/:id", () => {
 
   it("should throw 403 if trying to update someone else's book", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${SECOND_BEARER_TOKEN}`,
@@ -208,7 +208,7 @@ describe("[PUT] /library-books/:id", () => {
 
   it("should throw validation error if update data is invalid", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -235,7 +235,7 @@ describe("[PUT] /library-books/:id", () => {
 
   it("should throw error if no fields are provided to update", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -261,7 +261,7 @@ describe("[PUT] /library-books/:id", () => {
 
   it("should validate image URL when updating", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -288,7 +288,7 @@ describe("[PUT] /library-books/:id", () => {
 
   it("should validate ISBN format when updating", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -313,7 +313,7 @@ describe("[PUT] /library-books/:id", () => {
 
   it("should validate format enum when updating", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -338,7 +338,7 @@ describe("[PUT] /library-books/:id", () => {
 
   it("should require authentication", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "PUT",
       headers: {
         "X-Noroff-API-Key": API_KEY
@@ -353,7 +353,7 @@ describe("[PUT] /library-books/:id", () => {
 
   it("should require valid API key", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}`,
+      url: `/library/${BOOK_ID}`,
       method: "PUT",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`

@@ -422,7 +422,6 @@ export const libraryBookReviewParamsSchema = z.object({
 })
 
 export const libraryBooksQuerySchema = sortAndPaginationSchema
-export const libraryBookReviewsQuerySchema = sortAndPaginationSchema
 
 export type DisplayLibraryBookSchema = z.infer<typeof displayLibraryBookSchema>
 export type CreateLibraryBookSchema = z.infer<typeof createLibraryBookSchema>

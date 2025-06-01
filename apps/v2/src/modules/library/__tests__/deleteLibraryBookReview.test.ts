@@ -96,10 +96,10 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[DELETE] /library-books/:id/reviews/:reviewId", () => {
+describe("[DELETE] /library/:id/reviews/:reviewId", () => {
   it("should return 204 when successfully deleted a review", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}/reviews/${REVIEW_ID}`,
+      url: `/library/${BOOK_ID}/reviews/${REVIEW_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${SECOND_BEARER_TOKEN}`,
@@ -118,7 +118,7 @@ describe("[DELETE] /library-books/:id/reviews/:reviewId", () => {
 
   it("should return 404 if review does not exist", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}/reviews/${NONEXISTENT_REVIEW_ID}`,
+      url: `/library/${BOOK_ID}/reviews/${NONEXISTENT_REVIEW_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${SECOND_BEARER_TOKEN}`,
@@ -139,7 +139,7 @@ describe("[DELETE] /library-books/:id/reviews/:reviewId", () => {
 
   it("should return 404 if book does not exist", async () => {
     const response = await server.inject({
-      url: `/library-books/${NONEXISTENT_BOOK_ID}/reviews/${REVIEW_ID}`,
+      url: `/library/${NONEXISTENT_BOOK_ID}/reviews/${REVIEW_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${SECOND_BEARER_TOKEN}`,
@@ -160,7 +160,7 @@ describe("[DELETE] /library-books/:id/reviews/:reviewId", () => {
 
   it("should throw 403 if trying to delete someone else's review", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}/reviews/${REVIEW_ID}`,
+      url: `/library/${BOOK_ID}/reviews/${REVIEW_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${THIRD_BEARER_TOKEN}`,
@@ -181,7 +181,7 @@ describe("[DELETE] /library-books/:id/reviews/:reviewId", () => {
 
   it("should allow book owner to delete any review on their book", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}/reviews/${REVIEW_ID}`,
+      url: `/library/${BOOK_ID}/reviews/${REVIEW_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${BEARER_TOKEN}`,
@@ -200,7 +200,7 @@ describe("[DELETE] /library-books/:id/reviews/:reviewId", () => {
 
   it("should throw zod error if reviewId is not a valid UUID", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}/reviews/invalid_id`,
+      url: `/library/${BOOK_ID}/reviews/invalid_id`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${SECOND_BEARER_TOKEN}`,
@@ -223,7 +223,7 @@ describe("[DELETE] /library-books/:id/reviews/:reviewId", () => {
 
   it("should throw zod error if id is not a valid UUID", async () => {
     const response = await server.inject({
-      url: `/library-books/invalid_id/reviews/${REVIEW_ID}`,
+      url: `/library/invalid_id/reviews/${REVIEW_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${SECOND_BEARER_TOKEN}`,
@@ -246,7 +246,7 @@ describe("[DELETE] /library-books/:id/reviews/:reviewId", () => {
 
   it("should require authentication", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}/reviews/${REVIEW_ID}`,
+      url: `/library/${BOOK_ID}/reviews/${REVIEW_ID}`,
       method: "DELETE",
       headers: {
         "X-Noroff-API-Key": API_KEY
@@ -258,7 +258,7 @@ describe("[DELETE] /library-books/:id/reviews/:reviewId", () => {
 
   it("should require valid API key", async () => {
     const response = await server.inject({
-      url: `/library-books/${BOOK_ID}/reviews/${REVIEW_ID}`,
+      url: `/library/${BOOK_ID}/reviews/${REVIEW_ID}`,
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${SECOND_BEARER_TOKEN}`
