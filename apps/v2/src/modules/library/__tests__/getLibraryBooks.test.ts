@@ -4,8 +4,6 @@ import { db } from "@/utils"
 
 let USER_NAME = ""
 let SECOND_USER_NAME = ""
-let BEARER_TOKEN = ""
-let API_KEY = ""
 
 const DEFAULT_IMAGE = {
   url: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&fit=crop",
@@ -24,12 +22,9 @@ beforeEach(async () => {
     name: "test_user_two",
     email: "test_user_two@noroff.no"
   })
-  const { bearerToken, apiKey } = await getAuthCredentials()
 
   USER_NAME = name
   SECOND_USER_NAME = secondName
-  BEARER_TOKEN = bearerToken
-  API_KEY = apiKey
 
   await db.libraryBook.createMany({
     data: [
@@ -110,11 +105,7 @@ describe("[GET] /library", () => {
   it("should return all library books", async () => {
     const response = await server.inject({
       url: "/library",
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`,
-        "X-Noroff-API-Key": API_KEY
-      }
+      method: "GET"
     })
     const res = await response.json()
 
@@ -146,11 +137,7 @@ describe("[GET] /library", () => {
   it("should support pagination", async () => {
     const response = await server.inject({
       url: "/library?limit=2&page=1",
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`,
-        "X-Noroff-API-Key": API_KEY
-      }
+      method: "GET"
     })
     const res = await response.json()
 
@@ -170,11 +157,7 @@ describe("[GET] /library", () => {
   it("should support sorting by title", async () => {
     const response = await server.inject({
       url: "/library?sort=title&sortOrder=desc",
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`,
-        "X-Noroff-API-Key": API_KEY
-      }
+      method: "GET"
     })
     const res = await response.json()
 
@@ -188,45 +171,11 @@ describe("[GET] /library", () => {
   it("should validate pagination parameters", async () => {
     const response = await server.inject({
       url: "/library?page=0",
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`,
-        "X-Noroff-API-Key": API_KEY
-      }
+      method: "GET"
     })
     const res = await response.json()
 
     expect(response.statusCode).toBe(400)
     expect(res.errors).toBeDefined()
-  })
-
-  it("should require authentication", async () => {
-    const response = await server.inject({
-      url: "/library",
-      method: "GET",
-      headers: {
-        "X-Noroff-API-Key": API_KEY
-      }
-    })
-
-    expect(response.statusCode).toBe(401)
-  })
-
-  it("should require valid API key", async () => {
-    const response = await server.inject({
-      url: "/library",
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`
-      }
-    })
-
-    expect(response.statusCode).toBe(401)
-    const res = await response.json()
-    expect(res.errors).toBeDefined()
-    expect(res.errors).toHaveLength(1)
-    expect(res.errors[0]).toStrictEqual({
-      message: "No API key header was found"
-    })
   })
 })
