@@ -61,6 +61,10 @@ export default fp(async fastify => {
         {
           name: "artworks",
           description: "Artworks related endpoints"
+        },
+        {
+          name: "library-books",
+          description: "Library books related endpoints"
         }
       ],
       securityDefinitions: {

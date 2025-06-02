@@ -164,6 +164,8 @@ model Media {
   petId               String?            @unique
   artwork             Artwork?           @relation(fields: [artworkId], references: [id], onDelete: Cascade)
   artworkId           String?            @unique
+  libraryBook         LibraryBook?       @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
+  libraryBookId       String?            @unique
 }
 
 // User API Key
@@ -186,39 +188,42 @@ model ApiKey {
 
 // User Profile
 model UserProfile {
-  id           Int                  @id @default(autoincrement())
-  name         String               @unique
-  email        String               @unique
-  avatar       Media?               @relation("AvatarMedia")
-  banner       Media?               @relation("BannerMedia")
-  bio          String?
-  password     String
-  salt         String
-  created      DateTime             @default(now())
-  updated      DateTime             @updatedAt
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique
+  email              String               @unique
+  avatar             Media?               @relation("AvatarMedia")
+  banner             Media?               @relation("BannerMedia")
+  bio                String?
+  password           String
+  salt               String
+  created            DateTime             @default(now())
+  updated            DateTime             @updatedAt
   // Social
-  posts        SocialPost[]
-  comments     SocialPostComment[]
-  reactions    SocialPostReaction[]
-  followers    UserProfile[]        @relation("Follows")
-  following    UserProfile[]        @relation("Follows")
+  posts              SocialPost[]
+  comments           SocialPostComment[]
+  reactions          SocialPostReaction[]
+  followers          UserProfile[]        @relation("Follows")
+  following          UserProfile[]        @relation("Follows")
   // Auction House
-  credits      Int                  @default(1000)
-  listings     AuctionListing[]     @relation("Listings")
-  bids         AuctionBid[]
-  wins         AuctionListing[]     @relation("Wins")
+  credits            Int                  @default(1000)
+  listings           AuctionListing[]     @relation("Listings")
+  bids               AuctionBid[]
+  wins               AuctionListing[]     @relation("Wins")
   // Holidaze
-  venueManager Boolean              @default(false)
-  venues       HolidazeVenue[]
-  bookings     HolidazeBooking[]
+  venueManager       Boolean              @default(false)
+  venues             HolidazeVenue[]
+  bookings           HolidazeBooking[]
   // Blog
-  blogPosts    BlogPost[]
+  blogPosts          BlogPost[]
   // API
-  apiKeys      ApiKey[]
+  apiKeys            ApiKey[]
   // Pets
-  pets         Pet[]
+  pets               Pet[]
   // Artworks
-  artworks     Artwork[]
+  artworks           Artwork[]
+  // Library
+  libraryBooks       LibraryBook[]
+  libraryBookReviews LibraryBookReview[]
 }
 
 // Social
@@ -390,4 +395,30 @@ model Artwork {
   updated     DateTime    @updatedAt
   owner       UserProfile @relation(fields: [ownerName], references: [name], onDelete: Cascade)
   ownerName   String
+}
+
+// Library Books
+model LibraryBook {
+  id          String              @id @default(uuid())
+  title       String
+  description String
+  metadata    Json
+  image       Media?
+  reviews     LibraryBookReview[]
+  owner       UserProfile         @relation(fields: [ownerName], references: [name], onDelete: Cascade)
+  ownerName   String
+  created     DateTime            @default(now())
+  updated     DateTime            @updatedAt
+}
+
+model LibraryBookReview {
+  id           String      @id @default(uuid())
+  bookId       String
+  book         LibraryBook @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  rating       Int
+  comment      String
+  reviewer     UserProfile @relation(fields: [reviewerName], references: [name], onDelete: Cascade)
+  reviewerName String
+  created      DateTime    @default(now())
+  updated      DateTime    @updatedAt
 }
