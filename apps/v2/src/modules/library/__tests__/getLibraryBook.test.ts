@@ -5,8 +5,6 @@ import { db } from "@/utils"
 const BOOK_ID = "6d366279-e68b-4331-a31f-dc1575acd34e"
 const NONEXISTENT_BOOK_ID = "c14d2ba8-4a94-47dc-9f33-6d32500cf116"
 let USER_NAME = ""
-let BEARER_TOKEN = ""
-let API_KEY = ""
 
 const DEFAULT_IMAGE = {
   url: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&fit=crop",
@@ -27,11 +25,8 @@ const DEFAULT_METADATA = {
 
 beforeEach(async () => {
   const { name } = await registerUser()
-  const { bearerToken, apiKey } = await getAuthCredentials()
 
   USER_NAME = name
-  BEARER_TOKEN = bearerToken
-  API_KEY = apiKey
 
   await db.libraryBook.create({
     data: {
@@ -59,11 +54,7 @@ describe("[GET] /library/:id", () => {
   it("should return single library book based on id", async () => {
     const response = await server.inject({
       url: `/library/${BOOK_ID}`,
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`,
-        "X-Noroff-API-Key": API_KEY
-      }
+      method: "GET"
     })
     const res = await response.json()
 
@@ -108,11 +99,7 @@ describe("[GET] /library/:id", () => {
 
     const response = await server.inject({
       url: `/library/${BOOK_ID}`,
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`,
-        "X-Noroff-API-Key": API_KEY
-      }
+      method: "GET"
     })
     const res = await response.json()
 
@@ -131,11 +118,7 @@ describe("[GET] /library/:id", () => {
   it("should return 404 if library book not found", async () => {
     const response = await server.inject({
       url: `/library/${NONEXISTENT_BOOK_ID}`,
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`,
-        "X-Noroff-API-Key": API_KEY
-      }
+      method: "GET"
     })
     const res = await response.json()
 
@@ -152,11 +135,7 @@ describe("[GET] /library/:id", () => {
   it("should throw zod error if id is not a valid UUID", async () => {
     const response = await server.inject({
       url: "/library/invalid_id",
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`,
-        "X-Noroff-API-Key": API_KEY
-      }
+      method: "GET"
     })
     const res = await response.json()
 
@@ -169,36 +148,6 @@ describe("[GET] /library/:id", () => {
       code: "invalid_string",
       message: "ID must be a valid UUID",
       path: ["id"]
-    })
-  })
-
-  it("should require authentication", async () => {
-    const response = await server.inject({
-      url: `/library/${BOOK_ID}`,
-      method: "GET",
-      headers: {
-        "X-Noroff-API-Key": API_KEY
-      }
-    })
-
-    expect(response.statusCode).toBe(401)
-  })
-
-  it("should require valid API key", async () => {
-    const response = await server.inject({
-      url: `/library/${BOOK_ID}`,
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`
-      }
-    })
-
-    expect(response.statusCode).toBe(401)
-    const res = await response.json()
-    expect(res.errors).toBeDefined()
-    expect(res.errors).toHaveLength(1)
-    expect(res.errors[0]).toStrictEqual({
-      message: "No API key header was found"
     })
   })
 })

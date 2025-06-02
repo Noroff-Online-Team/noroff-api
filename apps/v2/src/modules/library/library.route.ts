@@ -27,10 +27,8 @@ async function libraryBooksRoutes(server: FastifyInstance) {
   server.get(
     "/",
     {
-      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["library-books"],
-        security: [{ bearerAuth: [], apiKey: [] }],
         querystring: libraryBooksQuerySchema,
         response: {
           200: createResponseSchema(displayLibraryBookSchema.array())
@@ -43,10 +41,8 @@ async function libraryBooksRoutes(server: FastifyInstance) {
   server.get(
     "/:id",
     {
-      onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["library-books"],
-        security: [{ bearerAuth: [], apiKey: [] }],
         params: libraryBookParamsSchema,
         response: {
           200: createResponseSchema(displayLibraryBookSchema)
