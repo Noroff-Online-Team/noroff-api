@@ -1,8 +1,8 @@
 import { createRoute, z } from "@hono/zod-openapi"
 
+import { jsonResponse } from "@/helpers/response-schemas"
 import { createRouter } from "@/lib/create-app"
 import * as HttpStatusCodes from "stoker/http-status-codes"
-import jsonContent from "stoker/openapi/helpers/json-content"
 
 const router = createRouter().openapi(
   createRoute({
@@ -11,7 +11,7 @@ const router = createRouter().openapi(
     path: "/",
     hide: true, // Hides the route from Swagger UI
     responses: {
-      [HttpStatusCodes.OK]: jsonContent(
+      [HttpStatusCodes.OK]: jsonResponse(
         z.object({
           message: z.string(),
           github: z.string().url(),

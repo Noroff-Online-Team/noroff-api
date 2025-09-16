@@ -1,4 +1,3 @@
-import jsonContent from "stoker/openapi/helpers/json-content"
 import { type ZodSchema, z } from "zod"
 
 export const metaSchema = z.object({
@@ -13,15 +12,27 @@ export const metaSchema = z.object({
 
 export type Meta = z.infer<typeof metaSchema>
 
-export const successResponse = <T extends ZodSchema>(
+export const successSchema = <T extends ZodSchema>(schema: T) =>
+  z.object({
+    data: schema,
+    meta: metaSchema.optional()
+  })
+
+export const jsonResponse = <T extends ZodSchema>(
   schema: T,
   description: string
 ) => {
-  return jsonContent(
-    z.object({
-      data: schema,
-      meta: metaSchema.optional()
-    }),
+  return {
+    content: {
+      "application/json": {
+        schema
+      }
+    },
     description
-  )
+  }
 }
+
+export const successResponse = <T extends ZodSchema>(
+  schema: T,
+  description: string
+) => jsonResponse(successSchema(schema), description)

@@ -313,7 +313,7 @@ importers:
         version: 1.14.0(hono@4.7.5)
       '@hono/zod-openapi':
         specifier: ^0.19.2
-        version: 0.19.2(hono@4.7.5)(zod@3.23.8)
+        version: 0.19.2(hono@4.7.5)(zod@3.25.76)
       '@noroff/api-utils':
         specifier: workspace:*
         version: link:../../packages/api-utils
@@ -352,10 +352,10 @@ importers:
         version: 2.0.1
       stoker:
         specifier: ^1.4.2
-        version: 1.4.2(@asteasolutions/zod-to-openapi@7.3.0(zod@3.23.8))(@hono/zod-openapi@0.19.2(hono@4.7.5)(zod@3.23.8))(hono@4.7.5)(openapi3-ts@4.4.0)
+        version: 1.4.2(@asteasolutions/zod-to-openapi@7.3.0(zod@3.25.76))(@hono/zod-openapi@0.19.2(hono@4.7.5)(zod@3.25.76))(hono@4.7.5)(openapi3-ts@4.4.0)
       zod:
         specifier: ^3.21.4
-        version: 3.23.8
+        version: 3.25.76
       zod-prisma-types:
         specifier: ^3.2.4
         version: 3.2.4(@prisma/client@5.19.1(prisma@5.19.1))(prisma@5.19.1)
@@ -5057,6 +5057,9 @@ packages:
   zod@3.24.2:
     resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
 
+  zod@3.25.76:
+    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
+
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -5069,10 +5072,10 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  '@asteasolutions/zod-to-openapi@7.3.0(zod@3.23.8)':
+  '@asteasolutions/zod-to-openapi@7.3.0(zod@3.25.76)':
     dependencies:
       openapi3-ts: 4.4.0
-      zod: 3.23.8
+      zod: 3.25.76
 
   '@babel/code-frame@7.24.7':
     dependencies:
@@ -5642,17 +5645,17 @@ snapshots:
     dependencies:
       hono: 4.7.5
 
-  '@hono/zod-openapi@0.19.2(hono@4.7.5)(zod@3.23.8)':
+  '@hono/zod-openapi@0.19.2(hono@4.7.5)(zod@3.25.76)':
     dependencies:
-      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.23.8)
-      '@hono/zod-validator': 0.4.3(hono@4.7.5)(zod@3.23.8)
+      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.25.76)
+      '@hono/zod-validator': 0.4.3(hono@4.7.5)(zod@3.25.76)
       hono: 4.7.5
-      zod: 3.23.8
+      zod: 3.25.76
 
-  '@hono/zod-validator@0.4.3(hono@4.7.5)(zod@3.23.8)':
+  '@hono/zod-validator@0.4.3(hono@4.7.5)(zod@3.25.76)':
     dependencies:
       hono: 4.7.5
-      zod: 3.23.8
+      zod: 3.25.76
 
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:
@@ -6483,7 +6486,7 @@ snapshots:
     dependencies:
       '@scalar/openapi-types': 0.1.9
       '@unhead/schema': 1.11.20
-      zod: 3.23.8
+      zod: 3.25.76
 
   '@shikijs/core@1.17.7':
     dependencies:
@@ -7659,7 +7662,7 @@ snapshots:
       gray-matter: 4.0.3
       micromatch: 4.0.8
       next: 15.0.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      zod: 3.23.8
+      zod: 3.24.2
     transitivePeerDependencies:
       - acorn
       - supports-color
@@ -9812,13 +9815,13 @@ snapshots:
       fastseries: 1.7.2
       reusify: 1.0.4
 
-  stoker@1.4.2(@asteasolutions/zod-to-openapi@7.3.0(zod@3.23.8))(@hono/zod-openapi@0.19.2(hono@4.7.5)(zod@3.23.8))(hono@4.7.5)(openapi3-ts@4.4.0):
+  stoker@1.4.2(@asteasolutions/zod-to-openapi@7.3.0(zod@3.25.76))(@hono/zod-openapi@0.19.2(hono@4.7.5)(zod@3.25.76))(hono@4.7.5)(openapi3-ts@4.4.0):
     dependencies:
-      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.23.8)
+      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.25.76)
       hono: 4.7.5
       openapi3-ts: 4.4.0
     optionalDependencies:
-      '@hono/zod-openapi': 0.19.2(hono@4.7.5)(zod@3.23.8)
+      '@hono/zod-openapi': 0.19.2(hono@4.7.5)(zod@3.25.76)
 
   streamsearch@1.1.0: {}
 
@@ -10304,7 +10307,7 @@ snapshots:
       code-block-writer: 12.0.0
       lodash: 4.17.21
       prisma: 5.19.1
-      zod: 3.24.2
+      zod: 3.25.76
 
   zod-to-json-schema@3.23.3(zod@3.23.8):
     dependencies:
@@ -10313,5 +10316,7 @@ snapshots:
   zod@3.23.8: {}
 
   zod@3.24.2: {}
+
+  zod@3.25.76: {}
 
   zwitch@2.0.4: {}

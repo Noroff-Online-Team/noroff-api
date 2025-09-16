@@ -1,12 +1,13 @@
 import configureOpenAPI from "@/lib/configure-open-api"
 import createApp from "@/lib/create-app"
+import books from "@/routes/books/books.index"
 import index from "@/routes/index.route"
 
 const app = createApp()
 
 configureOpenAPI(app)
 
-const routes = [index] as const
+const routes = [index, books] as const
 
 for (const route of routes) {
   app.route("/", route)

@@ -1,5 +1,5 @@
 import { getRandomNumber } from "@noroff/api-utils"
-import type { Book } from "@prisma/v2-client"
+import type { Book } from "@prisma/v3-client"
 
 import { db } from "@/utils"
 
@@ -38,11 +38,16 @@ export async function getBook(id: number) {
       limit: 1
     })
 
-  return { data: data[0] }
+  return { data: data[0] || null, meta: {} }
 }
 
 export async function getRandomBook() {
   const resultLength = await db.book.count()
+
+  if (resultLength === 0) {
+    return { data: null }
+  }
+
   const id = getRandomNumber(1, resultLength)
 
   const [data] = await db.book
@@ -56,5 +61,5 @@ export async function getRandomBook() {
       limit: 1
     })
 
-  return { data: data[0] }
+  return { data: data[0] || null, meta: {} }
 }

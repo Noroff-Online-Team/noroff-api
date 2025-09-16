@@ -1,5 +1,5 @@
+import { jsonResponse } from "@/helpers/response-schemas"
 import { z } from "@hono/zod-openapi"
-import jsonContent from "stoker/openapi/helpers/json-content"
 
 // @ts-expect-error
 type ZodSchema = z.ZodUnion | z.AnyZodObject | z.ZodArray<z.AnyZodObject>
@@ -30,5 +30,5 @@ export const createErrorSchema = <T extends ZodSchema>(schema: T) => {
 }
 
 export const errorResponse = <T extends ZodSchema>(schema: T) => {
-  return jsonContent(createErrorSchema(schema), "Error response")
+  return jsonResponse(createErrorSchema(schema), "Error response")
 }
