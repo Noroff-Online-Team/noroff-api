@@ -46,7 +46,7 @@ afterEach(async () => {
   await db.$disconnect()
 })
 
-describe("[GET] /recipe-book/recipes/:recipeId/comments", () => {
+describe("[GET] /recipe-book/recipes/:id/comments", () => {
   it("should return comments for a recipe", async () => {
     const response = await server.inject({
       url: `/recipe-book/recipes/${RECIPE_ID}/comments`,
