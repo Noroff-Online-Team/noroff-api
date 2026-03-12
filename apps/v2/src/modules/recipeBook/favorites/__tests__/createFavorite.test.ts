@@ -1,0 +1,105 @@
+import { getAuthCredentials, server } from "@/test-utils"
+
+import { db } from "@/utils"
+
+let BEARER_TOKEN = ""
+let API_KEY = ""
+let USER_NAME = ""
+let RECIPE_ID = ""
+
+beforeEach(async () => {
+  const { bearerToken, apiKey, name } = await getAuthCredentials()
+
+  BEARER_TOKEN = bearerToken
+  API_KEY = apiKey
+  USER_NAME = name
+
+  const recipe = await db.recipe.create({
+    data: {
+      title: "Test Recipe",
+      description: "A test recipe.",
+      prepTime: 5,
+      cookTime: 10,
+      servings: 2,
+      difficulty: "Easy",
+      category: "Test",
+      ingredients: [{ name: "Test", quantity: 1, unit: "piece" }],
+      instructions: ["Do the test."],
+      tags: [],
+      ownerName: USER_NAME
+    }
+  })
+  RECIPE_ID = recipe.id
+})
+
+afterEach(async () => {
+  const mealPlans = db.mealPlan.deleteMany()
+  const favorites = db.recipeFavorite.deleteMany()
+  const comments = db.recipeComment.deleteMany()
+  const recipes = db.recipe.deleteMany()
+  const users = db.userProfile.deleteMany()
+  const media = db.media.deleteMany()
+
+  await db.$transaction([mealPlans, favorites, comments, recipes, users, media])
+  await db.$disconnect()
+})
+
+describe("[POST] /recipe-book/favorites", () => {
+  it("should return 201 when successfully favorited a recipe", async () => {
+    const response = await server.inject({
+      url: "/recipe-book/favorites",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: { recipeId: RECIPE_ID }
+    })
+    const res = await response.json()
+
+    expect(response.statusCode).toBe(201)
+    expect(res.data).toMatchObject({
+      id: expect.any(String),
+      recipeId: RECIPE_ID,
+      recipe: { title: "Test Recipe" }
+    })
+  })
+
+  it("should return 409 when trying to favorite same recipe twice", async () => {
+    await server.inject({
+      url: "/recipe-book/favorites",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: { recipeId: RECIPE_ID }
+    })
+
+    const response = await server.inject({
+      url: "/recipe-book/favorites",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: { recipeId: RECIPE_ID }
+    })
+
+    expect(response.statusCode).toBe(409)
+  })
+
+  it("should return 404 for non-existent recipe", async () => {
+    const response = await server.inject({
+      url: "/recipe-book/favorites",
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${BEARER_TOKEN}`,
+        "X-Noroff-API-Key": API_KEY
+      },
+      payload: { recipeId: "00000000-0000-0000-0000-000000000000" }
+    })
+
+    expect(response.statusCode).toBe(404)
+  })
+})

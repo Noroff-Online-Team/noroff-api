@@ -1,0 +1,157 @@
+---
+title: Pantry
+description: Pantry endpoints for the Smart Recipe Book
+---
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+
+These endpoints allow you to manage your personal pantry — items you have on hand. All endpoints are scoped to the currently authenticated user.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Pantry Item model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique identifier for the pantry item." },
+    name: { type: "string", description: "The name of the item." },
+    quantity: { type: "number", description: "The quantity of the item." },
+    unit: { type: "string", description: "The unit of measurement (e.g. kg, pieces, liters)." },
+    category: { type: "string", description: "The category of the item (e.g. Produce, Dairy, Protein)." },
+    owner: {
+      type: "Profile",
+      description: "The profile that owns this pantry item."
+    },
+    created: { type: "Date", description: "The date the item was added." },
+    updated: { type: "Date", description: "The date the item was last updated." }
+  }}
+/>
+
+<Hr />
+
+## Get all pantry items
+
+<EndpointDetails path="/recipe-book/pantry" />
+
+Retrieve all pantry items for the currently authenticated user.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "name": "Chicken breast",
+      "quantity": 2,
+      "unit": "pieces",
+      "category": "Protein",
+      "owner": {
+        "name": "jane_doe",
+        "email": "jane@stud.noroff.no",
+        "bio": null,
+        "avatar": null,
+        "banner": null
+      },
+      "created": "2026-03-12T08:00:00.000Z",
+      "updated": "2026-03-12T08:00:00.000Z"
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 1
+  }
+}
+```
+
+<Hr />
+
+## Create pantry item
+
+<EndpointDetails method="POST" path="/recipe-book/pantry" />
+
+Add a new item to your pantry.
+
+```json title="Request"
+{
+  "name": "Chicken breast",
+  "quantity": 2,
+  "unit": "pieces",
+  "category": "Protein"
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Chicken breast",
+    "quantity": 2,
+    "unit": "pieces",
+    "category": "Protein",
+    "owner": {
+      "name": "jane_doe",
+      "email": "jane@stud.noroff.no",
+      "bio": null,
+      "avatar": null,
+      "banner": null
+    },
+    "created": "2026-03-12T08:00:00.000Z",
+    "updated": "2026-03-12T08:00:00.000Z"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Update pantry item
+
+<EndpointDetails method="PUT" path="/recipe-book/pantry/<id>" />
+
+Update a pantry item by its id. Only the owner can update it. You must provide at least one field to update.
+
+```json title="Request"
+// You can update any combination of the properties.
+{
+  "quantity": 5
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Chicken breast",
+    "quantity": 5,
+    "unit": "pieces",
+    "category": "Protein",
+    "owner": {
+      "name": "jane_doe",
+      "email": "jane@stud.noroff.no",
+      "bio": null,
+      "avatar": null,
+      "banner": null
+    },
+    "created": "2026-03-12T08:00:00.000Z",
+    "updated": "2026-03-12T08:30:00.000Z"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Delete pantry item
+
+<EndpointDetails method="DELETE" path="/recipe-book/pantry/<id>" />
+
+Delete a pantry item by its id. Only the owner can delete it.
+
+Returns an empty `204 No Content` response on success.

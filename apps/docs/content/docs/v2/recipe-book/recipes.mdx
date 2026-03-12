@@ -1,0 +1,463 @@
+---
+title: Recipes
+description: Recipes endpoints for the Smart Recipe Book
+---
+
+<Callout variant="warning">
+  Some of these are authenticated endpoints. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+
+These endpoints allow you to create, read, update and delete recipes. Recipes are the core resource of the Smart Recipe Book — anyone can browse and read them, but creating, updating and deleting requires authentication and ownership.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Recipe model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique identifier for the recipe." },
+    title: { type: "string", description: "The title of the recipe." },
+    description: { type: "string", description: "A description of the recipe." },
+    prepTime: { type: "integer", description: "Preparation time in minutes." },
+    cookTime: { type: "integer", description: "Cooking time in minutes." },
+    servings: { type: "integer", description: "Number of servings." },
+    difficulty: { type: "string", description: "The difficulty level (Easy, Medium, Hard)." },
+    category: { type: "string", description: "The recipe category (e.g. Breakfast, Dinner, Pasta)." },
+    ingredients: {
+      type: "Array<object>",
+      typeDescription: "Array of `{ name: string, quantity: number, unit: string }` objects.",
+      description: "The list of ingredients."
+    },
+    instructions: {
+      type: "Array<string>",
+      description: "Ordered list of instruction steps."
+    },
+    tags: { type: "Array<string>", description: "A string array of tags." },
+    image: {
+      type: "object",
+      typeDescription: "Instance of `Media` model.",
+      description: "The image associated with the recipe."
+    },
+    owner: {
+      type: "Profile",
+      description: "The profile that created the recipe."
+    },
+    comments: {
+      type: "Array<Comment>",
+      description: "Comments associated with this recipe."
+    },
+    _count: {
+      type: "object",
+      typeDescription: "{\n  favorites: integer;\n}",
+      description: "A JSON object containing the number of favorites."
+    },
+    created: { type: "Date", description: "The date the recipe was created." },
+    updated: { type: "Date", description: "The date the recipe was last updated." }
+  }}
+/>
+
+## The Recipe Comment model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique identifier for the comment." },
+    text: { type: "string", description: "The comment text (max 280 characters)." },
+    recipeId: { type: "string", description: "The ID of the recipe this comment belongs to." },
+    author: {
+      type: "Profile",
+      description: "The profile that wrote the comment."
+    },
+    created: { type: "Date", description: "The date the comment was created." },
+    updated: { type: "Date", description: "The date the comment was last updated." }
+  }}
+/>
+
+<Hr />
+
+## Query parameters
+
+The following optional query parameters can be used to filter recipes.
+
+<TypeTable
+  type={{
+    search: { type: "string", description: "Search by title or description (case-insensitive)." },
+    category: { type: "string", description: "Filter by category (case-insensitive)." },
+    difficulty: { type: "string", description: "Filter by difficulty (case-insensitive). One of: Easy, Medium, Hard." }
+  }}
+/>
+
+<Hr />
+
+## Get all recipes
+
+<EndpointDetails path="/recipe-book/recipes" />
+
+Retrieve all recipes. Supports filtering by `search`, `category`, and `difficulty` query parameters.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "title": "Classic Margherita Pizza",
+      "description": "A simple and delicious homemade pizza with fresh basil.",
+      "prepTime": 20,
+      "cookTime": 15,
+      "servings": 4,
+      "difficulty": "Easy",
+      "category": "Dinner",
+      "ingredients": [
+        { "name": "Pizza dough", "quantity": 1, "unit": "ball" },
+        { "name": "Tomato sauce", "quantity": 0.5, "unit": "cup" },
+        { "name": "Fresh mozzarella", "quantity": 200, "unit": "g" },
+        { "name": "Fresh basil", "quantity": 6, "unit": "leaves" }
+      ],
+      "instructions": [
+        "Preheat oven to 250C.",
+        "Roll out the pizza dough on a floured surface.",
+        "Spread tomato sauce evenly over the dough.",
+        "Tear mozzarella into pieces and distribute over sauce.",
+        "Bake for 12-15 minutes until crust is golden.",
+        "Top with fresh basil leaves and serve immediately."
+      ],
+      "tags": ["Italian", "Vegetarian", "Quick"],
+      "image": {
+        "url": "https://example.com/pizza.jpg",
+        "alt": "Margherita pizza"
+      },
+      "owner": {
+        "name": "jane_doe",
+        "email": "jane@stud.noroff.no",
+        "bio": null,
+        "avatar": {
+          "url": "https://example.com/avatar.jpg",
+          "alt": "Jane's avatar"
+        },
+        "banner": {
+          "url": "https://example.com/banner.jpg",
+          "alt": "Jane's banner"
+        }
+      },
+      "comments": [
+        {
+          "id": "comment-id",
+          "text": "Made this last night, amazing!",
+          "author": {
+            "name": "john_doe",
+            "email": "john@stud.noroff.no"
+          },
+          "created": "2026-03-12T14:00:00.000Z",
+          "updated": "2026-03-12T14:00:00.000Z"
+        }
+      ],
+      "_count": {
+        "favorites": 3
+      },
+      "created": "2026-03-12T10:30:00.000Z",
+      "updated": "2026-03-12T10:30:00.000Z"
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 1
+  }
+}
+```
+
+<Hr />
+
+## Get single recipe
+
+<EndpointDetails path="/recipe-book/recipes/<id>" />
+
+Retrieve a single recipe by its id, including all associated comments and favorite count.
+
+```json title="Response"
+{
+  "data": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "title": "Classic Margherita Pizza",
+    "description": "A simple and delicious homemade pizza with fresh basil.",
+    "prepTime": 20,
+    "cookTime": 15,
+    "servings": 4,
+    "difficulty": "Easy",
+    "category": "Dinner",
+    "ingredients": [
+      { "name": "Pizza dough", "quantity": 1, "unit": "ball" },
+      { "name": "Tomato sauce", "quantity": 0.5, "unit": "cup" },
+      { "name": "Fresh mozzarella", "quantity": 200, "unit": "g" },
+      { "name": "Fresh basil", "quantity": 6, "unit": "leaves" }
+    ],
+    "instructions": [
+      "Preheat oven to 250C.",
+      "Roll out the pizza dough on a floured surface.",
+      "Spread tomato sauce evenly over the dough.",
+      "Tear mozzarella into pieces and distribute over sauce.",
+      "Bake for 12-15 minutes until crust is golden.",
+      "Top with fresh basil leaves and serve immediately."
+    ],
+    "tags": ["Italian", "Vegetarian", "Quick"],
+    "image": {
+      "url": "https://example.com/pizza.jpg",
+      "alt": "Margherita pizza"
+    },
+    "owner": {
+      "name": "jane_doe",
+      "email": "jane@stud.noroff.no",
+      "bio": null,
+      "avatar": {
+        "url": "https://example.com/avatar.jpg",
+        "alt": "Jane's avatar"
+      },
+      "banner": {
+        "url": "https://example.com/banner.jpg",
+        "alt": "Jane's banner"
+      }
+    },
+    "comments": [],
+    "_count": {
+      "favorites": 3
+    },
+    "created": "2026-03-12T10:30:00.000Z",
+    "updated": "2026-03-12T10:30:00.000Z"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Create recipe
+
+<EndpointDetails method="POST" path="/recipe-book/recipes" />
+
+Create a new recipe. Only authenticated users can create recipes.
+
+> Please note that the `image.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+{
+  "title": "Classic Margherita Pizza",
+  "description": "A simple and delicious homemade pizza with fresh basil.",
+  "prepTime": 20,
+  "cookTime": 15,
+  "servings": 4,
+  "difficulty": "Easy",
+  "category": "Dinner",
+  "ingredients": [
+    { "name": "Pizza dough", "quantity": 1, "unit": "ball" },
+    { "name": "Tomato sauce", "quantity": 0.5, "unit": "cup" },
+    { "name": "Fresh mozzarella", "quantity": 200, "unit": "g" },
+    { "name": "Fresh basil", "quantity": 6, "unit": "leaves" }
+  ],
+  "instructions": [
+    "Preheat oven to 250C.",
+    "Roll out the pizza dough on a floured surface.",
+    "Spread tomato sauce evenly over the dough.",
+    "Tear mozzarella into pieces and distribute over sauce.",
+    "Bake for 12-15 minutes until crust is golden.",
+    "Top with fresh basil leaves and serve immediately."
+  ],
+  "tags": ["Italian", "Vegetarian"],
+  "image": {
+    "url": "https://example.com/pizza.jpg",
+    "alt": "Margherita pizza"
+  }
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "title": "Classic Margherita Pizza",
+    "description": "A simple and delicious homemade pizza with fresh basil.",
+    "prepTime": 20,
+    "cookTime": 15,
+    "servings": 4,
+    "difficulty": "Easy",
+    "category": "Dinner",
+    "ingredients": [
+      { "name": "Pizza dough", "quantity": 1, "unit": "ball" },
+      { "name": "Tomato sauce", "quantity": 0.5, "unit": "cup" },
+      { "name": "Fresh mozzarella", "quantity": 200, "unit": "g" },
+      { "name": "Fresh basil", "quantity": 6, "unit": "leaves" }
+    ],
+    "instructions": [
+      "Preheat oven to 250C.",
+      "Roll out the pizza dough on a floured surface.",
+      "Spread tomato sauce evenly over the dough.",
+      "Tear mozzarella into pieces and distribute over sauce.",
+      "Bake for 12-15 minutes until crust is golden.",
+      "Top with fresh basil leaves and serve immediately."
+    ],
+    "tags": ["Italian", "Vegetarian"],
+    "image": {
+      "url": "https://example.com/pizza.jpg",
+      "alt": "Margherita pizza"
+    },
+    "owner": {
+      "name": "jane_doe",
+      "email": "jane@stud.noroff.no",
+      "bio": null,
+      "avatar": null,
+      "banner": null
+    },
+    "comments": [],
+    "_count": {
+      "favorites": 0
+    },
+    "created": "2026-03-12T10:30:00.000Z",
+    "updated": "2026-03-12T10:30:00.000Z"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Update recipe
+
+<EndpointDetails method="PUT" path="/recipe-book/recipes/<id>" />
+
+Update a recipe by its id. Only the owner of the recipe can update it. You must provide at least one field to update.
+
+> Please note that the `image.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
+
+```json title="Request"
+// You can update any combination of the properties of the recipe.
+{
+  "title": "Updated Margherita Pizza",
+  "servings": 6,
+  "tags": ["Italian", "Vegetarian", "Family"]
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "title": "Updated Margherita Pizza",
+    "description": "A simple and delicious homemade pizza with fresh basil.",
+    "prepTime": 20,
+    "cookTime": 15,
+    "servings": 6,
+    "difficulty": "Easy",
+    "category": "Dinner",
+    "ingredients": [
+      { "name": "Pizza dough", "quantity": 1, "unit": "ball" },
+      { "name": "Tomato sauce", "quantity": 0.5, "unit": "cup" },
+      { "name": "Fresh mozzarella", "quantity": 200, "unit": "g" },
+      { "name": "Fresh basil", "quantity": 6, "unit": "leaves" }
+    ],
+    "instructions": [
+      "Preheat oven to 250C.",
+      "Roll out the pizza dough on a floured surface.",
+      "Spread tomato sauce evenly over the dough.",
+      "Tear mozzarella into pieces and distribute over sauce.",
+      "Bake for 12-15 minutes until crust is golden.",
+      "Top with fresh basil leaves and serve immediately."
+    ],
+    "tags": ["Italian", "Vegetarian", "Family"],
+    "image": {
+      "url": "https://example.com/pizza.jpg",
+      "alt": "Margherita pizza"
+    },
+    "owner": {
+      "name": "jane_doe",
+      "email": "jane@stud.noroff.no",
+      "bio": null,
+      "avatar": null,
+      "banner": null
+    },
+    "comments": [],
+    "_count": {
+      "favorites": 0
+    },
+    "created": "2026-03-12T10:30:00.000Z",
+    "updated": "2026-03-12T10:45:00.000Z"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Delete recipe
+
+<EndpointDetails method="DELETE" path="/recipe-book/recipes/<id>" />
+
+Delete a recipe by its id. Only the owner of the recipe can delete it. This will also delete all associated comments, favorites, and meal plan entries.
+
+Returns an empty `204 No Content` response on success.
+
+<Hr />
+
+## Get recipe comments
+
+<EndpointDetails path="/recipe-book/recipes/<recipeId>/comments" />
+
+Retrieve all comments for a specific recipe. This endpoint does not require authentication.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      "text": "Made this last night, it was amazing!",
+      "recipeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "author": {
+        "name": "john_doe",
+        "email": "john@stud.noroff.no",
+        "bio": null,
+        "avatar": null,
+        "banner": null
+      },
+      "created": "2026-03-12T14:00:00.000Z",
+      "updated": "2026-03-12T14:00:00.000Z"
+    }
+  ],
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Create recipe comment
+
+<EndpointDetails method="POST" path="/recipe-book/recipes/<recipeId>/comments" />
+
+Add a comment to a recipe. Only authenticated users can create comments.
+
+```json title="Request"
+{
+  "text": "Made this last night, it was amazing!"
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "text": "Made this last night, it was amazing!",
+    "recipeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "author": {
+      "name": "john_doe",
+      "email": "john@stud.noroff.no",
+      "bio": null,
+      "avatar": null,
+      "banner": null
+    },
+    "created": "2026-03-12T14:00:00.000Z",
+    "updated": "2026-03-12T14:00:00.000Z"
+  },
+  "meta": {}
+}
+```
