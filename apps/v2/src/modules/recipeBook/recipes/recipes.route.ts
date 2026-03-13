@@ -96,10 +96,11 @@ async function recipesRoutes(server: FastifyInstance) {
   )
 
   server.get(
-    "/:recipeId/comments",
+    "/:id/comments",
     {
       schema: {
         tags: ["recipe-book-recipes"],
+        params: recipeParamsSchema,
         response: {
           200: createResponseSchema(displayRecipeCommentSchema.array())
         }
@@ -109,12 +110,13 @@ async function recipesRoutes(server: FastifyInstance) {
   )
 
   server.post(
-    "/:recipeId/comments",
+    "/:id/comments",
     {
       onRequest: [server.authenticate, server.apiKey],
       schema: {
         tags: ["recipe-book-recipes"],
         security: [{ bearerAuth: [], apiKey: [] }],
+        params: recipeParamsSchema,
         body: createRecipeCommentSchema,
         response: {
           201: createResponseSchema(displayRecipeCommentSchema)

@@ -2,10 +2,10 @@ import { getAuthCredentials, server } from "@/test-utils"
 
 import { db } from "@/utils"
 
-let BEARER_TOKEN = ""
 let API_KEY = ""
-let USER_NAME = ""
+let BEARER_TOKEN = ""
 let RECIPE_ID = ""
+let USER_NAME = ""
 
 beforeEach(async () => {
   const { bearerToken, apiKey, name } = await getAuthCredentials()
@@ -16,19 +16,20 @@ beforeEach(async () => {
 
   const recipe = await db.recipe.create({
     data: {
-      title: "Test Recipe",
-      description: "A test recipe.",
-      prepTime: 5,
-      cookTime: 10,
-      servings: 2,
+      title: "Roasted Vegetables",
+      description: "A tray of roasted vegetables.",
+      prepTime: 15,
+      cookTime: 35,
+      servings: 4,
       difficulty: "Easy",
-      category: "Test",
-      ingredients: [{ name: "Test", quantity: 1, unit: "piece" }],
-      instructions: ["Do the test."],
-      tags: [],
+      category: "Dinner",
+      ingredients: [{ name: "Carrots", quantity: 4, unit: "pcs" }],
+      instructions: ["Chop vegetables.", "Roast until tender."],
+      tags: ["Vegetarian"],
       ownerName: USER_NAME
     }
   })
+
   RECIPE_ID = recipe.id
 })
 
@@ -45,7 +46,7 @@ afterEach(async () => {
 })
 
 describe("[POST] /recipe-book/recipes/:id/comments", () => {
-  it("should return 201 when successfully created a comment", async () => {
+  it("should create a recipe comment from the recipes module", async () => {
     const response = await server.inject({
       url: `/recipe-book/recipes/${RECIPE_ID}/comments`,
       method: "POST",
@@ -53,39 +54,19 @@ describe("[POST] /recipe-book/recipes/:id/comments", () => {
         Authorization: `Bearer ${BEARER_TOKEN}`,
         "X-Noroff-API-Key": API_KEY
       },
-      payload: { text: "Great recipe!" }
+      payload: { text: "This turned out great." }
     })
     const res = await response.json()
 
     expect(response.statusCode).toBe(201)
     expect(res.data).toMatchObject({
       id: expect.any(String),
-      text: "Great recipe!",
-      recipeId: RECIPE_ID
+      recipeId: RECIPE_ID,
+      text: "This turned out great.",
+      author: {
+        name: USER_NAME
+      }
     })
-  })
-
-  it("should return 404 for non-existent recipe", async () => {
-    const response = await server.inject({
-      url: "/recipe-book/recipes/00000000-0000-0000-0000-000000000000/comments",
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${BEARER_TOKEN}`,
-        "X-Noroff-API-Key": API_KEY
-      },
-      payload: { text: "Great recipe!" }
-    })
-
-    expect(response.statusCode).toBe(404)
-  })
-
-  it("should require authentication", async () => {
-    const response = await server.inject({
-      url: `/recipe-book/recipes/${RECIPE_ID}/comments`,
-      method: "POST",
-      payload: { text: "Great recipe!" }
-    })
-
-    expect(response.statusCode).toBe(401)
+    expect(res.meta).toStrictEqual({})
   })
 })

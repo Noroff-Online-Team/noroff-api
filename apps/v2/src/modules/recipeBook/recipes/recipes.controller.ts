@@ -149,44 +149,40 @@ export async function deleteRecipeHandler(
 
 export async function getRecipeCommentsHandler(
   request: FastifyRequest<{
-    Params: { recipeId: string }
+    Params: { id: string }
   }>
 ) {
-  const params = await recipeParamsSchema.parseAsync({
-    id: request.params.recipeId
-  })
+  const { id } = await recipeParamsSchema.parseAsync(request.params)
 
-  const recipe = await getRecipe(params.id)
+  const recipe = await getRecipe(id)
 
   if (!recipe.data) {
     throw new NotFound("No recipe with such ID")
   }
 
-  const comments = await getRecipeComments(params.id)
+  const comments = await getRecipeComments(id)
 
   return comments
 }
 
 export async function createRecipeCommentHandler(
   request: FastifyRequest<{
-    Params: { recipeId: string }
+    Params: { id: string }
     Body: CreateRecipeCommentSchema
   }>,
   reply: FastifyReply
 ) {
-  const params = await recipeParamsSchema.parseAsync({
-    id: request.params.recipeId
-  })
+  const { id } = await recipeParamsSchema.parseAsync(request.params)
   const data = await createRecipeCommentSchema.parseAsync(request.body)
   const { name } = request.user as RequestUser
 
-  const recipe = await getRecipe(params.id)
+  const recipe = await getRecipe(id)
 
   if (!recipe.data) {
     throw new NotFound("No recipe with such ID")
   }
 
-  const comment = await createRecipeComment(params.id, name, data)
+  const comment = await createRecipeComment(id, name, data)
 
   reply.code(201).send(comment)
 }
