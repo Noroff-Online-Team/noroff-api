@@ -1,0 +1,187 @@
+---
+title: Meal Plans
+description: Meal planning endpoints for the Smart Recipe Book
+---
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+
+These endpoints allow you to plan meals by scheduling recipes for specific dates and meal types. All endpoints are scoped to the currently authenticated user.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Meal Plan model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique identifier for the meal plan entry." },
+    recipeId: { type: "string", description: "The ID of the scheduled recipe." },
+    recipe: {
+      type: "Recipe",
+      description: "The full recipe object."
+    },
+    date: { type: "Date", description: "The date for this meal." },
+    mealType: { type: "string", description: "The type of meal (Breakfast, Lunch, Dinner, Snack)." },
+    owner: {
+      type: "Profile",
+      description: "The profile that created the meal plan entry."
+    },
+    created: { type: "Date", description: "The date the entry was created." }
+  }}
+/>
+
+<Hr />
+
+## Query parameters
+
+The following optional query parameters can be used to filter meal plan entries by date range.
+
+<TypeTable
+  type={{
+    startDate: { type: "ISO date string", description: "Filter entries on or after this date (e.g. 2026-03-16)." },
+    endDate: { type: "ISO date string", description: "Filter entries on or before this date (e.g. 2026-03-22)." }
+  }}
+/>
+
+<Hr />
+
+## Get all meal plan entries
+
+<EndpointDetails path="/recipe-book/meal-plans" />
+
+Retrieve all meal plan entries for the currently authenticated user. Use `startDate` and `endDate` query parameters to filter by date range.
+
+```json title="Example: Get this week's meals"
+// GET /recipe-book/meal-plans?startDate=2026-03-16&endDate=2026-03-22
+```
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": "mp-uuid",
+      "recipeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "recipe": {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "title": "Classic Margherita Pizza",
+        "description": "A simple and delicious homemade pizza with fresh basil.",
+        "prepTime": 20,
+        "cookTime": 15,
+        "servings": 4,
+        "difficulty": "Easy",
+        "category": "Dinner",
+        "ingredients": [
+          { "name": "Pizza dough", "quantity": 1, "unit": "ball" }
+        ],
+        "instructions": ["Preheat oven to 250C."],
+        "tags": ["Italian"],
+        "image": {
+          "url": "https://example.com/pizza.jpg",
+          "alt": "Margherita pizza"
+        },
+        "owner": {
+          "name": "jane_doe",
+          "email": "jane@stud.noroff.no"
+        },
+        "created": "2026-03-12T10:30:00.000Z",
+        "updated": "2026-03-12T10:30:00.000Z"
+      },
+      "date": "2026-03-18T00:00:00.000Z",
+      "mealType": "Dinner",
+      "owner": {
+        "name": "john_doe",
+        "email": "john@stud.noroff.no",
+        "bio": null,
+        "avatar": null,
+        "banner": null
+      },
+      "created": "2026-03-16T09:00:00.000Z"
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 1
+  }
+}
+```
+
+<Hr />
+
+## Create meal plan entry
+
+<EndpointDetails method="POST" path="/recipe-book/meal-plans" />
+
+Add a recipe to your meal plan for a specific date and meal type.
+
+```json title="Request"
+{
+  "recipeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "date": "2026-03-18",
+  "mealType": "Dinner"
+}
+```
+
+Allowed `mealType` values: `Breakfast`, `Lunch`, `Dinner`, `Snack`.
+
+```json title="Response"
+{
+  "data": {
+    "id": "mp-uuid",
+    "recipeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "recipe": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "title": "Classic Margherita Pizza",
+      "description": "A simple and delicious homemade pizza with fresh basil.",
+      "prepTime": 20,
+      "cookTime": 15,
+      "servings": 4,
+      "difficulty": "Easy",
+      "category": "Dinner",
+      "ingredients": [
+        { "name": "Pizza dough", "quantity": 1, "unit": "ball" }
+      ],
+      "instructions": ["Preheat oven to 250C."],
+      "tags": ["Italian"],
+      "image": null,
+      "owner": {
+        "name": "jane_doe",
+        "email": "jane@stud.noroff.no"
+      },
+      "created": "2026-03-12T10:30:00.000Z",
+      "updated": "2026-03-12T10:30:00.000Z"
+    },
+    "date": "2026-03-18T00:00:00.000Z",
+    "mealType": "Dinner",
+    "owner": {
+      "name": "john_doe",
+      "email": "john@stud.noroff.no",
+      "bio": null,
+      "avatar": null,
+      "banner": null
+    },
+    "created": "2026-03-16T09:00:00.000Z"
+  },
+  "meta": {}
+}
+```
+
+<Callout variant="warning">
+  If the recipe does not exist you will receive a `404 Not Found` error. If `mealType` is not one of the allowed values you will receive a `400 Bad Request` error.
+</Callout>
+
+<Hr />
+
+## Delete meal plan entry
+
+<EndpointDetails method="DELETE" path="/recipe-book/meal-plans/<id>" />
+
+Remove a meal plan entry by its id. Only the owner can delete it.
+
+Returns an empty `204 No Content` response on success.

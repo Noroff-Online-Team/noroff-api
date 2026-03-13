@@ -45,4 +45,23 @@ export default async function (fastify: FastifyInstance) {
   fastify.register(import("./pets/pets.route"), { prefix: "pets" })
   fastify.register(import("./artworks/artworks.route"), { prefix: "artworks" })
   fastify.register(import("./library/library.route"), { prefix: "library" })
+  // Recipe Book
+  fastify.register(import("./recipeBook/recipes/recipes.route"), {
+    prefix: "recipe-book/recipes"
+  })
+  fastify.register(import("./recipeBook/pantry/pantry.route"), {
+    prefix: "recipe-book/pantry"
+  })
+  fastify.register(import("./recipeBook/favorites/favorites.route"), {
+    prefix: "recipe-book/favorites"
+  })
+  fastify.register(import("./recipeBook/comments/comments.route"), {
+    prefix: "recipe-book/comments"
+  })
+  fastify.register(import("./recipeBook/mealPlans/mealPlans.route"), {
+    prefix: "recipe-book/meal-plans"
+  })
+  fastify.register(import("./recipeBook/ai/ai.route"), {
+    prefix: "recipe-book/ai"
+  })
 }

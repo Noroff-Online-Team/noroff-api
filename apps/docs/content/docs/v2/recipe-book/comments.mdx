@@ -1,0 +1,73 @@
+---
+title: Comments
+description: Comment management endpoints for the Smart Recipe Book
+---
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+
+These endpoints allow you to edit and delete your own comments. To create a comment or list comments for a recipe, see the [Recipes](./recipes) endpoints:
+
+- `GET /recipe-book/recipes/<recipeId>/comments` — List comments for a recipe
+- `POST /recipe-book/recipes/<recipeId>/comments` — Add a comment to a recipe
+
+## The Comment model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique identifier for the comment." },
+    text: { type: "string", description: "The comment text (max 280 characters)." },
+    recipeId: { type: "string", description: "The ID of the recipe this comment belongs to." },
+    author: {
+      type: "Profile",
+      description: "The profile that wrote the comment."
+    },
+    created: { type: "Date", description: "The date the comment was created." },
+    updated: { type: "Date", description: "The date the comment was last updated." }
+  }}
+/>
+
+<Hr />
+
+## Update comment
+
+<EndpointDetails method="PUT" path="/recipe-book/comments/<id>" />
+
+Edit a comment by its id. Only the author of the comment can update it.
+
+```json title="Request"
+{
+  "text": "Updated: this was even better the second time around!"
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "text": "Updated: this was even better the second time around!",
+    "recipeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "author": {
+      "name": "john_doe",
+      "email": "john@stud.noroff.no",
+      "bio": null,
+      "avatar": null,
+      "banner": null
+    },
+    "created": "2026-03-12T14:00:00.000Z",
+    "updated": "2026-03-12T14:30:00.000Z"
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Delete comment
+
+<EndpointDetails method="DELETE" path="/recipe-book/comments/<id>" />
+
+Delete a comment by its id. Only the author of the comment can delete it.
+
+Returns an empty `204 No Content` response on success.

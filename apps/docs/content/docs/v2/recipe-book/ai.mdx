@@ -1,0 +1,170 @@
+---
+title: AI
+description: AI-powered endpoints for the Smart Recipe Book
+---
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+
+These endpoints provide AI-powered recipe features. They are mock/algorithmic — no real LLM is used. Students POST to them and receive structured responses.
+
+## Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/recipe-book/ai/substitutions` | Get ingredient substitution suggestions |
+| POST | `/recipe-book/ai/scale` | Scale recipe ingredients |
+| POST | `/recipe-book/ai/generate` | Generate a recipe from a text prompt |
+
+<Hr />
+
+## Get ingredient substitutions
+
+<EndpointDetails method="POST" path="/recipe-book/ai/substitutions" />
+
+Get substitution suggestions for an ingredient. The API has a built-in map of common ingredients. For unknown ingredients, generic suggestions are returned.
+
+**Supported ingredients with curated substitutions:** butter, egg, milk, flour, sugar, sour cream, cream, heavy cream, soy sauce, bread crumbs, garlic, onion, vegetable oil, baking powder, cornstarch.
+
+```json title="Request"
+{
+  "ingredient": "butter"
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "ingredient": "butter",
+    "substitutions": [
+      {
+        "name": "Coconut oil",
+        "ratio": "1:1",
+        "notes": "Works well in baking"
+      },
+      {
+        "name": "Olive oil",
+        "ratio": "3/4 cup per 1 cup butter",
+        "notes": "Best for savory dishes"
+      },
+      {
+        "name": "Applesauce",
+        "ratio": "1:1",
+        "notes": "Reduces fat, adds moisture"
+      }
+    ]
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Scale recipe ingredients
+
+<EndpointDetails method="POST" path="/recipe-book/ai/scale" />
+
+Scale recipe ingredients by a target serving size. This uses real math — each ingredient quantity is multiplied by the scale factor (`targetServings / originalServings`). The response includes cooking tips based on the scale factor.
+
+```json title="Request"
+{
+  "ingredients": [
+    { "name": "Flour", "quantity": 200, "unit": "g" },
+    { "name": "Sugar", "quantity": 100, "unit": "g" },
+    { "name": "Butter", "quantity": 50, "unit": "g" }
+  ],
+  "originalServings": 4,
+  "targetServings": 8
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "originalServings": 4,
+    "targetServings": 8,
+    "scaleFactor": 2,
+    "scaledIngredients": [
+      {
+        "name": "Flour",
+        "originalQuantity": 200,
+        "scaledQuantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Sugar",
+        "originalQuantity": 100,
+        "scaledQuantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "Butter",
+        "originalQuantity": 50,
+        "scaledQuantity": 100,
+        "unit": "g"
+      }
+    ],
+    "tips": [
+      "When scaling up significantly, cooking times may need to be adjusted.",
+      "Consider using a larger pan or cooking in batches.",
+      "Seasoning may need fine-tuning — taste and adjust as needed."
+    ]
+  },
+  "meta": {}
+}
+```
+
+<Hr />
+
+## Generate recipe
+
+<EndpointDetails method="POST" path="/recipe-book/ai/generate" />
+
+Generate a mock recipe from a text prompt. The generated recipe incorporates the user's prompt in the title and description but uses template data for ingredients and instructions.
+
+<Callout>
+  The generated recipe is **not saved automatically**. To save it, POST the generated data to `POST /recipe-book/recipes`.
+</Callout>
+
+```json title="Request"
+{
+  "prompt": "healthy chicken dinner"
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "title": "AI-Generated: healthy chicken dinner",
+    "description": "A delicious recipe inspired by: \"healthy chicken dinner\". This recipe was generated based on your request and features a balanced combination of flavors and textures.",
+    "prepTime": 15,
+    "cookTime": 30,
+    "servings": 4,
+    "difficulty": "Medium",
+    "category": "AI Generated",
+    "ingredients": [
+      { "name": "Main protein or base ingredient", "quantity": 500, "unit": "g" },
+      { "name": "Olive oil", "quantity": 2, "unit": "tbsp" },
+      { "name": "Garlic cloves", "quantity": 3, "unit": "pieces" },
+      { "name": "Onion", "quantity": 1, "unit": "medium" },
+      { "name": "Salt", "quantity": 1, "unit": "tsp" },
+      { "name": "Black pepper", "quantity": 0.5, "unit": "tsp" },
+      { "name": "Fresh herbs", "quantity": 2, "unit": "tbsp" },
+      { "name": "Lemon juice", "quantity": 1, "unit": "tbsp" }
+    ],
+    "instructions": [
+      "Prepare all ingredients by washing, peeling, and chopping as needed.",
+      "Heat olive oil in a large pan over medium heat.",
+      "Saute garlic and onion until fragrant, about 2-3 minutes.",
+      "Add the main ingredient and cook until properly done.",
+      "Season with salt, pepper, and fresh herbs.",
+      "Finish with a squeeze of lemon juice.",
+      "Let rest for 5 minutes before serving.",
+      "Plate and garnish with additional fresh herbs."
+    ],
+    "tags": ["ai-generated", "quick-meal"]
+  },
+  "meta": {}
+}
+```

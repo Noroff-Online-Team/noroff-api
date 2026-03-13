@@ -166,6 +166,8 @@ model Media {
   artworkId           String?            @unique
   libraryBook         LibraryBook?       @relation(fields: [libraryBookId], references: [id], onDelete: Cascade)
   libraryBookId       String?            @unique
+  recipe              Recipe?            @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId            String?            @unique
 }
 
 // User API Key
@@ -224,6 +226,12 @@ model UserProfile {
   // Library
   libraryBooks       LibraryBook[]
   libraryBookReviews LibraryBookReview[]
+  // Recipe Book
+  recipes            Recipe[]
+  pantryItems        PantryItem[]
+  recipeFavorites    RecipeFavorite[]
+  recipeComments     RecipeComment[]
+  mealPlans          MealPlan[]
 }
 
 // Social
@@ -421,4 +429,72 @@ model LibraryBookReview {
   reviewerName String
   created      DateTime    @default(now())
   updated      DateTime    @updatedAt
+}
+
+// Recipe Book
+model Recipe {
+  id           String            @id @default(uuid())
+  title        String
+  description  String
+  prepTime     Int
+  cookTime     Int
+  servings     Int
+  difficulty   String
+  category     String
+  ingredients  Json
+  instructions Json
+  tags         String[]
+  image        Media?
+  owner        UserProfile       @relation(fields: [ownerName], references: [name], onDelete: Cascade)
+  ownerName    String
+  comments     RecipeComment[]
+  favorites    RecipeFavorite[]
+  mealPlans    MealPlan[]
+  created      DateTime          @default(now())
+  updated      DateTime          @updatedAt
+}
+
+model PantryItem {
+  id        String      @id @default(uuid())
+  name      String
+  quantity  Float
+  unit      String
+  category  String
+  owner     UserProfile @relation(fields: [ownerName], references: [name], onDelete: Cascade)
+  ownerName String
+  created   DateTime    @default(now())
+  updated   DateTime    @updatedAt
+}
+
+model RecipeFavorite {
+  id        String      @id @default(uuid())
+  recipe    Recipe      @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId  String
+  owner     UserProfile @relation(fields: [ownerName], references: [name], onDelete: Cascade)
+  ownerName String
+  created   DateTime    @default(now())
+
+  @@unique([recipeId, ownerName])
+}
+
+model RecipeComment {
+  id        String      @id @default(uuid())
+  text      String
+  recipe    Recipe      @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId  String
+  author    UserProfile @relation(fields: [ownerName], references: [name], onDelete: Cascade)
+  ownerName String
+  created   DateTime    @default(now())
+  updated   DateTime    @updatedAt
+}
+
+model MealPlan {
+  id        String      @id @default(uuid())
+  recipe    Recipe      @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId  String
+  date      DateTime
+  mealType  String
+  owner     UserProfile @relation(fields: [ownerName], references: [name], onDelete: Cascade)
+  ownerName String
+  created   DateTime    @default(now())
 }

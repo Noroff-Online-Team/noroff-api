@@ -1,0 +1,164 @@
+---
+title: Favorites
+description: Favorites endpoints for the Smart Recipe Book
+---
+
+<Callout variant="warning">
+  These are authenticated endpoints. You can visit [authentication](../auth/register) to register an account.
+</Callout>
+
+These endpoints allow you to manage your favorited recipes. When you list favorites, the full recipe object is included so you don't need a second fetch. Favorites are unique per user and recipe — you cannot favorite the same recipe twice.
+
+These endpoints support pagination and sorting. Read more about these features [here](../pagination-sorting).
+
+## The Favorite model
+
+<TypeTable
+  type={{
+    id: { type: "string", description: "The unique identifier for the favorite." },
+    recipeId: { type: "string", description: "The ID of the favorited recipe." },
+    recipe: {
+      type: "Recipe",
+      description: "The full recipe object."
+    },
+    owner: {
+      type: "Profile",
+      description: "The profile that favorited the recipe."
+    },
+    created: { type: "Date", description: "The date the recipe was favorited." }
+  }}
+/>
+
+<Hr />
+
+## Get all favorites
+
+<EndpointDetails path="/recipe-book/favorites" />
+
+Retrieve all favorited recipes for the currently authenticated user. Returns full recipe objects.
+
+```json title="Response"
+{
+  "data": [
+    {
+      "id": "fav-uuid",
+      "recipeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "recipe": {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "title": "Classic Margherita Pizza",
+        "description": "A simple and delicious homemade pizza with fresh basil.",
+        "prepTime": 20,
+        "cookTime": 15,
+        "servings": 4,
+        "difficulty": "Easy",
+        "category": "Dinner",
+        "ingredients": [
+          { "name": "Pizza dough", "quantity": 1, "unit": "ball" }
+        ],
+        "instructions": ["Preheat oven to 250C."],
+        "tags": ["Italian"],
+        "image": {
+          "url": "https://example.com/pizza.jpg",
+          "alt": "Margherita pizza"
+        },
+        "owner": {
+          "name": "jane_doe",
+          "email": "jane@stud.noroff.no"
+        },
+        "created": "2026-03-12T10:30:00.000Z",
+        "updated": "2026-03-12T10:30:00.000Z"
+      },
+      "owner": {
+        "name": "john_doe",
+        "email": "john@stud.noroff.no",
+        "bio": null,
+        "avatar": null,
+        "banner": null
+      },
+      "created": "2026-03-12T14:00:00.000Z"
+    }
+    // ...
+  ],
+  "meta": {
+    "isFirstPage": true,
+    "isLastPage": true,
+    "currentPage": 1,
+    "previousPage": null,
+    "nextPage": null,
+    "pageCount": 1,
+    "totalCount": 1
+  }
+}
+```
+
+<Hr />
+
+## Add to favorites
+
+<EndpointDetails method="POST" path="/recipe-book/favorites" />
+
+Add a recipe to your favorites.
+
+```json title="Request"
+{
+  "recipeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+}
+```
+
+```json title="Response"
+{
+  "data": {
+    "id": "fav-uuid",
+    "recipeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "recipe": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "title": "Classic Margherita Pizza",
+      "description": "A simple and delicious homemade pizza with fresh basil.",
+      "prepTime": 20,
+      "cookTime": 15,
+      "servings": 4,
+      "difficulty": "Easy",
+      "category": "Dinner",
+      "ingredients": [
+        { "name": "Pizza dough", "quantity": 1, "unit": "ball" }
+      ],
+      "instructions": ["Preheat oven to 250C."],
+      "tags": ["Italian"],
+      "image": null,
+      "owner": {
+        "name": "jane_doe",
+        "email": "jane@stud.noroff.no"
+      },
+      "created": "2026-03-12T10:30:00.000Z",
+      "updated": "2026-03-12T10:30:00.000Z"
+    },
+    "owner": {
+      "name": "john_doe",
+      "email": "john@stud.noroff.no",
+      "bio": null,
+      "avatar": null,
+      "banner": null
+    },
+    "created": "2026-03-12T14:00:00.000Z"
+  },
+  "meta": {}
+}
+```
+
+<Callout variant="warning">
+  If the recipe does not exist you will receive a `404 Not Found` error. If you have already favorited this recipe you will receive a `409 Conflict` error.
+</Callout>
+
+<Hr />
+
+## Remove from favorites
+
+<EndpointDetails method="DELETE" path="/recipe-book/favorites/<recipeId>" />
+
+Remove a recipe from your favorites. Note that the URL parameter is the **recipe ID**, not the favorite ID.
+
+Returns an empty `204 No Content` response on success.
+
+<Callout variant="warning">
+  If you have not favorited this recipe you will receive a `404 Not Found` error.
+</Callout>
