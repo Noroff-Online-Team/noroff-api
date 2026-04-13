@@ -42,4 +42,4 @@ USER noroff
 COPY --from=installer --chown=noroff:noroff /app .
 WORKDIR /app/apps/v1
 EXPOSE 3000
-CMD [ "pnpm", "start:migrate:prod" ]
+CMD [ "pnpm", "start" ]
