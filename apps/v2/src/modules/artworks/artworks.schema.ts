@@ -21,7 +21,7 @@ export const artworkCore = {
   medium: z.string(),
   description: z.string(),
   location: z.string().nullish(),
-  image: z.object(mediaProperties),
+  image: z.object(mediaProperties).nullable(),
   created: z.date(),
   updated: z.date(),
   owner: z.object(profileCore)
@@ -53,7 +53,7 @@ export const createArtworkSchema = z.object({
   description: z.string({
     required_error: "Description is required",
     invalid_type_error: "Description must be a string"
-  }),
+   }),
   location: z
     .string({
       required_error: "Location is required",
