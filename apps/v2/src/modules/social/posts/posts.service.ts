@@ -194,6 +194,10 @@ export const updatePost = async (
       }
     : {}
 
+  if (media === null) {
+    await db.media.deleteMany({ where: { socialPostId: id } })
+  }
+
   const data = await db.socialPost.update({
     data: {
       ...restData,

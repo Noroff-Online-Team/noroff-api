@@ -300,6 +300,8 @@ Update a post based on its id. This endpoint returns the updated post.
 
 > Please note that the `media.url` property must be a fully formed URL that links to a live and publicly accessible image. The API will check the provided URL and if it cannot be accessed publicly you will receive a `400 Bad Request` error response.
 
+> To remove an existing image from a post, set `media` to `null`. Omitting the `media` field entirely will leave the existing image unchanged.
+
 ```json title="Request"
 {
   "title": "string",
